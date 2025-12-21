@@ -1,0 +1,940 @@
+unit Unit4;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Buttons, StdCtrls, WinSkinData, StrUtils, pngimage, ExtCtrls;
+
+type
+  TForm4_Select = class(TForm)
+    ListBox_Capitulo: TListBox;
+    label_capitulo: TLabel;
+    label_episodio: TLabel;
+    ListBox_Episodio: TListBox;
+    btn_aplicar: TSpeedButton;
+    SkinData_Buttons: TSkinData;
+    SIGIL_Off: TListBox;
+    procedure btn_aplicarClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure ListBox_EpisodioClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure ListBox_CapituloClick(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form4_Select: TForm4_Select;
+  Game_Pack:Integer;
+
+const
+
+Array_Episodios: Array[1..62] of Array[1..3] of String =
+(
+  {DOOM}
+  ('3','1','Knee-Deep in the Dead'),
+  ('3','2','The Shores of Hell'   ),
+  ('3','3','Inferno'              ),
+  ('3','4','Thy Flesh Consumed'   ),
+  ('3','5','SIGIL'                ),
+  ('3','6','SIGIL II'             ),
+  {DOOM II}
+  ('4','1','The Space Station'),
+  ('4','2','The City'         ),
+  ('4','3','Hell'             ),
+  ('4','4','Wolfenstein'      ),
+  {HERETIC}
+  ('6','1','City of the Damned'     ),
+  ('6','2','Hell´s Maw'             ),
+  ('6','3','The Dome of D´Sparil'   ),
+  ('6','4','The Ossuary'            ),
+  ('6','5','The Stagnant Demesne'   ),
+  ('6','6','Fates Path (DeathMatch)'),
+  {HEXEN}
+  ('7','1','Seven Portals'        ),
+  ('7','2','Shadow Wood'          ),
+  ('7','3','Heresiarch´s Seminary'),
+  ('7','4','Castle of Grief'      ),
+  ('7','5','Necropolis'           ),
+  {WOLFENSTEIN 3D}
+  ('12','1','Escape from Castle Wolfenstein'),
+  ('12','2','Operation: Eisenfaust'         ),
+  ('12','3','Die, Fuhrer, Die!'             ),
+  ('12','4','Dark Secret'                   ),
+  ('12','5','Trail of the Madman'           ),
+  ('12','6','Confrontation'                 ),
+  {SPEAR OF DESTINY}
+  ('13','1','Tunnels'            ),
+  ('13','2','Dungeons'           ),
+  ('13','3','Castle'             ),
+  ('13','4','Ramparts'           ),
+  ('13','5','The Death Dimension'),
+  {QUAKE}
+  ('8','1','Welcome to Quake'        ),
+  ('8','2','Dimension of the Doomed' ),
+  ('8','3','The Realm of Black Magic'),
+  ('8','4','The Netherworld'         ),
+  ('8','5','The Elder World'         ),
+  ('8','6','Final Level'             ),
+  ('8','7','DeathMatch Arena'        ),
+  ('8','8','Scourge of Armagon'      ),
+  ('8','9','Fortress of the Dead'    ),
+  ('8','10','Dominion of Darkness'   ),
+  ('8','11','The Rift'               ),
+  ('8','12','Introduction'           ),
+  ('8','13','Hells Fortress'         ),
+  ('8','14','The Corridors of Time'  ),
+  {BLOOD}
+  ('1','1','The Way of All Flesh'  ),
+  ('1','2','Even Death May Die'    ),
+  ('1','3','A Farewell to Arms'    ),
+  ('1','4','Dead Reckoning'        ),
+  ('1','5','Cryptic Passage'       ), //Cryptic Passage
+  ('1','6','Post Mortem'           ), //Plasma Pak
+  ('1','7','BloodBath (DeathMatch)'),
+  {DUKE NUKEM 3D}
+  ('5','1','L.A Meltdown'    ),
+  ('5','2','Lunas Apocalypse'),
+  ('5','3','Srapnel City'    ),
+  ('5','4','The Birth'       ),
+  {SHADOW WARRIOR}
+  ('10','1','Enter the Wang'       ),
+  ('10','2','Code of Honor'        ),
+  ('10','3','Wanton Destruction'   ),
+  ('10','4','Twin Dragon'          ),
+  ('10','5','WangBang (DeathMatch)')
+);
+
+Array_Capitulos: Array[1..425] of Array[1..4] of String =
+(
+  //----------------------------------------------------
+  {DOOM}
+  //----------------------------------------------------
+  ('3','1','Hangar'                      ,'E1M1'),
+  ('3','1','Nuclear Plant'               ,'E1M2'),
+  ('3','1','Toxin Refinery'              ,'E1M3'),
+  ('3','1','Military Base (Secret Level)','E1M9'),
+  ('3','1','Command Control'             ,'E1M4'),
+  ('3','1','Phobos Lab'                  ,'E1M5'),
+  ('3','1','Central Processing'          ,'E1M6'),
+  ('3','1','Computer Station'            ,'E1M7'),
+  ('3','1','Phobos Anomaly'              ,'E1M8'),
+  //----------------------------------------------------
+  ('3','2','Deimos Anomaly'                    ,'E2M1'),
+  ('3','2','Containment Area'                  ,'E2M2'),
+  ('3','2','Refinery'                          ,'E2M3'),
+  ('3','2','Deimos Lab'                        ,'E2M4'),
+  ('3','2','Command Center'                    ,'E2M5'),
+  ('3','2','Fortress of Mystery (Secret Level)','E2M9'),
+  ('3','2','Halls of the Damned'               ,'E2M6'),
+  ('3','2','Spawning Vats'                     ,'E2M7'),
+  ('3','2','Tower of Babel'                    ,'E2M8'),
+  //----------------------------------------------------
+  ('3','3','Hell Keep'             ,'E3M1'),
+  ('3','3','Slough of Despair'     ,'E3M2'),
+  ('3','3','Pandemonium'           ,'E3M3'),
+  ('3','3','House of Pain'         ,'E3M4'),
+  ('3','3','Unholy Cathedral'      ,'E3M5'),
+  ('3','3','Mt. Erebus'            ,'E3M6'),
+  ('3','3','Warrens (Secret Level)','E3M9'),
+  ('3','3','Limbo'                 ,'E3M7'),
+  ('3','3','Dis'                   ,'E3M8'),
+  //----------------------------------------------------
+  ('3','4','Hell Beneath'         ,'E4M1'),
+  ('3','4','Perfect Hatred'       ,'E4M2'),
+  ('3','4','Fear (Secret Level)'  ,'E4M9'),
+  ('3','4','Sever the Wicked'     ,'E4M3'),
+  ('3','4','Unruly Evil'          ,'E4M4'),
+  ('3','4','They Will Repent'     ,'E4M5'),
+  ('3','4','Against Thee Wickedly','E4M6'),
+  ('3','4','And Hell Followed'    ,'E4M7'),
+  ('3','4','Unto the Cruel'       ,'E4M8'),
+  //----------------------------------------------------
+  {DOOM - SIGIL}
+  //----------------------------------------------------
+  ('3','5','Baphomets Demesne'            ,'E5M1'),
+  ('3','5','Sheol'                        ,'E5M2'),
+  ('3','5','Cages of the Damned'          ,'E5M3'),
+  ('3','5','Paths of Wretchedness'        ,'E5M4'),
+  ('3','5','Abaddons Void'                ,'E5M5'),
+  ('3','5','Unspeakable Persecution'      ,'E5M6'),
+  ('3','5','Realm of Iblis (Secret Level)','E5M9'),
+  ('3','5','Nightmare Underworld'         ,'E5M7'),
+  ('3','5','Halls of Perdition'           ,'E5M8'),
+   //----------------------------------------------------
+  {DOOM - SIGIL II}
+  //----------------------------------------------------
+  ('3','6','Cursed Darkness'                    ,'E6M1'),
+  ('3','6','Violent Hatred'                     ,'E6M2'),
+  ('3','6','Twilight Desolation'                ,'E6M3'),
+  ('3','6','Fragments of Sanity'                ,'E6M4'),
+  ('3','6','Wrathful Reckoning'                 ,'E6M5'),
+  ('3','6','Vengeance Unleashed'                ,'E6M6'),
+  ('3','6','Descent Into Terror'                ,'E6M7'),
+  ('3','6','Abyss of Despair'                   ,'E6M8'),
+  ('3','6','Shattered Homecoming (Secret Level)','E6M9'),
+  //----------------------------------------------------
+  {DOOM II}
+  //----------------------------------------------------
+  ('4','1','Entryway'             ,'MAP01'),
+  ('4','1','Underhalls'           ,'MAP02'),
+  ('4','1','The Gantlet'          ,'MAP03'),
+  ('4','1','The Focus'            ,'MAP04'),
+  ('4','1','The Waste Tunnels'    ,'MAP05'),
+  ('4','1','The Crusher'          ,'MAP06'),
+  ('4','1','Dead Simple'          ,'MAP07'),
+  ('4','1','Tricks and Traps'     ,'MAP08'),
+  ('4','1','The Pit'              ,'MAP09'),
+  ('4','1','Refueling Base'       ,'MAP10'),
+  ('4','1','''O'' of Destruction!','MAP11'),
+  ('4','2','The Factory'          ,'MAP12'),
+  ('4','2','Downtown'             ,'MAP13'),
+  ('4','2','The Inmost Dens'      ,'MAP14'),
+  ('4','2','Industrial Zone'      ,'MAP15'),
+  ('4','2','Suburbs'              ,'MAP16'),
+  ('4','2','Tenements'            ,'MAP17'),
+  ('4','2','The Courtyard'        ,'MAP18'),
+  ('4','2','The Citadel'          ,'MAP19'),
+  ('4','2','Gotcha!'              ,'MAP20'),
+  ('4','3','Nirvana'              ,'MAP21'),
+  ('4','3','The Catacombs'        ,'MAP22'),
+  ('4','3','Barrels o´ Fun'       ,'MAP23'),
+  ('4','3','The Chasm'            ,'MAP24'),
+  ('4','3','Bloodfalls'           ,'MAP25'),
+  ('4','3','The Abandoned Mines'  ,'MAP26'),
+  ('4','3','Monster Condo'        ,'MAP27'),
+  ('4','3','The Spirit World'     ,'MAP28'),
+  ('4','3','The Living End'       ,'MAP29'),
+  ('4','3','Icon of Sin'          ,'MAP30'),
+  ('4','4','Wolfenstein'          ,'MAP31'),
+  ('4','4','Grosse'               ,'MAP32'),
+  //----------------------------------------------------
+  {HERETIC}
+  //----------------------------------------------------
+  ('6','1','The Docks'                   ,'E1M1'),
+  ('6','1','The Dungeons'                ,'E1M2'),
+  ('6','1','The Gatehouse'               ,'E1M3'),
+  ('6','1','The Guard Tower'             ,'E1M4'),
+  ('6','1','The Citadel'                 ,'E1M5'),
+  ('6','1','The Cathedral'               ,'E1M6'),
+  ('6','1','The Graveyard (Secret Level)','E1M9'),
+  ('6','1','The Crypts'                  ,'E1M7'),
+  ('6','1','Hell´s Maw'                  ,'E1M8'),
+  //----------------------------------------------------
+  ('6','2','The Crater'                ,'E2M1'),
+  ('6','2','The Lava Pits'             ,'E2M2'),
+  ('6','2','The River of Fire'         ,'E2M3'),
+  ('6','2','The Ice Grotto'            ,'E2M4'),
+  ('6','2','The Glacier (Secret Level)','E2M9'),
+  ('6','2','The Catacombs'             ,'E2M5'),
+  ('6','2','The Labyrinth'             ,'E2M6'),
+  ('6','2','The Great Hall'            ,'E2M7'),
+  ('6','2','The Portals of Chaos'      ,'E2M8'),
+  //----------------------------------------------------
+  ('6','3','The Storehouse'            ,'E3M1'),
+  ('6','3','The Cesspool'              ,'E3M2'),
+  ('6','3','The Confluence'            ,'E3M3'),
+  ('6','3','The Azure Fortress'        ,'E3M4'),
+  ('6','3','The Aquifer (Secret Level)','E3M9'),
+  ('6','3','The Ophidian Lair'         ,'E3M5'),
+  ('6','3','The Halls of Fear'         ,'E3M6'),
+  ('6','3','The Chasm'                 ,'E3M7'),
+  ('6','3','D''Sparils Keep'           ,'E3M8'),
+  //----------------------------------------------------
+  ('6','4','Catafalque'              ,'E4M1'),
+  ('6','4','Blockhouse'              ,'E4M2'),
+  ('6','4','Ambulatory'              ,'E4M3'),
+  ('6','4','Sepulcher'               ,'E4M4'),
+  ('6','4','Mausoleum (Secret Level)','E4M9'),
+  ('6','4','Great Stair'             ,'E4M5'),
+  ('6','4','Halls of the Apostate'   ,'E4M6'),
+  ('6','4','Ramparts of Perdition'   ,'E4M7'),
+  ('6','4','Shattered Bridge'        ,'E4M8'),
+  //----------------------------------------------------
+  ('6','5','Ochre Cliffs'                    ,'E5M1'),
+  ('6','5','Rapids'                          ,'E5M2'),
+  ('6','5','Quay'                            ,'E5M3'),
+  ('6','5','Skein of D´Sparil (Secret Level)','E5M9'),
+  ('6','5','Courtyard'                       ,'E5M4'),
+  ('6','5','Hydratyr'                        ,'E5M5'),
+  ('6','5','Colonnade'                       ,'E5M6'),
+  ('6','5','Foetid Manse'                    ,'E5M7'),
+  ('6','5','Field of Judgement'              ,'E5M8'),
+  //----------------------------------------------------
+  ('6','6','Ravens Lair'     ,'E6M1'),
+  ('6','6','The Water Shrine','E6M2'),
+  ('6','6','Americans Legacy','E6M3'),
+  //----------------------------------------------------
+  {HEXEN}
+  //----------------------------------------------------
+  ('7','1','Winnowing Hall'                ,'MAP01'),
+  ('7','1','Seven Portals'                 ,'MAP02'),
+  ('7','1','Guardian of Ice'               ,'MAP03'),
+  ('7','1','Guardian of Fire'              ,'MAP04'),
+  ('7','1','Guardian of Steel'             ,'MAP05'),
+  ('7','1','Bright Crucible (Secret Level)','MAP06'),
+  //----------------------------------------------------
+  ('7','2','Shadow Wood'                ,'MAP13'),
+  ('7','2','Sacred Grove (Secret Level)','MAP11'),
+  ('7','2','Darkmere'                   ,'MAP08'),
+  ('7','2','Caves of Circe'             ,'MAP09'),
+  ('7','2','Wastelands'                 ,'MAP10'),
+  ('7','2','Hypostyle'                  ,'MAP12'),
+  //----------------------------------------------------
+  ('7','3','Heresiarchs Seminary'           ,'MAP27'),
+  ('7','3','Orchard of Lamentations'        ,'MAP32'),
+  ('7','3','Silent Refectory'               ,'MAP33'),
+  ('7','3','Wolf Chapel'                    ,'MAP34'),
+  ('7','3','Dragon Chapel'                  ,'MAP28'),
+  ('7','3','Griffin Chapel'                 ,'MAP30'),
+  ('7','3','Deathwind Chapel (Secret Level)','MAP31'),
+  //----------------------------------------------------
+  ('7','4','Forsaken Outpost'               ,'MAP21'),
+  ('7','4','Castle of Grief'                ,'MAP22'),
+  ('7','4','Gibbet'                         ,'MAP23'),
+  ('7','4','Effluvium'                      ,'MAP24'),
+  ('7','4','Dungeons'                       ,'MAP25'),
+  ('7','4','Desolate Garden (Secret Level))','MAP26'),
+  //----------------------------------------------------
+  ('7','5','Necropolis'             ,'MAP35'),
+  ('7','5','Zedek´s Tomb'           ,'MAP36'),
+  ('7','5','Menelkirs Tomb'         ,'MAP37'),
+  ('7','5','Traductus Tomb'         ,'MAP38'),
+  ('7','5','Vivarium (Secret Level)','MAP39'),
+  ('7','5','Dark Crucible'          ,'MAP40'),
+  //----------------------------------------------------
+  {QUAKE}
+  //----------------------------------------------------
+  ('8','1','Introduction'                   ,'start'),
+  //----------------------------------------------------
+  ('8','2','The Slipgate Complex'           ,'e1m1'),
+  ('8','2','Castle of the Damned'           ,'e1m2'),
+  ('8','2','The Necropolis'                 ,'e1m3'),
+  ('8','2','The Grisly Grotto'              ,'e1m4'),
+  ('8','2','Ziggurat Vertigo (Secret Level)','e1m8'),
+  ('8','2','Gloom Keep'                     ,'e1m5'),
+  ('8','2','The Door to Chthon'             ,'e1m6'),
+  ('8','2','The House of Chthon'            ,'e1m7'),
+  //----------------------------------------------------
+  ('8','3','The Installation'             ,'e2m1'),
+  ('8','3','The Ogre Citadel'             ,'e2m2'),
+  ('8','3','The Crypt of Decay'           ,'e2m3'),
+  ('8','3','The Underearth (Secret Level)','e2m7'),
+  ('8','3','The Ebon Fortress'            ,'e2m4'),
+  ('8','3','The Wizard´s Manse'           ,'e2m5'),
+  ('8','3','The Dismal Oubliette'         ,'e2m6'),
+  //----------------------------------------------------
+  ('8','4','Termination Central'             ,'e3m1'),
+  ('8','4','The Vaults of Zin'               ,'e3m2'),
+  ('8','4','The Tomb of Terror'              ,'e3m3'),
+  ('8','4','Satans Dark Delight'             ,'e3m4'),
+  ('8','4','The Haunted Halls (Secret Level)','e3m7'),
+  ('8','4','The Wind Tunnels'                ,'e3m5'),
+  ('8','4','Chambers of Torment'             ,'e3m6'),
+  //----------------------------------------------------
+  ('8','5','The Sewage System'               ,'e4m1'),
+  ('8','5','The Tower of Despair'            ,'e4m2'),
+  ('8','5','The Elder God Shrine'            ,'e4m3'),
+  ('8','5','The Palace of Hate'              ,'e4m4'),
+  ('8','5','Hells Atrium'                    ,'e4m5'),
+  ('8','5','The Nameless City (Secret Level)','e4m8'),
+  ('8','5','The Pain Maze'                   ,'e4m6'),
+  ('8','5','Azure Agony'                     ,'e4m7'),
+  //----------------------------------------------------
+  ('8','6','Shub-Niggurath''s Pit'           ,'end'),
+  //----------------------------------------------------
+  ('8','7','Place of Two Deaths','dm1'),
+  ('8','7','Claustrophobopolis' ,'dm2'),
+  ('8','7','The Abandoned Base' ,'dm3'),
+  ('8','7','The Bad Place'      ,'dm4'),
+  ('8','7','The Cistern'        ,'dm5'),
+  ('8','7','The Dark Zone'      ,'dm6'),
+  //----------------------------------------------------
+  {QUAKE - SCOURGE OF ARMAGON}
+  //----------------------------------------------------
+  ('8','8','Command HQ'                     ,'start'),
+  //----------------------------------------------------
+  ('8','9','The Pumping Station'            ,'hip1m1'),
+  ('8','9','Storage Facility'               ,'hip1m2'),
+  ('8','9','Military Complex (Secret Level)','hip1m5'),
+  ('8','9','The Lost Mine'                  ,'hip1m3'),
+  ('8','9','Research Facility'              ,'hip1m4'),
+  //-------------------------------------------------------
+  ('8','10','Ancient Realms'                    ,'hip2m1'),
+  ('8','10','The Gremlins Domain (Secret Level)','hip2m6'),
+  ('8','10','The Black Cathedral'               ,'hip2m2'),
+  ('8','10','The Catacombs'                     ,'hip2m3'),
+  ('8','10','The Crypt'                         ,'hip2m4'),
+  ('8','10','Mortums Keep'                      ,'hip2m5'),
+  //--------------------------------------------------------
+  ('8','11','Tur Torment'                        ,'hip3m1'),
+  ('8','11','Pandemonium'                        ,'hip3m2'),
+  ('8','11','Limbo'                              ,'hip3m3'),
+  ('8','11','The Edge of Oblivion (Secret Level)','hipdm1'),
+  ('8','11','The Gauntlet'                       ,'hip3m4'),
+  ('8','11','Armagon''s Lair'                    ,'hipend'),
+  //--------------------------------------------------------
+  {QUAKE - DISSOLUTION OF ETERNITY}
+  //--------------------------------------------------------
+  ('8','12','Split Decision'      ,'start'),
+  //--------------------------------------------------------
+  ('8','13','Deviant´s Domain'    ,'r1m1'),
+  ('8','13','Dread Portal'        ,'r1m2'),
+  ('8','13','Judgment Call'       ,'r1m3'),
+  ('8','13','Cave of Death'       ,'r1m4'),
+  ('8','13','Towers of Wrath'     ,'r1m5'),
+  ('8','13','Temple of Pain'      ,'r1m6'),
+  ('8','13','Tomb of the Overlord','r1m7'),
+  //--------------------------------------------------------
+  ('8','14','Tempus Fugit'     ,'r2m1'),
+  ('8','14','Elemental Fury I' ,'r2m2'),
+  ('8','14','Elemental Fury II','r2m3'),
+  ('8','14','Curse of Osiris'  ,'r2m4'),
+  ('8','14','Wizards Keep'     ,'r2m5'),
+  ('8','14','Blood Sacrifice'  ,'r2m6'),
+  ('8','14','Last Bastion'     ,'r2m7'),
+  ('8','14','Source of Evil'   ,'r2m8'),
+  //--------------------------------------------------------
+  {SPEAR OF DESTINY}
+  //--------------------------------------------------------
+  ('13','1','Floor 1'               ,'SOD01'),
+  ('13','1','Floor 2'               ,'SOD02'),
+  ('13','1','Floor 3'               ,'SOD03'),
+  ('13','1','Floor 4'               ,'SOD04'),
+  ('13','1','Floor (Secret Level)'  ,'SOD19'),
+  ('13','1','Floor 5 - Trans Grosse','SOD05'),
+  //--------------------------------------------------------
+  ('13','2','Floor 6'                    ,'SOD06'),
+  ('13','2','Floor 7'                    ,'SOD07'),
+  ('13','2','Floor 8'                    ,'SOD08'),
+  ('13','2','Floor 9'                    ,'SOD09'),
+  ('13','2','Floor 10 - Barnacle Wilhelm','SOD10'),
+  //--------------------------------------------------------
+  ('13','3','Floor 11'             ,'SOD11'),
+  ('13','3','Floor 12'             ,'SOD12'),
+  ('13','3','Floor (Secret Level)' ,'SOD20'),
+  ('13','3','Floor 13'             ,'SOD13'),
+  ('13','3','Floor 14'             ,'SOD14'),
+  ('13','3','Floor 15 - Ubermutant','SOD15'),
+  //--------------------------------------------------------
+  ('13','4','Floor 16'               ,'SOD16'),
+  ('13','4','Floor 17 - Death Knight','SOD17'),
+  //--------------------------------------------------------
+  ('13','5','Angel of Death','SOD18'),       
+  //--------------------------------------------------------
+  {BLOOD}                                    
+  //--------------------------------------------------------
+  ('1','1','Cradle to Grave'                ,''),
+  ('1','1','Wrong Side of the Tracks'       ,''),
+  ('1','1','Phantom Express'                ,''),
+  ('1','1','Dark Carnival'                  ,''),
+  ('1','1','House of Horrors (Secret Level)',''),
+  ('1','1','Hallowed Grounds'               ,''),
+  ('1','1','The Great Temple'               ,''),
+  ('1','1','Altar of Stone'                 ,''),
+  //--------------------------------------------------------
+  ('1','2','Shipwrecked'            ,''),
+  ('1','2','The Lumber Mill'        ,''),
+  ('1','2','Rest for the Wicked'    ,''),
+  ('1','2','The Overlooked Hotel'   ,''),
+  ('1','2','Thin Ice (Secret Level)',''),
+  ('1','2','The Haunting'           ,''),
+  ('1','2','The Cold Rush'          ,''),
+  ('1','2','Bowels of the Earth'    ,''),
+  ('1','2','The Lair of Shial'      ,''),
+  //--------------------------------------------------------
+  ('1','3','Ghost Town'              ,''),
+  ('1','3','The Siege'               ,''),
+  ('1','3','Raw Sewage'              ,''),
+  ('1','3','The Sick Ward'           ,''),
+  ('1','3','Catacombs (Secret Level)',''),
+  ('1','3','Spare Parts'             ,''),
+  ('1','3','Monster Bait'            ,''),
+  ('1','3','The Pit of Cerberus'     ,''),
+  //--------------------------------------------------------
+  ('1','4','Butchery Loves Company'         ,''),
+  ('1','4','Breeding Grounds'               ,''),
+  ('1','4','Charnel House'                  ,''),
+  ('1','4','Crystal Lake'                   ,''),
+  ('1','4','Mall of the Dead (Secret Level)',''),
+  ('1','4','Fire and Brimstone'             ,''),
+  ('1','4','The Ganglion Depths'            ,''),
+  ('1','4','In The Flesh'                   ,''),
+  ('1','4','Hall of the Epiphany'           ,''),
+  //--------------------------------------------------------
+  ('1','5','Boat Docks'                ,''),
+  ('1','5','Old Opera House'           ,''),
+  ('1','5','Gothic Library'            ,''),
+  ('1','5','Lost Monastery'            ,''),
+  ('1','5','Steamboat'                 ,''),
+  ('1','5','Graveyard'                 ,''),
+  ('1','5','Boggy Creek (Secret Level)',''), 
+  ('1','5','Mountain Pass'             ,''),
+  ('1','5','Abysmal Mine'              ,''),
+  ('1','5','Castle'                    ,''),
+  //--------------------------------------------------------
+  ('1','6','Welcome To Your Life'              ,''),
+  ('1','6','They Are Here'                     ,''),
+  ('1','6','Public Storage'                    ,''),
+  ('1','6','Aqueducts'                         ,''),
+  ('1','6','The Ruined Temple'                 ,''),
+  ('1','6','Forbidden Rituals'                 ,''),
+  ('1','6','Forgotten Catacombs (Secret Level)',''),
+  ('1','6','The Dungeon'                       ,''),
+  ('1','6','Beauty and the Beast'              ,''),
+  //--------------------------------------------------------
+  ('1','7','The Stronghold'      ,''),
+  ('1','7','Winter Wonderland'   ,''),
+  ('1','7','Bodies'              ,''),
+  ('1','7','The Tower'           ,''),
+  ('1','7','Click!'              ,''),
+  ('1','7','Twin Fortress'       ,''),
+  ('1','7','Midgard'             ,''),
+  ('1','7','Fun With Heads'      ,''),
+  ('1','7','Monolith Building 11',''),
+  ('1','7','Power!'              ,''),
+  ('1','7','Area 15'             ,''),
+  ('1','7','Crypt of Despair'    ,''),
+  ('1','7','Pits of Blood'       ,''),
+  ('1','7','Unholy Cathedral'    ,''),
+  ('1','7','Deadly Inspirations' ,''),
+  //--------------------------------------------------------
+  {DUKE NUKEM 3D}
+  //--------------------------------------------------------
+  ('5','1','Hollywood Holocaust'           ,'/v1 /l1'),
+  ('5','1','Red Light District'            ,'/v1 /l2'),
+  ('5','1','Death Row'                     ,'/v1 /l3'),
+  ('5','1','Toxic Dump'                    ,'/v1 /l4'),
+  ('5','1','Launch Facility (Secret Level)','/v1 /l6'),
+  ('5','1','The Abyss'                     ,'/v1 /l5'),
+  ('5','1','Faces of Death (Secret Level)' ,'/v1 /l7'),
+  //--------------------------------------------------------
+  ('5','2','Spaceport'                    ,'/v2 /l1' ),
+  ('5','2','Incubator'                    ,'/v2 /l2' ),
+  ('5','2','Warp Factor'                  ,'/v2 /l3' ),
+  ('5','2','Fusion Station'               ,'/v2 /l4' ),
+  ('5','2','Occupied Territory'           ,'/v2 /l5' ),
+  ('5','2','Spin Cycle (Secret Level)'    ,'/v2 /l10'),
+  ('5','2','Tiberius Station'             ,'/v2 /l6' ),
+  ('5','2','Lunar Reactor'                ,'/v2 /l7' ),
+  ('5','2','Dark Side'                    ,'/v2 /l8' ),
+  ('5','2','Lunatic Fringe (Secret Level)','/v2 /l11'),
+  ('5','2','Overlord'                     ,'/v2 /l9' ),
+  //--------------------------------------------------------
+  ('5','3','Raw Meat'                 ,'/v3 /l1' ),
+  ('5','3','Bank Roll'                ,'/v3 /l2' ),
+  ('5','3','Flood Zone'               ,'/v3 /l3' ),
+  ('5','3','L.A. Rumble'              ,'/v3 /l4' ),
+  ('5','3','Movie Set'                ,'/v3 /l5' ),
+  ('5','3','Tier Drops (Secret Level)','/v3 /l10'),
+  ('5','3','Rabid Transit'            ,'/v3 /l6' ),
+  ('5','3','Fahrenheit'               ,'/v3 /l7' ),
+  ('5','3','Hotel Hell'               ,'/v3 /l8' ),
+  ('5','3','Freeway (Secret Level)'   ,'/v3 /l11'),
+  ('5','3','Stadium'                  ,'/v3 /l9' ),
+  //--------------------------------------------------------
+  ('5','4','Its Impossible'        ,'/v4 /l1' ),
+  ('5','4','Duke-Burger'           ,'/v4 /l2' ),
+  ('5','4','Shop-N-Bag'            ,'/v4 /l3' ),
+  ('5','4','Babe Land'             ,'/v4 /l4' ),
+  ('5','4','Pigsty'                ,'/v4 /l5' ),
+  ('5','4','Area 51 (Secret Level)','/v4 /l11'),
+  ('5','4','Going Postal'          ,'/v4 /l6' ),
+  ('5','4','XXX-Stacy'             ,'/v4 /l7' ),
+  ('5','4','Critical Mass'         ,'/v4 /l8' ),
+  ('5','4','Derelict'              ,'/v4 /l9' ),
+  ('5','4','The Queen'             ,'/v4 /l10'),
+  //--------------------------------------------------------
+  {SHADOW WARRIOR}
+  //--------------------------------------------------------
+  ('10','1','Seppuku Station'                  ,'-level1'),
+  ('10','1','Zilla Construction'               ,'-level2'),
+  ('10','1','Master Leeps Temple'              ,'-level3'),
+  ('10','1','Dark Woods of the Serpent'        ,'-level4'),
+  //--------------------------------------------------------
+  ('10','2','Rising Son'                       ,'-level5' ),
+  ('10','2','Killing Fields'                   ,'-level6' ),
+  ('10','2','Hara-Kiri Harbor'                 ,'-level7' ),
+  ('10','2','Zillas Villa'                     ,'-level8' ),
+  ('10','2','Monastery'                        ,'-level9' ),
+  ('10','2','Raider of the Lost Wang'          ,'-level10'),
+  ('10','2','Shanghai Shipwreck (Secret Level)','-level21'),
+  ('10','2','Sumo Sky Palace'                  ,'-level11'),
+  ('10','2','Bath House'                       ,'-level12'),
+  ('10','2','Unfriendly Skies'                 ,'-level13'),
+  ('10','2','Auto Maul (Secret Level)'         ,'-level22'),
+  ('10','2','Crude Oil'                        ,'-level14'),
+  ('10','2','Coolie Mines'                     ,'-level15'),
+  ('10','2','Subpen 7'                         ,'-level16'),
+  ('10','2','The Great Escape'                 ,'-level17'),
+  ('10','2','Floating Fortress'                ,'-level18'),
+  ('10','2','Water Torture'                    ,'-level19'),
+  ('10','2','Stone Rain'                       ,'-level20'),
+  //--------------------------------------------------------
+  ('10','3','Chinatown'                    ,'-level5' ),
+  ('10','3','Monastery'                    ,'-level6' ),
+  ('10','3','Redwood Forest (Secret Level)','-level21'),
+  ('10','3','Trolley Yard'                 ,'-level7' ),
+  ('10','3','Restaurant'                   ,'-level8' ),
+  ('10','3','Skyscraper'                   ,'-level9' ),
+  ('10','3','The Docks (Secret Level)'     ,'-level22'),
+  ('10','3','Airplane'                     ,'-level10'),
+  ('10','3','Military Base'                ,'-level11'),
+  ('10','3','Train'                        ,'-level12'),
+  ('10','3','Auto Factory'                 ,'-level13'),
+  ('10','3','Skyline'                      ,'-level14'),
+  //--------------------------------------------------------
+  ('10','4','Wangs Home'                ,'-level5' ),
+  ('10','4','City of Despair'           ,'-level6' ),
+  ('10','4','Emergency Room'            ,'-level7' ),
+  ('10','4','Hide and Seek'             ,'-level8' ),
+  ('10','4','Warehouse'                 ,'-level9' ),
+  ('10','4','Military Research Base'    ,'-level10'),
+  ('10','4','Toxic Waste'               ,'-level11'),
+  ('10','4','Crazy Train'               ,'-level12'),
+  ('10','4','Fishing Village'           ,'-level13'),
+  ('10','4','The Garden'                ,'-level14'),
+  ('10','4','The Fortress'              ,'-level15'),
+  ('10','4','Prison Camp (Secret Level)','-level16'),
+  ('10','4','The Palace'                ,'-level17'),
+  //------------------------------------------------------------
+  ('10','5','Heavy Metal'                          ,'-level23'), //Shadow Warrior
+  ('10','5','Ripper Valley'                        ,'-level24'), //Shadow Warrior
+  ('10','5','House of Wang'                        ,'-level25'), //Shadow Warrior
+  ('10','5','Lo Wang Rally'                        ,'-level26'), //Shadow Warrior
+  ('10','5','Ruins of the Ronin (Capture the Flag)','-level27'), //Shadow Warrior
+  ('10','5','Killing Fields (Capture the Flag)'    ,'-level28'), //Shadow Warrior
+  ('10','5','Waterfight'                           ,'-level23'), //Wanton Destruction
+  ('10','5','Wanton DM 1'                          ,'-level24'), //Wanton Destruction
+  ('10','5','Wanton DM 2'                          ,'-level25'), //Wanton Destruction
+  ('10','5','Wanton (Capture the Flag)'            ,'-level27'), //Wanton Destruction
+  ('10','5','Ninja Training Camp'                  ,'-level23'), //Twin Dragon
+  ('10','5','Death Becomes You'                    ,'-level24'), //Twin Dragon
+  ('10','5','Island Caves'                         ,'-level25')  //Twin Dragon
+  //------------------------------------------------------------
+);
+
+implementation
+
+uses Unit1, Funcoes, Language;
+
+{$R *.dfm}
+
+procedure TForm4_Select.FormCreate(Sender: TObject);
+begin
+Lang_DGL(10);
+
+ //case AnsiIndexStr(Nome_DLC_Global,['',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
+ case AnsiIndexStr(Nome_DLC_Global,['Quake','QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
+   0,1: Game_Pack:=0;
+     2: Game_Pack:=38;
+     3: Game_Pack:=56;
+ end;
+
+end;
+
+procedure TForm4_Select.btn_aplicarClick(Sender: TObject);
+var
+EPI,CAP,i:Integer;
+begin
+EPI:=ListBox_Episodio.ItemIndex;
+CAP:=ListBox_Capitulo.ItemIndex;
+
+  for i:=1 to Length(Array_Capitulos) do
+  begin
+                   
+    {PROCURA DENTRO DO VETOR, O JOGO E O EPISÓDIO SELECIONADO}
+    {JOGO     - Array_Capitulos[i][1]}
+    {EPISÓDIO - Array_Capitulos[i][2]}
+    if (id = StrToInt(Array_Capitulos[i][1])) and (EPI+1 = StrToInt(Array_Capitulos[i][2])) then
+    begin
+
+      if (id = 8) and (EPI_Global_DLC > 1) then
+      begin
+        case EPI of
+        2: begin
+             if EPI_Global_DLC = 2 then
+             Map_Global:=Array_Capitulos[i+CAP+Game_Pack-3][4]
+             else
+             Map_Global:=Array_Capitulos[i+CAP+Game_Pack-1][4];
+           end;
+        3: Map_Global:=Array_Capitulos[i+CAP+Game_Pack-4][4];
+        else
+        Map_Global:=Array_Capitulos[i+CAP+Game_Pack][4];
+        end;
+      end
+      else
+      Map_Global:=Array_Capitulos[i+CAP][4];
+
+    Break;
+    end;
+
+  end;
+
+  {DOOM - VERIFICA QUAL WAD VAI RODAR, ORIGINAL OU SIGIL}
+  if (id = 3) and (ListBox_Episodio.ItemIndex < 4) then
+  Game_EXE_Global:=Array_Games[3][5];
+
+  {DOOM II - CONSERTA BUG - EXTRA EQUIPMENT IN CO-OP MULTIPLAYER}
+  if (id = 4) and (Form1_DGL.RxDM.StateOn = False) then
+  Map_Global:=Map_Global+' +dmflags 2097152';
+
+  {SHADOW WARRIOR - DIFERENCIA AS DLC´s}
+  if (id = 10) then
+  begin
+  EPI_Global_DLC:=EPI;
+    if Form1_DGL.menu_debug.Checked = True then  {DeathMatch}
+    CAP_Global_DLC:=CAP;
+  end;
+
+ {WOLFENSTEIN 3D}
+ if (id = 12) then
+ begin
+
+   {LEVEL SECRETO - FLOOR 10}
+   if (CAP = 9) then
+   Map_Global:='E'+IntToStr(EPI+1)+'L0'
+   else
+   Map_Global:='E'+IntToStr(EPI+1)+'L'+IntToStr(CAP+1);
+
+ end;
+
+ {BLOOD}
+ if (id = 1) then
+ Blood_Levels(EPI+1,CAP+1,ListBox_Capitulo.Count);
+
+Close;
+end;
+
+procedure TForm4_Select.FormActivate(Sender: TObject);
+var
+i:Integer;
+begin
+Fecha_ESC:=False;
+
+ //------------------------------------------------------------
+ if (Nome_DLC_Global = 'QuakeWorld') then
+ Form4_Select.Caption:=Nome_DLC_Global
+ else if Length(Nome_DLC_Global) > 0 then
+ Form4_Select.Caption:=Array_Games[id][2]+' - '+Nome_DLC_Global
+ else
+ Form4_Select.Caption:=Array_Games[id][2];
+ //------------------------------------------------------------
+
+ //---------------------------------------------------------------------
+ {EPISÓDIOS}
+ //---------------------------------------------------------------------
+ for i:=1 to Length(Array_Episodios) do
+ begin
+   if (StrToInt(Array_Episodios[i][1]) = id) then
+   begin
+     if (id = 8) then
+     begin
+       case AnsiIndexStr(Nome_DLC_Global,['',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
+       0,1,2: begin
+              ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+                if (i = 37) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
+                Break;
+                if (i = 38) and (Form1_DGL.check_servidor.Checked) then
+                Break;
+              end;
+           3: begin
+              ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
+                if (i = 35) then
+                Break;
+              end;
+           4: begin
+              ListBox_Episodio.Items.Add(Array_Episodios[i+11][3]);
+                if (i = 34) then
+                Break;
+              end;
+       end;
+     end
+     else
+     ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+   end;
+ end;
+ //---------------------------------------------------------------------
+ 
+ //--------------------------------------------------------------------------------------
+ {SHADOW WARRIOR - WANTON DESTRUCTION - TWIN DRAGON}
+ //--------------------------------------------------------------------------------------
+ if (id = 10) then
+ begin
+ SIGIL_Off.Clear;
+
+   if SW_DLC_Exists(1) = False then
+   begin
+   ListBox_Episodio.Perform(LB_SELECTSTRING,0,LongInt(PChar('Wanton Destruction')));
+   ListBox_Episodio.DeleteSelected;
+   SIGIL_Off.Items.Add('Wanton Destruction');
+     if SW_DLC_Exists(2) = False then
+     SIGIL_Off.Top:=78
+     else
+     SIGIL_Off.Top:=65;
+   end
+   else if SW_DLC_Exists(2) = False then
+   begin
+   ListBox_Episodio.Perform(LB_SELECTSTRING,0,LongInt(PChar('Twin Dragon')));
+   ListBox_Episodio.DeleteSelected;
+   SIGIL_Off.Items.Add('Twin Dragon');
+     if SW_DLC_Exists(1) = False then
+     SIGIL_Off.Top:=78
+     else
+     SIGIL_Off.Top:=65;
+   end
+   else if (SW_DLC_Exists(1) = False) and (SW_DLC_Exists(2) = False) then
+   begin
+   ListBox_Episodio.Items.Delete(2);
+   ListBox_Episodio.Items.Delete(3);
+   SIGIL_Off.Items.Add('Wanton Destruction');
+   SIGIL_Off.Items.Add('Twin Dragon');
+   end;
+
+   if (SW_DLC_Exists(1) = False) or (SW_DLC_Exists(2) = False) then
+   SIGIL_Off.Visible:=True;
+
+ end;
+ //--------------------------------------------------------------------------------------
+
+ //----------------------------------------------------------------
+ {DEBUG MODE - DEATHMATCH MAPS IN SINGLE PLAYER}
+ //----------------------------------------------------------------
+ if (Form1_DGL.menu_debug.Checked = False) then
+   case id of
+   1,10,6: ListBox_Episodio.Items.Delete(ListBox_Episodio.Count-1);
+ end;
+ //----------------------------------------------------------------
+
+ListBox_Episodio.ItemIndex:=0;
+ListBox_EpisodioClick(Sender);
+end;
+
+procedure TForm4_Select.ListBox_EpisodioClick(Sender: TObject);
+var
+i:Integer;
+Caminho_EXE,Episodio_Nome:String;
+Var_Pesquisa:TSearchRec;
+begin
+Caminho_EXE:=ExtractFilePath(Application.ExeName);
+Episodio_Nome:=ListBox_Episodio.Items[(ListBox_Episodio.ItemIndex)];
+
+ListBox_Capitulo.Clear;
+btn_aplicar.Enabled:=False;
+
+ //-------------------------------------------------------------------------------------------------------------------------
+ {CAPÍTULOS}
+ //-------------------------------------------------------------------------------------------------------------------------
+ if (id <> 12) then
+ begin
+   for i:=1 to Length(Array_Capitulos) do
+   begin
+     if (StrToInt(Array_Capitulos[i][1]) = id) and (Episodio_Numero(Episodio_Nome) = (StrToInt(Array_Capitulos[i][2]))) then
+   //if (StrToInt(Array_Capitulos[i][1]) = id) and (StrToInt(Array_Capitulos[i][2]) = (EPI+Game_Pack)) then
+     ListBox_Capitulo.Items.Add(Array_Capitulos[i][3]);
+   end;
+ end
+ else
+ begin
+   for i:=1 to 10 do
+   begin
+     if i = 10 then
+     ListBox_Capitulo.Items.Add('Floor '+IntToStr(i)+' (Secret Level)')
+     else
+     ListBox_Capitulo.Items.Add('Floor '+IntToStr(i));
+   end;
+ end;
+ //-------------------------------------------------------------------------------------------------------------------------
+
+ //--------------------------------------------------------------------------
+ {DOOM - SIGIL}
+ //--------------------------------------------------------------------------
+ if (id = 3) then
+ begin
+ ListBox_Capitulo.Enabled:=True;
+
+   case ListBox_Episodio.ItemIndex of
+   0,1,2,3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03.png');
+   4: begin
+      Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03A.png');
+
+        if SIGIL_DLC_Exists(1) = True then
+        Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1]
+        else
+        ListBox_Capitulo.Enabled:=False;
+
+        {
+        if (FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0) then
+        begin
+          if FileExists(Caminho_Global+'SIGIL_SHREDS.wad') then
+          Game_EXE_Global:=Var_Pesquisa.Name+' -file '+Array_SIGIL_DLC_Name[1]
+          else
+          Game_EXE_Global:=Var_Pesquisa.Name;
+        end
+        else
+        ListBox_Capitulo.Enabled:=False;
+        }
+
+      end;
+   5: begin
+      Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03B.png');
+
+        if SIGIL_DLC_Exists(2) = True then
+        Game_EXE_Global:=Array_SIGIL_DLC_Name[2]+Array_SIGIL_DLC_Name[3]
+        else
+        ListBox_Capitulo.Enabled:=False;
+
+        {
+        if (FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0) then
+        begin
+          if FileExists(Caminho_Global+'SIGIL_II_MP3_V1_0.WAD') then
+          Game_EXE_Global:=Var_Pesquisa.Name+' -file '+Array_SIGIL_DLC_Name[3]
+          else
+          Game_EXE_Global:=Var_Pesquisa.Name;
+        end
+        else
+        ListBox_Capitulo.Enabled:=False;
+        }
+
+      end;
+   end;
+
+ end;
+ //--------------------------------------------------------------------------
+
+end;
+
+procedure TForm4_Select.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+Logo_Original:String;
+begin
+Logo_Original:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'+ExtractNamePath(Array_Games[id][1])+'.png';
+
+  if (Form1_DGL.RxQuakeServer.StateOn = False) then
+  Form1_DGL.img_game.Picture.LoadFromFile(Logo_Original);
+
+Form4_Select.Release;
+Form4_Select:=Nil;
+end;
+
+procedure TForm4_Select.ListBox_CapituloClick(Sender: TObject);
+begin
+btn_aplicar.Enabled:=True;
+end;
+
+procedure TForm4_Select.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+ if (key = #27) then
+ begin
+ Close;
+ Fecha_ESC:=True;
+ end;
+end;
+
+end.
+
