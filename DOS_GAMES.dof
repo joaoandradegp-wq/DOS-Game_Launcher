@@ -28,7 +28,7 @@ X=1
 Y=0
 Z=1
 ShowHints=1
-ShowWarnings=1
+ShowWarnings=0
 UnitAliases=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 NamespacePrefix=
 SymbolDeprecated=1
