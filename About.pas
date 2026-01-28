@@ -11,7 +11,6 @@ type
     Panel_Lateral: TPanel;
     IMG_LOGO: TImage;
     IMG_TOPO: TImage;
-    Label_VersaoWindows: TLabel;
     Linha: TBevel;
     MemoSIGIL: TMemo;
     SkinData_Buttons: TSkinData;
@@ -35,46 +34,6 @@ implementation
 
 uses Unit1, Language;
 
-//----------------------------------------------------------
-
-{PEGAR A VERSÃO DO WINDOWS}
-function GetWindowsVersion: string;
-var 
-VerInfo: TOsversionInfo; 
-PlatformId, VersionNumber: string; 
-Reg: TRegistry;
-begin 
-VerInfo.dwOSVersionInfoSize := SizeOf(VerInfo); 
-GetVersionEx(VerInfo); 
-// Detect platform 
-Reg := TRegistry.Create; 
-Reg.RootKey := HKEY_LOCAL_MACHINE; 
-case VerInfo.dwPlatformId of 
-VER_PLATFORM_WIN32s: 
-begin 
-// Registry (Huh? What registry?) 
-PlatformId := 'Windows 3.1';
-end;
-VER_PLATFORM_WIN32_WINDOWS: 
-begin 
-// Registry 
-Reg.OpenKey('\SOFTWARE\Microsoft\Windows\CurrentVersion', False);
-PlatformId := Reg.ReadString('ProductName');
-VersionNumber := Reg.ReadString('VersionNumber');
-end; 
-VER_PLATFORM_WIN32_NT: 
-begin 
-// Registry 
-Reg.OpenKey('\SOFTWARE\Microsoft\Windows NT\CurrentVersion', False);
-PlatformId := Reg.ReadString('ProductName');
-VersionNumber := Reg.ReadString('CurrentVersion');
-end; 
-end; 
-Reg.Free; 
-Result := PlatformId + ' (version ' + VersionNumber + ')';
-end;
-//----------------------------------------------------------
-
 {$R *.dfm}
 
 procedure TForm5_About.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -86,7 +45,6 @@ end;
 procedure TForm5_About.FormActivate(Sender: TObject);
 begin
 Form5_About.Caption:=UpperCase(Lang_DGL(20)+' '+Application.Title);
-Label_VersaoWindows.Caption:=Copy(GetWindowsVersion,0,Pos('(',GetWindowsVersion)-1);
 MemoSIGIL.Text:=Lang_DGL(24);
 end;
 

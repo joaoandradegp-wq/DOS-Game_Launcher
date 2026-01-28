@@ -8570,7 +8570,7 @@ object Form5_Splash: TForm5_Splash
     Height = 9
     AsyncDrawing = True
     Animate = True
-    FrameIndex = 11
+    FrameIndex = 3
     Image.Data = {
       8904000047494638396164000900A20400CE3131CE6363CE9C9CCECECEFFFFFF
       FFFFFF000000FFFFFF21FF0B4E45545343415045322E30030100000021F90405
@@ -8618,11 +8618,12 @@ object Form5_Splash: TForm5_Splash
     Height = 17
     Caption = #169' 2026 JMBA Softwares. Todos os direitos reservados.'
     Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clWhite
     Font.Height = -13
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
+    ShadowSize = 0
     Transparent = True
   end
 end

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, RXCtrls, Animate, GIFCtrl;
+  Dialogs, pngimage, ExtCtrls, RXCtrls, Animate, GIFCtrl, ShellAPI;
 
 type
   TForm5_Splash = class(TForm)
@@ -24,6 +24,8 @@ var
 
 implementation
 
+uses Unit1;
+
 {$R *.dfm}
 
 procedure TForm5_Splash.FormClose(Sender: TObject;
@@ -35,7 +37,7 @@ end;
 
 procedure TForm5_Splash.FormCreate(Sender: TObject);
 begin
-if Form1 <> nil then
+if Form1_DGL <> nil then
 rx_loading.Visible:=False;
 
 ShellExecute(0,'open','check_update.exe',pchar(DGL_VERSAO_Global),nil,SW_HIDE);

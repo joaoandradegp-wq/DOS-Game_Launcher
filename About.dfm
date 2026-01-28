@@ -1,6 +1,6 @@
 object Form5_About: TForm5_About
-  Left = 344
-  Top = 204
+  Left = 601
+  Top = 216
   BorderIcons = []
   BorderStyle = bsSingle
   ClientHeight = 300
@@ -156,20 +156,6 @@ object Form5_About: TForm5_About
       2D1CAEF46F9DD4D808FF0769FC38A7C993DCAB0000000049454E44AE426082}
     Transparent = True
   end
-  object Label_VersaoWindows: TLabel
-    Left = 184
-    Top = 216
-    Width = 109
-    Height = 15
-    Caption = 'Vers'#227'o do Windows'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Calibri'
-    Font.Style = []
-    ParentFont = False
-    Transparent = True
-  end
   object Linha: TBevel
     Left = 184
     Top = 208
@@ -196,7 +182,7 @@ object Form5_About: TForm5_About
     Top = 64
     Width = 156
     Height = 15
-    Caption = 'JMBA Softwares - 2017-2024'
+    Caption = 'JMBA Softwares - 2017-2026'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13

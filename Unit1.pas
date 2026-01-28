@@ -77,10 +77,8 @@ type
     abfImage1: TabfImage;
     gif_dos: TRxGIFAnimator;
     Menu_Sobre: TMenuItem;
-    IdIPWatch1: TIdIPWatch;
     ip_porta: TEdit;
     Label3: TLabel;
-    IdIcmpClient1: TIdIcmpClient;
     Timer_MonitoraAPP: TTimer;
     loading_panel: TPanel;
     img_ing: TImage;
@@ -193,6 +191,14 @@ type
 var
 Form1_DGL: TForm1_DGL;
 
+//-----------------------------------
+{DADOS DOS GAME LAUNCHER - VARIÁVEIS}
+DGL_EXE_Global,
+DGL_RAIZ_Global,
+DGL_VERSAO_Global,
+DGL_BLOG_Global:String;
+//-----------------------------------
+
 const
 
 Array_Games: Array[1..13] of Campos =
@@ -222,7 +228,7 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2;
+uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5;
 
 var
 Arquivo_INI:TIniFile;
@@ -423,21 +429,23 @@ Refresh_Internet.Enabled:=False;
 //------------------------------
 combo_color.Visible:=False;
 combo_doom.Visible :=False;
-//------------------------------
-RxControle.Visible    :=False;
-Label_Controle.Visible:=False;
-RxSense.Visible       :=False;
-Label_Sense.Visible   :=False;
-RxBrutal.Visible      :=False;
-Label_Brutal.Visible  :=False;
-RxOpcoes.Visible      :=False;
-Label_Opcoes.Visible  :=False;
-RxDM.Visible          :=False;
-Label_DM.Visible      :=False;
-//------------------------------
+//-------------------------------
+RxControle.Visible       :=False;
+Label_Controle.Visible   :=False;
+RxSense.Visible          :=False;
+Label_Sense.Visible      :=False;
+RxBrutal.Visible         :=False;
+Label_Brutal.Visible     :=False;
+RxOpcoes.Visible         :=False;
+Label_Opcoes.Visible     :=False;
+RxDM.Visible             :=False;
+Label_DM.Visible         :=False;
+RxQuakeServer.Visible    :=False;
+Label_QuakeServer.Visible:=False;
+//-------------------------------
 btn_start.Enabled :=False;
 Panel_Icones.SetFocus;
-//------------------------------
+//-------------------------------
 
 //------------------------------------------------------------------------------------------------
 {DEBUG MODE}
@@ -1463,32 +1471,16 @@ case id of
                //------------------------------------------------------------------------------
                if (id = 1) or (id = 5) or (id = 10) then
                begin
-                 if (PC_Bom = True) then
-                 begin
-                   //-------------------------------------------------------------
-                   {SCREEN SETUP - RESOLUÇÃO 640x480 VESA 2.0}
-                   //-------------------------------------------------------------
-                   if Pos('ScreenMode = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenMode = 1';
-                   if Pos('ScreenWidth = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenWidth = 640';
-                   if Pos('ScreenHeight = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenHeight = 480';
-                   //-------------------------------------------------------------
-                 end
-                 else
-                 begin
-                   //-------------------------------------------------------------
-                   {SCREEN SETUP - RESOLUÇÃO 320x200 SCREEN BUFFERED}
-                   //-------------------------------------------------------------
-                   if Pos('ScreenMode = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenMode = 2';
-                   if Pos('ScreenWidth = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenWidth = 320';
-                   if Pos('ScreenHeight = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='ScreenHeight = 200';
-                   //-------------------------------------------------------------
-                 end;
+                 //-------------------------------------------------------------
+                 {SCREEN SETUP - RESOLUÇÃO 640x480 VESA 2.0}
+                 //-------------------------------------------------------------
+                 if Pos('ScreenMode = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenMode = 1';
+                 if Pos('ScreenWidth = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenWidth = 640';
+                 if Pos('ScreenHeight = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenHeight = 480';
+                 //-------------------------------------------------------------
 
                  //-------------------------------------------------------------
                  {SOUND SETUP}
@@ -1496,12 +1488,8 @@ case id of
                  if Pos('FXDevice = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
                  Arquivo_DOSBOX_Fisico[i]:='FXDevice = 0';
                  if Pos('MusicDevice = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 begin
-                 //if (PC_Bom = True) then
-                   Arquivo_DOSBOX_Fisico[i]:='MusicDevice = 7' //Wave Blaster
-                 //else
-                 //Arquivo_DOSBOX_Fisico[i]:='MusicDevice = 0';//Sound Blaster
-                 end;
+                 Arquivo_DOSBOX_Fisico[i]:='MusicDevice = 7'; //Wave Blaster
+
                  if Pos('FXVolume = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
                  begin
                    {SHADOW WARRIOR}
@@ -1869,7 +1857,7 @@ case id of
           {Winquake.exe e Glquake.exe}
           if Pos('_vid_default_mode_win "',Arquivo_DOSBOX_Fisico[i]) = 1 then
           begin
-            if (PC_Bom = True) and (menu_debug.Checked = False) then
+            if menu_debug.Checked = False then
             Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode_win "4.000000"'
             else
             Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode_win "3.000000"';
@@ -1878,7 +1866,7 @@ case id of
           {DOSBox}
           if Pos('_vid_default_mode "',Arquivo_DOSBOX_Fisico[i]) = 1 then
           begin
-            if (PC_Bom = True) and (menu_debug.Checked = False) then
+            if menu_debug.Checked = False then
             Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode "12.000000"'
             else
             Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode "0.000000"';
@@ -2162,7 +2150,8 @@ case id of
          if Pos('vid_aspect=',Arquivo_DOSBOX_Fisico[i]) = 1 then
          Arquivo_DOSBOX_Fisico[i]:='vid_aspect='+IntToStr(AspectRatio(Screen.Width,Screen.Height));
          if Pos('vid_vsync=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_vsync='+BoolToStr(PC_Bom);;
+         Arquivo_DOSBOX_Fisico[i]:='vid_vsync=True';
+         
          if Pos('vid_defheight=',Arquivo_DOSBOX_Fisico[i]) = 1 then
          Arquivo_DOSBOX_Fisico[i]:='vid_defheight='+IntToStr(Screen.Height);
          if Pos('vid_defwidth=',Arquivo_DOSBOX_Fisico[i]) = 1 then
@@ -2457,24 +2446,17 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
       //--------------------------------------------------
       {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
       //--------------------------------------------------
-      if ((id = 1) or (id = 5) or (id = 10)) and (PC_Bom = True) then
-      Arquivo_DOSBOX_Fisico[i]:='fullresolution=0x0'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='fullresolution=original';
+      if (id = 1) or (id = 5) or (id = 10) then
+      Arquivo_DOSBOX_Fisico[i]:='fullresolution=0x0';
     end;
 
     if Pos('output=',Arquivo_DOSBOX_Fisico[i]) = 1 then
     begin
-      if PC_Bom = True then
-      begin
-        {NÃO TEM PLACA DE VÍDEO - INTEL}
-        if ProcessExists('igfxTray.exe') = True then
-        Arquivo_DOSBOX_Fisico[i]:='output=opengl'
-        else
-        Arquivo_DOSBOX_Fisico[i]:='output=overlay';
-      end
+      {NÃO TEM PLACA DE VÍDEO - INTEL}
+      if ProcessExists('igfxTray.exe') = True then
+      Arquivo_DOSBOX_Fisico[i]:='output=opengl'
       else
-      Arquivo_DOSBOX_Fisico[i]:='output=surface';
+      Arquivo_DOSBOX_Fisico[i]:='output=overlay';
     end;
 
     if Pos('machine=',Arquivo_DOSBOX_Fisico[i]) = 1 then
@@ -2482,10 +2464,8 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
      //-------------------------------------------------------------
      {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
      //-------------------------------------------------------------
-     if ((id = 1) or (id = 5) or (id = 10)) and (PC_Bom = True) then                
-     Arquivo_DOSBOX_Fisico[i]:='machine=vesa_nolfb'
-     else
-     Arquivo_DOSBOX_Fisico[i]:='machine=svga_s3';
+     if (id = 1) or (id = 5) or (id = 10) then
+     Arquivo_DOSBOX_Fisico[i]:='machine=vesa_nolfb';
      //-------------------------------------------------------------
     end;
 
@@ -2518,12 +2498,7 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
     begin
       {QUAKE}
       if (id = 8) then
-      begin
-        if PC_Bom = True then
-        Arquivo_DOSBOX_Fisico[i]:='cycles=fixed 120000'
-        else
-        Arquivo_DOSBOX_Fisico[i]:='cycles=fixed 60000';
-      end
+      Arquivo_DOSBOX_Fisico[i]:='cycles=fixed 120000'
       else
       Arquivo_DOSBOX_Fisico[i]:='cycles=max 105%';
     end;
@@ -2744,8 +2719,6 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
           end;
         end;
         //------------------------------------------------------------------------------------------------------
-
-        if (PC_Bom = True) then
         Arquivo_DOSBOX_Fisico.Add('nolfblim.com');
                                     
         if (RxControle.StateOn = True) then
@@ -2878,8 +2851,9 @@ btn_start.Caption:=Lang_DGL(5);
    if menu_debug.Checked = False then
    begin
 
-     if (id = 8) and (PC_Bom = True) then
+     if (id = 8) then
      begin
+     
        {NÃO TEM PLACA DE VÍDEO - INTEL}
        if ProcessExists('igfxTray.exe') = True then
        begin
@@ -2892,11 +2866,7 @@ btn_start.Caption:=Lang_DGL(5);
      ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Quake_EXE)
                                ,pchar(VarParametro_Global)
                                ,pchar(Caminho_Global),SW_HIDE);
-     end
-     else
-     ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
-                               ,pchar('-conf '+ExtractFileName(Arq_DosBox)+' -noconsole -c "exit"')
-                               ,pchar(ExtractFilePath(Arq_DosBox)),SW_HIDE);
+     end;
 
      //----------------------------------------------------------------
      if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
@@ -2941,10 +2911,7 @@ begin
  {CASO ESTEJA SELECIONADO O CAMPO "SERVIDOR"}
  //------------------------------------------
  if check_servidor.Checked then
- begin
- IP_Interno_Global:=IdipWatch1.LocalIP;
-     ip_local.Text:=IP_Interno_Global;
- end;
+ ip_local.Text:=GetInternalIP;
  //------------------------------------------
  {CASO ESTEJA SELECIONADO O CAMPO "CLIENTE"}
  //------------------------------------------
@@ -2995,8 +2962,7 @@ end;
 procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
 begin
 //-----------------------------------
-IP_Externo_Global:=IP_NET;
- ip_internet.Text:=IP_Externo_Global;
+ip_internet.Text:=GetExternalIP;
 //-----------------------------------
 end;
 
