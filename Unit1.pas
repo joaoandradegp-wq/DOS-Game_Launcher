@@ -3024,22 +3024,8 @@ begin
 end;
 
 procedure TForm1_DGL.FormCreate(Sender: TObject);
-var
-  i: Integer;
 begin
 Lang_DGL(0);
-
-
-  for i := 0 to ComponentCount - 1 do
-  begin
-    if Components[i] is TLabel then
-    begin
-      TLabel(Components[i]).Font.Name := 'Calibri';
-      TLabel(Components[i]).Font.Size := 8;
-      TLabel(Components[i]).Font.Color := clBlack; // Opcional
-    end;
-  end;
-
 end;
 
 procedure TForm1_DGL.RxOpcoesOff(Sender: TObject);
