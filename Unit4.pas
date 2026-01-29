@@ -819,7 +819,6 @@ procedure TForm4_Select.ListBox_EpisodioClick(Sender: TObject);
 var
 i:Integer;
 Caminho_EXE,Episodio_Nome:String;
-Var_Pesquisa:TSearchRec;
 begin
 Caminho_EXE:=ExtractFilePath(Application.ExeName);
 Episodio_Nome:=ListBox_Episodio.Items[(ListBox_Episodio.ItemIndex)];
