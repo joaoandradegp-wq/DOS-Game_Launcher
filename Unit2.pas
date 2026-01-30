@@ -47,9 +47,9 @@ begin
       end;
    7: begin
       Form2_DLC.Caption:=Lang_DGL(7);
-      PACK00.Caption:=UpperCase(Lang_DGL(2));
-      PACK01.Caption:=UpperCase(Lang_DGL(3));
-      PACK02.Caption:=UpperCase(Lang_DGL(4));
+      PACK00.Caption:=Lang_DGL(2);
+      PACK01.Caption:=Lang_DGL(3);
+      PACK02.Caption:=Lang_DGL(4);
       end;
    8: begin
       Form2_DLC.Caption:=Array_Games[id][2];

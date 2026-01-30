@@ -53,9 +53,9 @@ begin
  //Halt;
 
  if ParamStr(2) = 'usa' then
- Language_Global:=1
+ Language_Global:=1  //INGLÊS
  else
- Language_Global:=0;
+ Language_Global:=0; //PT-BR
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
  Application.Run;

@@ -1552,7 +1552,6 @@ Form1_DGL.gif_dos.Visible:=False;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          Form1_DGL.RxSense.Visible:=True;
                          Form1_DGL.Label_Sense.Visible:=True;
-                         Break;
                          end
                          else
                          begin
@@ -1574,27 +1573,22 @@ Form1_DGL.gif_dos.Visible:=False;
                          Form1_DGL.combo_doom.ItemIndex:=0;
                          Form1_DGL.combo_color.Enabled:=True;
                          end;
-                         
+
                          if Pos('skin=Phobos',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.combo_doom.ItemIndex:=1;
                          Form1_DGL.combo_color.Enabled:=False;
                          end;
 
-                         //if Pos('am_colorset=0',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         //Form1_DGL.combo_color.ItemIndex:=0;
-
                          if Pos('use_mouse=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.RxControle.StateOn:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
-                         Break;
                          end;
                          if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.RxControle.StateOn:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                         Break;
                          end;
 
                        end;
@@ -1610,6 +1604,7 @@ Form1_DGL.gif_dos.Visible:=False;
 
                    Arquivo_DOSBOX_Fisico.Free;
                    end;
+
                    //--------------------------------------------------------------
    //----------------------------------------------------------------------------------------------------------------------
    {QUAKE}
