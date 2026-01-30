@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, RXCtrls, Animate, GIFCtrl, ShellAPI;
+  Dialogs, pngimage, ExtCtrls, RXCtrls, Animate, GIFCtrl, ShellAPI,
+  GraphicEx;
 
 type
   TForm5_Splash = class(TForm)
