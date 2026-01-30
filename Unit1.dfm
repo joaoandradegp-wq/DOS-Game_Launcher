@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 260
-  Top = 134
+  Left = 347
+  Top = 103
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -14,7 +14,7 @@ object Form1_DGL: TForm1_DGL
   KeyPreview = True
   Menu = MainMenu1
   OldCreateOrder = False
-  Position = poDesktopCenter
+  Position = poScreenCenter
   PrintScale = poNone
   Scaled = False
   OnActivate = FormActivate
@@ -2663,7 +2663,7 @@ object Form1_DGL: TForm1_DGL
       'PHOBOS')
   end
   object MainMenu1: TMainMenu
-    Left = 584
+    Left = 552
     Top = 24
     object Menu_Arquivo: TMenuItem
       Caption = '&Arquivo'
@@ -3191,16 +3191,6 @@ object Form1_DGL: TForm1_DGL
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000000000000000000000000000
       000000000000}
   end
-  object IdIPWatch1: TIdIPWatch
-    Active = False
-    HistoryEnabled = False
-    HistoryFilename = 'iphist.dat'
-    Left = 520
-  end
-  object IdIcmpClient1: TIdIcmpClient
-    Left = 552
-    Top = 24
-  end
   object Timer_MonitoraAPP: TTimer
     Enabled = False
     Interval = 5000
@@ -3214,7 +3204,7 @@ object Form1_DGL: TForm1_DGL
   end
   object PopupMenu1: TPopupMenu
     MenuAnimation = [maLeftToRight]
-    Left = 488
+    Left = 520
     object popup_pasta: TMenuItem
       Caption = '&Diret'#243'rio'
       OnClick = popup_pastaClick
@@ -3347,7 +3337,7 @@ object Form1_DGL: TForm1_DGL
     SkinFormtype = sfOnlyThisForm
     Version = '2.66.8.07'
     MenuUpdate = True
-    Left = 456
+    Left = 488
     SkinStream = {
       C7A2000055460500D676B19863591C18037DBD5B8563007F8FAFE7E3EB03B8FD
       7C3F769F2FF5EDBDB0058FF0069FFF7DBAF74CADCCE5AF61CA6955D1E852B187

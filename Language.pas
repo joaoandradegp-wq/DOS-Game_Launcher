@@ -49,9 +49,9 @@ begin
      //-----------------------------------------------------
      end;
   1: Result:='Defina seu nome antes de iniciar!';
-  2: Result:='Guerreiro';
-  3: Result:='Clérigo';
-  4: Result:='Mago';
+  2: Result:='GUERREIRO';
+  3: Result:='CLÉRIGO';
+  4: Result:='MAGO';
   5: Result:='INICIANDO...';
   6: Result:='Essa Expansão não possui o arquivo SETUP.EXE';
   7: Result:='Escolha sua Classe';
@@ -128,9 +128,9 @@ begin
      //-----------------------------------------------------
      end;
   1: Result:='Define your player name before you start!';
-  2: Result:='Fighter';
-  3: Result:='Cleric';
-  4: Result:='Mage';
+  2: Result:='FIGHTER';
+  3: Result:='CLERIC';
+  4: Result:='MAGE';
   5: Result:='STARTING...';
   6: Result:='This Expansion has no SETUP.EXE file.';
   7: Result:='Choose your Class';

@@ -3,79 +3,112 @@ unit Funcoes;
 interface
 
 uses
-IdHTTP,GraphicEx,IdIcmpClient,SysUtils,Forms,Classes,Windows,PsAPI,ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32;
+IdHTTP,GraphicEx,SysUtils,Forms,Classes,Windows,PsAPI,
+ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32;
 
+procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
+function GetInternalIP: String;
+function GetExternalIP: String;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
 type
-//--------------------------------------------------------------------------------------------
-{VERIFICAR MEMÓRIA DO PC ACIMA DE 2GB - PARTE 01/03}
-//--------------------------------------------------------------------------------------------
-TWinVersion = (wvUnknown, wv95, wv98, wv98SE, wvNT, wvME, wv2000, wvXP, wvVista, wv2003, wv7);
-
- TMemoryStatusEx = record
- dwLength: DWORD;
- dwMemoryLoad: DWORD;
- ullTotalPhys: Int64;
- ullAvailPhys: Int64;
- ullTotalPageFile: Int64;
- ullAvailPageFile: Int64;
- ullTotalVirtual: Int64;
- ullAvailVirtual: Int64;
- ullAvailExtendedVirtual: Int64;
- end;
-//--------------------------------------------------------------------------------------------
-
 TStringArray = Array of String;
-
-function  SIGIL_DLC_Exists(DLC:Integer):Boolean;
+function  SplitString(Expression:String; Delimiter:String):TStringArray;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
 function  ProcessExists(exeFileName: String): Boolean;
-function  Episodio_Numero(Episodio:String):Integer;
-function  SW_DLC_Archive(DLC:Integer):String;
-function  SW_DLC_Exists(DLC:Integer):Boolean;
-procedure Copia_Pasta(Origem,Destino:String);
-procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
-function  PC_Bom: Boolean;
-//--------------------------------------------------
-{VERIFICAR MEMÓRIA DO PC ACIMA DE 2GB - PARTE 02/03}
-//--------------------------------------------------
-function GetWinVersion:TWinVersion;
-function GetGlobalMemoryRecord:TMemoryStatusEx;
-function GetTotalRAM:Int64;
-function FormatBytes(ABytes:Int64):Integer;
-function MemoriaRAM:Integer;
-//--------------------------------------------------
-function  Windows64:Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
 function  GetLanguageWin:String;
-procedure Tela_Cheia;
+//function  ZeroEsquerda(Numero:Integer):String;
+procedure Firewall(Pasta,Executavel:String);
+procedure Copia_Pasta(Origem,Destino:String);
 procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
-function  ZeroEsquerda(Numero:Integer):String;
-procedure Seleciona_Fases;
-function  Listar_Arquivos(Lista:TListBox;Caminho,Extensao:String):String;
+function  AppAberto(Nome:String):Boolean;
+function  ExtractNamePath(path: String):String;
+function  ExtractName(const Filename:String):String;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure Tela_Cheia;
 procedure Contagem_Iniciar;
+procedure Seleciona_Fases;
+procedure Funcao_Config_Opcoes;
+function  SIGIL_DLC_Exists(DLC:Integer):Boolean;
+function  Episodio_Numero(Episodio:String):Integer;
+function  SW_DLC_Archive(DLC:Integer):String;
+function  SW_DLC_Exists(DLC:Integer):Boolean;
+function  Listar_Arquivos(Lista:TListBox;Caminho,Extensao:String):String;
+procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
+procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
+procedure Setup_Teclas(Game:Integer);
 procedure Modo_Game(Tipo:Integer);
 procedure Lista_Cores(Game:Integer);
 function  Quake_Color(Cor:Integer):Integer;
-function  SplitString(Expression:String; Delimiter:String):TStringArray;
-procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
-procedure Setup_Teclas(Game:Integer);
-procedure Firewall(Pasta,Executavel:String);
 function  Config_Tela(On_Off:Boolean):Boolean;
-function  AppAberto(Nome:String):Boolean;
-function  ExtractNamePath(path: String):String;
-procedure Funcao_Config_Opcoes;
-function  ExtractName(const Filename:String):String;
-function  IP_NET:String;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
 
 implementation
 
-uses IniFiles, Unit1, Unit4, Unit3, Unit6, Language;
+uses IniFiles, Unit1, Unit3, Unit4, Unit5, Unit6, Language;
 
 var
 Arquivo_INI:TIniFile;
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
+begin
+     DGL_EXE_Global:=Executavel;
+    DGL_RAIZ_Global:=Diretorio;
+  DGL_VERSAO_Global:=Versao;
+    DGL_BLOG_Global:=Blog;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function GetExternalIP: string;
+var
+  HTTP: TIdHTTP;
+begin
+  Result := '0.0.0.0';
+  HTTP := TIdHTTP.Create(nil);
+  try
+    Result := Trim(HTTP.Get('http://api.ipify.org'));
+    if Result = '' then
+      Result := '0.0.0.0';
+  except
+    Result := '0.0.0.0';
+  end;
+  HTTP.Free;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function GetInternalIP: string;
+var
+  WSAData: TWSAData;
+  HostName: array[0..255] of AnsiChar;
+  HostEnt: PHostEnt;
+  Addr: PInAddr;
+begin
+  Result := '0.0.0.0';
+
+  if WSAStartup($0202, WSAData) <> 0 then Exit;
+
+  try
+    if gethostname(HostName, SizeOf(HostName)) = SOCKET_ERROR then Exit;
+
+    HostEnt := gethostbyname(HostName);
+    if HostEnt = nil then Exit;
+
+    Addr := PInAddr(HostEnt^.h_addr_list^);
+    if Addr <> nil then
+      Result := inet_ntoa(Addr^);
+  finally
+    WSACleanup;
+  end;
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
@@ -342,131 +375,6 @@ FreeAndNil(arq_entrada);
 FreeAndNil(arq_saida);
 end;
 //------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function PC_Bom: Boolean;
-begin
-  if (Windows64 = True) and (MemoriaRAM > 3) then
-  Result:=True
-  else
-  Result:=False;
- // Result:=False;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-{VERIFICAR MEMÓRIA DO PC ACIMA DE 2GB - PARTE 03/03}
-//------------------------------------------------------------------------------
-function GetWinVersion:TWinVersion;
-var
-osVerInfo:TOSVersionInfo;
-majorVersion,minorVersion:Integer;
-begin
-Result:=wvUnknown;
-osVerInfo.dwOSVersionInfoSize:=SizeOf(TOSVersionInfo);
-  if GetVersionEx(osVerInfo) then
-  begin
-  minorVersion:=osVerInfo.dwMinorVersion;
-  majorVersion:=osVerInfo.dwMajorVersion;
-    case osVerInfo.dwPlatformId of
-      VER_PLATFORM_WIN32_NT:
-      begin
-        if majorVersion <= 4 then
-        Result:=wvNT
-        else if (majorVersion = 5) and (minorVersion = 0) then
-        Result:=wv2000
-        else if (majorVersion = 5) and (minorVersion = 1) then
-        Result:=wvXP
-        else if (majorVersion = 5) and (minorVersion = 2) then
-        Result:=wv2003
-        else if (majorVersion = 6) then
-        Result:=wvVista
-        else if (majorVersion = 7) then
-        Result:=wv7;
-      end;
-      VER_PLATFORM_WIN32_WINDOWS:
-      begin
-        if (majorVersion = 4) and (minorVersion = 0) then
-        Result:=wv95
-        else if (majorVersion = 4) and (minorVersion = 10) then
-        begin
-          if osVerInfo.szCSDVersion[1] = 'A' then
-          Result:=wv98SE
-          else
-          Result:=wv98;
-        end
-        else if (majorVersion = 4) and (minorVersion = 90) then
-        Result:=wvME
-        else
-        Result:=wvUnknown;
-      end;
-    end;
-  end;
-end;
-
-function GetGlobalMemoryRecord:TMemoryStatusEx;
-type
-TGlobalMemoryStatusEx = procedure(var lpBuffer:TMemoryStatusEx);stdcall;
-var
-ms:TMemoryStatus;
-h:THandle;
-gms:TGlobalMemoryStatusEx;
-begin
-Result.dwLength := SizeOf(Result);
-
-  if GetWinVersion in [wvUnknown, wv95, wv98, wv98SE, wvNT, wvME] then
-  begin
-  ms.dwLength:=SizeOf(ms);
-  GlobalMemoryStatus(ms);
-  Result.dwMemoryLoad:=ms.dwMemoryLoad;
-  Result.ullTotalPhys:=ms.dwTotalPhys;
-  Result.ullAvailPhys:=ms.dwAvailPhys;
-  Result.ullTotalPageFile:=ms.dwTotalPageFile;
-  Result.ullAvailPageFile:=ms.dwAvailPageFile;
-  Result.ullTotalVirtual:=ms.dwTotalVirtual;
-  Result.ullAvailVirtual:=ms.dwAvailVirtual;
-  end
-  else
-  begin
-  h:=LoadLibrary(kernel32);
-    try
-      if h <> 0 then
-      begin
-      @gms:=GetProcAddress(h,'GlobalMemoryStatusEx');
-        if @gms <> nil then
-        gms(Result);
-      end;
-    finally
-    FreeLibrary(h);
-    end;
-  end;
-
-end;
-
-function GetTotalRAM:Int64;
-begin
-Result:=GetGlobalMemoryRecord.ullTotalPhys;
-end;
-
-function FormatBytes(ABytes:Int64):Integer;
-var
-fr:Double;
-begin
-fr:=ABytes;
-
-  while fr >= 1024 do
-  fr:=fr/1024;
-
-  if fr >= 1000 then
-  fr:=fr/1024;
-
-Result:=Round(fr);
-end;
-
-function MemoriaRAM:Integer;
-begin
-Result:=FormatBytes(GetTotalRAM);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function Windows64:Boolean;
 type
 TIsWow64Process = function(AHandle:THandle; var AIsWow64: BOOL): BOOL; stdcall;
@@ -603,7 +511,7 @@ Janela:=FindWindow(nil,pchar(Executavel));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function ZeroEsquerda(Numero:Integer):String;
+{function ZeroEsquerda(Numero:Integer):String;
 begin
 
  case Numero of
@@ -612,7 +520,7 @@ begin
  Result:=IntToStr(Numero);
  end;
 
-end;
+end;    }
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure Seleciona_Fases;
@@ -1317,9 +1225,6 @@ begin
  //-------------------------------------
  Form1_DGL.loading_panel.Visible:=False;
 
-  // if (id = 8) then
-  // Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
-
  Form1_DGL.img_game.Visible     :=True;
  Form1_DGL.gif_dos.Visible      :=False;
  Form1_DGL.btn_start.Enabled    :=True;
@@ -1647,7 +1552,6 @@ Form1_DGL.gif_dos.Visible:=False;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          Form1_DGL.RxSense.Visible:=True;
                          Form1_DGL.Label_Sense.Visible:=True;
-                         Break;
                          end
                          else
                          begin
@@ -1669,27 +1573,22 @@ Form1_DGL.gif_dos.Visible:=False;
                          Form1_DGL.combo_doom.ItemIndex:=0;
                          Form1_DGL.combo_color.Enabled:=True;
                          end;
-                         
+
                          if Pos('skin=Phobos',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.combo_doom.ItemIndex:=1;
                          Form1_DGL.combo_color.Enabled:=False;
                          end;
 
-                         //if Pos('am_colorset=0',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         //Form1_DGL.combo_color.ItemIndex:=0;
-
                          if Pos('use_mouse=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.RxControle.StateOn:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
-                         Break;
                          end;
                          if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.RxControle.StateOn:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                         Break;
                          end;
 
                        end;
@@ -1705,6 +1604,7 @@ Form1_DGL.gif_dos.Visible:=False;
 
                    Arquivo_DOSBOX_Fisico.Free;
                    end;
+
                    //--------------------------------------------------------------
    //----------------------------------------------------------------------------------------------------------------------
    {QUAKE}
@@ -1869,38 +1769,6 @@ if aExt <> '' then
       Delete(Result,aPos,Length(aExt));
       end;
    end;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function IP_NET: String;
-const
-site = 'http://checkip.dyndns.org';
-var
-html:String;
-posstart,posend:Integer;
-begin
-Result:='0.0.0.0';
-
- Try
-  with TIdHTTP.Create(nil) do
-   Try
-   html:=Get(site);
-   Finally
-   Free;
-  end;
- Except
- Result:='0.0.0.0';
- end;
-
- if Length(Trim(Result)) = 0 then
- Result:='0.0.0.0'
- else
- begin
- posstart:=Pos(':',html);
- posend:=Pos('</body>',html);
- Result:=Trim(Copy(html,posstart+1,posend-posstart-1));
- end;
-
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
