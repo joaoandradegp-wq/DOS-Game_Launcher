@@ -20,13 +20,12 @@ function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
 function  GetLanguageWin:String;
-//function  ZeroEsquerda(Numero:Integer):String;
 procedure Firewall(Pasta,Executavel:String);
 procedure Copia_Pasta(Origem,Destino:String);
 procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
-function  AppAberto(Nome:String):Boolean;
+function AppAberto(const NomeExe: string): Boolean;
 function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
 //----------------------------------------------------------------------
@@ -1241,36 +1240,32 @@ Result:=On_Off;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function AppAberto(Nome:String):Boolean;
-var rId:array[0..999] of DWord; i,NumProc,NumMod:DWord;
-    HProc,HMod:THandle; sNome:String;
-    Tamanho, Count:Integer;
-    sNomeTratado:String;
+function AppAberto(const NomeExe: string): Boolean;
+var
+  Snap: THandle;
+  ProcEntry: TProcessEntry32;
 begin
-  result:=False;
-  SetLength(sNome, 256);
-  EnumProcesses(@rId[0], 4000, NumProc);
+  Result := False;
 
-  for i := 0 to NumProc div 4 do
-  begin
-    HProc := OpenProcess(Process_Query_Information or Process_VM_Read, FALSE, rId[i]);
-    if HProc = 0 then
-      Continue;
-    EnumProcessModules(HProc, @HMod, 4, NumMod);
-    GetModuleBaseName(HProc, HMod, @sNome[1], 256);
-    sNomeTratado := trim(sNome);
-    Tamanho:=Length(SnomeTratado);
-     Count:=1;
-     While Count <= Tamanho do
-       begin
-         if SnomeTratado[Count]= '' Then
-           Break;
-        count:=Count+1;
-       end;
-     sNomeTratado:=Copy(SnomeTratado,1,Count-1);
-    if AnsiUpperCase(sNomeTratado)=AnsiUpperCase(Nome) Then
-      Result:=True;
-    CloseHandle(HProc);
+  Snap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+  if Snap = INVALID_HANDLE_VALUE then Exit;
+
+  try
+    ProcEntry.dwSize := SizeOf(TProcessEntry32);
+
+    if Process32First(Snap, ProcEntry) then
+    repeat
+      // ProcEntry.szExeFile é PChar ANSI no Delphi 7
+      if AnsiSameText(string(ProcEntry.szExeFile), NomeExe) then
+      begin
+        Result := True;
+        Break;
+      end;
+
+    until not Process32Next(Snap, ProcEntry);
+
+  finally
+    CloseHandle(Snap);
   end;
 end;
 //------------------------------------------------------------------------------
@@ -1294,7 +1289,6 @@ Game_Existe:Boolean;
 Arquivo_DOSBOX_Fisico:TStringList;
 i:Integer;
 Arquivo_Blood_Default,Arquivo_Blood_Atual: File of Byte;
-Arquivo_Quake_Default,Arquivo_Quake_Atual: File of Byte;
 begin
 //-------------------------------------------------------------------------
 Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
@@ -1617,7 +1611,7 @@ Form1_DGL.gif_dos.Visible:=False;
 
         //----------------------------------------------------------------------------------------------------------------
         {ARQUIVOS DO GLQUAKE.EXE}
-        //----------------------------------------------------------------------------------------------------------------
+{        //----------------------------------------------------------------------------------------------------------------
         if not FileExists(Caminho_Global+'Glquake.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\Glquake.exe') ,pchar(Caminho_Global+'Glquake.exe') ,False);
         if not FileExists(Caminho_Global+'glide2x.dll') then
@@ -1627,11 +1621,11 @@ Form1_DGL.gif_dos.Visible:=False;
         if not FileExists(Caminho_Global+'Winquake.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\Winquake.exe'),pchar(Caminho_Global+'Winquake.exe'),False);
         //----------------------------------------------------------------------------------------------------------------
-
+    }
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
-
-        if FileExists(Pasta_INI_Global+'quake\quake.exe') then
+                          { VERSAO ATUAL DO QUASE CASO INSTALE UMA ANTIGA, MAS NAO USO MAIS
+       if FileExists(Pasta_INI_Global+'quake\quake.exe') then
         begin
         //-------------------------------------------------------------------
         AssignFile(Arquivo_Quake_Default,Pasta_INI_Global+'quake\quake.exe'); //PASTA CONFIG
@@ -1647,7 +1641,7 @@ Form1_DGL.gif_dos.Visible:=False;
         CloseFile(Arquivo_Quake_Default); //PASTA CONFIG
         CloseFile(Arquivo_Quake_Atual);   //PASTA DO JOGO
         //-------------------------------
-        end;
+        end;          }
 
         Try
           if not DirectoryExists(Caminho_Global+'id1\skins\') then

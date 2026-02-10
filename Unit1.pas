@@ -202,20 +202,20 @@ DGL_BLOG_Global:String;
 const
 
 Array_Games: Array[1..13] of Campos =
-(  {1}  {2}                                      {3}                {4}            {5}            {6}                   {7}      {8}
-  ('01','Blood - One Unit Whole Blood'          ,'DOS\BLOOD\'      ,'commit.exe'  ,'cryptic.exe' ,'BLOOD.cfg'          ,'DOSBOX','213' ),
-  ('02','Constructor'                           ,'DOS\CONSTRUCTOR\','game.exe'    ,'game.exe'    ,'SETTINGS\SYSTEM.ini','DOSBOX','213' ),
-  ('03','DooM - The Ultimate DooM'              ,'DOS\DOOM\'       ,'doom.wad'    ,'doom.wad'    ,'doom.ini '          ,'ZDOOM' ,'5029'),
-  ('04','DooM II - Hell on Earth'               ,'DOS\DOOM2\'      ,'doom2.wad'   ,'doom2.wad'   ,'doom2.ini'          ,'ZDOOM' ,'5029'),
-  ('05','Duke Nukem 3D - Atomic Edition'        ,'DOS\DUKE3D\'     ,'commit.exe'  ,'duke3d.exe'  ,'duke3d.cfg'         ,'DOSBOX','213' ),
-  ('06','Heretic - Shadow of the Serpent Riders','DOS\HERETIC\'    ,'heretic.wad' ,'heretic.wad' ,'Heretic.ini'        ,'ZDOOM' ,'5029'),
-  ('07','HeXen - Beyond Heretic'                ,'DOS\HEXEN\'      ,'hexen.wad'   ,'hexen.wad'   ,'hexen.ini'          ,'ZDOOM' ,'5029'),
-  ('08','Quake'                                 ,'DOS\QUAKE\'      ,'quake.exe'   ,'quake.exe'   ,'config.cfg'         ,'DOSBOX','213' ),
-  ('09','Rise of the Triad - Dark War'          ,'DOS\ROTT\'       ,'setup.exe'   ,'rott.exe'    ,'setup.rot'          ,'DOSBOX','213' ),
-  ('10','Shadow Warrior'                        ,'DOS\SW\'         ,'commit.exe'  ,'sw.exe'      ,'SW.cfg'             ,'DOSBOX','213' ),
-  ('11','Warcraft II - Beyond the Dark Portal'  ,'DOS\WAR2\'       ,'war2.exe'    ,'war2.exe'    ,'war2.ini'           ,'DOSBOX','213' ),
-  ('12','Wolfenstein 3D'                        ,'DOS\WOLF3D\'     ,'Wolf3D.pk7'  ,'Wolf3D.pk7'  ,'Wolf3D.ini'         ,'ZDOOM' ,'5029'),
-  ('13','Wolfenstein 3D - Spear of Destiny'     ,'DOS\WOLF3D\'     ,'SoD.pk7'     ,'SoD.pk7'     ,'SoD.ini'            ,'ZDOOM' ,'5029')
+(  {1}  {2}                                      {3}                {4}              {5}              {6}                   {7}      {8}
+  ('01','Blood - One Unit Whole Blood'          ,'DOS\BLOOD\'      ,'commit.exe'    ,'cryptic.exe'   ,'BLOOD.cfg'          ,'DOSBOX','213' ),
+  ('02','Constructor'                           ,'DOS\CONSTRUCTOR\','game.exe'      ,'game.exe'      ,'SETTINGS\SYSTEM.ini','DOSBOX','213' ),
+  ('03','DooM - The Ultimate DooM'              ,'DOS\DOOM\'       ,'doom.wad'      ,'doom.wad'      ,'doom.ini '          ,'ZDOOM' ,'5029'),
+  ('04','DooM II - Hell on Earth'               ,'DOS\DOOM2\'      ,'doom2.wad'     ,'doom2.wad'     ,'doom2.ini'          ,'ZDOOM' ,'5029'),
+  ('05','Duke Nukem 3D - Atomic Edition'        ,'DOS\DUKE3D\'     ,'commit.exe'    ,'duke3d.exe'    ,'duke3d.cfg'         ,'DOSBOX','213' ),
+  ('06','Heretic - Shadow of the Serpent Riders','DOS\HERETIC\'    ,'heretic.wad'   ,'heretic.wad'   ,'Heretic.ini'        ,'ZDOOM' ,'5029'),
+  ('07','HeXen - Beyond Heretic'                ,'DOS\HEXEN\'      ,'hexen.wad'     ,'hexen.wad'     ,'hexen.ini'          ,'ZDOOM' ,'5029'),
+  ('08','Quake'                                 ,'DOS\QUAKE\'      ,'quakespasm.exe','quakespasm.exe','config.cfg'         ,'SPASM' ,'666' ),
+  ('09','Rise of the Triad - Dark War'          ,'DOS\ROTT\'       ,'setup.exe'     ,'rott.exe'      ,'setup.rot'          ,'DOSBOX','213' ),
+  ('10','Shadow Warrior'                        ,'DOS\SW\'         ,'commit.exe'    ,'sw.exe'        ,'SW.cfg'             ,'DOSBOX','213' ),
+  ('11','Warcraft II - Beyond the Dark Portal'  ,'DOS\WAR2\'       ,'war2.exe'      ,'war2.exe'      ,'war2.ini'           ,'DOSBOX','213' ),
+  ('12','Wolfenstein 3D'                        ,'DOS\WOLF3D\'     ,'Wolf3D.pk7'    ,'Wolf3D.pk7'    ,'Wolf3D.ini'         ,'ZDOOM' ,'5029'),
+  ('13','Wolfenstein 3D - Spear of Destiny'     ,'DOS\WOLF3D\'     ,'SoD.pk7'       ,'SoD.pk7'       ,'SoD.ini'            ,'ZDOOM' ,'5029')
 );
 
 {PADRÃO MOUSE - BLOOD E DUKE NUKEM}
@@ -343,6 +343,7 @@ Wav.FileName:=ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav';
  Firewall('CONFIG\bin\zdoom\','zdoom.exe');
  Firewall('DOS\QUAKE\','qwcl.exe');
  Firewall('DOS\QUAKE\','qwsv.exe');
+ Firewall('DOS\QUAKE\','quakespasm.exe');
  //----------------------------------------
  end
  else
@@ -542,8 +543,8 @@ end;
 procedure TForm1_DGL.Timer_MonitoraAPPTimer(Sender: TObject);
 begin
 Timer_MonitoraAPP.Interval:=1000;
-
- if not (AppAberto(Array_Games[id][7]+'.exe') or AppAberto('qwcl.exe') or AppAberto('qwsv.exe') or AppAberto('Winquake.exe') or AppAberto('Glquake.exe')) then
+                                     
+ if not (AppAberto(Array_Games[id][7]+'.exe') or AppAberto('qwcl.exe') or AppAberto('qwsv.exe') or AppAberto(Array_Games[id][4]) ) then
  begin
  Form1_DGL.ClientHeight:=461;
  Form1_DGL.ClientWidth:=633;
@@ -585,6 +586,7 @@ begin
   Firewall('CONFIG\bin\zdoom\','zdoom.exe');
   Firewall('DOS\QUAKE\','qwcl.exe');
   Firewall('DOS\QUAKE\','qwsv.exe');
+  Firewall('DOS\QUAKE\','quakespasm.exe');
   Finally
   MessageBox(Application.Handle,pchar(Language.Lang_DGL(17)),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
   end;
@@ -757,9 +759,9 @@ end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
 var
-Arq_DosBox,QW_Server,QW_WinMode,Var_Bindings,Quake_Folder,Quake_EXE:String;
+Arq_DosBox,QW_Server,QW_WinMode,Var_Bindings,Quake_Folder:String;
 i,j,Modo_Game,QW_Server_Debug:Integer;
-Arquivo_COMMIT:TStringList;
+Arquivo_COMMIT,Arquivo_ConfigQuake:TStringList;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
@@ -1835,6 +1837,44 @@ case id of
         VarParametro_Global:=VarParametro_Global+' +map '+Map_Global;
         end;
 
+        case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
+        0: Quake_Folder:='id1\';
+        1: Quake_Folder:='hipnotic\';
+        2: Quake_Folder:='rogue\';
+        end;
+
+        //-------------------------------------------------------------------------
+        {ALTERA O ARQUIVO config.cfg PADRÃO}
+        //-------------------------------------------------------------------------
+        Arquivo_ConfigQuake:=TStringList.Create;
+        Arquivo_ConfigQuake.LoadFromFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
+
+        for i:=0 to Arquivo_ConfigQuake.Count-1 do
+        begin
+          if (menu_debug.Checked = True) then
+          begin
+            if Pos('vid_fullscreen',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_fullscreen "0"';
+            if Pos('vid_height',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_height "768"';
+            if Pos('vid_width',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_width "1024"';
+          end
+          else
+          begin
+            if Pos('vid_fullscreen',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_fullscreen "1"';
+            if Pos('vid_height',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_height "1024"';
+            if Pos('vid_width',Arquivo_ConfigQuake[i]) = 1 then
+            Arquivo_ConfigQuake[i]:='vid_width "1280"';
+          end;
+        end;
+
+        Arquivo_ConfigQuake.SaveToFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
+        Arquivo_ConfigQuake.Free;
+        //-------------------------------------------------------------------------
+
         //-----------------------------------------------------------------------------------------------------
         {DEBUG MODE}
         //-----------------------------------------------------------------------------------------------------
@@ -1842,42 +1882,8 @@ case id of
         MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
         //-----------------------------------------------------------------------------------------------------
 
-        case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
-        0: Quake_Folder:='id1\';
-        1: Quake_Folder:='hipnotic\';
-        2: Quake_Folder:='rogue\';
-        end;
 
-      Arquivo_DOSBOX_Fisico:=TStringList.Create;
-      Arquivo_DOSBOX_Fisico.LoadFromFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
-                        
-        for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
-        begin
-
-          {Winquake.exe e Glquake.exe}
-          if Pos('_vid_default_mode_win "',Arquivo_DOSBOX_Fisico[i]) = 1 then
-          begin
-            if menu_debug.Checked = False then
-            Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode_win "4.000000"'
-            else
-            Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode_win "3.000000"';
-          end;
-
-          {DOSBox}
-          if Pos('_vid_default_mode "',Arquivo_DOSBOX_Fisico[i]) = 1 then
-          begin
-            if menu_debug.Checked = False then
-            Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode "12.000000"'
-            else
-            Arquivo_DOSBOX_Fisico[i]:='_vid_default_mode "0.000000"';
-          end;
-
-        end;
-
-      Arquivo_DOSBOX_Fisico.SaveToFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
-      Arquivo_DOSBOX_Fisico.Free;
-                  
-      //------------------------------------------------------------
+      //--------------------------------------------------
       Arquivo_DOSBOX_Fisico:=TStringList.Create;
       Arquivo_DOSBOX_Fisico.Add('bind w "+forward"'     );
       Arquivo_DOSBOX_Fisico.Add('bind a "+moveleft"'    );
@@ -1887,6 +1893,7 @@ case id of
       Arquivo_DOSBOX_Fisico.Add('bind MOUSE2 "+jump"'   );
       Arquivo_DOSBOX_Fisico.Add('sensitivity "5.000000"');
       Arquivo_DOSBOX_Fisico.Add('+mlook');
+      //--------------------------------------------------
 
         {SINGLE PLAYER}
         if (check_single.Checked = True) then
@@ -2411,7 +2418,7 @@ case id of
 end;
           
 {DOSBOX}
-if (Array_Games[id][7] = 'DOSBOX') then
+if (Array_Games[id][7] = 'DOSBOX') then        
 begin
 Arq_DosBox:=ExtractFilePath(Application.ExeName)
            +Array_Games[id][3]
@@ -2485,23 +2492,11 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
     Arquivo_DOSBOX_Fisico[i]:='aspect=true';
     if Pos('scaler=',Arquivo_DOSBOX_Fisico[i]) = 1 then
     Arquivo_DOSBOX_Fisico[i]:='scaler=normal2x';
-
     if Pos('core=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      {QUAKE}
-      if (id = 8) then
-      Arquivo_DOSBOX_Fisico[i]:='core=auto'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='core=dynamic';
-    end;
+    Arquivo_DOSBOX_Fisico[i]:='core=dynamic';
     if Pos('cycles=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      {QUAKE}
-      if (id = 8) then
-      Arquivo_DOSBOX_Fisico[i]:='cycles=fixed 120000'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='cycles=max 105%';
-    end;
+    Arquivo_DOSBOX_Fisico[i]:='cycles=max 105%';
+
     if Pos('ipx=',Arquivo_DOSBOX_Fisico[i]) = 1 then
     begin
       if check_single.Checked = True then
@@ -2512,13 +2507,7 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
                                 'ipx=true';
     end;
     if Pos('prebuffer=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      {QUAKE}
-      if (id = 8) then
-      Arquivo_DOSBOX_Fisico[i]:='prebuffer=80'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='prebuffer=20';
-    end;
+    Arquivo_DOSBOX_Fisico[i]:='prebuffer=20';
 
     if Pos('[autoexec]',Arquivo_DOSBOX_Fisico[i]) = 1 then
     begin
@@ -2570,14 +2559,6 @@ Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
         2: begin
              if FileExists(Caminho_Global+'const.gog') then
              Arquivo_DOSBOX_Fisico.Add('imgmount d "const.gog" -t iso -fs iso');
-           end;
-        8: begin
-             if FileExists(Caminho_Global+'game.cue')  and (EPI_Global_DLC = 1) then
-             Arquivo_DOSBOX_Fisico.Add('imgmount d "..\game.cue" -t iso');
-             if FileExists(Caminho_Global+'gamea.cue') and (EPI_Global_DLC = 2) then
-             Arquivo_DOSBOX_Fisico.Add('imgmount d "..\gamea.cue" -t iso');
-             if FileExists(Caminho_Global+'gamed.cue') and (EPI_Global_DLC = 3) then
-             Arquivo_DOSBOX_Fisico.Add('imgmount d "..\gamed.cue" -t iso');
            end;
        10: begin
              if FileExists(Caminho_Global+'GAME.DAT') then
@@ -2842,31 +2823,26 @@ Config_Tela(False);
 btn_start.Caption:=Lang_DGL(5);
 //-----------------------------
 
+ {SPASM}
+ if (Array_Games[id][7] = 'SPASM') then
+ begin
+   {QUAKE}
+   if (id = 8) then
+   ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
+                             ,pchar(VarParametro_Global)
+                             ,pchar(Caminho_Global),SW_NORMAL);
+
+ end;
+
  {DOSBOX}
  if (Array_Games[id][7] = 'DOSBOX') then
  begin
+
    //--------------------------------------------------------------------------------------------
    {DEBUG MODE}
    //--------------------------------------------------------------------------------------------
    if menu_debug.Checked = False then
    begin
-
-     if (id = 8) then
-     begin
-     
-       {NÃO TEM PLACA DE VÍDEO - INTEL}
-       if ProcessExists('igfxTray.exe') = True then
-       begin
-       Quake_EXE:='Glquake.exe';
-       VarParametro_Global:=VarParametro_Global+' -width 640 -height 480 -bpp 32';
-       end
-       else
-       Quake_EXE:='Winquake.exe';
-
-     ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Quake_EXE)
-                               ,pchar(VarParametro_Global)
-                               ,pchar(Caminho_Global),SW_HIDE);
-     end;
 
      //----------------------------------------------------------------
      if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
@@ -2890,13 +2866,13 @@ btn_start.Caption:=Lang_DGL(5);
      Tela_Cheia;
      end;
      //----------------------------------------------------------------
-
    end
    else
    ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
                              ,pchar('-conf '+ExtractFileName(Arq_DosBox))
                              ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
    //--------------------------------------------------------------------------------------------
+
  end;
 
 img_game.Visible:=False;
