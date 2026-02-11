@@ -4,7 +4,7 @@ interface
 
 uses
 IdHTTP,GraphicEx,SysUtils,Forms,Classes,Windows,PsAPI,
-ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32;
+ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32,IdIcmpClient;
 
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function GetInternalIP: String;
@@ -25,9 +25,13 @@ procedure Copia_Pasta(Origem,Destino:String);
 procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
-function AppAberto(const NomeExe: string): Boolean;
+function  AppAberto(const NomeExe: string): Boolean;
 function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
+function IP_TCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure Tela_Cheia;
@@ -48,14 +52,106 @@ function  Quake_Color(Cor:Integer):Integer;
 function  Config_Tela(On_Off:Boolean):Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-
 implementation
 
 uses IniFiles, Unit1, Unit3, Unit4, Unit5, Unit6, Language;
-
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
 var
-Arquivo_INI:TIniFile;
+  ICMP: TIdICMPClient;
+begin
+  Result := False;
+  ICMP := TIdICMPClient.Create(nil);
+  try
+    ICMP.Host := Host;
+    ICMP.ReceiveTimeout := TimeoutMS;
+    try
+      ICMP.Ping;
+      Result := ICMP.ReplyStatus.BytesReceived > 0;
+    except
+      Result := False;
+    end;
+  finally
+    ICMP.Free;
+  end;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function IP_TCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+var
+  WSAData: TWSAData;
+  Sock: TSocket;
+  Addr: TSockAddrIn;
+  HostEnt: PHostEnt;
+  Mode: u_long;
+  FDSet: TFDSet;
+  TimeVal: TTimeVal;
+  OptVal, OptLen: Integer;
+  Buf: array[0..0] of Char;
+begin
+  Result := False;
 
+  { 1 - HOST EXISTE? }
+  if not PingIP(Host, TimeoutMS) then
+    Exit;
+
+  if WSAStartup($0202, WSAData) <> 0 then Exit;
+  try
+    HostEnt := gethostbyname(PAnsiChar(AnsiString(Host)));
+    if HostEnt = nil then Exit;
+
+    Addr.sin_family := AF_INET;
+    Addr.sin_port := htons(Porta);
+    Addr.sin_addr.S_addr := PInAddr(HostEnt^.h_addr_list^)^.S_addr;
+
+    { 2 - TESTE TCP }
+    Sock := socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if Sock <> INVALID_SOCKET then
+    begin
+      try
+        Mode := 1;
+        ioctlsocket(Sock, FIONBIO, Mode);
+        connect(Sock, Addr, SizeOf(Addr));
+
+        FD_ZERO(FDSet);
+        FD_SET(Sock, FDSet);
+
+        TimeVal.tv_sec := TimeoutMS div 1000;
+        TimeVal.tv_usec := (TimeoutMS mod 1000) * 1000;
+
+        if select(0, nil, @FDSet, nil, @TimeVal) > 0 then
+        begin
+          OptLen := SizeOf(OptVal);
+          getsockopt(Sock, SOL_SOCKET, SO_ERROR, @OptVal, OptLen);
+          if OptVal = 0 then
+          begin
+            Result := True;
+            Exit;
+          end;
+        end;
+      finally
+        closesocket(Sock);
+      end;
+    end;
+
+    { 3 - ENVIO UDP }
+    Sock := socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if Sock <> INVALID_SOCKET then
+    begin
+      try
+        Buf[0] := #0;
+        if sendto(Sock, Buf, 1, 0, Addr, SizeOf(Addr)) <> SOCKET_ERROR then
+          Result := True;
+      finally
+        closesocket(Sock);
+      end;
+    end;
+
+  finally
+    WSACleanup;
+  end;
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
@@ -570,6 +666,7 @@ end;
 procedure Modo_Game(Tipo:Integer);
 var
 Caminho_INI:String;
+Arquivo_INI:TIniFile;
 begin
 //------------------------------------------------------------------------------
 Caminho_INI:=ExtractFilePath(Application.ExeName)+'dos.ini';
@@ -830,6 +927,7 @@ var
 Config_Game,Nome_Game:String;
 i:Integer;
 Config_Fisico:TStringList;
+Arquivo_INI:TIniFile;
 begin
 
 //------------------------------------------------------------------------------------------

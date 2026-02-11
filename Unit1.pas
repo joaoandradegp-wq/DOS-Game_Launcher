@@ -2894,7 +2894,7 @@ begin
  if check_cliente.Checked then
  begin
 
-   if pingIp(Trim(ip_local.Text)) then
+   if IP_TCP_UDP(Trim(ip_local.Text),StrToInt(ip_porta.Text),300) then
    begin
    MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' ONLINE!'),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
 
