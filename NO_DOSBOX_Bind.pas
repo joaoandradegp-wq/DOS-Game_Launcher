@@ -2,7 +2,7 @@ unit NO_DOSBOX_Bind;
 
 interface
 
-uses Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, Unit1, Unit2, Teclado_Mouse, Funcoes, Language;
+uses Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, dialogs, Unit1, Unit2, Teclado_Mouse, Funcoes, Language;
 
 //------------------------------------------------------------------------------
 const
@@ -65,11 +65,11 @@ procedure AplicaQuakeClassic(
   const AppTitle: string;
   const IdGameConfig: string; // Array_Games[id][6]
   var VarParametro_Global: string;
-  var Quake_Folder: string;
+//  var Quake_Folder: string;
   out Cancelado: Boolean
 );
-procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean; var Quake_Folder: String);
-procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean; var Quake_Folder: String);
+procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
+procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
 procedure AplicaQuakeWorldDM;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -93,12 +93,13 @@ procedure AplicaQuakeClassic(
   const AppTitle: string;
   const IdGameConfig: string; // Array_Games[id][6]
   var VarParametro_Global: string;
-  var Quake_Folder: string;
+//  var Quake_Folder: string;
   out Cancelado: Boolean
 );
 var
   Config: TStringList;
   AutoExec: TStringList;
+  Quake_Folder: String;
   i,p: Integer;
 begin
   Cancelado := False;
@@ -137,7 +138,7 @@ begin
 
   case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
     0: Quake_Folder := 'id1\';
-    1: Quake_Folder := 'hipnotic\';
+    1: Quake_Folder := 'hipnotic\';                   nao ta alterando o quake_folder, precisa ver
     2: Quake_Folder := 'rogue\';
   end;
 
@@ -155,6 +156,7 @@ begin
     end;
 
   Config.SaveToFile(Caminho_Global + Quake_Folder + IdGameConfig);
+  showmessage(Caminho_Global + Quake_Folder + IdGameConfig) ;
   finally
   Config.Free;
   end;
@@ -209,7 +211,7 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean; var Quake_Folder: String);
+procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
 var
 Cancelado: Boolean;
 begin
@@ -231,20 +233,20 @@ begin
     Application.Title,
     Array_Games[id][6],
     VarParametro_Global,
-    Quake_Folder,
+//    Quake_Folder,
     Cancelado
   );
 
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean; var Quake_Folder: String);
+procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
 begin
 
   if DeathmatchAtivo then
   AplicaQuakeWorldDM
   else
-  AplicaQuakeSingle(id, DeathmatchAtivo, Quake_Folder);
+  AplicaQuakeSingle(id, DeathmatchAtivo);
 
 end;
 //------------------------------------------------------------------------------
