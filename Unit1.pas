@@ -15,7 +15,7 @@ type
 //------------------------------------
 Campos = Array[1..8] of String;
 //------------------------------------
-
+            
 var
 //--------------------------------
 id:Integer;
@@ -228,7 +228,7 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind;
+uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind;
 
 var
 Arquivo_INI:TIniFile;
@@ -759,9 +759,9 @@ end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
 var
-Arq_DosBox,QW_Server,QW_WinMode,Var_Bindings,Quake_Folder:String;
-i,j,Modo_Game,QW_Server_Debug:Integer;
-Arquivo_COMMIT,Arquivo_ConfigQuake:TStringList;
+Arq_DosBox,Var_Bindings,Quake_Folder:String;
+i,j,Modo_Game:Integer;
+Arquivo_COMMIT:TStringList;
 hDOS: HWND;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
@@ -794,8 +794,9 @@ case id of
  //------------------------------------------------------------------------
  1,2,5,9,10:
            begin
-           Arquivo_DOSBOX_Fisico:=TStringList.Create;
-           Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
+           try
+            Arquivo_DOSBOX_Fisico:=TStringList.Create;
+            Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
 
              for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
              begin
@@ -825,7 +826,7 @@ case id of
                //------------------------------------------------------------------------------
                {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR - ARQUIVO DO DOSBOX - INÍCIO}
                //------------------------------------------------------------------------------
-               if (id = 1) or (id = 5) or (id = 10) then
+               if id in [1,5,10] then
                begin
                AplicaRegras(i, DOSBOX_Video,      Arquivo_DOSBOX_Fisico);
                AplicaRegras(i, DOSBOX_Som_Comum,  Arquivo_DOSBOX_Fisico);
@@ -848,7 +849,6 @@ case id of
                      end;
                   end;
                   //-----------------------------------------------------------------
-
                   //-----------------------------------------------------------------
                   {DEFINE A SENSIBILIDADE DO MOUSE - "VALOR PADRÃO" + "VALOR NOVO"}
                   //-----------------------------------------------------------------
@@ -870,365 +870,30 @@ case id of
                //------------------------------------------------------------------------------
                {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR - ARQUIVO DO DOSBOX - FIM}
                //------------------------------------------------------------------------------
-
-
                case id of
                {BLOOD}
-               1: AplicaBloodOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn);
-               2: AplicaConstructor(i, Arquivo_DOSBOX_Fisico, check_single.Checked,Trim(player_name.Text) );
-               end;
-
-
-
-
-
-
-               //------------------------------------------------------------------------------
+                1: AplicaBloodOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn);
+               {CONSTRUCTOR}
+                2: AplicaConstructor(i, Arquivo_DOSBOX_Fisico, check_single.Checked,Trim(player_name.Text));
                {DUKE NUKEM 3D}
-               //------------------------------------------------------------------------------
-               if (id = 5) then
-               begin
-
-                 if Pos('Shadows = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Shadows = 1';
-                 if Pos('Password = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Password = ""';
-                 if Pos('Detail = '     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Detail = 1';
-                 if Pos('Tilt = '       ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Tilt = 1';
-                 if Pos('ScreenSize = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='ScreenSize = 4';
-                 if Pos('ScreenGamma = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='ScreenGamma = 0';
-
-                 if RxControle.StateOn = True then
-                 begin
-                   if Pos('GameMouseAiming = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='GameMouseAiming = 1';
-                   if Pos('AimingFlag = '     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='AimingFlag = 1';
-                 end
-                 else
-                 begin
-                   if Pos('GameMouseAiming = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='GameMouseAiming = 0';
-                   if Pos('AimingFlag = '     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='AimingFlag = 0';
-                 end;
-
-                 if Pos('Crosshairs = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Crosshairs = 1';
-
-               end;
-               //------------------------------------------------------------------------------
+                5: AplicaDukeOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn);
                {RISE OF THE TRIAD}
-               //------------------------------------------------------------------------------
-               if (id = 9) then
-               begin
-
-                 //------------------------------------------------------------------------
-                 {SERVIDOR OU CLIENTE - ONLINE}
-                 //------------------------------------------------------------------------
-                 if (check_single.Checked = False) then
-                 begin
-                   if Pos('CODENAME'  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='CODENAME            '+Trim(player_name.Text);
-                   if Pos('NUMPLAYERS',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='NUMPLAYERS          '+cont_player.Text;
-                 end;
-                 //------------------------------------------------------------------------
-
-               end;
-
-               //------------------------------------------------------------------------------
+                9: AplicaROTOpcoes(i, Arquivo_DOSBOX_Fisico, check_single.Checked, Trim(player_name.Text), cont_player.Text);
                {SHADOW WARRIOR}
-               //------------------------------------------------------------------------------
-               if (id = 10) then
-               begin
-                 //----------------------------------------------------------
-                 {OPTIONS}
-                 //----------------------------------------------------------
-                 if Pos('BorderNum = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='BorderNum = 1';
-                 if Pos('Brightness = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Brightness = 1';
-                 if Pos('Shadows = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Shadows = 1';
-                 if Pos('Crosshair = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='Crosshair = 1';
-
-                 if check_single.Checked = False then
-                 begin
-                   if Pos('NetGameType = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='NetGameType = 2';
-                   if Pos('NetMonsters = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='NetMonsters = 2';
-                   if Pos('NetHurtTeammate = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='NetHurtTeammate = 2';
-                 end;
-
-                 if RxControle.StateOn = True then
-                 begin
-                   if Pos('AutoAim = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='AutoAim = 0';
-                   if Pos('MouseAimingOn = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='MouseAimingOn = 1';
-                 end
-                 else
-                 begin
-                   if Pos('AutoAim = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='AutoAim = 1';
-                   if Pos('MouseAimingOn = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                   Arquivo_DOSBOX_Fisico[i]:='MouseAimingOn = 0';
-                 end;
-
-                 if Pos('MouseInvert = 0',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                 Arquivo_DOSBOX_Fisico[i]:='MouseInvert = 1';
-                 //----------------------------------------------------------
-
+               10: AplicaShadowWarriorOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn, check_single.Checked);
                end;
                //------------------------------------------------------------------------------
              end;
 
-           Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-           Arquivo_DOSBOX_Fisico.Free;
+            Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
+            finally
+            Arquivo_DOSBOX_Fisico.Free;
+            end;
            end;
 
    8:
     begin
-    //------------------------------------------------------------------------------
-    {QUAKE - INÍCIO}
-    //------------------------------------------------------------------------------
-      if (RxDM.StateOn = False) then
-      begin
-      VarParametro_Global:=' -noserial';
-      Quake_Folder:='';
-
-      Application.CreateForm(TForm2_DLC, Form2_DLC);
-      Form2_DLC.ShowModal;
-      Form2_DLC.Free;
-                      
-        //----------------------
-        if Fecha_ESC = True then
-        Exit;
-        //----------------------
-
-        if (not FileExists(Caminho_Global+'game.cue')  and (EPI_Global_DLC = 1)) or
-           (not FileExists(Caminho_Global+'gamea.cue') and (EPI_Global_DLC = 2)) or
-           (not FileExists(Caminho_Global+'gamed.cue') and (EPI_Global_DLC = 3)) then
-        VarParametro_Global:=VarParametro_Global+' -nocdaudio';
-
-        if (check_cliente.Checked = False) then
-        begin
-        Seleciona_Fases;
-          //----------------------
-          if Fecha_ESC = True then
-          Exit;
-          //----------------------
-        VarParametro_Global:=VarParametro_Global+' +map '+Map_Global;
-        end;
-
-        case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
-        0: Quake_Folder:='id1\';
-        1: Quake_Folder:='hipnotic\';
-        2: Quake_Folder:='rogue\';
-        end;
-
-        //-------------------------------------------------------------------------
-        {ALTERA O ARQUIVO config.cfg PADRÃO}
-        //-------------------------------------------------------------------------
-        Arquivo_ConfigQuake:=TStringList.Create;
-        Arquivo_ConfigQuake.LoadFromFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
-
-        for i:=0 to Arquivo_ConfigQuake.Count-1 do
-        begin
-          if (menu_debug.Checked = True) then
-          begin
-            if Pos('vid_fullscreen',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_fullscreen "0"';
-            if Pos('vid_height',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_height "768"';
-            if Pos('vid_width',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_width "1024"';
-          end
-          else
-          begin
-            if Pos('vid_fullscreen',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_fullscreen "1"';
-            if Pos('vid_height',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_height "1024"';
-            if Pos('vid_width',Arquivo_ConfigQuake[i]) = 1 then
-            Arquivo_ConfigQuake[i]:='vid_width "1280"';
-          end;
-        end;
-
-        Arquivo_ConfigQuake.SaveToFile(Caminho_Global+Quake_Folder+Array_Games[id][6]);
-        Arquivo_ConfigQuake.Free;
-        //-------------------------------------------------------------------------
-
-        //-----------------------------------------------------------------------------------------------------
-        {DEBUG MODE}
-        //-----------------------------------------------------------------------------------------------------
-        if (menu_debug.Checked = True) then
-        MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-        //-----------------------------------------------------------------------------------------------------
-
-
-      //--------------------------------------------------
-      Arquivo_DOSBOX_Fisico:=TStringList.Create;
-      Arquivo_DOSBOX_Fisico.Add('bind w "+forward"'     );
-      Arquivo_DOSBOX_Fisico.Add('bind a "+moveleft"'    );
-      Arquivo_DOSBOX_Fisico.Add('bind s "+back"'        );
-      Arquivo_DOSBOX_Fisico.Add('bind d "+moveright"'   );
-      Arquivo_DOSBOX_Fisico.Add('bind MOUSE1 "+attack"' );
-      Arquivo_DOSBOX_Fisico.Add('bind MOUSE2 "+jump"'   );
-      Arquivo_DOSBOX_Fisico.Add('sensitivity "5.000000"');
-      Arquivo_DOSBOX_Fisico.Add('+mlook');
-      //--------------------------------------------------
-
-        {SINGLE PLAYER}
-        if (check_single.Checked = True) then
-        Arquivo_DOSBOX_Fisico.Add('name Ranger')
-        else
-        {SERVIDOR E CLIENTE}
-        begin
-          {SERVIDOR}
-          if (check_servidor.Checked = True) then
-          begin
-          Arquivo_DOSBOX_Fisico.Add('hostname DGL');
-          Arquivo_DOSBOX_Fisico.Add('maxplayers '+cont_player.Text);
-          Arquivo_DOSBOX_Fisico.Add('coop 1');
-          Arquivo_DOSBOX_Fisico.Add('teamplay off');
-          Arquivo_DOSBOX_Fisico.Add('skill 1');
-          Arquivo_DOSBOX_Fisico.Add('fraglimit none');
-          Arquivo_DOSBOX_Fisico.Add('timelimit none');
-          Arquivo_DOSBOX_Fisico.Add('pausable 0');
-          end
-          else
-          {CLIENTE}
-          Arquivo_DOSBOX_Fisico.Add('connect DGL');
-
-          //----------------------------------------------------------------------------------------
-          {QUAKE - APENAS O NAMEFUN}
-          //----------------------------------------------------------------------------------------
-          if RxOpcoes.StateOn = True then
-          Arquivo_DOSBOX_Fisico.Add('exec '+Copy(CoolStuff_Global,7,Pos('.scr',CoolStuff_Global)-3))
-          else
-          Arquivo_DOSBOX_Fisico.Add('name '+Trim(player_name.Text));
-          //----------------------------------------------------------------------------------------
-
-        Arquivo_DOSBOX_Fisico.Add('color '+IntToStr(combo_color.ItemIndex));
-        end;
-
-      Arquivo_DOSBOX_Fisico.Add('clear');
-      Arquivo_DOSBOX_Fisico.Add('echo '+Application.Title);
-      Arquivo_DOSBOX_Fisico.SaveToFile(Caminho_Global+Quake_Folder+'autoexec.cfg');
-      Arquivo_DOSBOX_Fisico.Free;
-      end
-      {QUAKE - FIM}
-      //------------------------------------------------------------------------------
-      else
-      begin
-      //-----------------------------------------------------------------------------------------------------------------------
-      {QUAKEWORLD - INÍCIO - DEATHMATCH}
-      //-----------------------------------------------------------------------------------------------------------------------
-      QW_Server:=Caminho_Global+'qwsv.exe';
-      Nome_DLC_Global:='QuakeWorld';
-      Game_EXE_Global:='qwcl.exe';
-
-        //---------------------------------
-        {DEBUG MODE}
-        //---------------------------------
-        if (menu_debug.Checked = True) then
-        begin
-        QW_WinMode:=' -startwindowed';
-        QW_Server_Debug:=SW_NORMAL;
-        end
-        else
-        begin
-        QW_WinMode:='';
-        QW_Server_Debug:=SW_HIDE;
-        end;
-        //---------------------------------
-
-      //-----------------------------------------------------
-      Config_Game_Global:=Caminho_Global+'qw\config.cfg';
-
-      Arquivo_DOSBOX_Fisico:=TStringList.Create;
-      Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
-        if not (Arquivo_DOSBOX_Fisico[Arquivo_DOSBOX_Fisico.Count-1] = 'exec autoexec.cfg') then
-        Arquivo_DOSBOX_Fisico.Add('exec autoexec.cfg');
-      Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-      Arquivo_DOSBOX_Fisico.Free;
-
-      Arquivo_DOSBOX_Fisico:=TStringList.Create;
-      Arquivo_DOSBOX_Fisico.Add('+mlook');
-      Arquivo_DOSBOX_Fisico.Add('connect '+ip_local.Text);
-      Arquivo_DOSBOX_Fisico.Add('clear');
-      Arquivo_DOSBOX_Fisico.Add('echo '+Application.Title);
-      Arquivo_DOSBOX_Fisico.SaveToFile(ExtractFilePath(Config_Game_Global)+'autoexec.cfg');
-      Arquivo_DOSBOX_Fisico.Free;
-      //-----------------------------------------------------
-
-        if RXOpcoes.StateOn = False then
-        CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
-
-      //----------------------------------------------------------------------------------------------
-      {NAMEFUN E SKIN}
-      //----------------------------------------------------------------------------------------------
-      VarParametro_Global:=QW_WinMode+' '+CoolStuff_Global+' +color '+IntToStr(combo_color.ItemIndex);
-      //----------------------------------------------------------------------------------------------
-
-        //-----------------------------------------------------------------------------------------------------------------------
-        {QUAKEWORLD - SERVIDOR - EXECUTA JUNTO O ARQUIVO .EXE DO SERVIDOR QUAKEWORLD}
-        //-----------------------------------------------------------------------------------------------------------------------
-        if (check_servidor.Checked = True) then
-        begin
-        Seleciona_Fases;
-
-          //----------------------
-          if Fecha_ESC = True then
-          Exit;
-          //----------------------
-
-          //-----------------------------------------------------------------------------------------------------------------------
-          {DEBUG MODE - SERVIDOR}
-          //-----------------------------------------------------------------------------------------------------------------------
-          if (menu_debug.Checked = True) then
-          MessageBox(Application.Handle,pchar(VarParametro_Global+#13#13+Map_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-          //-----------------------------------------------------------------------------------------------------------------------
-
-          //-----------------------------------------------------------------------------------------------------------------------
-          {SERVIDOR DEDICADO - QUAKEWORLD}
-          //-----------------------------------------------------------------------------------------------------------------------
-          if (RxQuakeServer.StateOn = True) then
-          begin
-          Config_Tela(False);
-          btn_start.Caption:=Lang_DGL(5);
-          ShellExecute(Handle,'open',pchar(QW_Server),pchar('+map '+Map_Global),pchar(ExtractFilePath(QW_Server)),SW_MAXIMIZE);
-          Timer_MonitoraAPP.Enabled:=True;
-          Exit;
-          end
-          else
-          ShellExecute(Handle,'open',pchar(QW_Server),pchar('+map '+Map_Global),pchar(ExtractFilePath(QW_Server)),QW_Server_Debug);
-          //-----------------------------------------------------------------------------------------------------------------------
-
-        end;
-
-      //---------------------------------------------------------------------
-      {QUAKE/QUAKEWORLD - CONTAGEM PRA INICIAR - CLIENTE}
-      //---------------------------------------------------------------------
-      if (menu_debug.Checked = False) and (check_cliente.Checked = True) then
-      Contagem_Iniciar;
-      //---------------------------------------------------------------------
-      
-      ShellExecute(Handle,'open',pchar(ExtractFilePath(QW_Server)+Game_EXE_Global),pchar(VarParametro_Global),pchar(ExtractFilePath(QW_Server)),SW_NORMAL);
-      Exit;
-      end;
-      {QUAKEWORLD - FIM - DEATHMATCH}
-      //-----------------------------------------------------------------------------------------------------------------------
-
+    AplicaQuake(id, RxDM.StateOn, Quake_Folder);
     //-----------------------------------------------------------------------------------------------------------------------
     {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
     //-----------------------------------------------------------------------------------------------------------------------

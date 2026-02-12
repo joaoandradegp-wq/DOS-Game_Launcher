@@ -14,7 +14,8 @@ uses
   Funcoes in 'Funcoes.pas',
   SysUtils,
   Teclado_Mouse in 'Teclado_Mouse.pas',
-  DOSBOX_Bind in 'DOSBOX_Bind.pas';
+  DOSBOX_Bind in 'DOSBOX_Bind.pas',
+  NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas';
 
 {$R *.res}
 

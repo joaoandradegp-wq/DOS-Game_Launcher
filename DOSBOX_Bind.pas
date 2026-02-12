@@ -80,6 +80,25 @@ const Constructor_Config_Base: array[0..1] of TRegra = (
   (Chave:'CDFlics=';        Valor:'CDFlics=No')
 );
 //------------------------------------------------------------------------------
+const Duke3D_Config_Base: array[0..6] of TRegra = (
+  (Chave: 'Shadows = ';     Valor: 'Shadows = 1'),
+  (Chave: 'Password = ';    Valor: 'Password = ""'),
+  (Chave: 'Detail = ';      Valor: 'Detail = 1'),
+  (Chave: 'Tilt = ';        Valor: 'Tilt = 1'),
+  (Chave: 'ScreenSize = ';  Valor: 'ScreenSize = 4'),
+  (Chave: 'ScreenGamma = '; Valor: 'ScreenGamma = 0'),
+  (Chave: 'Crosshairs = ';  Valor: 'Crosshairs = 1')
+);
+//------------------------------------------------------------------------------
+const ShadowWarrior_Config_Base: array[0..4] of TRegra = (
+  (Chave: 'BorderNum = ';   Valor: 'BorderNum = 1'),
+  (Chave: 'Brightness = ';  Valor: 'Brightness = 1'),
+  (Chave: 'Shadows = ';     Valor: 'Shadows = 1'),
+  (Chave: 'Crosshair = ';   Valor: 'Crosshair = 1'),
+  (Chave: 'MouseInvert = '; Valor: 'MouseInvert = 1')
+);
+//------------------------------------------------------------------------------
+
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
@@ -88,6 +107,9 @@ function ParametrosBlood(MouseAtivo, SinglePlayer: Boolean): string;
 procedure AplicaConstructor_Linguagem(i: Integer; Linhas: TStrings);
 procedure AplicaConstructor_Multiplayer(i: Integer; Linhas: TStrings; SinglePlayer: Boolean; NomeJogador: string);
 procedure AplicaConstructor(i: Integer; Linhas: TStrings; SinglePlayer: Boolean; NomeJogador: string);
+procedure AplicaDukeOpcoes(i: Integer; Linhas: TStrings; MouseAtivo: Boolean);
+procedure AplicaROTOpcoes(i: Integer; Linhas: TStrings; SinglePlayer: Boolean; NomeJogador: string; NumJogadores: string);
+procedure AplicaShadowWarriorOpcoes(i: Integer; Linhas: TStrings; MouseAtivo: Boolean; SinglePlayer: Boolean);
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
 
@@ -152,6 +174,74 @@ begin
   AplicaRegras(i, Constructor_Config_Base, Linhas);
   AplicaConstructor_Linguagem(i, Linhas);
   AplicaConstructor_Multiplayer(i, Linhas, SinglePlayer, NomeJogador);
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaDukeOpcoes(i: Integer; Linhas: TStrings; MouseAtivo: Boolean);
+begin
+  AplicaRegras(i, Duke3D_Config_Base, Linhas);
+
+  if Pos('GameMouseAiming = ', Linhas[i]) = 1 then
+  begin
+    if MouseAtivo then
+      Linhas[i] := 'GameMouseAiming = 1'
+    else
+      Linhas[i] := 'GameMouseAiming = 0';
+  end;
+
+  if Pos('AimingFlag = ', Linhas[i]) = 1 then
+  begin
+    if MouseAtivo then
+      Linhas[i] := 'AimingFlag = 1'
+    else
+      Linhas[i] := 'AimingFlag = 0';
+  end;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaROTOpcoes(i: Integer; Linhas: TStrings; SinglePlayer: Boolean; NomeJogador: string; NumJogadores: string);
+begin
+  if SinglePlayer then Exit;
+
+  if Pos('CODENAME', Linhas[i]) = 1 then
+    Linhas[i] := 'CODENAME            ' + NomeJogador;
+
+  if Pos('NUMPLAYERS', Linhas[i]) = 1 then
+    Linhas[i] := 'NUMPLAYERS          ' + NumJogadores;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaShadowWarriorOpcoes(i: Integer; Linhas: TStrings; MouseAtivo: Boolean; SinglePlayer: Boolean);
+begin
+  AplicaRegras(i, ShadowWarrior_Config_Base, Linhas);
+
+  if not SinglePlayer then
+  begin
+    if Pos('NetGameType = ', Linhas[i]) = 1 then
+      Linhas[i] := 'NetGameType = 2';
+
+    if Pos('NetMonsters = ', Linhas[i]) = 1 then
+      Linhas[i] := 'NetMonsters = 2';
+
+    if Pos('NetHurtTeammate = ', Linhas[i]) = 1 then
+      Linhas[i] := 'NetHurtTeammate = 2';
+  end;
+
+  if Pos('AutoAim = ', Linhas[i]) = 1 then
+  begin
+    if MouseAtivo then
+      Linhas[i] := 'AutoAim = 0'
+    else
+      Linhas[i] := 'AutoAim = 1';
+  end;
+
+  if Pos('MouseAimingOn = ', Linhas[i]) = 1 then
+  begin
+    if MouseAtivo then
+      Linhas[i] := 'MouseAimingOn = 1'
+    else
+      Linhas[i] := 'MouseAimingOn = 0';
+  end;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
