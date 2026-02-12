@@ -12,7 +12,9 @@ uses
   About in 'About.pas' {Form5_About},
   Language in 'Language.pas',
   Funcoes in 'Funcoes.pas',
-  SysUtils;
+  SysUtils,
+  Teclado_Mouse in 'Teclado_Mouse.pas',
+  DOSBOX_Bind in 'DOSBOX_Bind.pas';
 
 {$R *.res}
 
@@ -58,6 +60,6 @@ begin
  Language_Global:=0; //PT-BR
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
- Application.Run;
+  Application.Run;
 
 end.

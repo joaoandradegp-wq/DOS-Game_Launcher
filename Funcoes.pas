@@ -4,7 +4,12 @@ interface
 
 uses
 IdHTTP,GraphicEx,SysUtils,Forms,Classes,Windows,PsAPI,
-ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32,IdIcmpClient;
+ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32,IdIcmpClient,Messages;
+
+
+function EsperaDOSBox(TimeoutMS: Integer): HWND;
+procedure AtivaJanela(h: HWND);
+procedure EnviaTecla(h: HWND; VK: Word);
 
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function GetInternalIP: String;
@@ -31,7 +36,7 @@ function  ExtractName(const Filename:String):String;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
-function IP_TCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure Tela_Cheia;
@@ -55,6 +60,43 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 implementation
 
 uses IniFiles, Unit1, Unit3, Unit4, Unit5, Unit6, Language;
+
+
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+
+function EsperaDOSBox(TimeoutMS: Integer): HWND;
+var
+  h: HWND;
+  T0: Cardinal;
+begin
+  Result := 0;
+  T0 := GetTickCount;
+
+  repeat
+    h := FindWindow('SDL_app', nil);
+    if h <> 0 then
+    begin
+      Result := h;
+      Exit;
+    end;
+    Sleep(50);
+  until GetTickCount - T0 > Cardinal(TimeoutMS);
+end;
+
+procedure AtivaJanela(h: HWND);
+begin
+  if h = 0 then Exit;
+  ShowWindow(h, SW_RESTORE);
+  SetForegroundWindow(h);
+  SetFocus(h);
+end;
+procedure EnviaTecla(h: HWND; VK: Word);
+begin
+  PostMessage(h, WM_KEYDOWN, VK, 0);
+  PostMessage(h, WM_KEYUP, VK, 0);
+end;
+
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
@@ -78,7 +120,7 @@ begin
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-function IP_TCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
 var
   WSAData: TWSAData;
   Sock: TSocket;
