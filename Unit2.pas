@@ -29,7 +29,7 @@ var
 
 implementation
 
-uses Unit1,Language,Funcoes;
+uses Unit1,Language,Funcoes,ZDOOM_Bind;
 
 {$R *.dfm}
 

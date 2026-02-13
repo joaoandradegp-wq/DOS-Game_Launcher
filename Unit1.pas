@@ -228,7 +228,7 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind;
+uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind, ZDOOM_Bind;
 
 var
 Arquivo_INI:TIniFile;
@@ -759,10 +759,9 @@ end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
 var
-Arq_DosBox,Var_Bindings,Quake_Folder:String;
+Arq_DosBox,Var_Bindings:String;
 i,j,Modo_Game:Integer;
 Arquivo_COMMIT:TStringList;
-hDOS: HWND;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
@@ -920,330 +919,23 @@ case id of
    //------------------------------------------------------------------------------
    3,4,6,7,12,13:
    begin
-   Arquivo_DOSBOX_Fisico:=TStringList.Create;
-   Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
 
-     case id of
-     3,4,12,13: begin
-                Var_Bindings:='Doom';
+   ConfigureZDoom(
+     id,                    // id do jogo (3,4,6,7,12,13)
+     RxControle.StateOn,    // mouse ativo
+     menu_debug.Checked,    // debug mode
+     player_name.Text,      // nome do jogador
+     Config_Game_Global,    // caminho do arquivo .ini
+     Array_Games[id][4],    // IWAD
+     check_single.Checked,  // singleplayer
+     combo_doom.ItemIndex,  // skin Doom
+     combo_color.ItemIndex, // cor Doom
+     Screen.Width,          // largura da tela
+     Screen.Height          // altura da tela
+   );
+   showmessage(inttostr(EPI_Global_DLC));
+   end;
 
-                  {SELECIONA QUAL ARQUIVO WAD VAI CARREGAR PARA CONECTAR A UM JOGO CRIADO}
-                  if (id = 3) and (check_cliente.Checked = True) then
-                  begin
-                  Application.CreateForm(TForm2_DLC, Form2_DLC);
-                  Form2_DLC.ShowModal;
-                  Form2_DLC.Free;
-                    //----------------------
-                    if Fecha_ESC = True then
-                    Exit;
-                    //----------------------
-                  end;
-
-                end;
-             6: Var_Bindings:='Heretic';
-             7: Var_Bindings:='Hexen';
-     end;
-
-     for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
-     begin
-       //-----------------------------------------------------------------------
-       {[GlobalSettings]}
-       //-----------------------------------------------------------------------
-       if Pos('vid_tft=true'      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='vid_tft=false';
-       if Pos('m_use_mouse='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='m_use_mouse=0';
-       if Pos('show_messages=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {WOLFENSTEIN 3D + SPEAR OF DESTINY}
-         if (id = 12) or (id = 13) then
-         Arquivo_DOSBOX_Fisico[i]:='show_messages=false'
-         else
-         Arquivo_DOSBOX_Fisico[i]:='show_messages=true';
-       end;
-       if Pos('mouse_sensitivity=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='mouse_sensitivity=1.5';
-       if Pos('use_mouse='        ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='use_mouse='+BoolToStr(RxControle.StateOn);
-       if Pos('fullscreen='       ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='fullscreen='+BoolToStr(not menu_debug.Checked);
-       //----------------------------------------------------------
-       {DEBUG MODE}
-       //----------------------------------------------------------
-       if (menu_debug.Checked = True) then
-       begin
-         if Pos('vid_aspect=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_aspect=0';
-         if Pos('vid_vsync=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_vsync=false';
-         if Pos('vid_defheight=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_defheight=480';
-         if Pos('vid_defwidth=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_defwidth=640';
-       end
-       else
-       begin
-         if Pos('vid_aspect=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_aspect='+IntToStr(AspectRatio(Screen.Width,Screen.Height));
-         if Pos('vid_vsync=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_vsync=True';
-         
-         if Pos('vid_defheight=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_defheight='+IntToStr(Screen.Height);
-         if Pos('vid_defwidth=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='vid_defwidth='+IntToStr(Screen.Width);
-       end;
-       //----------------------------------------------------------
-       if Pos('Gamma=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='Gamma=1';
-       if Pos('r_fakecontrast=0',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='r_fakecontrast=1';
-       if Pos('screenshot_quiet=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='screenshot_quiet=true';
-       if Pos('freelook=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {WOLFENSTEIN 3D + SPEAR OF DESTINY}
-         if (id = 12) or (id = 13) then
-         Arquivo_DOSBOX_Fisico[i]:='freelook=false'
-         else
-         Arquivo_DOSBOX_Fisico[i]:='freelook='+BoolToStr(RxControle.StateOn);
-       end;
-       if Pos('cl_run=true'   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='cl_run=false';
-       if Pos('save_dir='     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='save_dir='+Caminho_Global;
-       if Pos('longsavemessages=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='longsavemessages=false';
-       if Pos('defaultiwad='  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='defaultiwad='+ExtractName(Array_Games[id][4]);
-       if Pos('queryiwad=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='queryiwad=false';
-       if Pos('screenblocks=' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='screenblocks=10';
-       if Pos('menu_screenratios=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         case AspectRatio(Screen.Width,Screen.Height) of
-           {16:9}
-           1: Arquivo_DOSBOX_Fisico[i]:='menu_screenratios=1';
-           {4:3}
-           3: Arquivo_DOSBOX_Fisico[i]:='menu_screenratios=0';
-           else
-           Arquivo_DOSBOX_Fisico[i]:='menu_screenratios=-1';
-         end;
-       end;
-       if Pos('show_obituaries=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='show_obituaries=false';
-       if Pos('am_showmaplabel=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {HEXEN - WOLFENSTEIN 3D - SPEAR OF DESTINY}
-         case id of
-           7,12,13: Arquivo_DOSBOX_Fisico[i]:='am_showmaplabel=0';
-           else
-           Arquivo_DOSBOX_Fisico[i]:='am_showmaplabel=1';
-         end;
-       end;
-       if Pos('cl_maxdecals='   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='cl_maxdecals=0';
-       if Pos('cl_rockettrails=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='cl_rockettrails=0';
-       if Pos('language='       ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='language=enu';
-       if Pos('wipetype='       ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='wipetype=0';
-       if Pos('msgmidcolor='    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msgmidcolor=11';
-       if Pos('msg4color='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msg4color=11';
-       if Pos('msg3color='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msg3color=11';
-       if Pos('msg2color='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msg2color=11';
-       if Pos('msg1color='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msg1color=11';
-       if Pos('msg0color='      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='msg0color=11';
-       if Pos('con_scaletext='  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='con_scaletext=1';
-       if Pos('am_drawmapback=' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {HERETIC - HEXEN}
-         case id of
-           6,7: Arquivo_DOSBOX_Fisico[i]:='am_drawmapback=1';
-           else
-           Arquivo_DOSBOX_Fisico[i]:='am_drawmapback=0';
-         end;
-       end;
-       if Pos('am_colorset=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {HERETIC - HEXEN}
-         case id of
-           6,7: Arquivo_DOSBOX_Fisico[i]:='am_colorset=3';
-           else
-           Arquivo_DOSBOX_Fisico[i]:='am_colorset=1';
-         end;
-       end;
-       if Pos('am_showtime=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         {HEXEN}
-         case id of
-           7: Arquivo_DOSBOX_Fisico[i]:='am_showtime=true';
-           else
-           Arquivo_DOSBOX_Fisico[i]:='am_showtime=false';
-         end;
-       end;
-       if Pos('am_showmonsters=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='am_showmonsters=false';
-       if Pos('am_showsecrets=true' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='am_showsecrets=false';
-       if Pos('am_rotate='          ,Arquivo_DOSBOX_Fisico[i]) = 1 then
-       Arquivo_DOSBOX_Fisico[i]:='am_rotate=0';
-       //-----------------------------------------------------------------------
-       if Pos('['+Var_Bindings+'.Bindings]',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         //-----------------------------------------------------------------------------
-         {APAGA TUDO DESDE [Doom.Bindings] ATÉ [Doom.DoubleBindings]}
-         //-----------------------------------------------------------------------------
-         for j:=i+1 to Arquivo_DOSBOX_Fisico.Count-1 do
-         begin
-           if Pos('['+Var_Bindings+'.DoubleBindings]',Arquivo_DOSBOX_Fisico[j]) = 0 then
-           Arquivo_DOSBOX_Fisico[j]:=''
-           else
-           Break;
-         end;                        // tirar os DELET e substituir pra nao mudar o tamanho do arquivo
-        // usar talvez os colchetes pra nao ter INSERT e mudar tamanho do arquivo.
-         //-----------------------------------------------------------------------------
-       Arquivo_DOSBOX_Fisico.Insert(i+1,'1=slot 1');
-       Arquivo_DOSBOX_Fisico.Insert(i+2,'2=slot 2');
-       Arquivo_DOSBOX_Fisico.Insert(i+3,'3=slot 3');
-       Arquivo_DOSBOX_Fisico.Insert(i+4,'4=slot 4');
-         //-------------------------------------------------------------
-         {HEXEN}
-         //-------------------------------------------------------------
-         if (id = 7) then
-         begin
-         Arquivo_DOSBOX_Fisico.Insert(i+5,'5=use ArtiInvulnerability2');
-         Arquivo_DOSBOX_Fisico.Insert(i+6,'6=use ArtiPork');
-         Arquivo_DOSBOX_Fisico.Insert(i+7,'7=use ArtiTeleportOther');
-         Arquivo_DOSBOX_Fisico.Insert(i+8,'8=use ArtiTeleport');
-         Arquivo_DOSBOX_Fisico.Insert(i+9,'9=use ArtiBlastRadius');
-         Arquivo_DOSBOX_Fisico.Insert(i+10,'0=useflechette');
-         end
-         else
-         begin
-         Arquivo_DOSBOX_Fisico.Insert(i+5,'5=slot 5');
-         Arquivo_DOSBOX_Fisico.Insert(i+6,'6=slot 6');
-         Arquivo_DOSBOX_Fisico.Insert(i+7,'7=slot 7');
-         Arquivo_DOSBOX_Fisico.Insert(i+8,'8=slot 8');
-         Arquivo_DOSBOX_Fisico.Insert(i+9,'9=slot 9');
-         Arquivo_DOSBOX_Fisico.Insert(i+10,'0=slot 0');
-         end;
-         //-------------------------------------------------------------
-         Arquivo_DOSBOX_Fisico.Insert(i+11,'-=sizedown');
-         Arquivo_DOSBOX_Fisico.Insert(i+12,'Equals=sizeup');
-         Arquivo_DOSBOX_Fisico.Insert(i+13,'tab=togglemap');
-         Arquivo_DOSBOX_Fisico.Insert(i+14,'t=messagemode');
-         Arquivo_DOSBOX_Fisico.Insert(i+15,'LeftBracket=invprev');
-         Arquivo_DOSBOX_Fisico.Insert(i+16,'RightBracket=invnext');
-         Arquivo_DOSBOX_Fisico.Insert(i+17,'enter=invuse');
-         //----------------------------------------------------------
-         {TECLADO}
-         //----------------------------------------------------------
-         if RxControle.StateOn = False then
-         begin
-         Arquivo_DOSBOX_Fisico.Insert(i+18,'ctrl=+attack');
-         Arquivo_DOSBOX_Fisico.Insert(i+19,'shift=+speed');
-         Arquivo_DOSBOX_Fisico.Insert(i+20,'alt=+strafe');
-         Arquivo_DOSBOX_Fisico.Insert(i+21,'space=+use');
-         Arquivo_DOSBOX_Fisico.Insert(i+22,'capslock=toggle cl_run');
-         Arquivo_DOSBOX_Fisico.Insert(i+23,'pause=pause');
-         Arquivo_DOSBOX_Fisico.Insert(i+24,'uparrow=+forward');
-         Arquivo_DOSBOX_Fisico.Insert(i+25,'leftarrow=+left');
-         Arquivo_DOSBOX_Fisico.Insert(i+26,'rightarrow=+right');
-         Arquivo_DOSBOX_Fisico.Insert(i+27,'downarrow=+back');
-         Arquivo_DOSBOX_Fisico.Insert(i+28,'');
-         end
-         //----------------------------------------------------------
-         {MOUSE}
-         //----------------------------------------------------------
-         else
-         begin
-         Arquivo_DOSBOX_Fisico.Insert(i+18,'shift=+speed');
-         Arquivo_DOSBOX_Fisico.Insert(i+19,'capslock=toggle cl_run');
-         Arquivo_DOSBOX_Fisico.Insert(i+20,'pause=pause');
-         Arquivo_DOSBOX_Fisico.Insert(i+21,'w=+forward');
-         Arquivo_DOSBOX_Fisico.Insert(i+22,'e=+use');
-         Arquivo_DOSBOX_Fisico.Insert(i+23,'a=+moveleft');
-         Arquivo_DOSBOX_Fisico.Insert(i+24,'s=+back');
-         Arquivo_DOSBOX_Fisico.Insert(i+25,'d=+moveright');
-         {WOLFENSTEIN 3D + SPEAR OF DESTINY - NÃO TEM "ABAIXAR"}
-         Arquivo_DOSBOX_Fisico.Insert(i+26,'c=+crouch');
-         Arquivo_DOSBOX_Fisico.Insert(i+27,'mouse1=+attack');
-         {WOLFENSTEIN 3D + SPEAR OF DESTINY - NÃO TEM "PULAR"}
-         Arquivo_DOSBOX_Fisico.Insert(i+28,'mouse2=+jump');
-         Arquivo_DOSBOX_Fisico.Insert(i+29,'mwheelup=weapprev');
-         Arquivo_DOSBOX_Fisico.Insert(i+30,'mwheeldown=weapnext');
-         Arquivo_DOSBOX_Fisico.Insert(i+31,'');
-         end;
-         //----------------------------------------------------------
-       end;
-       //------------------------------------------------------------------------------
-       {HEXEN}
-       if (id = 7) then
-       begin
-         if Pos('playerclass=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         begin
-         Application.CreateForm(TForm2_DLC, Form2_DLC);
-         Form2_DLC.ShowModal;
-         Form2_DLC.Free;
-
-           //----------------------
-           if Fecha_ESC = True then
-           Exit;
-           //----------------------
-
-           case EPI_Global_DLC of
-           1: Arquivo_DOSBOX_Fisico[i]:='playerclass=Fighter';
-           2: Arquivo_DOSBOX_Fisico[i]:='playerclass=Cleric';
-           3: Arquivo_DOSBOX_Fisico[i]:='playerclass=Mage';
-           end;
-
-         end;
-       end;
-       if (check_single.Checked = False) then
-       begin
-         {SKIN - DOOM e DOOM II}
-         case combo_doom.ItemIndex of
-         0: begin
-              if Pos('skin=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-              Arquivo_DOSBOX_Fisico[i]:='skin=base';
-              if Pos('colorset=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-              Arquivo_DOSBOX_Fisico[i]:='colorset='+IntToStr(combo_color.ItemIndex);
-            end;
-         1: begin
-              if Pos('skin=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-              Arquivo_DOSBOX_Fisico[i]:='skin=Phobos';
-              if Pos('colorset=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-              Arquivo_DOSBOX_Fisico[i]:='colorset=-1';
-              if Pos('color=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-              Arquivo_DOSBOX_Fisico[i]:='color=ff 50 00';
-            end;
-         end;
-         if Pos('name=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-         Arquivo_DOSBOX_Fisico[i]:='name='+Trim(player_name.Text);
-       end;
-       if Pos('autoaim=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-       begin
-         if RxControle.StateOn = True then
-         Arquivo_DOSBOX_Fisico[i]:='autoaim=0'
-         else
-         Arquivo_DOSBOX_Fisico[i]:='autoaim=35';
-       end;
-       //------------------------------------------------------------------------------
-     end; {END - FOR}
-    Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-    Arquivo_DOSBOX_Fisico.Free;
-    //------------------------------------------------------------------------------
-    end;
 end;
           
 {DOSBOX}
