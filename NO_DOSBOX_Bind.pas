@@ -47,30 +47,25 @@ const
   QW_SERVER_EXE      = 'qwsv.exe';
   QW_CLIENT_EXE      = 'qwcl.exe';
 //------------------------------------------------------------------------------
+const
+  //----------------------------------------------------------------------------
+  {WARCRAFT II - REGRAS DE CONFIGURAÇÃO}
+  //----------------------------------------------------------------------------
+  WARCRAFT2_REGRAS: array[0..3] of TRegra = (
+    (Chave: 'cdpath='; Valor: 'cdpath=d:\'),
+    (Chave: 'mscroll='; Valor: 'mscroll=0'),
+    (Chave: 'intro='; Valor: ''), // Valor será aplicado dinamicamente (1 ou 0)
+    (Chave: 'name='; Valor: '')   // Valor será aplicado dinamicamente (nome do player)
+  );
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaQuakeClassic(
-  const Caminho_Global: string;
-  const Nome_DLC_Global: string;
-  const Debug: Boolean;
-  const CheckSingle: Boolean;
-  const CheckServidor: Boolean;
-  const CheckCliente: Boolean;
-  const NameFunAtivo: Boolean;
-  const PlayerName: string;
-  const CoolStuff_Global: string;
-  const ComboColorIndex: Integer;
-  const ContPlayerText: string;
-  const AppTitle: string;
-  const IdGameConfig: string; // Array_Games[id][6]
-  var VarParametro_Global: string;
-//  var Quake_Folder: string;
-  out Cancelado: Boolean
-);
+procedure AplicaQuakeClassic(const Caminho_Global: string; const Debug: Boolean; const CheckSingle: Boolean; const CheckServidor: Boolean; const CheckCliente: Boolean; const NameFunAtivo: Boolean; const PlayerName: string; const CoolStuff_Global: string; const ComboColorIndex: Integer; const ContPlayerText: string; const AppTitle: string; const IdGameConfig: string; var VarParametro_Global: string; out Cancelado: Boolean);
 procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
 procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
 procedure AplicaQuakeWorldDM;
+procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -80,7 +75,6 @@ implementation
 //------------------------------------------------------------------------------
 procedure AplicaQuakeClassic(
   const Caminho_Global: string;
-  const Nome_DLC_Global: string;
   const Debug: Boolean;
   const CheckSingle: Boolean;
   const CheckServidor: Boolean;
@@ -93,14 +87,13 @@ procedure AplicaQuakeClassic(
   const AppTitle: string;
   const IdGameConfig: string; // Array_Games[id][6]
   var VarParametro_Global: string;
-//  var Quake_Folder: string;
   out Cancelado: Boolean
 );
 var
-  Config: TStringList;
-  AutoExec: TStringList;
-  Quake_Folder: String;
-  i,p: Integer;
+Config: TStringList;
+AutoExec: TStringList;
+Quake_Folder: String;
+i,p: Integer;
 begin
   Cancelado := False;
 
@@ -137,9 +130,9 @@ begin
   end;
 
   case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
-    0: Quake_Folder := 'id1\';
-    1: Quake_Folder := 'hipnotic\';                   nao ta alterando o quake_folder, precisa ver
-    2: Quake_Folder := 'rogue\';
+  0: Quake_Folder := 'id1\';
+  1: Quake_Folder := 'hipnotic\';
+  2: Quake_Folder := 'rogue\';
   end;
 
   {PATCH config.cfg}
@@ -156,7 +149,6 @@ begin
     end;
 
   Config.SaveToFile(Caminho_Global + Quake_Folder + IdGameConfig);
-  showmessage(Caminho_Global + Quake_Folder + IdGameConfig) ;
   finally
   Config.Free;
   end;
@@ -220,7 +212,6 @@ begin
 
   AplicaQuakeClassic(
     Caminho_Global,
-    Nome_DLC_Global,
     Form1_DGL.menu_debug.Checked,
     Form1_DGL.check_single.Checked,
     Form1_DGL.check_servidor.Checked,
@@ -233,7 +224,6 @@ begin
     Application.Title,
     Array_Games[id][6],
     VarParametro_Global,
-//    Quake_Folder,
     Cancelado
   );
 
@@ -334,6 +324,42 @@ Game_EXE_Global := QW_CLIENT_EXE;
   Contagem_Iniciar;
 
 ShellExecute(Form1_DGL.Handle, 'open', PChar(ExtractFilePath(QW_Server) + Game_EXE_Global), PChar(VarParametro_Global), PChar(ExtractFilePath(QW_Server)), SW_NORMAL);
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
+var
+Arquivo: TStringList;
+i: Integer;
+begin
+Arquivo := TStringList.Create;
+  try
+  Arquivo.LoadFromFile(Config_Game_Global);
+
+    for i := 0 to Arquivo.Count - 1 do
+    begin
+    AplicaRegras(i, WARCRAFT2_REGRAS, Arquivo);
+
+      if Pos('intro=', Arquivo[i]) = 1 then
+      begin
+        if CheckSingle then
+        Arquivo[i] := 'intro=1'
+        else
+        Arquivo[i] := 'intro=0';
+      end;
+
+      if Pos('name=', Arquivo[i]) = 1 then
+      begin
+        if not CheckSingle then
+        Arquivo[i] := 'name=' + Trim(PlayerName);
+      end;
+
+    end;
+    Arquivo.SaveToFile(Config_Game_Global);
+  finally
+  Arquivo.Free;
+  end;
+  
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

@@ -766,7 +766,7 @@ hDOS: HWND;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
-Nome_DLC_Global:='';
+//Nome_DLC_Global:='';
 Fecha_ESC:=False;
 
 //----------------------------------------------------------------------------------------------
@@ -849,7 +849,6 @@ case id of
                      end;
                   end;
                   //-----------------------------------------------------------------
-                  //-----------------------------------------------------------------
                   {DEFINE A SENSIBILIDADE DO MOUSE - "VALOR PADRÃO" + "VALOR NOVO"}
                   //-----------------------------------------------------------------
                   if Mouse_Global > 0 then
@@ -891,65 +890,38 @@ case id of
             end;
            end;
 
-   8:
-    begin
-    AplicaQuake(id, RxDM.StateOn);
-    //-----------------------------------------------------------------------------------------------------------------------
-    {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
-    //-----------------------------------------------------------------------------------------------------------------------
-    if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
-    MessageBox(Application.Handle,pchar(VarParametro_Global+#13#13+Map_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+   //------------------------------------------------------------------------------
+   {QUAKE}
+   //------------------------------------------------------------------------------
+   8: begin
+      AplicaQuake(id, RxDM.StateOn);
+      //----------------------------------------------------------------------
+      {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
+      //----------------------------------------------------------------------
+        if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
+        MessageBox(Application.Handle,
+                   pchar(VarParametro_Global+#13#13+Map_Global),
+                   pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
 
-    Config_Tela(False);
-    btn_start.Caption:=Lang_DGL(5);
-
-    Timer_MonitoraAPP.Enabled:=True;
-    //-----------------------------------------------------------------------------------------------------------------------
-    end;
-
-  11:
-    begin
-    //------------------------------------------------------------------------------
-    {WARCRAFT II}
-    //------------------------------------------------------------------------------
-    Arquivo_DOSBOX_Fisico:=TStringList.Create;
-    Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
-
-     for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
-     begin
-      if Pos('cdpath=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-      Arquivo_DOSBOX_Fisico[i]:='cdpath=d:\';
-      if Pos('mscroll=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-      Arquivo_DOSBOX_Fisico[i]:='mscroll=0';
-
-      if Pos('intro=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-      begin
-       if (check_single.Checked = True) then
-       Arquivo_DOSBOX_Fisico[i]:='intro=1'
-       else
-       Arquivo_DOSBOX_Fisico[i]:='intro=0';
+      Config_Tela(False);
+      //btn_start.Caption:=Lang_DGL(5);
+      //Timer_MonitoraAPP.Enabled:=True;
       end;
+   //------------------------------------------------------------------------------
 
-      if Pos('name=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-      begin
-       if (check_single.Checked = False) then
-       Arquivo_DOSBOX_Fisico[i]:='name='+Trim(player_name.Text);
-      end;
+   //------------------------------------------------------------------------------
+   {WARCRAFT II}
+   //------------------------------------------------------------------------------
+   11: AplicaWarcraft2(Config_Game_Global, check_single.Checked, player_name.Text);
+   //------------------------------------------------------------------------------
 
-     end;
-
-    Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-    Arquivo_DOSBOX_Fisico.Free;
-    //------------------------------------------------------------------------------
-    end;
-
-  3,4,6,7,12,13:
-    begin
-    //------------------------------------------------------------------------------
-    {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
-    //------------------------------------------------------------------------------
-    Arquivo_DOSBOX_Fisico:=TStringList.Create;
-    Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
+   //------------------------------------------------------------------------------
+   {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
+   //------------------------------------------------------------------------------
+   3,4,6,7,12,13:
+   begin
+   Arquivo_DOSBOX_Fisico:=TStringList.Create;
+   Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
 
      case id of
      3,4,12,13: begin
@@ -966,7 +938,7 @@ case id of
                     Exit;
                     //----------------------
                   end;
-                  
+
                 end;
              6: Var_Bindings:='Heretic';
              7: Var_Bindings:='Hexen';
