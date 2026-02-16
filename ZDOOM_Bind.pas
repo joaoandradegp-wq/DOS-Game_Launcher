@@ -2,7 +2,7 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, Unit2, Dialogs;
+uses IniFiles, SysUtils, Forms, Unit1, Unit2;
 
 //----------------------------
 type
@@ -21,8 +21,8 @@ type
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
 function GetCVarSection(id: Integer): String;
-procedure ConfigureZDoom(id: Integer; MouseAtivo, Debug: Boolean; PlayerName, ConfigFile, IWADFile: String; SinglePlayer: Boolean; DoomSkinIndex: Integer; DoomColorIndex: Integer; ScreenWidth: Integer; ScreenHeight: Integer);
 function AspectRatio(W, H: Integer): Integer;
+procedure ConfigureZDoom(id: Integer; MouseAtivo, Debug: Boolean; PlayerName, ConfigFile, IWADFile: String; SinglePlayer: Boolean; DoomSkinIndex: Integer; DoomColorIndex: Integer; ScreenWidth: Integer; ScreenHeight: Integer);
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
 
@@ -128,6 +128,7 @@ Ini.WriteBool(CVarSection, 'fullscreen', not Debug);
   end;
 
 Ini.WriteBool  (CVarSection,   'freelook', Flags.TemFreelook and MouseAtivo);
+Ini.WriteBool  (CVarSection,   'use_mouse', MouseAtivo);
 Ini.WriteString(CVarSection,   'mouse_sensitivity', '1.5');
 Ini.WriteString(CVarSection,   'defaultiwad', ExtractFileName(IWADFile));
 Ini.WriteBool  (CVarSection,   'queryiwad', False);
@@ -169,6 +170,16 @@ Ini.WriteBool   (CVarSection, 'screenshot_quiet', True);
 Ini.WriteBool   (CVarSection, 'am_showmonsters', False);
 Ini.WriteBool   (CVarSection, 'am_showsecrets', False);
 Ini.WriteInteger(CVarSection, 'am_rotate', 0);
+Ini.WriteInteger(CVarSection, 'Gamma', 1);
+Ini.WriteInteger(CVarSection, 'r_fakecontrast', 1);
+Ini.WriteInteger(CVarSection, 'con_scaletext', 1);
+Ini.WriteInteger(CVarSection, 'msg0color', 11);
+Ini.WriteInteger(CVarSection, 'msg1color', 11);
+Ini.WriteInteger(CVarSection, 'msg2color', 11);
+Ini.WriteInteger(CVarSection, 'msg3color', 11);
+Ini.WriteInteger(CVarSection, 'msg4color', 11);
+Ini.WriteInteger(CVarSection, 'msgmidcolor', 11);
+Ini.WriteBool   (CVarSection, 'cl_run', False);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -221,6 +232,12 @@ Ini.WriteString(Section, 't', 'messagemode');
   Ini.WriteString(Section, 'rightarrow', '+right');
   Ini.WriteString(Section, 'downarrow', '+back');
   end;
+
+Ini.WriteString(Section, 'LeftBracket', 'invprev');
+Ini.WriteString(Section, 'RightBracket', 'invnext');
+Ini.WriteString(Section, 'enter', 'invuse');
+Ini.WriteString(Section, 'pause', 'pause');
+Ini.WriteString(Section, 'capslock', 'toggle cl_run');
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -234,12 +251,12 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure ApplyDoomSkin(Ini: TMemIniFile; SinglePlayer: Boolean; SkinIndex, ColorIndex: Integer);
+procedure ApplyDoomSkin(Ini: TMemIniFile; id: Integer; SinglePlayer: Boolean; SkinIndex, ColorIndex: Integer);
 var
 PlayerSection: String;
 begin
-PlayerSection:=GetPlayerSection(id);
-
+PlayerSection := GetPlayerSection(id);
+           
   if SinglePlayer then Exit;
 
   case SkinIndex of
@@ -293,7 +310,7 @@ Flags := GetGameFlags(id);
       ApplyHexenClass(Ini, EPI_Global_DLC);
     end;
 
-  ApplyDoomSkin(Ini, SinglePlayer, DoomSkinIndex, DoomColorIndex);
+  ApplyDoomSkin(Ini, id, SinglePlayer, DoomSkinIndex, DoomColorIndex);
 
   Ini.UpdateFile;
   finally

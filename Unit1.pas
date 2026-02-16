@@ -228,7 +228,8 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language, Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind, ZDOOM_Bind;
+uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language,
+Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind, ZDOOM_Bind,DOSBOX_Executor;
 
 var
 Arquivo_INI:TIniFile;
@@ -759,13 +760,12 @@ end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
 var
-Arq_DosBox,Var_Bindings:String;
+Linhas: TStringlist;
+Arq_DosBox,GameExe,Parametros:String;
 i,j,Modo_Game:Integer;
-Arquivo_COMMIT:TStringList;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
-//Nome_DLC_Global:='';
 Fecha_ESC:=False;
 
 //----------------------------------------------------------------------------------------------
@@ -794,8 +794,8 @@ case id of
  1,2,5,9,10:
            begin
            try
-            Arquivo_DOSBOX_Fisico:=TStringList.Create;
-            Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
+           Arquivo_DOSBOX_Fisico:=TStringList.Create;
+           Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
 
              for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
              begin
@@ -827,9 +827,8 @@ case id of
                //------------------------------------------------------------------------------
                if id in [1,5,10] then
                begin
-               AplicaRegras(i, DOSBOX_Video,      Arquivo_DOSBOX_Fisico);
-               AplicaRegras(i, DOSBOX_Som_Comum,  Arquivo_DOSBOX_Fisico);
-               AplicaRegras(i, DOSBOX_Som_Padrao, Arquivo_DOSBOX_Fisico);
+               AplicaDOSBOX_Tudo(i, Arquivo_DOSBOX_Fisico, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
+
                   case id of
                    5: AplicaRegras(i, DOSBOX_Duke,   Arquivo_DOSBOX_Fisico);
                   10: AplicaRegras(i, DOSBOX_Shadow, Arquivo_DOSBOX_Fisico);
@@ -841,10 +840,10 @@ case id of
                   AplicaRegras(i, DOSBOX_Controle_Teclado, Arquivo_DOSBOX_Fisico)
                   else
                   begin
-                  AplicaRegras(i, DOSBOX_Controle_Mouse_Base, Arquivo_DOSBOX_Fisico);
+                  AplicaRegras(i, DOSBOX_Controle_Mouse, Arquivo_DOSBOX_Fisico);
                      case id of
                         1: AplicaRegras(i, DOSBOX_Mouse_Blood,  Arquivo_DOSBOX_Fisico);
-                     5,10: AplicaRegras(i, DOSBOX_Mouse_Padrao, Arquivo_DOSBOX_Fisico);
+                     5,10: AplicaRegras(i, DOSBOX_Controle_Mouse, Arquivo_DOSBOX_Fisico);
                      end;
                   end;
                   //-----------------------------------------------------------------
@@ -868,25 +867,15 @@ case id of
                //------------------------------------------------------------------------------
                {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR - ARQUIVO DO DOSBOX - FIM}
                //------------------------------------------------------------------------------
-               case id of
-               {BLOOD}
-                1: AplicaBloodOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn);
-               {CONSTRUCTOR}
-                2: AplicaConstructor(i, Arquivo_DOSBOX_Fisico, check_single.Checked,Trim(player_name.Text));
-               {DUKE NUKEM 3D}
-                5: AplicaDukeOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn);
-               {RISE OF THE TRIAD}
-                9: AplicaROTOpcoes(i, Arquivo_DOSBOX_Fisico, check_single.Checked, Trim(player_name.Text), cont_player.Text);
-               {SHADOW WARRIOR}
-               10: AplicaShadowWarriorOpcoes(i, Arquivo_DOSBOX_Fisico, RxControle.StateOn, check_single.Checked);
-               end;
+               AplicaDOSBOX_Tudo(i, Arquivo_DOSBOX_Fisico, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
                //------------------------------------------------------------------------------
              end;
 
-            Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-            finally
-            Arquivo_DOSBOX_Fisico.Free;
-            end;
+           Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
+           finally
+           Arquivo_DOSBOX_Fisico.Free;
+           end;
+           
            end;
 
    //------------------------------------------------------------------------------
@@ -901,10 +890,6 @@ case id of
         MessageBox(Application.Handle,
                    pchar(VarParametro_Global+#13#13+Map_Global),
                    pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-
-      Config_Tela(False);
-      //btn_start.Caption:=Lang_DGL(5);
-      //Timer_MonitoraAPP.Enabled:=True;
       end;
    //------------------------------------------------------------------------------
 
@@ -919,7 +904,6 @@ case id of
    //------------------------------------------------------------------------------
    3,4,6,7,12,13:
    begin
-
    ConfigureZDoom(
      id,                    // id do jogo (3,4,6,7,12,13)
      RxControle.StateOn,    // mouse ativo
@@ -933,416 +917,159 @@ case id of
      Screen.Width,          // largura da tela
      Screen.Height          // altura da tela
    );
-   showmessage(inttostr(EPI_Global_DLC));
    end;
+   //------------------------------------------------------------------------------
 
 end;
-          
-{DOSBOX}
-if (Array_Games[id][7] = 'DOSBOX') then        
+
+if (Array_Games[id][7] = 'DOSBOX') then
 begin
-Arq_DosBox:=ExtractFilePath(Application.ExeName)
-           +Array_Games[id][3]
-           +LowerCase(ExtractName(Game_EXE_Global))
-           +'_dosbox.conf';
+Arq_DosBox := ExtractFilePath(Application.ExeName) + Array_Games[id][3] + LowerCase(ExtractName(Game_EXE_Global)) + '_dosbox.conf';
 
-CopyFile(pchar(ExtractFilePath(DosBox_EXE_Global)+'dosbox-0.74.conf'),pchar(Arq_DosBox),False);
+  // cria o conf base se ainda não existir
+  if not FileExists(Arq_DosBox) then
+  CopyFile(PChar(ExtractFilePath(DosBox_EXE_Global) + 'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
 
-{ARQUIVO DE CONFIGURAÇÃO}
-//------------------------------------------------------------------------------
-Arquivo_DOSBOX_Fisico:=TStringList.Create;
-Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
-//------------------------------------------------------------------------------
+Linhas := TStringList.Create;
 
- for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
- begin
+  try
+  Linhas.LoadFromFile(Arq_DosBox);
 
-    if Pos('fullscreen=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      //----------------------------------------------------------------
-      {RISE OF THE TRIAD + WARCRAFT II}
-      //----------------------------------------------------------------
-      //PARA ACESSAR O COMANDO DE TECLAS QUE NÃO FUNCIONA SE ESTIVER FULLSCREEN
-      if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
-      Arquivo_DOSBOX_Fisico[i]:='fullscreen=false'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='fullscreen='+BoolToStr(not menu_debug.Checked);
-    end;
+    //--------------------------------------------------
+    // 1) AJUSTES NO CONF
+    //--------------------------------------------------
+    for i := 0 to Linhas.Count - 1 do
+    AplicaDOSBOX_Tudo(i, Linhas, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
 
-    if Pos('fullresolution=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      //--------------------------------------------------
-      {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
-      //--------------------------------------------------
-      if (id = 1) or (id = 5) or (id = 10) then
-      Arquivo_DOSBOX_Fisico[i]:='fullresolution=0x0';
-    end;
+    //--------------------------------------------------
+    // 2) PREPARA EXECUTÁVEL
+    //--------------------------------------------------
+    GameExe    := Array_Games[id][5];
+    Parametros := VarParametro_Global;
 
-    if Pos('output=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      {NÃO TEM PLACA DE VÍDEO - INTEL}
-      if ProcessExists('igfxTray.exe') = True then
-      Arquivo_DOSBOX_Fisico[i]:='output=opengl'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='output=overlay';
-    end;
+    if id = GAME_BLOOD then
+    Parametros := VarParametro_Global;
 
-    if Pos('machine=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-     //-------------------------------------------------------------
-     {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
-     //-------------------------------------------------------------
-     if (id = 1) or (id = 5) or (id = 10) then
-     Arquivo_DOSBOX_Fisico[i]:='machine=vesa_nolfb';
-     //-------------------------------------------------------------
-    end;
+    //--------------------------------------------------
+    // 3) AUTOEXEC FINAL
+    //--------------------------------------------------
+    ExecutaJogoDOSBOX(
+      id,
+      check_single.Checked,
+      menu_debug.Checked,
+      RxControle.StateOn,
+      ExtractFilePath(Game_EXE_Global),   // CaminhoJogo
+      ExtractFilePath(Game_EXE_Global),   // CaminhoExe
+      GameExe,
+      Parametros,
+      ip_porta.Text,
+      ip_local.Text,
+      check_servidor.Checked,
+      check_cliente.Checked,
+      cont_player.Text,
+      Linhas
+    );
+    //--------------------------------------------------
+    // 4) SALVA
+    //--------------------------------------------------
+    Linhas.SaveToFile(Arq_DosBox);
 
-    if Pos('memsize=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-     //-------------------------------------
-     {CONSTRUCTOR}
-     //-------------------------------------
-     if (id = 2) then
-     Arquivo_DOSBOX_Fisico[i]:='memsize=32'
-     else
-     Arquivo_DOSBOX_Fisico[i]:='memsize=64';
-     //-------------------------------------
-    end;
+  finally
+  Linhas.Free;
+  end;
 
-    if Pos('aspect=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    Arquivo_DOSBOX_Fisico[i]:='aspect=true';
-    if Pos('scaler=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    Arquivo_DOSBOX_Fisico[i]:='scaler=normal2x';
-    if Pos('core=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    Arquivo_DOSBOX_Fisico[i]:='core=dynamic';
-    if Pos('cycles=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    Arquivo_DOSBOX_Fisico[i]:='cycles=max 105%';
-
-    if Pos('ipx=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-      if check_single.Checked = True then
-      Arquivo_DOSBOX_Fisico[i]:='ipx=false'
-      else
-      Arquivo_DOSBOX_Fisico[i]:='Enable=1'    +#13#10+
-                                'Connection=1'+#13#10+
-                                'ipx=true';
-    end;
-    if Pos('prebuffer=',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    Arquivo_DOSBOX_Fisico[i]:='prebuffer=20';
-
-    if Pos('[autoexec]',Arquivo_DOSBOX_Fisico[i]) = 1 then
-    begin
-     //-------------------------------------
-     {DEBUG MODE}
-     //-------------------------------------
-     if menu_debug.Checked = False then
-     Arquivo_DOSBOX_Fisico.Add('@ECHO OFF');
-     //-------------------------------------
-
-     if DirectoryExists(ExtractFilePath(Arq_DosBox)) then
-     Arquivo_DOSBOX_Fisico.Add('mount c "'+ExtractFilePath(Arq_DosBox)+'"')
-     else
-     begin
-     MessageBox(Application.Handle,pchar(Lang_DGL(8)+':'+#13#13+ExtractFilePath(Arq_DosBox)),pchar(Application.Title),MB_ICONERROR+MB_OK);
-      //--------------------------------
-      {DEBUG MODE}
-      //--------------------------------
-      if menu_debug.Checked = False then
-      Exit;
-      //--------------------------------
-     end;
-
-     {WARCRAFT II}
-     if (id = 11) then
-     Arquivo_DOSBOX_Fisico.Add('mount d "'+ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'" -t cdrom');
-     Arquivo_DOSBOX_Fisico.Add('c:');
-
-      //--------------------------------
-      {DEBUG MODE}
-      //--------------------------------
-      if menu_debug.Checked = False then
-      Arquivo_DOSBOX_Fisico.Add('cls');
-      //--------------------------------
-
-      {CONEXÃO IPXNET}
-      //----------------------------------------------------------------------------------------------
-      if check_servidor.Checked = True then
-      Arquivo_DOSBOX_Fisico.Add('ipxnet startserver'+' '+Trim(ip_porta.Text));
-      if check_cliente.Checked = True then
-      Arquivo_DOSBOX_Fisico.Add('ipxnet connect'    +' '+Trim(ip_local.Text)+' '+Trim(ip_porta.Text));
-      //----------------------------------------------------------------------------------------------
-
-      case id of
-        1: begin
-             if FileExists(Caminho_Global+'game.ins') then
-             Arquivo_DOSBOX_Fisico.Add('imgmount D game.ins -t iso');
-           end;
-        2: begin
-             if FileExists(Caminho_Global+'const.gog') then
-             Arquivo_DOSBOX_Fisico.Add('imgmount d "const.gog" -t iso -fs iso');
-           end;
-       10: begin
-             if FileExists(Caminho_Global+'GAME.DAT') then
-             Arquivo_DOSBOX_Fisico.Add('imgmount d "..\GAME.DAT" -t iso');
-           end;
-      end;
-
-      {MÉTODO DA STEAM}
-      //--------------------------------------------------------------------
-      if (id = 1) or (id = 5) or (id = 10) then
-      begin
-
-        {SINGLE PLAYER}
-        if (check_single.Checked = True) then
-        begin
-        Seleciona_Fases;
-
-          //----------------------
-          if Fecha_ESC = True then
-          Exit;
-          //----------------------
-
-          {DUKE NUKEM 3D - SHADOW WARRIOR}
-          if (id = 5) or (id = 10) then
-          VarParametro_Global:=' '+Map_Global;
-
-          {SHADOW WARRIOR}
-          if (id = 10) then
-          begin
-            //INÍCIO - CASE
-            case EPI_Global_DLC of
-            0,1: Arquivo_DOSBOX_Fisico.Add('@COPY sw.dat sw.exe');
-              2: Arquivo_DOSBOX_Fisico.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
-              3: begin
-                 Game_EXE_Global:=SW_DLC_Archive(2);
-                   if (SW_DLC_Archive(2) = 'sw.exe') then
-                   Arquivo_DOSBOX_Fisico.Add('cd dragon');
-                 end;
-                 //------------------------------------------------------------------------
-                 {DEBUG MODE - DEATHMATCH SINGLE PLAYER}
-                 //------------------------------------------------------------------------
-              4: begin
-                   case CAP_Global_DLC of
-                     0..5: Arquivo_DOSBOX_Fisico.Add('@COPY sw.dat sw.exe');
-                     6..9: Arquivo_DOSBOX_Fisico.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
-                   10..12: begin
-                           Game_EXE_Global:=SW_DLC_Archive(2);
-                             if (SW_DLC_Archive(2) = 'sw.exe') then
-                             Arquivo_DOSBOX_Fisico.Add('cd dragon');
-                           end;
-                   end;
-                 end;
-                 //------------------------------------------------------------------------
-            end;
-            //FIM - CASE
-          end;
-
-        end
-        {MULTIPLAYER}
-        else
-        begin
-
-          {SHADOW WARRIOR - DLC´s}
-          if (id = 10) then
-          begin
-          Application.CreateForm(TForm2_DLC, Form2_DLC);
-          Form2_DLC.ShowModal;
-          Form2_DLC.Free;
-
-            //----------------------
-            if Fecha_ESC = True then
-            Exit;
-            //----------------------
-
-            case EPI_Global_DLC of
-              1: Arquivo_DOSBOX_Fisico.Add('@COPY sw.dat sw.exe');
-              2: Arquivo_DOSBOX_Fisico.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
-            end;
-
-          end;
-
-        //------------------------------------------------------------
-        {ARQUIVO COMMIT.DAT}
-        //------------------------------------------------------------
-        Arquivo_COMMIT:=TStringList.Create;
-        Arquivo_COMMIT.LoadFromFile(Caminho_Global+'commit.dat');
-
-          {BLOOD - SE FOR O ARQUIVO ORIGINAL}
-          if Arquivo_COMMIT[24] = '; - GAMECONNECTION - 4' then
-          Arquivo_COMMIT.Delete(24);
-
-        Arquivo_COMMIT[26]:='NUMPLAYERS = '+cont_player.Text;
-
-          {SHADOW WARRIOR - TWIN DRAGON}
-          if (id = 10) and (EPI_Global_DLC = 3) then
-          Arquivo_COMMIT[33]:='LAUNCHNAME = "'+SW_DLC_Archive(2)+'"'
-          else
-          Arquivo_COMMIT[33]:='LAUNCHNAME = "'+Array_Games[id][5]+'"';
-
-        Arquivo_COMMIT.SaveToFile(Caminho_Global+'commit.dat');
-        Arquivo_COMMIT.Free;
-        //------------------------------------------------------------
-                     
-        end;
-
-        //-----------------------------------------------------------------------------------------------------
-        {DEBUG MODE - "VarParametros_Global"}
-        //-----------------------------------------------------------------------------------------------------
-        if (menu_debug.Checked = True) and (check_single.Checked = True) then
-        MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-        //-----------------------------------------------------------------------------------------------------
-
-        //------------------------------------------------------------------------------------------------------
-        {DEBUG MODE - MULTIPLAYER}
-        //------------------------------------------------------------------------------------------------------
-        if (check_single.Checked = False) and (menu_debug.Checked = True) then
-        begin
-          {SHADOW WARRIOR - TWIN DRAGON}
-          if (id = 10) and (EPI_Global_DLC = 3) then
-          begin
-            if (SW_DLC_Archive(2) = 'sw.exe') then
-            begin
-            Arquivo_DOSBOX_Fisico.Add('cd dragon');
-            Game_EXE_Global:='setup.exe';
-            end
-            else
-            begin
-            MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(6)),MB_ICONINFORMATION+MB_OK);
-            Game_EXE_Global:='commit.exe';
-            end;
-          end
-          else
-          begin
-            {BLOOD - CRYPTIC PASSAGE - SETUP}
-            if FileExists(Caminho_Global+'cryptic.exe') then
-            Game_EXE_Global:='cpmulti.exe'
-            else
-            Game_EXE_Global:='setup.exe';
-          end;
-        end;
-        //------------------------------------------------------------------------------------------------------
-        Arquivo_DOSBOX_Fisico.Add('nolfblim.com');
-                                    
-        if (RxControle.StateOn = True) then
-        Arquivo_DOSBOX_Fisico.Add('BMOUSE.EXE LAUNCH '+Game_EXE_Global+VarParametro_Global)
-        else
-        Arquivo_DOSBOX_Fisico.Add(Game_EXE_Global+VarParametro_Global);
-
-      end
-      else
-      {EXECUTÁVEL DO JOGO + PARAMETROS}
-      //--------------------------------------------------------------------
-      Arquivo_DOSBOX_Fisico.Add(Game_EXE_Global+VarParametro_Global);
-      //--------------------------------------------------------------------
-
-      {DEBUG MODE}
-      //---------------------------------
-      if menu_debug.Checked = False then
-      Arquivo_DOSBOX_Fisico.Add('Exit.');
-      //---------------------------------
-
-    end; //FIM - IF POS
-
- end; //FIM - FOR
-
-//------------------------------------------------------------------------------
-Arquivo_DOSBOX_Fisico.SaveToFile(Arq_DosBox);
-Arquivo_DOSBOX_Fisico.Free;
-//------------------------------------------------------------------------------
 end;
 
-{CLIENTE - CONTAGEM PRA INICIAR}
 //---------------------------------------------------------------------
-if (check_cliente.Checked = True) and (menu_debug.Checked = False) then
+// CLIENTE - CONTAGEM PRA INICIAR
+//---------------------------------------------------------------------
+if check_cliente.Checked and (not menu_debug.Checked) then
 Contagem_Iniciar;
+
 //---------------------------------------------------------------------
+// ZDOOM
+//---------------------------------------------------------------------
+if (Array_Games[id][7] = 'ZDOOM') then
+begin
+  VarParametro_Global := '';
 
- {ZDOOM}
- if (Array_Games[id][7] = 'ZDOOM') then
- begin
+  //--------------------------------------------------
+  // SINGLE PLAYER
+  //--------------------------------------------------
+  if check_single.Checked then
+  begin
+    Seleciona_Fases;
+    if Fecha_ESC then Exit;
 
-   //---------------------------------
-   {SINGLE PLAYER}
-   //---------------------------------
-   if check_single.Checked = True then
-   begin
-   Seleciona_Fases;
+    VarParametro_Global := ' +map ' + Map_Global;
+  end;
 
-     //----------------------
-     if Fecha_ESC = True then
-     Exit;
-     //----------------------
+  //--------------------------------------------------
+  // SERVIDOR
+  //--------------------------------------------------
+  if check_servidor.Checked then
+  begin
+  Arquivo_INI.WriteString('DOS','PORT_SERVER_'+Array_Games[id][7], ip_porta.Text);
 
-   VarParametro_Global:=' +map '+Map_Global;
-   end;
-   //---------------------------------
+  Seleciona_Fases;
 
-   //----------------------------------------------------------------------------------------------------------
-   {SERVIDOR - INICIO}
-   //----------------------------------------------------------------------------------------------------------
-   if check_servidor.Checked = True then
-   begin
-   //-----------------------------------------------------------------------------
-   Arquivo_INI.WriteString('DOS','PORT_SERVER_'+Array_Games[id][7],ip_porta.Text);
-   //-----------------------------------------------------------------------------
-   Seleciona_Fases;
+    if Fecha_ESC then
+    Exit;
 
-     //----------------------
-     if Fecha_ESC = True then
-     Exit;
-     //----------------------
+    if menu_debug.Checked then
+    begin
+      case PT_MessageDlg(Lang_DGL(23), Lang_DGL(22), mtCustom, [mbYes,mbNo], 0) of
+        6: Modo_Game := 1;
+        7: Modo_Game := StrToIntDef(Form1_DGL.cont_player.Text, 2);
+      end;
+    end
+    else
+    begin
+    Modo_Game := StrToIntDef(Form1_DGL.cont_player.Text, 2);
 
-     //--------------------------------------------------------------------------
-     {DEBUG MODE - SIMULAR MULTIPLAYER}
-     //--------------------------------------------------------------------------
-     if menu_debug.Checked = True then
-     begin
-     Modo_Game:=0;
-       case PT_MessageDlg(Lang_DGL(23),Lang_DGL(22),mtCustom,[mbYes,mbNo],0) of
-       6: Modo_Game:=1;
-       7: Modo_Game:=StrToInt(Form1_DGL.cont_player.Text);
-       end;
-     end
-     else
-     begin
-     Modo_Game:=StrToInt(Form1_DGL.cont_player.Text);
+    IMG_STATUS.Picture := nil;
+    Lista_Imagens.GetBitmap(2, IMG_STATUS.Picture.Bitmap);
+    StatusBar1.Panels[1].Text := Lang_DGL(9);
+    end;
 
-     IMG_STATUS.Picture:=Nil;
-     Lista_Imagens.GetBitmap(2,IMG_STATUS.Picture.Bitmap);
-     StatusBar1.Panels[1].Text:=Lang_DGL(9);
-     end;
-     //--------------------------------------------------------------------------
+    VarParametro_Global :=
+      ' -host ' + IntToStr(Modo_Game) +
+      DoomDM_Global +
+      ' -port ' + Trim(ip_porta.Text) +
+      ' +map ' + Map_Global;
+  end;
 
-   VarParametro_Global:=' -host '+IntToStr(Modo_Game)+DoomDM_Global+' -port '+Trim(ip_porta.Text)+' +map '+Map_Global;
-   end; //FIM - SERVIDOR
-   //----------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------
+  // CLIENTE
+  //--------------------------------------------------
+  if check_cliente.Checked then
+  begin
+    VarParametro_Global :=
+      ' -join ' + Trim(ip_local.Text) +
+      ' -port ' + Trim(ip_porta.Text);
+  end;
 
-   //--------------------------------------------------------------------------
-   {CLIENTE}
-   //--------------------------------------------------------------------------
-   if check_cliente.Checked = True then
-   VarParametro_Global:=' -join '+Trim(ip_local.Text)+' + -port '+Trim(ip_porta.Text);
-   //--------------------------------------------------------------------------
+  //--------------------------------------------------
+  // DEBUG INFO
+  //--------------------------------------------------
+  if menu_debug.Checked then
+  MessageBox(Application.Handle, PChar(VarParametro_Global), PChar(Lang_DGL(23)), MB_ICONINFORMATION+MB_OK);
 
-   //----------------------------------------------------------------------------------------------
-   {DEBUG MODE}
-   //----------------------------------------------------------------------------------------------
-   if (menu_debug.Checked = True) then
-   MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-   //----------------------------------------------------------------------------------------------
+  //--------------------------------------------------
+  // EXECUÇÃO
+  //--------------------------------------------------
+  ShellExecute(Handle,'open',PChar(ZDoom_EXE_Global),
+  PChar(
+    ' -iwad ' + Game_EXE_Global +     // <- ESSENCIAL
+    ' ' + DoomSkin_Global +
+    ' ' + DoomMod_Global +
+    ' -config ' + Array_Games[id][6] +
+    VarParametro_Global
+  ),
+  PChar(ExtractFilePath(Config_Game_Global)),SW_NORMAL);
 
- //-------------------------------------------------------------------------------------------------------
- ShellExecute(Handle,'open',pchar(ZDoom_EXE_Global)
-                           ,pchar(Game_EXE_Global+' '+DoomSkin_Global+' '+DoomMod_Global+' -config '+Array_Games[id][6]+VarParametro_Global)
-                           ,pchar(ExtractFilePath(Config_Game_Global)),SW_NORMAL);
- //-------------------------------------------------------------------------------------------------------
- end;
+end;
 
-{FICA AQUI POR CAUSA DO ZDOOM}
-//-----------------------------
-Config_Tela(False);
-btn_start.Caption:=Lang_DGL(5);
-//-----------------------------
 
  {SPASM}
  if (Array_Games[id][7] = 'SPASM') then
@@ -1397,6 +1124,13 @@ btn_start.Caption:=Lang_DGL(5);
    //--------------------------------------------------------------------------------------------
 
  end;
+
+
+//---------------------------------------------------------------------
+// FINALIZAÇÃO DO START
+//---------------------------------------------------------------------
+Config_Tela(False);
+btn_start.Caption := Lang_DGL(5);
 
 img_game.Visible:=False;
 gif_dos.Visible:=True;
