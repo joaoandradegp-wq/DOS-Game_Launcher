@@ -2,7 +2,11 @@ unit DOSBOX_Executor;
 
 interface
 
-uses Classes, SysUtils, Windows, Forms, Funcoes, Language, Unit1;
+uses Classes, SysUtils, Windows, Forms, Funcoes, Language, dosbox_bind,Unit1, ShellAPI, dialogs;
+
+type
+  TAddAutoExecProc = procedure(const S: string);
+
 
 //------------------------------------------------------------------------------
 // EXECUTOR PRINCIPAL
@@ -10,18 +14,21 @@ uses Classes, SysUtils, Windows, Forms, Funcoes, Language, Unit1;
 procedure ExecutaJogoDOSBOX(
   id: Integer;
   SinglePlayer: Boolean;
-  DebugMode: Boolean;
-  UsaMouseWrapper: Boolean;
+  Debug: Boolean;
+  MouseOn: Boolean;
+
   CaminhoJogo: string;
   CaminhoExe: string;
-  var GameExe: string;
-  var Parametros: string;
-  PortaIPX: string;
-  IPRemoto: string;
-  IniciarServidor: Boolean;
-  IniciarCliente: Boolean;
-  NumJogadores: string;
-  Linhas: TStrings
+  GameExe: string;
+  Parametros: string;
+
+  IP_Porta: string;
+  IP_Local: string;
+  Servidor: Boolean;
+  Cliente: Boolean;
+  NumPlayers: string;
+
+  Arq_DosBox: string
 );
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -59,40 +66,50 @@ AutoExecWriter('cd "' + CaminhoExe + '"');
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AUTOEXEC_Blood(SinglePlayer: Boolean;DebugMode: Boolean;CaminhoExe: string;var GameExe: string;NumJogadores: string);
+procedure AUTOEXEC_Blood(
+  Linhas: TStringList;
+  var PosAutoExec: Integer;
+  SinglePlayer: Boolean;
+  DebugMode: Boolean;
+  CaminhoExe: string;
+  var GameExe: string;
+  NumJogadores: string);
 var
-Arquivo_COMMIT: TStringList;
+  Arquivo_COMMIT: TStringList;
 begin
-
+  // MULTIPLAYER CONFIG
   if not SinglePlayer then
   begin
-  Arquivo_COMMIT := TStringList.Create;
-
+    Arquivo_COMMIT := TStringList.Create;
     try
-    Arquivo_COMMIT.LoadFromFile(CaminhoExe + 'commit.dat');
-
-      if Arquivo_COMMIT[24] = '; - GAMECONNECTION - 4' then
-      Arquivo_COMMIT.Delete(24);
-
-    Arquivo_COMMIT[26] := 'NUMPLAYERS = ' + NumJogadores;
-    Arquivo_COMMIT[33] := 'LAUNCHNAME = "' + GameExe + '"';
-
-    Arquivo_COMMIT.SaveToFile(CaminhoExe + 'commit.dat');
+      Arquivo_COMMIT.LoadFromFile(CaminhoExe + 'commit.dat');
+      Arquivo_COMMIT.Values['NUMPLAYERS'] := NumJogadores;
+      Arquivo_COMMIT.Values['LAUNCHNAME'] := '"' + GameExe + '"';
+      Arquivo_COMMIT.SaveToFile(CaminhoExe + 'commit.dat');
     finally
-    Arquivo_COMMIT.Free;
+      Arquivo_COMMIT.Free;
     end;
-
   end;
 
+  // DEBUG MULTIPLAYER
   if (not SinglePlayer) and DebugMode then
   begin
     if FileExists(CaminhoExe + 'cryptic.exe') then
-    GameExe := 'cpmulti.exe'
+      GameExe := 'cpmulti.exe'
     else
-    GameExe := 'setup.exe';
+      GameExe := 'setup.exe';
   end;
 
+  // ESCREVE NO AUTOEXEC
+  Linhas.Insert(PosAutoExec, 'echo Iniciando Blood...');
+  Inc(PosAutoExec);
+
+  Linhas.Insert(PosAutoExec, GameExe);
+  Inc(PosAutoExec);
 end;
+
+
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure AUTOEXEC_Duke3D(SinglePlayer: Boolean;DebugMode: Boolean;CaminhoExe: string;var GameExe: string;var Parametros: string;NumJogadores: string);
@@ -208,143 +225,106 @@ end;
 procedure ExecutaJogoDOSBOX(
   id: Integer;
   SinglePlayer: Boolean;
-  DebugMode: Boolean;
-  UsaMouseWrapper: Boolean;
+  Debug: Boolean;
+  MouseOn: Boolean;
+
   CaminhoJogo: string;
   CaminhoExe: string;
-  var GameExe: string;
-  var Parametros: string;
-  PortaIPX: string;
-  IPRemoto: string;
-  IniciarServidor: Boolean;
-  IniciarCliente: Boolean;
-  NumJogadores: string;
-  Linhas: TStrings
+  GameExe: string;
+  Parametros: string;
+
+  IP_Porta: string;
+  IP_Local: string;
+  Servidor: Boolean;
+  Cliente: Boolean;
+  NumPlayers: string;
+
+  Arq_DosBox: string
 );
 var
-  SW_ExeDLC: string;
-  SW_ArquivoCOPY: string;
-  i, idx: Integer;
-  PosAutoExec: Integer;
-  AutoExecExiste: Boolean;
+Arquivo_DOSBOX_Fisico: TStringList;
+i: Integer;
 begin
-PosAutoExecGlobal := PosAutoExec; // índice calculado anteriormente
-LinhasGlobal := Linhas;
-AutoExecWriter := WriteAutoExecGlobal;
+  //--------------------------------------------------
+  // 0) GARANTE CONF BASE
+  //--------------------------------------------------
+  if not FileExists(Arq_DosBox) then
+    CopyFile(
+      PChar(ExtractFilePath(DosBox_EXE_Global) + 'dosbox-0.74.conf'),
+      PChar(Arq_DosBox),
+      False
+    );
 
+  Arquivo_DOSBOX_Fisico := TStringList.Create;
+  try
+    //--------------------------------------------------
+    // 1) CARREGA CONF
+    //--------------------------------------------------
+    Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
+
+for i := 0 to Arquivo_DOSBOX_Fisico.Count - 1 do
+begin
+  //--------------------------------------------------
+  // APLICA CONFIGURAÇÕES DO DOSBOX + JOGO
+  //--------------------------------------------------
+  AplicaDOSBOX_Tudo(
+    i,
+    Arquivo_DOSBOX_Fisico,
+    id,
+    SinglePlayer,
+    Debug,
+    MouseOn,
+    Trim(player_name.Text),
+    NumPlayers
+  );
 
   //--------------------------------------------------
-// GARANTE [autoexec] LIMPO E POSIÇÃO CORRETA
-//--------------------------------------------------
-PosAutoExec := -1;
-
-
-for i := 0 to Linhas.Count - 1 do
-  if Trim(Linhas[i]) = '[autoexec]' then
+  // AUTOEXEC ORIGINAL
+  //--------------------------------------------------
+  if Pos('[autoexec]', Arquivo_DOSBOX_Fisico[i]) = 1 then
   begin
-    // limpa conteúdo existente
-    idx := i + 1;
-    while (idx < Linhas.Count) and (Trim(Linhas[idx]) <> '') do
-      Linhas.Delete(idx);
+    if Debug = False then
+      Arquivo_DOSBOX_Fisico.Add('@ECHO OFF');
 
-    PosAutoExec := i + 1; // posição correta após limpar
+    if DirectoryExists(ExtractFilePath(Arq_DosBox)) then
+      Arquivo_DOSBOX_Fisico.Add(
+        'mount c "' + ExtractFilePath(Arq_DosBox) + '"'
+      )
+    else
+      Exit;
+
+    Arquivo_DOSBOX_Fisico.Add('SET BLASTER=A220 I7 D1 H5 T6');
+    Arquivo_DOSBOX_Fisico.Add('C:');
+
+    if Parametros <> '' then
+      Arquivo_DOSBOX_Fisico.Add(GameExe + ' ' + Parametros)
+    else
+      Arquivo_DOSBOX_Fisico.Add(GameExe);
+
+    Arquivo_DOSBOX_Fisico.Add('exit');
+
     Break;
   end;
-
-if PosAutoExec = -1 then
-begin
-  AutoExecWriter('');
-  AutoExecWriter('[autoexec]');
-  PosAutoExec := Linhas.Count;
 end;
 
-  //--------------------------------------------------
-  // SCRIPT DOSBOX
-  //--------------------------------------------------
-  if not DebugMode then
-    AutoExecWriter('@ECHO OFF');
 
-  if not DirectoryExists(CaminhoExe) then
-    Exit;
+    //--------------------------------------------------
+    // 3) SALVA CONF
+    //--------------------------------------------------
+    Arquivo_DOSBOX_Fisico.SaveToFile(Arq_DosBox);
 
-  AutoExecWriter('mount c "' + CaminhoExe + '"');
-
-  if id = 11 then
-    AutoExecWriter('mount d "' + CaminhoJogo + '" -t cdrom');
-
-  AutoExecWriter('c:');
-
-  if not DebugMode then
-    AutoExecWriter('cls');
-
-  //--------------------------------------------------
-  // REDE IPX
-  //--------------------------------------------------
-  if not SinglePlayer then
-  begin
-    if IniciarServidor then
-      AutoExecWriter('ipxnet startserver ' + PortaIPX);
-
-    if IniciarCliente then
-      AutoExecWriter('ipxnet connect ' + IPRemoto + ' ' + PortaIPX);
+  finally
+    Arquivo_DOSBOX_Fisico.Free;
   end;
 
   //--------------------------------------------------
-  // IMGMOUNT ESPECÍFICOS
+  // 4) EXECUTA DOSBOX
   //--------------------------------------------------
-  case id of
-    1: if FileExists(CaminhoExe + 'game.ins') then
-         AutoExecWriter('imgmount d game.ins -t iso');
-
-    2: if FileExists(CaminhoExe + 'const.gog') then
-         AutoExecWriter('imgmount d "const.gog" -t iso -fs iso');
-
-   10: if FileExists(CaminhoExe + 'GAME.DAT') then
-         AutoExecWriter('imgmount d "..\GAME.DAT" -t iso');
-  end;
-
-  //------------------------------------------------------
-  // BUILD ENGINE PIPELINE
-  //------------------------------------------------------
-  if id in [1,5,10] then
-  begin
-    if SinglePlayer then
-    begin
-      Seleciona_Fases;
-      if Fecha_ESC then Exit;
-
-      if id in [5,10] then
-        Parametros := ' ' + Map_Global;
-    end;
-
-    AUTOEXEC_BuildEngine_Base(CaminhoExe, SinglePlayer, Parametros, Linhas);
-
-    SW_ExeDLC := SW_DLC_Archive(2);
-    SW_ArquivoCOPY := SW_DLC_Archive(1);
-
-    case id of
-      1: AUTOEXEC_Blood(SinglePlayer, DebugMode, CaminhoExe, GameExe, NumJogadores);
-      5: AUTOEXEC_Duke3D(SinglePlayer, DebugMode, CaminhoExe, GameExe, Parametros, NumJogadores);
-     10: AUTOEXEC_ShadowWarrior(Linhas, SinglePlayer, DebugMode, CaminhoJogo, GameExe, Parametros, NumJogadores, SW_ExeDLC, SW_ArquivoCOPY);
-    end;
-
-    if DebugMode and SinglePlayer then
-      MessageBox(Application.Handle, pchar(Parametros), pchar(Lang_DGL(23)), MB_ICONINFORMATION+MB_OK);
-
-    AutoExecWriter('nolfblim.com');
-
-    if UsaMouseWrapper then
-      AutoExecWriter('BMOUSE.EXE LAUNCH ' + GameExe + Parametros)
-    else
-      AutoExecWriter(GameExe + Parametros);
-  end
-  else
-    AutoExecWriter(GameExe + Parametros);
-
-  if not DebugMode then
-    AutoExecWriter('exit');
+  ShellExecute(0,'open',PChar(DosBox_EXE_Global),PChar('-conf "' + Arq_DosBox + '"'),PChar(ExtractFilePath(Arq_DosBox)),SW_SHOWNORMAL);
 
 end;
+
+
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

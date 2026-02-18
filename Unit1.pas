@@ -205,7 +205,7 @@ Array_Games: Array[1..13] of Campos =
 (  {1}  {2}                                      {3}                {4}              {5}              {6}                   {7}      {8}
   ('01','Blood - One Unit Whole Blood'          ,'DOS\BLOOD\'      ,'commit.exe'    ,'cryptic.exe'   ,'BLOOD.cfg'          ,'DOSBOX','213' ),
   ('02','Constructor'                           ,'DOS\CONSTRUCTOR\','game.exe'      ,'game.exe'      ,'SETTINGS\SYSTEM.ini','DOSBOX','213' ),
-  ('03','DooM - The Ultimate DooM'              ,'DOS\DOOM\'       ,'doom.wad'      ,'doom.wad'      ,'doom.ini '          ,'ZDOOM' ,'5029'),
+  ('03','DooM - The Ultimate DooM'              ,'DOS\DOOM\'       ,'doom.wad'      ,'doom.wad'      ,'doom.ini'           ,'ZDOOM' ,'5029'),
   ('04','DooM II - Hell on Earth'               ,'DOS\DOOM2\'      ,'doom2.wad'     ,'doom2.wad'     ,'doom2.ini'          ,'ZDOOM' ,'5029'),
   ('05','Duke Nukem 3D - Atomic Edition'        ,'DOS\DUKE3D\'     ,'commit.exe'    ,'duke3d.exe'    ,'duke3d.cfg'         ,'DOSBOX','213' ),
   ('06','Heretic - Shadow of the Serpent Riders','DOS\HERETIC\'    ,'heretic.wad'   ,'heretic.wad'   ,'Heretic.ini'        ,'ZDOOM' ,'5029'),
@@ -875,21 +875,52 @@ case id of
            finally
            Arquivo_DOSBOX_Fisico.Free;
            end;
-           
+
+             Arq_DosBox := ExtractFilePath(Application.ExeName) + Array_Games[id][3] + LowerCase(ExtractName(Game_EXE_Global)) + '_dosbox.conf';
+
+
+
+
+             ExecutaJogoDOSBOX(
+               id,
+               check_single.Checked,
+               menu_debug.Checked,
+               RxControle.StateOn,
+
+               ExtractFilePath(Game_EXE_Global),   // CaminhoJogo
+               Game_EXE_Global,                    // CaminhoExe
+               Array_Games[id][5],                 // GameExe
+               VarParametro_Global,                // Parametros
+
+               ip_porta.Text,
+               ip_local.Text,
+               check_servidor.Checked,
+               check_cliente.Checked,
+               cont_player.Text,
+
+               Arq_DosBox);
+
            end;
 
    //------------------------------------------------------------------------------
    {QUAKE}
    //------------------------------------------------------------------------------
    8: begin
-      AplicaQuake(id, RxDM.StateOn);
-      //----------------------------------------------------------------------
-      {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
-      //----------------------------------------------------------------------
-        if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
-        MessageBox(Application.Handle,
-                   pchar(VarParametro_Global+#13#13+Map_Global),
-                   pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+        try
+        AplicaQuake(id, RxDM.StateOn);
+          //--------------------------------------------------------------------
+          {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
+          //--------------------------------------------------------------------
+          if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
+          MessageBox(Application.Handle,
+                     pchar(VarParametro_Global+#13#13+Map_Global),
+                     pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+          //--------------------------------------------------------------------
+          finally
+          ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
+                                    ,pchar(VarParametro_Global)
+                                    ,pchar(Caminho_Global),SW_NORMAL);
+          end;
       end;
    //------------------------------------------------------------------------------
 
@@ -922,10 +953,19 @@ case id of
 
 end;
 
+
+
+
+
+
+
+                 {
 if (Array_Games[id][7] = 'DOSBOX') then
 begin
 Arq_DosBox := ExtractFilePath(Application.ExeName) + Array_Games[id][3] + LowerCase(ExtractName(Game_EXE_Global)) + '_dosbox.conf';
 
+
+showmessage(Arq_DosBox);
   // cria o conf base se ainda não existir
   if not FileExists(Arq_DosBox) then
   CopyFile(PChar(ExtractFilePath(DosBox_EXE_Global) + 'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
@@ -979,12 +1019,59 @@ Linhas := TStringList.Create;
   end;
 
 end;
+            }
+
+
 
 //---------------------------------------------------------------------
 // CLIENTE - CONTAGEM PRA INICIAR
 //---------------------------------------------------------------------
 if check_cliente.Checked and (not menu_debug.Checked) then
 Contagem_Iniciar;
+
+                           {
+if (Array_Games[id][7] = 'DOSBOX') then
+ begin
+
+   //--------------------------------------------------------------------------------------------
+   {DEBUG MODE
+   //--------------------------------------------------------------------------------------------
+   if menu_debug.Checked = False then
+   begin
+   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
+                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
+                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+
+     //----------------------------------------------------------------
+     if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
+     begin
+     Sleep(1000);
+     Centraliza_Janela('SDL_app');
+
+       if (id = 11) then
+       begin
+       Sleep(4000);
+       keybd_event(VK_RETURN,0,0,0);
+       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
+       Sleep(1000);
+       keybd_event(VK_RETURN,0,0,0);
+       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
+       end;
+
+     Sleep(500);
+     Setup_Teclas(id);
+     Sleep(500);
+     Tela_Cheia;
+     end;
+     //----------------------------------------------------------------
+   end
+   else
+   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
+                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
+                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+   //--------------------------------------------------------------------------------------------
+
+ end;     }
 
 //---------------------------------------------------------------------
 // ZDOOM
@@ -1069,61 +1156,6 @@ begin
   PChar(ExtractFilePath(Config_Game_Global)),SW_NORMAL);
 
 end;
-
-
- {SPASM}
- if (Array_Games[id][7] = 'SPASM') then
- begin
-   {QUAKE}
-   if (id = 8) then
-   ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
-                             ,pchar(VarParametro_Global)
-                             ,pchar(Caminho_Global),SW_NORMAL);
- end;
-
- {DOSBOX}
- if (Array_Games[id][7] = 'DOSBOX') then
- begin
-
-   //--------------------------------------------------------------------------------------------
-   {DEBUG MODE}
-   //--------------------------------------------------------------------------------------------
-   if menu_debug.Checked = False then
-   begin
-   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
-                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
-                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
-
-     //----------------------------------------------------------------
-     if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
-     begin
-     Sleep(1000);
-     Centraliza_Janela('SDL_app');
-
-       if (id = 11) then
-       begin
-       Sleep(4000);
-       keybd_event(VK_RETURN,0,0,0);
-       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-       Sleep(1000);
-       keybd_event(VK_RETURN,0,0,0);
-       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-       end;
-
-     Sleep(500);
-     Setup_Teclas(id);
-     Sleep(500);
-     Tela_Cheia;
-     end;
-     //----------------------------------------------------------------
-   end
-   else
-   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
-                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
-                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
-   //--------------------------------------------------------------------------------------------
-
- end;
 
 
 //---------------------------------------------------------------------

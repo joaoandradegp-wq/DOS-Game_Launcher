@@ -17,7 +17,8 @@ uses
   DOSBOX_Bind in 'DOSBOX_Bind.pas',
   NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas',
   ZDOOM_Bind in 'ZDOOM_Bind.pas',
-  DOSBOX_Executor in 'DOSBOX_Executor.pas';
+  DOSBOX_Executor in 'DOSBOX_Executor.pas',
+  DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas';
 
 {$R *.res}
 

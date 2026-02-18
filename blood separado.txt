@@ -1,0 +1,592 @@
+----------------------
+Blood.cfg
+----------------------
+{PADRÃO FIXO MOUSE - BLOOD}
+ID_MouseAnalogX = 8112;
+ID_MouseAnalogY = 20312;
+
+Config_Game_Global = blood.cfg
+//--------------------------------------------------------
+                 //BLOOD - TECLADO
+                 //--------------------------------------------------------
+                 if (id = 1) then
+                 begin
+                   if Pos('Move_Forward = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Move_Forward = "Up" "N/A"';
+                   if Pos('Move_Backward = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Move_Backward = "Down" "N/A"';
+                   if Pos('Turn_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Left = "Left" "N/A"';
+                   if Pos('Turn_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Right = "Right" "N/A"';
+                   if Pos('Turn_Around = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Around = "N/A" "N/A"';
+                   if Pos('Strafe = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe = "LAlt" "RAlt"';
+                   if Pos('Strafe_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe_Left = "N/A" "N/A"';
+                   if Pos('Strafe_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe_Right = "N/A" "N/A"';
+                   if Pos('Jump = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Jump = "A" "N/A"';
+                   if Pos('Crouch = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Crouch = "Z" "N/A"';
+                   if Pos('Run = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Run = "LShift" "RShift"';
+                   if Pos('AutoRun = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='AutoRun = "CapLck" "N/A"';
+                   if Pos('Open = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Open = "Space" "N/A"';
+                   if Pos('Weapon_Fire = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_Fire = "LCtrl" "RCtrl"';
+                   if Pos('Weapon_Special_Fire = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_Special_Fire = "X" "N/A"';
+                   if Pos('Aim_Up = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Up = "N/A" "N/A"';
+                   if Pos('Aim_Down = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Down = "N/A" "N/A"';
+                   if Pos('Aim_Center = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Center = "N/A" "N/A"';
+                   if Pos('Look_Up = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Look_Up = "N/A" "N/A"';
+                   if Pos('Look_Down = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Look_Down = "N/A" "N/A"';
+                   if Pos('Tilt_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Tilt_Left = "N/A" "N/A"';
+                   if Pos('Tilt_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Tilt_Right = "N/A" "N/A"';
+                   if Pos('Weapon_1 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_1 = "1" "N/A"';
+                   if Pos('Weapon_2 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_2 = "2" "N/A"';
+                   if Pos('Weapon_3 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_3 = "3" "N/A"';
+                   if Pos('Weapon_4 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_4 = "4" "N/A"';
+                   if Pos('Weapon_5 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_5 = "5" "N/A"';
+                   if Pos('Weapon_6 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_6 = "6" "N/A"';
+                   if Pos('Weapon_7 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_7 = "7" "N/A"';
+                   if Pos('Weapon_8 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_8 = "8" "N/A"';
+                   if Pos('Weapon_9 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_9 = "9" "N/A"';
+                   if Pos('Weapon_10 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_10 = "0" "N/A"';
+                   if Pos('Inventory_Use = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Use = "Enter" "N/A"';
+                   if Pos('Inventory_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Left = "[" "N/A"';
+                   if Pos('Inventory_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Right = "]" "N/A"';
+                   if Pos('Map_Toggle = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Map_Toggle = "Tab" "N/A"';
+                   if Pos('Map_Follow_Mode = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Map_Follow_Mode = "F" "N/A"';
+                   if Pos('Shrink_Screen = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Shrink_Screen = "-" "N/A"';
+                   if Pos('Enlarge_Screen = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Enlarge_Screen = "=" "N/A"';
+                   if Pos('Send_Message = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Send_Message = "T" "N/A"';
+                   if Pos('See_Coop_View = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='See_Coop_View = "K" "N/A"';
+                   if Pos('See_Chase_View = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='See_Chase_View = "F7" "N/A"';
+                   if Pos('Mouse_Aiming = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Mouse_Aiming = "U" "N/A"';
+                   if Pos('Toggle_Crosshair = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Toggle_Crosshair = "I" "N/A"';
+                   if Pos('Next_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Next_Weapon = "N/A" "N/A"';
+                   if Pos('Previous_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Previous_Weapon = "N/A" "N/A"';
+                   if Pos('Holster_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Holster_Weapon = "N/A" "N/A"';
+                   if Pos('Show_Opponents_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Show_Opponents_Weapon = "W" "N/A"';
+                   if Pos('BeastVision = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='BeastVision = "B" "N/A"';
+                   if Pos('CrystalBall = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='CrystalBall = "C" "N/A"';
+                   if Pos('JumpBoots = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='JumpBoots = "J" "N/A"';
+                   if Pos('MedKit = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MedKit = "M" "N/A"';
+                   if Pos('ProximityBombs = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ProximityBombs = "P" "N/A"';
+                   if Pos('RemoteBombs = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='RemoteBombs = "R" "N/A"';
+                 end;
+				 
+				 --------------------------------------------------
+				 
+				 //--------------------------------------------------------
+                 //BLOOD - MOUSE
+                 //--------------------------------------------------------
+                 if (id = 1) then
+                 begin
+                   if Pos('Move_Forward = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Move_Forward = "W" "N/A"';
+                   if Pos('Move_Backward = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Move_Backward = "S" "N/A"';
+                   if Pos('Turn_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Left = "N/A" "N/A"';
+                   if Pos('Turn_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Right = "N/A" "N/A"';
+                   if Pos('Turn_Around = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Turn_Around = "N/A" "N/A"';
+                   if Pos('Strafe = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe = "N/A" "N/A"';
+                   if Pos('Strafe_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe_Left = "A" "N/A"';
+                   if Pos('Strafe_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Strafe_Right = "D" "N/A"';
+                   if Pos('Jump = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Jump = "Space" "N/A"';
+                   if Pos('Crouch = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Crouch = "C" "N/A"';
+                   if Pos('Run = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Run = "LShift" "RShift"';
+                   if Pos('AutoRun = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='AutoRun = "CapLck" "N/A"';
+                   if Pos('Open = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Open = "E" "N/A"';
+                   if Pos('Weapon_Fire = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_Fire = "LCtrl" "RCtrl"';
+                   if Pos('Weapon_Special_Fire = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_Special_Fire = "X" "N/A"';
+                   if Pos('Aim_Up = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Up = "N/A" "N/A"';
+                   if Pos('Aim_Down = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Down = "N/A" "N/A"';
+                   if Pos('Aim_Center = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Aim_Center = "N/A" "N/A"';
+                   if Pos('Look_Up = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Look_Up = "N/A" "N/A"';
+                   if Pos('Look_Down = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Look_Down = "N/A" "N/A"';
+                   if Pos('Tilt_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Tilt_Left = "N/A" "N/A"';
+                   if Pos('Tilt_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Tilt_Right = "N/A" "N/A"';
+                   if Pos('Weapon_1 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_1 = "1" "N/A"';
+                   if Pos('Weapon_2 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_2 = "2" "N/A"';
+                   if Pos('Weapon_3 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_3 = "3" "N/A"';
+                   if Pos('Weapon_4 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_4 = "4" "N/A"';
+                   if Pos('Weapon_5 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_5 = "5" "N/A"';
+                   if Pos('Weapon_6 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_6 = "6" "N/A"';
+                   if Pos('Weapon_7 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_7 = "7" "N/A"';
+                   if Pos('Weapon_8 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_8 = "8" "N/A"';
+                   if Pos('Weapon_9 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_9 = "9" "N/A"';
+                   if Pos('Weapon_10 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Weapon_10 = "0" "N/A"';
+                   if Pos('Inventory_Use = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Use = "Enter" "N/A"';
+                   if Pos('Inventory_Left = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Left = "[" "N/A"';
+                   if Pos('Inventory_Right = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Inventory_Right = "]" "N/A"';
+                   if Pos('Map_Toggle = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Map_Toggle = "M" "N/A"';
+                   if Pos('Map_Follow_Mode = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Map_Follow_Mode = "N/A" "N/A"';
+                   if Pos('Shrink_Screen = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Shrink_Screen = "-" "N/A"';
+                   if Pos('Enlarge_Screen = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Enlarge_Screen = "=" "N/A"';
+                   if Pos('Send_Message = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Send_Message = "T" "N/A"';
+                   if Pos('See_Coop_View = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='See_Coop_View = "K" "N/A"';
+                   if Pos('See_Chase_View = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='See_Chase_View = "N/A" "N/A"';
+                   if Pos('Mouse_Aiming = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Mouse_Aiming = "U" "N/A"';
+                   if Pos('Toggle_Crosshair = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Toggle_Crosshair = "N/A" "N/A"';
+                   if Pos('Next_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Next_Weapon = "N/A" "N/A"';
+                   if Pos('Previous_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Previous_Weapon = "N/A" "N/A"';
+                   if Pos('Holster_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Holster_Weapon = "N/A" "N/A"';
+                   if Pos('Show_Opponents_Weapon = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='Show_Opponents_Weapon = "N/A" "N/A"';
+                   if Pos('BeastVision = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='BeastVision = "N/A" "N/A"';
+                   if Pos('CrystalBall = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='CrystalBall = "N/A" "N/A"';
+                   if Pos('JumpBoots = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='JumpBoots = "N/A" "N/A"';
+                   if Pos('MedKit = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MedKit = "N/A" "N/A"';
+                   if Pos('ProximityBombs = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ProximityBombs = "N/A" "N/A"';
+                   if Pos('RemoteBombs = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='RemoteBombs = "N/A" "N/A"';
+                 end;
+				 
+				---------------------------------
+               if (id = 1) then
+               begin
+                 //-------------------------------------------------------------
+                 {SCREEN SETUP - RESOLUÇÃO 640x480 VESA 2.0}
+                 //-------------------------------------------------------------
+                 if Pos('ScreenMode = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenMode = 1';
+                 if Pos('ScreenWidth = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenWidth = 640';
+                 if Pos('ScreenHeight = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ScreenHeight = 480';
+                 //-------------------------------------------------------------
+
+                 //-------------------------------------------------------------
+                 {SOUND SETUP}
+                 //-------------------------------------------------------------
+                 if Pos('FXDevice = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='FXDevice = 0';
+                 if Pos('MusicDevice = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='MusicDevice = 7'; //Wave Blaster
+
+                 if Pos('FXVolume = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 begin
+                   {SHADOW WARRIOR}
+                   if (id = 10) then
+                   Arquivo_DOSBOX_Fisico[i]:='FXVolume = 160'
+                   {BLOOD + DUKE NUKEM 3D}
+                   else
+                   Arquivo_DOSBOX_Fisico[i]:='FXVolume = 220';
+                 end;
+                 if Pos('MusicVolume = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='MusicVolume = 200';
+                 if Pos('NumVoices = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 begin
+                   {DUKE NUKEM 3D}
+                   if (id = 5) then
+                   Arquivo_DOSBOX_Fisico[i]:='NumVoices = 8'
+                   {BLOOD + SHADOW WARRIOR}
+                   else
+                   Arquivo_DOSBOX_Fisico[i]:='NumVoices = 32';
+                 end;
+                 if Pos('NumChannels = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='NumChannels = 2';
+                 if Pos('NumBits = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='NumBits = 16';
+                 if Pos('MixRate = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='MixRate = 44000';
+                 if Pos('MidiPort = '        ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='MidiPort = 0x330';
+                 if Pos('BlasterAddress = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterAddress = 0x220';
+                 if Pos('BlasterType = '     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterType = 6';
+                 if Pos('BlasterInterrupt = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterInterrupt = 7';
+                 if Pos('BlasterDma8 = '     ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterDma8 = 1';
+                 if Pos('BlasterDma16 = '    ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterDma16 = 5';
+                 if Pos('BlasterEmu = '      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='BlasterEmu = 0x620';
+                 if Pos('ReverseStereo = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='ReverseStereo = 0';
+                 //-------------------------------------------------------------
+				 
+				 se TECLADO (RxControle.StateOn = Falso)
+				 if RxControle.StateOn = False then
+                 begin
+                   if Pos('ControllerType = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ControllerType = 0';
+                   if Pos('ExternalFilename = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ExternalFilename = "EXTERNAL.EXE"';
+                 end
+				 else AGORA MOUSE
+                 begin
+                   if Pos('ControllerType = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ControllerType = 3';
+                   if Pos('ExternalFilename = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='ExternalFilename = "BMOUSE.EXE"';
+                   if Pos('MouseAiming = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAiming = 0';
+                   if Pos('MouseAimingFlipped = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAimingFlipped = 0';
+                   if Pos('MouseButton1 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseButton1 = "Jump"';
+                   if Pos('MouseButton0 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+			   	   Arquivo_DOSBOX_Fisico[i]:='MouseButton0 = "Weapon_Fire"'
+				   if Pos('MouseButton2 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+				   Arquivo_DOSBOX_Fisico[i]:='MouseButton2 = "Weapon_Special_Fire"'
+				 end;
+				 
+				  //--------------------------------------------------------------------------------------
+                 {DEFINE A SENSIBILIDADE DO MOUSE - "VALOR PADRÃO" + "VALOR NOVO"}
+                 //--------------------------------------------------------------------------------------
+                 if (Mouse_Global > 0) then Essa variavel é alterada em outro form.
+                 begin
+                   if Pos('MouseAnalogScale0 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale0 = ' +IntToStr(MouseAnalogX+Mouse_Global);
+                   if Pos('MouseAnalogScale1 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale1 = -'+IntToStr(MouseAnalogY+Mouse_Global);
+                 end;
+                 //--------------------------------------------------------------------------------------
+
+
+                 //----------------------------------------------------------------------
+                 {SERVIDOR OU CLIENTE - ONLINE}
+                 //----------------------------------------------------------------------
+                 if (check_single.Checked = False) then
+                 begin
+                   if Pos('NumberPlayers = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='NumberPlayers = '+cont_player.Text;
+                   if Pos('PlayerName'      ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                   Arquivo_DOSBOX_Fisico[i]:='PlayerName = "'+Trim(player_name.Text)+'"';
+                 end;
+                 //----------------------------------------------------------------------
+
+			 if (id = 1) then
+               begin
+
+                 if (RxControle.StateOn = True) and (check_single.Checked = True) then
+                 VarParametro_Global:=' -noaim -ini PHOBOS.ini'
+                 else
+                 begin
+                   if RxControle.StateOn = True then
+                   VarParametro_Global:=' -noaim';
+                   if check_single.Checked = True then
+                   VarParametro_Global:=' -ini PHOBOS.ini'
+                   else
+                   VarParametro_Global:=' -ini BLOOD.ini -broadcast';
+                 end;
+
+                 if Pos('Size = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='Size = 1';
+                 if Pos('Gamma = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='Gamma = 0';
+                 if Pos('Detail = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='Detail = 4';
+
+                 //--------------------------------------------------------
+                 {OPTIONS}
+                 //--------------------------------------------------------
+                 if Pos('MouseAim = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 begin
+                   if RxControle.StateOn = True then
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAim = 1'
+                   else
+                   Arquivo_DOSBOX_Fisico[i]:='MouseAim = 0';
+                 end;
+                 if Pos('AimReticle = ' ,Arquivo_DOSBOX_Fisico[i]) = 1 then
+                 Arquivo_DOSBOX_Fisico[i]:='AimReticle = 1';
+                 //--------------------------------------------------------
+
+               end;	   
+				   
+			Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
+           Arquivo_DOSBOX_Fisico.Free;	 
+Aqui salvou o arquivo blood.cfg
+
+
+Agora é a escrita do arquivo do dosbox, no caso cryptic_dosbox.conf
+
+Arq_DosBox:=ExtractFilePath(Application.ExeName)
+           +Array_Games[id][3]
+           +LowerCase(ExtractName(Game_EXE_Global))
+           +'_dosbox.conf';
+
+CopyFile(pchar(ExtractFilePath(DosBox_EXE_Global)+'dosbox-0.74.conf'),pchar(Arq_DosBox),False);
+
+{ARQUIVO DE CONFIGURAÇÃO}
+//------------------------------------------------------------------------------
+Arquivo_DOSBOX_Fisico:=TStringList.Create;
+Arquivo_DOSBOX_Fisico.LoadFromFile(Arq_DosBox);
+//------------------------------------------------------------------------------
+
+for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
+ begin
+
+    if Pos('fullscreen=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+    Arquivo_DOSBOX_Fisico[i]:='fullscreen='+BoolToStr(not menu_debug.Checked);
+	 if Pos('fullresolution=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+	 Arquivo_DOSBOX_Fisico[i]:='fullresolution=0x0';
+	  if Pos('output=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+    begin
+      {NÃO TEM PLACA DE VÍDEO - INTEL}
+      if ProcessExists('igfxTray.exe') = True then
+      Arquivo_DOSBOX_Fisico[i]:='output=opengl'
+      else
+      Arquivo_DOSBOX_Fisico[i]:='output=overlay';
+    end;
+	if Pos('machine=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+     Arquivo_DOSBOX_Fisico[i]:='machine=vesa_nolfb';
+	   if Pos('memsize=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+     Arquivo_DOSBOX_Fisico[i]:='memsize=64';
+	 
+	 if Pos('aspect=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+    Arquivo_DOSBOX_Fisico[i]:='aspect=true';
+    if Pos('scaler=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+    Arquivo_DOSBOX_Fisico[i]:='scaler=normal2x';
+	 if Pos('core=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+	 Arquivo_DOSBOX_Fisico[i]:='core=dynamic';
+	 if Pos('cycles=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+	 Arquivo_DOSBOX_Fisico[i]:='cycles=max 105%';
+	if Pos('ipx=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+    begin
+      if check_single.Checked = True then
+      Arquivo_DOSBOX_Fisico[i]:='ipx=false'
+      else Aqui no ELSE, são 3 linhas, por isso o + #13
+      Arquivo_DOSBOX_Fisico[i]:='Enable=1'    +#13#10+
+                                'Connection=1'+#13#10+
+                                'ipx=true';
+    end;
+      if Pos('prebuffer=',Arquivo_DOSBOX_Fisico[i]) = 1 then
+	  Arquivo_DOSBOX_Fisico[i]:='prebuffer=20';
+	    if Pos('[autoexec]',Arquivo_DOSBOX_Fisico[i]) = 1 then
+		begin
+        //-------------------------------------
+         {DEBUG MODE}
+         //-------------------------------------
+         if menu_debug.Checked = False then
+          Arquivo_DOSBOX_Fisico.Add('@ECHO OFF');
+          //-------------------------------------
+		   if DirectoryExists(ExtractFilePath(Arq_DosBox)) then
+           Arquivo_DOSBOX_Fisico.Add('mount c "'+ExtractFilePath(Arq_DosBox)+'"')
+		   else
+           begin
+            MessageBox(Application.Handle,pchar(Lang_DGL(8)+':'+#13#13+ExtractFilePath(Arq_DosBox)),pchar(Application.Title),MB_ICONERROR+MB_OK);
+              //--------------------------------
+               {DEBUG MODE}
+              //--------------------------------
+              if menu_debug.Checked = False then
+              Exit;
+               //--------------------------------
+           end;
+		   Arquivo_DOSBOX_Fisico.Add('c:');
+           //--------------------------------
+          {DEBUG MODE}
+          //--------------------------------
+           if menu_debug.Checked = False then
+           Arquivo_DOSBOX_Fisico.Add('cls');
+          //--------------------------------	
+      {CONEXÃO IPXNET}
+      //----------------------------------------------------------------------------------------------
+      if check_servidor.Checked = True then
+      Arquivo_DOSBOX_Fisico.Add('ipxnet startserver'+' '+Trim(ip_porta.Text));
+      if check_cliente.Checked = True then
+      Arquivo_DOSBOX_Fisico.Add('ipxnet connect'    +' '+Trim(ip_local.Text)+' '+Trim(ip_porta.Text));
+      //----------------------------------------------------------------------------------------------		  
+         if FileExists(Caminho_Global+'game.ins') then
+         Arquivo_DOSBOX_Fisico.Add('imgmount D game.ins -t iso');
+		 
+		  if (id = 1) then
+		  begin
+		   {SINGLE PLAYER}
+            if (check_single.Checked = True) then
+            begin
+            Seleciona_Fases;
+
+             //----------------------
+             if Fecha_ESC = True then
+              Exit;
+             //----------------------
+			 {MULTIPLAYER}
+             else
+             begin
+		     	 //----------------------
+                if Fecha_ESC = True then
+                Exit;
+                 //----------------------
+				 
+------------------------------------------------------------
+				 
+				 //------------------------------------------------------------
+               {ARQUIVO COMMIT.DAT} arquivo necessario pro Blood
+			   aqui ja edita o arquivo para salvar, mas ainda dentro do ELSE que significa multiplayer
+              //------------------------------------------------------------
+              Arquivo_COMMIT:=TStringList.Create;
+              Arquivo_COMMIT.LoadFromFile(Caminho_Global+'commit.dat');
+			   {BLOOD - SE FOR O ARQUIVO ORIGINAL}
+                 if Arquivo_COMMIT[24] = '; - GAMECONNECTION - 4' then
+                 Arquivo_COMMIT.Delete(24);
+
+              Arquivo_COMMIT[26]:='NUMPLAYERS = '+cont_player.Text;
+			  Arquivo_COMMIT[33]:='LAUNCHNAME = "'+Array_Games[id][5]+'"';
+			  Arquivo_COMMIT.SaveToFile(Caminho_Global+'commit.dat');
+              Arquivo_COMMIT.Free;
+			  end;
+			  
+			   //-----------------------------------------------------------------------------------------------------
+              {DEBUG MODE - "VarParametros_Global"}
+              //-----------------------------------------------------------------------------------------------------
+              if (menu_debug.Checked = True) and (check_single.Checked = True) then
+              MessageBox(Application.Handle,pchar(VarParametro_Global),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+              //-----------------------------------------------------------------------------------------------------
+               //------------------------------------------------------------------------------------------------------
+                {DEBUG MODE - MULTIPLAYER}
+              //------------------------------------------------------------------------------------------------------
+               if (check_single.Checked = False) and (menu_debug.Checked = True) then
+              begin
+			   {BLOOD - CRYPTIC PASSAGE - SETUP}
+            if FileExists(Caminho_Global+'cryptic.exe') then
+            Game_EXE_Global:='cpmulti.exe'
+            else
+            Game_EXE_Global:='setup.exe';
+			end;
+			Arquivo_DOSBOX_Fisico.Add('nolfblim.com');
+			
+			if (RxControle.StateOn = True) then
+            Arquivo_DOSBOX_Fisico.Add('BMOUSE.EXE LAUNCH '+Game_EXE_Global+VarParametro_Global)
+            else
+            Arquivo_DOSBOX_Fisico.Add(Game_EXE_Global+VarParametro_Global);
+			
+			{EXECUTÁVEL DO JOGO + PARAMETROS}
+      //--------------------------------------------------------------------
+      Arquivo_DOSBOX_Fisico.Add(Game_EXE_Global+VarParametro_Global);
+      //--------------------------------------------------------------------
+	  
+	  
+	  {DEBUG MODE}
+      //---------------------------------
+      if menu_debug.Checked = False then
+      Arquivo_DOSBOX_Fisico.Add('Exit.');
+      //---------------------------------
+
+
+ end; //FIM - IF POS
+
+ end; //FIM - FOR
+
+//------------------------------------------------------------------------------
+Arquivo_DOSBOX_Fisico.SaveToFile(Arq_DosBox);
+Arquivo_DOSBOX_Fisico.Free;
+//------------------------------------------------------------------------------
+
+{CLIENTE - CONTAGEM PRA INICIAR}
+//---------------------------------------------------------------------
+if (check_cliente.Checked = True) and (menu_debug.Checked = False) then
+Contagem_Iniciar;
+//---------------------------------------------------------------------
+
+ {DOSBOX}
+ if (Array_Games[id][7] = 'DOSBOX') then
+  ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
+                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
+                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+							
+//Final de tudo
+img_game.Visible:=False;
+gif_dos.Visible:=True;
+Timer_MonitoraAPP.Enabled:=True;
+
+Algumas coisas vao repetir para outros jogos, mas vamos focar blood primeiro, depois separadamente cada um.
