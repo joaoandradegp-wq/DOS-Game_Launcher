@@ -229,7 +229,7 @@ SW_MouseAnalogY = 52312;
 implementation
 
 uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language,
-Unit2, Unit5, Teclado_Mouse, DOSBOX_Bind, NO_DOSBOX_Bind, ZDOOM_Bind,DOSBOX_Executor;
+Unit2, Unit5, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 var
 Arquivo_INI:TIniFile;
@@ -788,119 +788,9 @@ end;
 
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
- //------------------------------------------------------------------------
- {BLOOD + CONSTRUCTOR + DUKE NUKEM 3D + RISE OF THE TRIAD + SHADOW WARRIOR}
- //------------------------------------------------------------------------
- 1,2,5,9,10:
-           begin
-           try
-           Arquivo_DOSBOX_Fisico:=TStringList.Create;
-           Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game_Global);
 
-             for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
-             begin
-               //-------------------------------------------------------------
-               {TECLADO ou MOUSE - ARQUIVO DO GAME - INÍCIO}
-               {1-BLOOD | 5-DUKE NUKEN 3D | 10-SHADOW WARRIOR}
-               //-------------------------------------------------------------
-               if RxControle.StateOn = False then
-               begin
-                 case id of
-                   1: AplicaRegras(i,  Blood_Teclado, Arquivo_DOSBOX_Fisico);
-                   5: AplicaRegras(i,   Duke_Teclado, Arquivo_DOSBOX_Fisico);
-                  10: AplicaRegras(i, Shadow_Teclado, Arquivo_DOSBOX_Fisico);
-                 end;
-               end
-               else
-               begin
-                 case id of
-                   1: AplicaRegras(i,  Blood_Mouse, Arquivo_DOSBOX_Fisico);
-                   5: AplicaRegras(i,   Duke_Mouse, Arquivo_DOSBOX_Fisico);
-                  10: AplicaRegras(i, Shadow_Mouse, Arquivo_DOSBOX_Fisico);
-                 end;
-               end;
-               //-------------------------------------------------------------
-               {TECLADO ou MOUSE - ARQUIVO DO GAME - FIM}
-               //-------------------------------------------------------------
-               //------------------------------------------------------------------------------
-               {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR - ARQUIVO DO DOSBOX - INÍCIO}
-               //------------------------------------------------------------------------------
-               if id in [1,5,10] then
-               begin
-               AplicaDOSBOX_Tudo(i, Arquivo_DOSBOX_Fisico, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
+ 1: DOSBOX_Bind_FPS_Blood(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
 
-                  case id of
-                   5: AplicaRegras(i, DOSBOX_Duke,   Arquivo_DOSBOX_Fisico);
-                  10: AplicaRegras(i, DOSBOX_Shadow, Arquivo_DOSBOX_Fisico);
-                  end;
-                  //-----------------------------------------------------------------
-                  {Controls}
-                  //-----------------------------------------------------------------
-                  if RxControle.StateOn = False then
-                  AplicaRegras(i, DOSBOX_Controle_Teclado, Arquivo_DOSBOX_Fisico)
-                  else
-                  begin
-                  AplicaRegras(i, DOSBOX_Controle_Mouse, Arquivo_DOSBOX_Fisico);
-                     case id of
-                        1: AplicaRegras(i, DOSBOX_Mouse_Blood,  Arquivo_DOSBOX_Fisico);
-                     5,10: AplicaRegras(i, DOSBOX_Controle_Mouse, Arquivo_DOSBOX_Fisico);
-                     end;
-                  end;
-                  //-----------------------------------------------------------------
-                  {DEFINE A SENSIBILIDADE DO MOUSE - "VALOR PADRÃO" + "VALOR NOVO"}
-                  //-----------------------------------------------------------------
-                  if Mouse_Global > 0 then
-                  begin
-                  AplicaRegraValor(i, 'MouseAnalogScale0 = ', 'MouseAnalogScale0 = ' + IntToStr(MouseAnalogX + Mouse_Global), Arquivo_DOSBOX_Fisico);
-                  AplicaRegraValor(i, 'MouseAnalogScale1 = ', 'MouseAnalogScale1 = -'+ IntToStr(MouseAnalogY + Mouse_Global), Arquivo_DOSBOX_Fisico);
-                  end;
-                  //-----------------------------------------------------------------
-                  {SERVIDOR OU CLIENTE - ONLINE}
-                  //-----------------------------------------------------------------
-                  if check_single.Checked = False then
-                  begin
-                  AplicaRegraValor(i, 'NumberPlayers = ', 'NumberPlayers = ' + cont_player.Text,             Arquivo_DOSBOX_Fisico);
-                  AplicaRegraValor(i, 'PlayerName',       'PlayerName = "'   + Trim(player_name.Text) + '"', Arquivo_DOSBOX_Fisico);
-                  end;
-                  //-----------------------------------------------------------------
-               end;
-               //------------------------------------------------------------------------------
-               {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR - ARQUIVO DO DOSBOX - FIM}
-               //------------------------------------------------------------------------------
-               AplicaDOSBOX_Tudo(i, Arquivo_DOSBOX_Fisico, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
-               //------------------------------------------------------------------------------
-             end;
-
-           Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
-           finally
-           Arquivo_DOSBOX_Fisico.Free;
-           end;
-
-             Arq_DosBox := ExtractFilePath(Application.ExeName) + Array_Games[id][3] + LowerCase(ExtractName(Game_EXE_Global)) + '_dosbox.conf';
-
-
-
-
-             ExecutaJogoDOSBOX(
-               id,
-               check_single.Checked,
-               menu_debug.Checked,
-               RxControle.StateOn,
-
-               ExtractFilePath(Game_EXE_Global),   // CaminhoJogo
-               Game_EXE_Global,                    // CaminhoExe
-               Array_Games[id][5],                 // GameExe
-               VarParametro_Global,                // Parametros
-
-               ip_porta.Text,
-               ip_local.Text,
-               check_servidor.Checked,
-               check_cliente.Checked,
-               cont_player.Text,
-
-               Arq_DosBox);
-
-           end;
 
    //------------------------------------------------------------------------------
    {QUAKE}

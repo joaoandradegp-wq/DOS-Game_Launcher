@@ -395,7 +395,7 @@ arq_saida:=TStringList.Create;
 arq_saida.Add(arq_entrada.Strings[47]);
 arq_saida.Add('');
 arq_saida.Add('[Episode1]');
-arq_saida.Add('Title   = '+Form4_Select.ListBox_Capitulo.Items[Form4_Select.ListBox_Capitulo.ItemIndex]);
+arq_saida.Add('Title   = '+Form4_Select.ListBox_Episodio.Items[Form4_Select.ListBox_Episodio.ItemIndex]);
 
   //----------------------------------------------------------------------------
   {LISTA OS CAPÍTULOS - RESUMO}
