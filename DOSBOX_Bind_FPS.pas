@@ -155,7 +155,92 @@ CFG.Free;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure ConfigureCommit(CaminhoJogo, NumPlayers, ExeNome: string);
+procedure ConfigureDukeCFG(
+  CaminhoJogo: string;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer;
+  var Parametros: string
+);
+var
+CFG: TStringList;
+Arq: string;
+begin
+Arq := CaminhoJogo + 'duke3d.cfg';
+CFG := TStringList.Create;
+CFG.LoadFromFile(Arq);
+
+{VIDEO}
+ReplaceLinePrefix(CFG,'ScreenMode =','ScreenMode = 1');
+ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = 640');
+ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = 480');
+
+{SOUND}
+ReplaceLinePrefix(CFG,'FXDevice =','FXDevice = 0');
+ReplaceLinePrefix(CFG,'MusicDevice =','MusicDevice = 7');
+ReplaceLinePrefix(CFG,'FXVolume =','FXVolume = 220');
+ReplaceLinePrefix(CFG,'MusicVolume =','MusicVolume = 200');
+ReplaceLinePrefix(CFG,'NumVoices =','NumVoices = 8');
+ReplaceLinePrefix(CFG,'NumChannels =','NumChannels = 2');
+ReplaceLinePrefix(CFG,'NumBits =','NumBits = 16');
+ReplaceLinePrefix(CFG,'MixRate =','MixRate = 44000');
+ReplaceLinePrefix(CFG,'MidiPort =','MidiPort = 0x330');
+ReplaceLinePrefix(CFG,'BlasterAddress =','BlasterAddress = 0x220');
+ReplaceLinePrefix(CFG,'BlasterType =','BlasterType = 6');
+ReplaceLinePrefix(CFG,'BlasterInterrupt =','BlasterInterrupt = 7');
+ReplaceLinePrefix(CFG,'BlasterDma8 =','BlasterDma8 = 1');
+ReplaceLinePrefix(CFG,'BlasterDma16 =','BlasterDma16 = 5');
+ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
+
+{MOUSE}
+if RxControle_Mouse then
+begin
+  ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
+  ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
+  ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 1');
+  ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 1');
+end
+else
+begin
+  ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
+  ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
+  ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 0');
+  ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 0');
+end;
+
+{SENSIBILIDADE}
+if Mouse_Global > 0 then
+begin
+ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
+ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
+end;
+
+{MULTIPLAYER}
+if not check_single then
+begin
+ReplaceLinePrefix(CFG,'NumberPlayers =','NumberPlayers = '+NumPlayers);
+ReplaceLinePrefix(CFG,'PlayerName =','PlayerName = "'+PlayerName+'"');
+end;
+
+{EXTRA}
+ReplaceLinePrefix(CFG,'Crosshairs =','Crosshairs = 1');
+ReplaceLinePrefix(CFG,'Shadows =','Shadows = 1');
+ReplaceLinePrefix(CFG,'Detail =','Detail = 1');
+
+CFG.SaveToFile(Arq);
+CFG.Free;
+
+{PARAMETROS DE MAPA}
+if check_single then
+Parametros := ' '+Map_Global
+else
+Parametros := '';
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureCommitBlood(CaminhoJogo, NumPlayers, ExeNome: string);
 var L: TStringList;
 begin
 L := TStringList.Create;
@@ -166,6 +251,22 @@ L.LoadFromFile(CaminhoJogo+'commit.dat');
 
 L[26] := 'NUMPLAYERS = '+NumPlayers;
 L[33] := 'LAUNCHNAME = "'+ExeNome+'"';
+
+L.SaveToFile(CaminhoJogo+'commit.dat');
+L.Free;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureCommitDuke(CaminhoJogo, NumPlayers: string);
+var L: TStringList;
+begin
+L := TStringList.Create;
+L.LoadFromFile(CaminhoJogo+'commit.dat');
+
+if L[24] = '; - GAMECONNECTION - 4' then
+L.Delete(24);
+
+L[26] := 'NUMPLAYERS = '+NumPlayers;
 
 L.SaveToFile(CaminhoJogo+'commit.dat');
 L.Free;
@@ -198,11 +299,38 @@ L := TStringList.Create;
 L.LoadFromFile(Arq_DosBox);
 
 ReplaceLinePrefix(L,'fullscreen=','fullscreen='+BoolToStr(not menu_debug,True));
+ReplaceLinePrefix(L,'fullresolution=','fullresolution=0x0');
+
+  {NÃO TEM PLACA DE VÍDEO - INTEL}
+  if ProcessExists('igfxTray.exe') = True then
+  ReplaceLinePrefix(L,'output=','output=opengl')
+  else
+  ReplaceLinePrefix(L,'output=','output=overlay');
+
 ReplaceLinePrefix(L,'machine=','machine=vesa_nolfb');
 ReplaceLinePrefix(L,'memsize=','memsize=64');
 ReplaceLinePrefix(L,'aspect=','aspect=true');
+ReplaceLinePrefix(L,'scaler=','scaler=normal2x');
 ReplaceLinePrefix(L,'core=','core=dynamic');
 ReplaceLinePrefix(L,'cycles=','cycles=max 105%');
+ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
+
+  //--------------------------------
+  {IPX}
+  //--------------------------------
+  for i := 0 to L.Count-1 do
+  begin
+    if Pos('ipx=', L[i]) = 1 then
+    begin
+      if check_single then
+      L[i] := 'ipx=false'
+      else
+      L[i] := 'Enable=1'+#13#10+
+              'Connection=1'+#13#10+
+              'ipx=true';
+    end;
+  end;
+  //--------------------------------
 
   for i := 0 to L.Count-1 do
     if Pos('[autoexec]',L[i]) = 1 then
@@ -227,7 +355,10 @@ ReplaceLinePrefix(L,'cycles=','cycles=max 105%');
       L.Add(Game_EXE_Global+Parametros);
 
       if not menu_debug then
+      begin
+      L.Add('cls');
       L.Add('exit');
+      end;
 
     Break;
   end;
@@ -262,36 +393,73 @@ var
 Parametros: string;
 Arq_DosBox: string;
 begin
-  //--------------------------------------------------
-  // 0) SELEÇÃO DE EPISÓDIO / FASE (LÓGICA ORIGINAL)
-  //--------------------------------------------------
+
+  {SELECIONA MAPA}
   if check_single then
   begin
   Seleciona_Fases;
 
-  if Fecha_ESC then
-  Exit;
+    if Fecha_ESC then
+    Exit;
   end;
 
-//--------------------------------------------------
-// 1) CONFIGURA blood.cfg
-//--------------------------------------------------
+{CFG}
 ConfigureBloodCFG(CaminhoJogo,RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
 
-  //--------------------------------------------------
-  // 2) COMMIT.DAT (APENAS MULTIPLAYER)
-  //--------------------------------------------------
+  {COMMIT}
   if not check_single then
-  ConfigureCommit(CaminhoJogo, NumPlayers, Game_EXE_Global);
+  ConfigureCommitBlood(CaminhoJogo, NumPlayers, Game_EXE_Global);
 
-//--------------------------------------------------
-// 3) CONF DO DOSBOX
-//--------------------------------------------------
+{DOSBOX CONF}
 ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
 
-//--------------------------------------------------
-// 4) EXECUTA
-//--------------------------------------------------
+{RUN}
+RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Duke(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+var
+Parametros: string;
+Arq_DosBox: string;
+begin
+
+  {SELECIONA MAPA}
+  if check_single then
+  begin
+  Seleciona_Fases;
+
+    if Fecha_ESC then
+    Exit;
+  end;
+
+{CFG}
+ConfigureDukeCFG(CaminhoJogo,RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
+
+  {COMMIT}
+  if not check_single then
+  ConfigureCommitDuke(CaminhoJogo, NumPlayers);
+
+{DOSBOX CONF}
+ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
+
+{RUN}
 RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
 
 end;
