@@ -341,6 +341,9 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
     L.Add('mount c "'+IncludeTrailingPathDelimiter(CaminhoJogo)+'"');
     L.Add('c:');
 
+      if not menu_debug then
+      L.Add('cls');
+
       if check_servidor then
       L.Add('ipxnet startserver '+ip_porta);
 
@@ -355,10 +358,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       L.Add(Game_EXE_Global+Parametros);
 
       if not menu_debug then
-      begin
-      L.Add('cls');
       L.Add('exit');
-      end;
 
     Break;
   end;
