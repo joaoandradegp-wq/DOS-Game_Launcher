@@ -3,11 +3,45 @@ unit DOSBOX_Bind_FPS;
 interface
 
 uses
-  Windows, ShellAPI, SysUtils, Classes, Funcoes, Unit1;
+  Windows, ShellAPI, SysUtils, Classes, Forms, Funcoes, Unit1, Language, Unit2;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure DOSBOX_Bind_FPS_Blood(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Duke(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Shadow(
   HandleApp: HWND;
   DosBox_EXE_Global: string;
   CaminhoJogo: string;
@@ -194,35 +228,35 @@ ReplaceLinePrefix(CFG,'BlasterDma8 =','BlasterDma8 = 1');
 ReplaceLinePrefix(CFG,'BlasterDma16 =','BlasterDma16 = 5');
 ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
 
-{MOUSE}
-if RxControle_Mouse then
-begin
+  {MOUSE}
+  if RxControle_Mouse then
+  begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
   ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 1');
   ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 1');
-end
-else
-begin
+  end
+  else
+  begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
   ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 0');
   ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 0');
-end;
+  end;
 
-{SENSIBILIDADE}
-if Mouse_Global > 0 then
-begin
-ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
-ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
-end;
+  {SENSIBILIDADE}
+  if Mouse_Global > 0 then
+  begin
+  ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
+  ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
+  end;
 
-{MULTIPLAYER}
-if not check_single then
-begin
-ReplaceLinePrefix(CFG,'NumberPlayers =','NumberPlayers = '+NumPlayers);
-ReplaceLinePrefix(CFG,'PlayerName =','PlayerName = "'+PlayerName+'"');
-end;
+  {MULTIPLAYER}
+  if not check_single then
+  begin
+  ReplaceLinePrefix(CFG,'NumberPlayers =','NumberPlayers = '+NumPlayers);
+  ReplaceLinePrefix(CFG,'PlayerName =','PlayerName = "'+PlayerName+'"');
+  end;
 
 {EXTRA}
 ReplaceLinePrefix(CFG,'Crosshairs =','Crosshairs = 1');
@@ -232,16 +266,125 @@ ReplaceLinePrefix(CFG,'Detail =','Detail = 1');
 CFG.SaveToFile(Arq);
 CFG.Free;
 
-{PARAMETROS DE MAPA}
-if check_single then
-Parametros := ' '+Map_Global
-else
-Parametros := '';
+  {PARAMETROS DE MAPA}
+  if check_single then
+  Parametros := ' '+Map_Global
+  else
+  Parametros := '';
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureSWCFG(
+  CaminhoJogo: string;
+  var Game_EXE_Global: string;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer;
+  var Parametros: string
+);
+var
+CFG: TStringList;
+Arq: string;
+begin
+
+Arq := CaminhoJogo + 'sw.cfg';
+
+CFG := TStringList.Create;
+CFG.LoadFromFile(Arq);
+
+{VIDEO}
+ReplaceLinePrefix(CFG,'ScreenMode =','ScreenMode = 1');
+ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = 640');
+ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = 480');
+ReplaceLinePrefix(CFG,'ScreenGamma =','ScreenGamma = 0');
+
+{SOUND}
+ReplaceLinePrefix(CFG,'FXDevice =','FXDevice = 0');
+ReplaceLinePrefix(CFG,'MusicDevice =','MusicDevice = 7');
+ReplaceLinePrefix(CFG,'FXVolume =','FXVolume = 220');
+ReplaceLinePrefix(CFG,'MusicVolume =','MusicVolume = 200');
+ReplaceLinePrefix(CFG,'NumVoices =','NumVoices = 32');
+ReplaceLinePrefix(CFG,'MixRate =','MixRate = 44000');
+ReplaceLinePrefix(CFG,'NumChannels =','NumChannels = 2');
+ReplaceLinePrefix(CFG,'NumBits =','NumBits = 16');
+
+  {MOUSE}
+  if RxControle_Mouse then
+  begin
+  ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
+  ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
+
+  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 1');
+  ReplaceLinePrefix(CFG,'MouseAimingFlipped =','MouseAimingFlipped = 0');
+
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "W" "N/A"');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "S" "N/A"');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "A" "N/A"');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "D" "N/A"');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "Space" "N/A"');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "C" "N/A"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "E" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
+  ReplaceLinePrefix(CFG,'Weapon_Special_Fire =','Weapon_Special_Fire = "X" "N/A"');
+  end
+  else
+  begin
+  ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
+  ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
+
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "Up" "N/A"');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "Down" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "Left" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "Right" "N/A"');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "A" "N/A"');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "Z" "N/A"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "Space" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
+  end;
+
+  {SENSIBILIDADE}
+  if Mouse_Global > 0 then
+  begin
+  ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
+  ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
+  end;
+
+  {MULTIPLAYER}
+  if not check_single then
+  begin
+  ReplaceLinePrefix(CFG,'NumberPlayers =','NumberPlayers = '+NumPlayers);
+  ReplaceLinePrefix(CFG,'PlayerName','PlayerName = "'+PlayerName+'"');
+  end;
+
+CFG.SaveToFile(Arq);
+CFG.Free;
+
+  {PARAMETROS + DLC}
+  Parametros := '';
+
+  case EPI_Global_DLC of
+    0,1: begin
+         // jogo base
+         end;
+      2: begin
+         //Wanton Destruction
+         Parametros := '';
+         end;
+      3: begin
+         //Twin Dragon
+         Game_EXE_Global := SW_DLC_Archive(2);
+         end;
+  end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure ConfigureCommitBlood(CaminhoJogo, NumPlayers, ExeNome: string);
-var L: TStringList;
+var
+L: TStringList;
 begin
 L := TStringList.Create;
 L.LoadFromFile(CaminhoJogo+'commit.dat');
@@ -258,15 +401,35 @@ end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure ConfigureCommitDuke(CaminhoJogo, NumPlayers: string);
-var L: TStringList;
+var
+L: TStringList;
 begin
 L := TStringList.Create;
 L.LoadFromFile(CaminhoJogo+'commit.dat');
 
-if L[24] = '; - GAMECONNECTION - 4' then
-L.Delete(24);
+  if L[24] = '; - GAMECONNECTION - 4' then
+  L.Delete(24);
 
 L[26] := 'NUMPLAYERS = '+NumPlayers;
+
+L.SaveToFile(CaminhoJogo+'commit.dat');
+L.Free;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureCommitShadowWarrior(CaminhoJogo: string;NumPlayers: string;Game_EXE_Global: string);
+var
+L: TStringList;
+begin
+L := TStringList.Create;
+L.LoadFromFile(CaminhoJogo+'commit.dat');
+
+L[26] := 'NUMPLAYERS = '+NumPlayers;
+
+  if EPI_Global_DLC = 3 then
+  L[33] := 'LAUNCHNAME = "'+SW_DLC_Archive(2)+'"'
+  else
+  L[33] := 'LAUNCHNAME = "'+Game_EXE_Global+'"';
 
 L.SaveToFile(CaminhoJogo+'commit.dat');
 L.Free;
@@ -325,7 +488,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       if check_single then
       L[i] := 'ipx=false'
       else
-      L[i] := 'Enable=1'+#13#10+
+      L[i] := 'Enable=1'    +#13#10+
               'Connection=1'+#13#10+
               'ipx=true';
     end;
@@ -338,7 +501,11 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       if not menu_debug then
       L.Add('@ECHO OFF');
 
-    L.Add('mount c "'+IncludeTrailingPathDelimiter(CaminhoJogo)+'"');
+      if DirectoryExists(ExtractFilePath(CaminhoJogo)) then
+      L.Add('mount c "'+IncludeTrailingPathDelimiter(CaminhoJogo)+'"')
+      else
+      MessageBox(Application.Handle,PChar(Lang_DGL(8)+':'+#13#13+ExtractFilePath(Arq_DosBox)),PChar(Application.Title),MB_ICONERROR+MB_OK);
+
     L.Add('c:');
 
       if not menu_debug then
@@ -350,6 +517,46 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       if check_cliente then
       L.Add('ipxnet connect '+ip_local+' '+ip_porta);
 
+      {CD - BLOOD E SHADOW WARRIOR}
+      case id of
+         1: begin
+              if FileExists(CaminhoJogo+'game.ins') then
+              L.Add('imgmount D game.ins -t iso');
+            end;
+        10: begin
+              if FileExists(CaminhoJogo+'GAME.DAT') then
+              L.Add('imgmount d "..\GAME.DAT" -t iso');
+           end;
+      end;
+
+      {SINGLE PLAYER + DEBUG}
+      if check_single and menu_debug then
+      MessageBox(Application.Handle,pchar(Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+
+      {MULTIPLAYER + DEBUG}
+      if (not check_single) and menu_debug then
+      begin
+        {BLOOD - CRYPTIC PASSAGE - SETUP}
+        if FileExists(CaminhoJogo+'cryptic.exe') then
+        Game_EXE_Global:='cpmulti.exe'
+        else
+        {DUKE NUKEM 3D - SHADOW WARRIOR}
+        Game_EXE_Global:='setup.exe';
+      end;
+
+      {SHADOW WARRIOR - DLC}
+      if id = 10 then
+      begin
+        case EPI_Global_DLC of
+          0,1: L.Add('@COPY sw.dat sw.exe');
+            2: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
+            3: begin
+                 if SW_DLC_Archive(2) = 'sw.exe' then
+                 L.Add('cd dragon');
+               end;
+        end;
+      end;
+
     L.Add('nolfblim.com');
 
       if RxControle_Mouse then
@@ -358,10 +565,10 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       L.Add(Game_EXE_Global+Parametros);
 
       if not menu_debug then
-      L.Add('exit');
+      L.Add('Exit.');
 
     Break;
-  end;
+    end;
 L.SaveToFile(Arq_DosBox);
 L.Free;
 end;
@@ -455,6 +662,54 @@ ConfigureDukeCFG(CaminhoJogo,RxControle_Mouse,check_single,NumPlayers,PlayerName
   {COMMIT}
   if not check_single then
   ConfigureCommitDuke(CaminhoJogo, NumPlayers);
+
+{DOSBOX CONF}
+ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
+
+{RUN}
+RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Shadow(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+var
+Parametros: string;
+Arq_DosBox: string;
+begin
+
+  {SELEÇÃO DLC / FASE}
+  if check_single then
+  begin
+    Application.CreateForm(TForm2_DLC, Form2_DLC);
+    Form2_DLC.ShowModal;
+    Form2_DLC.Free;
+
+    if Fecha_ESC then
+    Exit;
+  end;
+
+{CFG + DLC + PARAMETROS}
+ConfigureSWCFG(CaminhoJogo,Game_EXE_Global,RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
+
+  {COMMIT}
+  if not check_single then
+  ConfigureCommitShadowWarrior(CaminhoJogo, NumPlayers, Game_EXE_Global);
 
 {DOSBOX CONF}
 ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);

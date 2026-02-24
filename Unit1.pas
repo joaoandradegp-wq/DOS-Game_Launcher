@@ -760,22 +760,21 @@ end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
 var
-Linhas: TStringlist;
-Arq_DosBox,GameExe,Parametros:String;
-i,j,Modo_Game:Integer;
+Modo_Game:Integer;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
 Fecha_ESC:=False;
 
-//----------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 if (player_name.Enabled = True) and (Length(Trim(player_name.Text)) = 0) then
 begin
-MessageBox(Application.Handle,pchar(Lang_DGL(1)),pchar(Application.Title),MB_ICONWARNING+MB_OK);
+MessageBox(Application.Handle,pchar(Lang_DGL(1))
+                             ,pchar(Application.Title),MB_ICONWARNING+MB_OK);
 player_name.SetFocus;
 Exit;
 end;
-//----------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
  //---------------------------------
  {SINGLE PLAYER OU MULTIPLAYER}
@@ -789,8 +788,9 @@ end;
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
 
- 1: DOSBOX_Bind_FPS_Blood(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
-
+   1: DOSBOX_Bind_FPS_Blood (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+   5: DOSBOX_Bind_FPS_Duke  (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+  10: DOSBOX_Bind_FPS_Shadow(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
 
    //------------------------------------------------------------------------------
    {QUAKE}
@@ -844,125 +844,13 @@ case id of
 end;
 
 
-
-
-
-
-
-                 {
-if (Array_Games[id][7] = 'DOSBOX') then
-begin
-Arq_DosBox := ExtractFilePath(Application.ExeName) + Array_Games[id][3] + LowerCase(ExtractName(Game_EXE_Global)) + '_dosbox.conf';
-
-
-showmessage(Arq_DosBox);
-  // cria o conf base se ainda não existir
-  if not FileExists(Arq_DosBox) then
-  CopyFile(PChar(ExtractFilePath(DosBox_EXE_Global) + 'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
-
-Linhas := TStringList.Create;
-
-  try
-  Linhas.LoadFromFile(Arq_DosBox);
-
-    //--------------------------------------------------
-    // 1) AJUSTES NO CONF
-    //--------------------------------------------------
-    for i := 0 to Linhas.Count - 1 do
-    AplicaDOSBOX_Tudo(i, Linhas, id, check_single.Checked, menu_debug.Checked, RxControle.StateOn, Trim(player_name.Text), cont_player.Text);
-
-    //--------------------------------------------------
-    // 2) PREPARA EXECUTÁVEL
-    //--------------------------------------------------
-    GameExe    := Array_Games[id][5];
-    Parametros := VarParametro_Global;
-
-    if id = GAME_BLOOD then
-    Parametros := VarParametro_Global;
-
-    //--------------------------------------------------
-    // 3) AUTOEXEC FINAL
-    //--------------------------------------------------
-    ExecutaJogoDOSBOX(
-      id,
-      check_single.Checked,
-      menu_debug.Checked,
-      RxControle.StateOn,
-      ExtractFilePath(Game_EXE_Global),   // CaminhoJogo
-      ExtractFilePath(Game_EXE_Global),   // CaminhoExe
-      GameExe,
-      Parametros,
-      ip_porta.Text,
-      ip_local.Text,
-      check_servidor.Checked,
-      check_cliente.Checked,
-      cont_player.Text,
-      Linhas
-    );
-    //--------------------------------------------------
-    // 4) SALVA
-    //--------------------------------------------------
-    Linhas.SaveToFile(Arq_DosBox);
-
-  finally
-  Linhas.Free;
-  end;
-
-end;
-            }
-
-
-
 //---------------------------------------------------------------------
 // CLIENTE - CONTAGEM PRA INICIAR
 //---------------------------------------------------------------------
 if check_cliente.Checked and (not menu_debug.Checked) then
 Contagem_Iniciar;
 
-                           {
-if (Array_Games[id][7] = 'DOSBOX') then
- begin
-
-   //--------------------------------------------------------------------------------------------
-   {DEBUG MODE
-   //--------------------------------------------------------------------------------------------
-   if menu_debug.Checked = False then
-   begin
-   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
-                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
-                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
-
-     //----------------------------------------------------------------
-     if (check_single.Checked = False) and ((id = 9) or (id = 11)) then
-     begin
-     Sleep(1000);
-     Centraliza_Janela('SDL_app');
-
-       if (id = 11) then
-       begin
-       Sleep(4000);
-       keybd_event(VK_RETURN,0,0,0);
-       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-       Sleep(1000);
-       keybd_event(VK_RETURN,0,0,0);
-       keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-       end;
-
-     Sleep(500);
-     Setup_Teclas(id);
-     Sleep(500);
-     Tela_Cheia;
-     end;
-     //----------------------------------------------------------------
-   end
-   else
-   ShellExecute(Handle,'open',pchar(DosBox_EXE_Global)
-                             ,pchar('-conf '+ExtractFileName(Arq_DosBox))
-                             ,pchar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
-   //--------------------------------------------------------------------------------------------
-
- end;     }
-
+                        
 //---------------------------------------------------------------------
 // ZDOOM
 //---------------------------------------------------------------------

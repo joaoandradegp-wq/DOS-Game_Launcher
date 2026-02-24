@@ -395,6 +395,8 @@ Config_Game_Global = blood.cfg
 				   
 			Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game_Global);
            Arquivo_DOSBOX_Fisico.Free;	 
+		   
+		   
 Aqui salvou o arquivo blood.cfg
 
 
