@@ -122,6 +122,7 @@ ReplaceLinePrefix(CFG,'BlasterDma16 =','BlasterDma16 = 5');
 ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
 ReplaceLinePrefix(CFG,'ReverseStereo =','ReverseStereo = 0');
 
+  {MOUSE}
   if RxControle_Mouse then
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
@@ -331,6 +332,7 @@ ReplaceLinePrefix(CFG,'BlasterInterrupt =','BlasterInterrupt = 7');
 ReplaceLinePrefix(CFG,'BlasterDma8 =','BlasterDma8 = 1');
 ReplaceLinePrefix(CFG,'BlasterDma16 =','BlasterDma16 = 5');
 ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
+ReplaceLinePrefix(CFG,'ReverseStereo =','ReverseStereo = 0');
 
   {MOUSE}
   if RxControle_Mouse then
@@ -491,7 +493,11 @@ ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
 
 {EXTRA}
 ReplaceLinePrefix(CFG,'Shadows =','Shadows = 1');
+ReplaceLinePrefix(CFG,'Password =','Password = ""');
 ReplaceLinePrefix(CFG,'Detail =','Detail = 1');
+ReplaceLinePrefix(CFG,'Tilt =','Tilt = 1');
+ReplaceLinePrefix(CFG,'ScreenSize =','ScreenSize = 4');
+ReplaceLinePrefix(CFG,'ScreenGamma =','ScreenGamma = 0');
 
 CFG.SaveToFile(Arq);
 CFG.Free;
@@ -534,12 +540,22 @@ ReplaceLinePrefix(CFG,'ScreenGamma =','ScreenGamma = 0');
 {SOUND}
 ReplaceLinePrefix(CFG,'FXDevice =','FXDevice = 0');
 ReplaceLinePrefix(CFG,'MusicDevice =','MusicDevice = 7');
-ReplaceLinePrefix(CFG,'FXVolume =','FXVolume = 220');
+ReplaceLinePrefix(CFG,'FXVolume =','FXVolume = 160');
 ReplaceLinePrefix(CFG,'MusicVolume =','MusicVolume = 200');
 ReplaceLinePrefix(CFG,'NumVoices =','NumVoices = 32');
-ReplaceLinePrefix(CFG,'MixRate =','MixRate = 44000');
 ReplaceLinePrefix(CFG,'NumChannels =','NumChannels = 2');
 ReplaceLinePrefix(CFG,'NumBits =','NumBits = 16');
+ReplaceLinePrefix(CFG,'MixRate =','MixRate = 22000');
+ReplaceLinePrefix(CFG,'MidiPort =','MidiPort = 0x330');
+ReplaceLinePrefix(CFG,'BlasterAddress =','BlasterAddress = 0x220');
+ReplaceLinePrefix(CFG,'BlasterType =','BlasterType = 6');
+ReplaceLinePrefix(CFG,'BlasterInterrupt =','BlasterInterrupt = 7');
+ReplaceLinePrefix(CFG,'BlasterDma8 =','BlasterDma8 = 1');
+ReplaceLinePrefix(CFG,'BlasterDma16 =','BlasterDma16 = 5');
+ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
+ReplaceLinePrefix(CFG,'ReverseStereo =','ReverseStereo = 0');
+ReplaceLinePrefix(CFG,'FxOn =','FxOn = 1');
+ReplaceLinePrefix(CFG,'MusicOn =','MusicOn = 1');
 
   {MOUSE}
   if RxControle_Mouse then
