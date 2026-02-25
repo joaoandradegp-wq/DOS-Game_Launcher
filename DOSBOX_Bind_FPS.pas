@@ -126,48 +126,152 @@ ReplaceLinePrefix(CFG,'ReverseStereo =','ReverseStereo = 0');
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
-  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 1');
   ReplaceLinePrefix(CFG,'MouseAiming =','MouseAiming = 0');
   ReplaceLinePrefix(CFG,'MouseAimingFlipped =','MouseAimingFlipped = 0');
   ReplaceLinePrefix(CFG,'MouseButton0 =','MouseButton0 = "Weapon_Fire"');
   ReplaceLinePrefix(CFG,'MouseButton1 =','MouseButton1 = "Jump"');
   ReplaceLinePrefix(CFG,'MouseButton2 =','MouseButton2 = "Weapon_Special_Fire"');
+
   ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "W" "N/A"');
   ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "S" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Around =','Turn_Around = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Strafe =','Strafe = "N/A" "N/A"');
   ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "A" "N/A"');
   ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "D" "N/A"');
+
   ReplaceLinePrefix(CFG,'Jump =','Jump = "Space" "N/A"');
   ReplaceLinePrefix(CFG,'Crouch =','Crouch = "C" "N/A"');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" "N/A"');
   ReplaceLinePrefix(CFG,'Open =','Open = "E" "N/A"');
   ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
   ReplaceLinePrefix(CFG,'Weapon_Special_Fire =','Weapon_Special_Fire = "X" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Aim_Center =','Aim_Center = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Tilt_Left =','Tilt_Left = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Tilt_Right =','Tilt_Right = "N/A" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Inventory_Use =','Inventory_Use = "Enter" "N/A"');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" "N/A"');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" "N/A"');
+
   ReplaceLinePrefix(CFG,'Map_Toggle =','Map_Toggle = "M" "N/A"');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" "N/A"');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" "N/A"');
+  ReplaceLinePrefix(CFG,'Send_Message =','Send_Message = "T" "N/A"');
+  ReplaceLinePrefix(CFG,'See_Coop_View =','See_Coop_View = "K" "N/A"');
+  ReplaceLinePrefix(CFG,'See_Chase_View =','See_Chase_View = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" "N/A"');
+  ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Show_Opponents_Weapon =','Show_Opponents_Weapon = "N/A" "N/A"');
+
+  ReplaceLinePrefix(CFG,'BeastVision =','BeastVision = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'CrystalBall =','CrystalBall = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'JumpBoots =','JumpBoots = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'MedKit =','MedKit = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'ProximityBombs =','ProximityBombs = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'RemoteBombs =','RemoteBombs = "N/A" "N/A"');
+
+  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 1');
+
+    {SENSIBILIDADE}
+    if (Mouse_Global > 0) then
+    begin
+    ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(MouseAnalogX+Mouse_Global));
+    ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(MouseAnalogY+Mouse_Global));
+    end;
+
   end
   else
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
-  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 0');
+
   ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "Up" "N/A"');
   ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "Down" "N/A"');
   ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "Left" "N/A"');
   ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "Right" "N/A"');
+  ReplaceLinePrefix(CFG,'Turn_Around =','Turn_Around = "N/A" "N/A"');
   ReplaceLinePrefix(CFG,'Strafe =','Strafe = "LAlt" "RAlt"');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "N/A" "N/A"');
+
   ReplaceLinePrefix(CFG,'Jump =','Jump = "A" "N/A"');
   ReplaceLinePrefix(CFG,'Crouch =','Crouch = "Z" "N/A"');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" "N/A"');
   ReplaceLinePrefix(CFG,'Open =','Open = "Space" "N/A"');
   ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
   ReplaceLinePrefix(CFG,'Weapon_Special_Fire =','Weapon_Special_Fire = "X" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Aim_Center =','Aim_Center = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Tilt_Left =','Tilt_Left = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Tilt_Right =','Tilt_Right = "N/A" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" "N/A"');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" "N/A"');
+
+  ReplaceLinePrefix(CFG,'Inventory_Use =','Inventory_Use = "Enter" "N/A"');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" "N/A"');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" "N/A"');
+
   ReplaceLinePrefix(CFG,'Map_Toggle =','Map_Toggle = "Tab" "N/A"');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "F" "N/A"');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" "N/A"');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" "N/A"');
+  ReplaceLinePrefix(CFG,'Send_Message =','Send_Message = "T" "N/A"');
+  ReplaceLinePrefix(CFG,'See_Coop_View =','See_Coop_View = "K" "N/A"');
+  ReplaceLinePrefix(CFG,'See_Chase_View =','See_Chase_View = "F7" "N/A"');
   ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" "N/A"');
   ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "I" "N/A"');
-  end;
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "N/A" "N/A"');
+  ReplaceLinePrefix(CFG,'Show_Opponents_Weapon =','Show_Opponents_Weapon = "W" "N/A"');
 
-  if Mouse_Global > 0 then
-  begin
-  ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
-  ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
+  ReplaceLinePrefix(CFG,'BeastVision =','BeastVision = "B" "N/A"');
+  ReplaceLinePrefix(CFG,'CrystalBall =','CrystalBall = "C" "N/A"');
+  ReplaceLinePrefix(CFG,'JumpBoots =','JumpBoots = "J" "N/A"');
+  ReplaceLinePrefix(CFG,'MedKit =','MedKit = "M" "N/A"');
+  ReplaceLinePrefix(CFG,'ProximityBombs =','ProximityBombs = "P" "N/A"');
+  ReplaceLinePrefix(CFG,'RemoteBombs =','RemoteBombs = "R" "N/A"');
+
+  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 0');
   end;
+  ReplaceLinePrefix(CFG,'AimReticle =','AimReticle = 1');
 
   if not check_single then
   begin
@@ -233,23 +337,150 @@ ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
+  ReplaceLinePrefix(CFG,'MouseAiming =','MouseAiming = 0');
+  ReplaceLinePrefix(CFG,'MouseAimingFlipped =','MouseAimingFlipped = 0');
+  ReplaceLinePrefix(CFG,'MouseButton0 =','MouseButton0 = "Fire"');
+  ReplaceLinePrefix(CFG,'MouseButton1 =','MouseButton1 = "Jump"');
+  ReplaceLinePrefix(CFG,'MouseButton2 =','MouseButton2 = ""');
+
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "W" ""');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "S" ""');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "" ""');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "" ""');
+  ReplaceLinePrefix(CFG,'Strafe =','Strafe = "" ""');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "A" ""');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "D" ""');
+
+  ReplaceLinePrefix(CFG,'Fire =','Fire = "LCtrl" "RCtrl"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "E" ""');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" ""');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "Space" ""');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "C" ""');
+
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Left =','Look_Left = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Right =','Look_Right = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "" ""');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" ""');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" ""');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" ""');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" ""');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" ""');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" ""');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" ""');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" ""');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" ""');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" ""');
+
+  ReplaceLinePrefix(CFG,'Inventory =','Inventory = "I" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" ""');
+
+  ReplaceLinePrefix(CFG,'Holo_Duke =','Holo_Duke = "" ""');
+  ReplaceLinePrefix(CFG,'Jetpack =','Jetpack = "" ""');
+  ReplaceLinePrefix(CFG,'NightVision =','NightVision = "" ""');
+  ReplaceLinePrefix(CFG,'MedKit =','MedKit = "" ""');
+  ReplaceLinePrefix(CFG,'Steroids =','Steroids = "" ""');
+  ReplaceLinePrefix(CFG,'Quick_Kick =','Quick_Kick = "`" ""');
+
+  ReplaceLinePrefix(CFG,'TurnAround =','TurnAround = "" ""');
+  ReplaceLinePrefix(CFG,'SendMessage =','SendMessage = "T" ""');
+  ReplaceLinePrefix(CFG,'Map =','Map = "M" ""');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "" ""');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" ""');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" ""');
+  ReplaceLinePrefix(CFG,'Center_View =','Center_View = "" ""');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Show_Opponents_Weapon =','Show_Opponents_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'See_Coop_View =','See_Coop_View = "K" ""');
+  ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" ""');
+  ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "" ""');
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "" ""');
+
   ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 1');
   ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 1');
+
+    {SENSIBILIDADE}
+    if (Mouse_Global > 0) then
+    begin
+    ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(MouseAnalogX+Mouse_Global));
+    ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(MouseAnalogY+Mouse_Global));
+    end;
+
   end
   else
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
+
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "Up" ""');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "Down" ""');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "Left" ""');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "Right" ""');
+  ReplaceLinePrefix(CFG,'Strafe =','Strafe = "LAlt" "RAlt"');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "," ""');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "." ""');
+
+  ReplaceLinePrefix(CFG,'Fire =','Fire = "LCtrl" "RCtrl"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "Space" ""');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" ""');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "A" ""');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "Z" ""');
+
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Left =','Look_Left = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Right =','Look_Right = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "" ""');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" ""');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" ""');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" ""');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" ""');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" ""');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" ""');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" ""');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" ""');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" ""');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" ""');
+
+  ReplaceLinePrefix(CFG,'Inventory =','Inventory = "Enter" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" ""');
+
+  ReplaceLinePrefix(CFG,'Holo_Duke =','Holo_Duke = "H" ""');
+  ReplaceLinePrefix(CFG,'Jetpack =','Jetpack = "J" ""');
+  ReplaceLinePrefix(CFG,'NightVision =','NightVision = "N" ""');
+  ReplaceLinePrefix(CFG,'MedKit =','MedKit = "M" ""');
+  ReplaceLinePrefix(CFG,'Steroids =','Steroids = "R" ""');
+  ReplaceLinePrefix(CFG,'Quick_Kick =','Quick_Kick = "`" ""');
+
+  ReplaceLinePrefix(CFG,'TurnAround =','TurnAround = "" ""');
+  ReplaceLinePrefix(CFG,'SendMessage =','SendMessage = "T" ""');
+  ReplaceLinePrefix(CFG,'Map =','Map = "Tab" ""');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "F" ""');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" ""');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" ""');
+  ReplaceLinePrefix(CFG,'Center_View =','Center_View = "" ""');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Show_Opponents_Weapon =','Show_Opponents_Weapon = "W" ""');
+  ReplaceLinePrefix(CFG,'See_Coop_View =','See_Coop_View = "K" ""');
+  ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" ""');
+  ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "I" ""');
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "" ""');
+
   ReplaceLinePrefix(CFG,'GameMouseAiming =','GameMouseAiming = 0');
   ReplaceLinePrefix(CFG,'AimingFlag =','AimingFlag = 0');
   end;
-
-  {SENSIBILIDADE}
-  if Mouse_Global > 0 then
-  begin
-  ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
-  ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
-  end;
+  ReplaceLinePrefix(CFG,'Crosshairs =','Crosshairs = 1');
 
   {MULTIPLAYER}
   if not check_single then
@@ -259,7 +490,6 @@ ReplaceLinePrefix(CFG,'BlasterEmu =','BlasterEmu = 0x620');
   end;
 
 {EXTRA}
-ReplaceLinePrefix(CFG,'Crosshairs =','Crosshairs = 1');
 ReplaceLinePrefix(CFG,'Shadows =','Shadows = 1');
 ReplaceLinePrefix(CFG,'Detail =','Detail = 1');
 
@@ -316,41 +546,143 @@ ReplaceLinePrefix(CFG,'NumBits =','NumBits = 16');
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 3');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "BMOUSE.EXE"');
-
-  ReplaceLinePrefix(CFG,'MouseAim =','MouseAim = 1');
+  ReplaceLinePrefix(CFG,'MouseAiming =','MouseAiming = 0');
   ReplaceLinePrefix(CFG,'MouseAimingFlipped =','MouseAimingFlipped = 0');
+  ReplaceLinePrefix(CFG,'MouseButton0 =','MouseButton0 = "Fire"');
+  ReplaceLinePrefix(CFG,'MouseButton1 =','MouseButton1 = "Jump"');
+  ReplaceLinePrefix(CFG,'MouseButton2 =','MouseButton2 = ""');
 
-  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "W" "N/A"');
-  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "S" "N/A"');
-  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "A" "N/A"');
-  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "D" "N/A"');
-  ReplaceLinePrefix(CFG,'Jump =','Jump = "Space" "N/A"');
-  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "C" "N/A"');
-  ReplaceLinePrefix(CFG,'Open =','Open = "E" "N/A"');
-  ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
-  ReplaceLinePrefix(CFG,'Weapon_Special_Fire =','Weapon_Special_Fire = "X" "N/A"');
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "W" ""');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "S" ""');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "" ""');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "" ""');
+  ReplaceLinePrefix(CFG,'Strafe =','Strafe = "" ""');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "A" ""');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "D" ""');
+
+  ReplaceLinePrefix(CFG,'Fire =','Fire = "LCtrl" "RCtrl"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "E" ""');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" ""');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "Space" ""');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "C" ""');
+
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "" ""');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" ""');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" ""');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" ""');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" ""');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" ""');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" ""');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" ""');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" ""');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" ""');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" ""');
+
+  ReplaceLinePrefix(CFG,'Inventory =','Inventory = "I" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" ""');
+
+  ReplaceLinePrefix(CFG,'Med_Kit =','Med_Kit = "" ""');
+  ReplaceLinePrefix(CFG,'Smoke_Bomb =','Smoke_Bomb = "" ""');
+  ReplaceLinePrefix(CFG,'Night_Vision =','Night_Vision = "" ""');
+  ReplaceLinePrefix(CFG,'Gas_Bomb =','Gas_Bomb = "" ""');
+  ReplaceLinePrefix(CFG,'Flash_Bomb =','Flash_Bomb = "" ""');
+  ReplaceLinePrefix(CFG,'Caltrops =','Caltrops = "" ""');
+
+  ReplaceLinePrefix(CFG,'TurnAround =','TurnAround = "" ""');
+  ReplaceLinePrefix(CFG,'SendMessage =','SendMessage = "T" ""');
+  ReplaceLinePrefix(CFG,'Map =','Map = "M" ""');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "" ""');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" ""');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" ""');
+  ReplaceLinePrefix(CFG,'Center_View =','Center_View = "" ""');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'See_Co_Op_View =','See_Co_Op_View = "K" ""');
+  ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" ""');
+  ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "" ""');
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "" ""');
+
+  ReplaceLinePrefix(CFG,'AutoAim =','AutoAim = 0');
+  ReplaceLinePrefix(CFG,'MouseAimingOn =','MouseAimingOn = 1');
+
+    if (Mouse_Global > 0) then
+    begin
+    ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(MouseAnalogX+Mouse_Global));
+    ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(MouseAnalogY+Mouse_Global));
+    end;
+
   end
   else
   begin
   ReplaceLinePrefix(CFG,'ControllerType =','ControllerType = 0');
   ReplaceLinePrefix(CFG,'ExternalFilename =','ExternalFilename = "EXTERNAL.EXE"');
 
-  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "Up" "N/A"');
-  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "Down" "N/A"');
-  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "Left" "N/A"');
-  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "Right" "N/A"');
-  ReplaceLinePrefix(CFG,'Jump =','Jump = "A" "N/A"');
-  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "Z" "N/A"');
-  ReplaceLinePrefix(CFG,'Open =','Open = "Space" "N/A"');
-  ReplaceLinePrefix(CFG,'Weapon_Fire =','Weapon_Fire = "LCtrl" "RCtrl"');
-  end;
+  ReplaceLinePrefix(CFG,'Move_Forward =','Move_Forward = "Up" ""');
+  ReplaceLinePrefix(CFG,'Move_Backward =','Move_Backward = "Down" ""');
+  ReplaceLinePrefix(CFG,'Turn_Left =','Turn_Left = "Left" ""');
+  ReplaceLinePrefix(CFG,'Turn_Right =','Turn_Right = "Right" ""');
+  ReplaceLinePrefix(CFG,'Strafe =','Strafe = "LAlt" "RAlt"');
+  ReplaceLinePrefix(CFG,'Strafe_Left =','Strafe_Left = "," ""');
+  ReplaceLinePrefix(CFG,'Strafe_Right =','Strafe_Right = "." ""');
 
-  {SENSIBILIDADE}
-  if Mouse_Global > 0 then
-  begin
-  ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX+Mouse_Global));
-  ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY+Mouse_Global));
+  ReplaceLinePrefix(CFG,'Fire =','Fire = "LCtrl" "RCtrl"');
+  ReplaceLinePrefix(CFG,'Open =','Open = "Space" ""');
+  ReplaceLinePrefix(CFG,'Run =','Run = "LShift" "RShift"');
+  ReplaceLinePrefix(CFG,'AutoRun =','AutoRun = "CapLck" ""');
+  ReplaceLinePrefix(CFG,'Jump =','Jump = "A" ""');
+  ReplaceLinePrefix(CFG,'Crouch =','Crouch = "Z" ""');
+
+  ReplaceLinePrefix(CFG,'Look_Up =','Look_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Look_Down =','Look_Down = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Up =','Aim_Up = "" ""');
+  ReplaceLinePrefix(CFG,'Aim_Down =','Aim_Down = "" ""');
+
+  ReplaceLinePrefix(CFG,'Weapon_1 =','Weapon_1 = "1" ""');
+  ReplaceLinePrefix(CFG,'Weapon_2 =','Weapon_2 = "2" ""');
+  ReplaceLinePrefix(CFG,'Weapon_3 =','Weapon_3 = "3" ""');
+  ReplaceLinePrefix(CFG,'Weapon_4 =','Weapon_4 = "4" ""');
+  ReplaceLinePrefix(CFG,'Weapon_5 =','Weapon_5 = "5" ""');
+  ReplaceLinePrefix(CFG,'Weapon_6 =','Weapon_6 = "6" ""');
+  ReplaceLinePrefix(CFG,'Weapon_7 =','Weapon_7 = "7" ""');
+  ReplaceLinePrefix(CFG,'Weapon_8 =','Weapon_8 = "8" ""');
+  ReplaceLinePrefix(CFG,'Weapon_9 =','Weapon_9 = "9" ""');
+  ReplaceLinePrefix(CFG,'Weapon_10 =','Weapon_10 = "0" ""');
+
+  ReplaceLinePrefix(CFG,'Inventory =','Inventory = "Enter" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Left =','Inventory_Left = "[" ""');
+  ReplaceLinePrefix(CFG,'Inventory_Right =','Inventory_Right = "]" ""');
+
+  ReplaceLinePrefix(CFG,'Med_Kit =','Med_Kit = "M" ""');
+  ReplaceLinePrefix(CFG,'Smoke_Bomb =','Smoke_Bomb = "S" ""');
+  ReplaceLinePrefix(CFG,'Night_Vision =','Night_Vision = "N" ""');
+  ReplaceLinePrefix(CFG,'Gas_Bomb =','Gas_Bomb = "G" ""');
+  ReplaceLinePrefix(CFG,'Flash_Bomb =','Flash_Bomb = "F" ""');
+  ReplaceLinePrefix(CFG,'Caltrops =','Caltrops = "C" ""');
+
+  ReplaceLinePrefix(CFG,'TurnAround =','TurnAround = "" ""');
+  ReplaceLinePrefix(CFG,'SendMessage =','SendMessage = "T" ""');
+  ReplaceLinePrefix(CFG,'Map =','Map = "Tab" ""');
+  ReplaceLinePrefix(CFG,'Map_Follow_Mode =','Map_Follow_Mode = "F" ""');
+  ReplaceLinePrefix(CFG,'Shrink_Screen =','Shrink_Screen = "-" ""');
+  ReplaceLinePrefix(CFG,'Enlarge_Screen =','Enlarge_Screen = "=" ""');
+  ReplaceLinePrefix(CFG,'Center_View =','Center_View = "" ""');
+  ReplaceLinePrefix(CFG,'Holster_Weapon =','Holster_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'See_Co_Op_View =','See_Co_Op_View = "K" ""');
+  ReplaceLinePrefix(CFG,'Mouse_Aiming =','Mouse_Aiming = "U" ""');
+  ReplaceLinePrefix(CFG,'Toggle_Crosshair =','Toggle_Crosshair = "I" ""');
+  ReplaceLinePrefix(CFG,'Next_Weapon =','Next_Weapon = "" ""');
+  ReplaceLinePrefix(CFG,'Previous_Weapon =','Previous_Weapon = "" ""');
+
+  ReplaceLinePrefix(CFG,'AutoAim =','AutoAim = 1');
+  ReplaceLinePrefix(CFG,'MouseAimingOn =','MouseAimingOn = 0');
   end;
+   ReplaceLinePrefix(CFG,'MouseInvert = 0','MouseInvert = 1');
 
   {MULTIPLAYER}
   if not check_single then

@@ -304,7 +304,6 @@ Config_Game_Global = blood.cfg
                  Arquivo_DOSBOX_Fisico[i]:='ReverseStereo = 0';
                  //-------------------------------------------------------------
 				 
-				 se TECLADO (RxControle.StateOn = Falso)
 				 if RxControle.StateOn = False then
                  begin
                    if Pos('ControllerType = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
@@ -312,7 +311,7 @@ Config_Game_Global = blood.cfg
                    if Pos('ExternalFilename = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
                    Arquivo_DOSBOX_Fisico[i]:='ExternalFilename = "EXTERNAL.EXE"';
                  end
-				 else AGORA MOUSE
+				 else 
                  begin
                    if Pos('ControllerType = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
                    Arquivo_DOSBOX_Fisico[i]:='ControllerType = 3';

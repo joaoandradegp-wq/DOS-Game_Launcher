@@ -278,6 +278,7 @@ Config_Game_Global = duke3d.cfg
                  Arquivo_DOSBOX_Fisico[i]:='BlasterEmu = 0x620';
                  if Pos('ReverseStereo = '   ,Arquivo_DOSBOX_Fisico[i]) = 1 then
                  Arquivo_DOSBOX_Fisico[i]:='ReverseStereo = 0';
+				 
 				 if RxControle.StateOn = False then
                  begin
                    if Pos('ControllerType = '  ,Arquivo_DOSBOX_Fisico[i]) = 1 then
