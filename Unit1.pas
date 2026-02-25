@@ -228,8 +228,8 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, Unit3, Unit4, Unit6, Language,
-Unit2, Unit5, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS;
+uses IniFiles, Funcoes, About, NameFun, MAP_Select, Mouse_Sense, Language,
+DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 var
 Arquivo_INI:TIniFile;
@@ -495,9 +495,9 @@ end;
 
 procedure TForm1_DGL.Menu_SobreClick(Sender: TObject);
 begin
-Application.CreateForm(TForm5_About, Form5_About);
-Form5_About.ShowModal;
-Form5_About.Free;
+Application.CreateForm(TForm7_About, Form7_About);
+Form7_About.ShowModal;
+Form7_About.Free;
 end;
 
 procedure TForm1_DGL.RxCheckListBox1Click(Sender: TObject);
@@ -748,9 +748,9 @@ end;
 
 procedure TForm1_DGL.RxOpcoesOn(Sender: TObject);
 begin
-Application.CreateForm(TForm3_QuakeWorld, Form3_QuakeWorld);
-Form3_QuakeWorld.ShowModal;
-Form3_QuakeWorld.Free;
+Application.CreateForm(TForm3_NameFun, Form3_NameFun);
+Form3_NameFun.ShowModal;
+Form3_NameFun.Free;
 end;
 
 procedure TForm1_DGL.RxOpcoesEnter(Sender: TObject);

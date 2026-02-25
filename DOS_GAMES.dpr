@@ -4,15 +4,17 @@ uses
   Forms,
   Wininet,
   SysUtils,
-  Unit1 in 'Unit1.pas' {Form1_DGL},
-  Unit2 in 'Unit2.pas' {Form2_DLC},
-  Unit3 in 'Unit3.pas' {Form3_QuakeWorld},
-  Unit4 in 'Unit4.pas' {Form4_Select},
-  Unit5 in 'Unit5.pas' {Form5_Splash},
-  Unit6 in 'Unit6.pas' {Form6_Mouse},
-  About in 'About.pas' {Form5_About},
+  Unit1 in 'Unit1.pas'            {Form1_DGL},
+  DLC in 'DLC.pas'                {Form2_DLC},
+  NameFun in 'NameFun.pas'        {Form3_NameFun},
+  MAP_Select in 'MAP_Select.pas'  {Form4_Select},
+  Splash in 'Splash.pas'          {Form5_Splash},
+  Mouse_Sense in 'Mouse_Sense.pas'{Form6_Mouse},
+  About in 'About.pas'            {Form7_About},
+
   Language in 'Language.pas',
   Funcoes in 'Funcoes.pas',
+
   NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas',
   ZDOOM_Bind in 'ZDOOM_Bind.pas',
   DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas';
@@ -61,6 +63,6 @@ begin
  Language_Global:=0; //PT-BR
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
-  Application.Run;
+ Application.Run;
 
 end.

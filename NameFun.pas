@@ -1,4 +1,4 @@
-unit Unit3;
+unit NameFun;
 
 interface
 
@@ -8,7 +8,7 @@ uses
   WinSkinData;
 
 type
-  TForm3_QuakeWorld = class(TForm)
+  TForm3_NameFun = class(TForm)
     label_name: TLabel;
     ListBox_Nome: TListBox;
     label_skin: TLabel;
@@ -48,7 +48,7 @@ type
   end;
 
 var
-  Form3_QuakeWorld: TForm3_QuakeWorld;
+  Form3_NameFun: TForm3_NameFun;
   Caminho_Nome,Caminho_Skin,Arquivo_PCX:String;
 
 implementation
@@ -57,7 +57,7 @@ uses Unit1, Funcoes, Language;
 
 {$R *.dfm}
 
-procedure TForm3_QuakeWorld.btn_aplicarClick(Sender: TObject);
+procedure TForm3_NameFun.btn_aplicarClick(Sender: TObject);
 var
 Nome,Skin:String;
 begin
@@ -99,7 +99,7 @@ CoolStuff_Global:=Nome+' '+Skin;
 Close;
 end;
 
-procedure TForm3_QuakeWorld.btn_skinbaseClick(Sender: TObject);
+procedure TForm3_NameFun.btn_skinbaseClick(Sender: TObject);
 begin
   if not FileExists(Caminho_Global+'id1\skins\base.pcx') then
   CopyFile(pchar(Pasta_INI_Global+'\quake\base.pcx'),pchar(Caminho_Global+'id1\skins\base.pcx'),False);
@@ -110,26 +110,26 @@ ListBox_Skin.ItemIndex:=ListBox_Skin.Items.IndexOf('base');
 btn_aplicar.Enabled:=True
 end;
 
-procedure TForm3_QuakeWorld.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TForm3_NameFun.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 if CoolStuff_Global = '+name '+Trim(Form1_DGL.player_name.Text) then
 Form1_DGL.RxOpcoes.StateOn:=False;
 
-Form3_QuakeWorld.Release;
-Form3_QuakeWorld:=Nil;
+Form3_NameFun.Release;
+Form3_NameFun:=Nil;
 end;
 
-procedure TForm3_QuakeWorld.btn_folder1Click(Sender: TObject);
+procedure TForm3_NameFun.btn_folder1Click(Sender: TObject);
 begin
 ShellExecute(Application.Handle,'open',pchar(Caminho_Nome),nil,nil,SW_SHOWNORMAL);
 end;
 
-procedure TForm3_QuakeWorld.btn_folder2Click(Sender: TObject);
+procedure TForm3_NameFun.btn_folder2Click(Sender: TObject);
 begin
 ShellExecute(Application.Handle,'open',pchar(Caminho_Skin),nil,nil,SW_SHOWNORMAL);
 end;
 
-procedure TForm3_QuakeWorld.FormActivate(Sender: TObject);
+procedure TForm3_NameFun.FormActivate(Sender: TObject);
 var
 ArquivoQW:TStringList;
 i:Integer;
@@ -198,7 +198,7 @@ Caminho_Skin:=Caminho_Nome+'skins\';
    end;
 
   ArquivoQW.Free;
-  Arquivo_PCX:=Form3_QuakeWorld.ListBox_Skin.Items[Form3_QuakeWorld.ListBox_Skin.ItemIndex]+'.pcx';
+  Arquivo_PCX:=Form3_NameFun.ListBox_Skin.Items[Form3_NameFun.ListBox_Skin.ItemIndex]+'.pcx';
   Carrega_PCX(Caminho_Skin+Arquivo_PCX);
   end
   else
@@ -212,7 +212,7 @@ Caminho_Skin:=Caminho_Nome+'skins\';
 
 end;
 
-procedure TForm3_QuakeWorld.RxFolderMonitor1Change(Sender: TObject);
+procedure TForm3_NameFun.RxFolderMonitor1Change(Sender: TObject);
 begin
 Listar_Arquivos(ListBox_Nome,Caminho_Nome,'scr');
 
@@ -223,32 +223,32 @@ Listar_Arquivos(ListBox_Nome,Caminho_Nome,'scr');
 
 end;
 
-procedure TForm3_QuakeWorld.RxFolderMonitor2Change(Sender: TObject);
+procedure TForm3_NameFun.RxFolderMonitor2Change(Sender: TObject);
 begin
 Listar_Arquivos(ListBox_Skin,Caminho_Skin,'pcx');
 end;
 
-procedure TForm3_QuakeWorld.ListBox_SkinClick(Sender: TObject);
+procedure TForm3_NameFun.ListBox_SkinClick(Sender: TObject);
 begin
 if (ListBox_Skin.ItemIndex <> -1) then
 btn_aplicar.Enabled:=True;
 
-Arquivo_PCX:=Form3_QuakeWorld.ListBox_Skin.Items[Form3_QuakeWorld.ListBox_Skin.ItemIndex]+'.pcx';
+Arquivo_PCX:=Form3_NameFun.ListBox_Skin.Items[Form3_NameFun.ListBox_Skin.ItemIndex]+'.pcx';
 Carrega_PCX(Caminho_Skin+Arquivo_PCX);
 end;
 
-procedure TForm3_QuakeWorld.ListBox_NomeClick(Sender: TObject);
+procedure TForm3_NameFun.ListBox_NomeClick(Sender: TObject);
 begin
 if (ListBox_Nome.ItemIndex <> -1) then
 btn_aplicar.Enabled:=True;
 end;
 
-procedure TForm3_QuakeWorld.btn_namefunClick(Sender: TObject);
+procedure TForm3_NameFun.btn_namefunClick(Sender: TObject);
 begin
 ShellExecute(Handle,'open',pchar(Caminho_Nome+'-[SwT]-NameFun.exe'),'',pchar(Caminho_Nome),SW_NORMAL);
 end;
 
-procedure TForm3_QuakeWorld.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TForm3_NameFun.FormKeyPress(Sender: TObject; var Key: Char);
 begin
 //-----------------
 if (key = #27) then
@@ -256,12 +256,12 @@ Close;
 //-----------------
 end;
 
-procedure TForm3_QuakeWorld.FormCreate(Sender: TObject);
+procedure TForm3_NameFun.FormCreate(Sender: TObject);
 begin
 Lang_DGL(19);
 end;
 
-procedure TForm3_QuakeWorld.btn_skinsClick(Sender: TObject);
+procedure TForm3_NameFun.btn_skinsClick(Sender: TObject);
 begin
 Copia_Pasta(Pasta_INI_Global+'\quake\skins\*.pcx',Caminho_Global+'id1\skins\');
 btn_skins.Enabled:=False;

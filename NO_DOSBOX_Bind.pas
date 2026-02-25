@@ -2,7 +2,16 @@ unit NO_DOSBOX_Bind;
 
 interface
 
-uses Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, dialogs, Unit1, Unit2, Teclado_Mouse, Funcoes, Language;
+uses Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, dialogs, Unit1, DLC, Funcoes, Language;
+
+type
+  TModoEntrada = (meTeclado, meMouse, meAmbos);
+
+  TRegra = record
+    Chave: string;     // texto que identifica a linha no CFG
+    Valor: string;       // valor que será aplicado
+    Modo: TModoEntrada;  // quando aplicar
+  end;
 
 //------------------------------------------------------------------------------
 const
@@ -71,6 +80,16 @@ procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: B
 
 implementation
 
+procedure AplicaRegras(Index: Integer; const Regras: array of TRegra; Lista: TStringList);
+var
+  i: Integer;
+begin
+  for i := Low(Regras) to High(Regras) do
+  begin
+    if Pos(Regras[i].Chave, Lista[Index]) = 1 then
+      Lista[Index] := Regras[i].Valor;
+  end;
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure AplicaQuakeClassic(

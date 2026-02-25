@@ -1,4 +1,4 @@
-unit Unit5;
+unit Splash;
 
 interface
 

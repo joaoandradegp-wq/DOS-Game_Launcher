@@ -59,7 +59,7 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 //----------------------------------------------------------------------
 implementation
 
-uses IniFiles, Unit1, Unit3, Unit4, Unit5, Unit6, Language;
+uses IniFiles, Unit1, NameFun, MAP_Select, Splash, Mouse_Sense, Language;
 
 
 //----------------------------------------------------------------------
@@ -627,12 +627,12 @@ begin
 GraphicClass := FileFormatList.GraphicFromContent(FileName);
 
  if GraphicClass = nil then
- Form3_QuakeWorld.Image1.Picture.LoadFromFile(FileName)
+ Form3_NameFun.Image1.Picture.LoadFromFile(FileName)
  else
  begin
  Graphic:=GraphicClass.Create;
  Graphic.LoadFromFile(FileName);
- Form3_QuakeWorld.Image1.Picture.Graphic:=Graphic;
+ Form3_NameFun.Image1.Picture.Graphic:=Graphic;
  end;
 
 end;

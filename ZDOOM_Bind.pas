@@ -2,7 +2,7 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, Unit2;
+uses IniFiles, SysUtils, Forms, Unit1, DLC;
 
 //----------------------------
 type

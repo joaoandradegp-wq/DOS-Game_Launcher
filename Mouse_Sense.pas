@@ -1,4 +1,4 @@
-unit Unit6;
+unit Mouse_Sense;
 
 interface
 

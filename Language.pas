@@ -8,7 +8,7 @@ function Lang_DGL(id:Integer):String;
 
 implementation
 
-uses Funcoes, Unit1, Unit4, Unit3, About;
+uses Funcoes, Unit1, MAP_Select, NameFun, About;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -70,11 +70,11 @@ begin
  17: Result:='Os serviços DGL foram incluídos no Firewall do Windows!';
  18: Result:='TECLADO';
  19: begin
-     Form3_QuakeWorld.Caption:='Opções';
-     Form3_QuakeWorld.Mensagem_SemNome.Caption:=' Nomes Personalizados';
-     Form3_QuakeWorld.Mensagem_SemSkin.Caption:=' Disponível apenas em Deathmatch';
-     Form3_QuakeWorld.Label1.Caption:='PRÉ-VISUALIZAÇÃO:';
-     Form3_QuakeWorld.btn_aplicar.Caption:='APLICAR';
+     Form3_NameFun.Caption:='Opções';
+     Form3_NameFun.Mensagem_SemNome.Caption:=' Nomes Personalizados';
+     Form3_NameFun.Mensagem_SemSkin.Caption:=' Disponível apenas em Deathmatch';
+     Form3_NameFun.Label1.Caption:='PRÉ-VISUALIZAÇÃO:';
+     Form3_NameFun.btn_aplicar.Caption:='APLICAR';
      end;
  20: Result:='Sobre o';
  //21: Result:='O DOS GAME LAUNCHER já está em execução!';
@@ -149,11 +149,11 @@ begin
  17: Result:='The DGL Services was included at Windows Firewall!';
  18: Result:='KEYBOARD';
  19: begin
-     Form3_QuakeWorld.Caption:='Options';
-     Form3_QuakeWorld.Mensagem_SemNome.Caption:=' NameFun List';
-     Form3_QuakeWorld.Mensagem_SemSkin.Caption:=' Available only in DeathMatch';
-     Form3_QuakeWorld.Label1.Caption:='PREVIEW:';
-     Form3_QuakeWorld.btn_aplicar.Caption:='APPLY';
+     Form3_NameFun.Caption:='Options';
+     Form3_NameFun.Mensagem_SemNome.Caption:=' NameFun List';
+     Form3_NameFun.Mensagem_SemSkin.Caption:=' Available only in DeathMatch';
+     Form3_NameFun.Label1.Caption:='PREVIEW:';
+     Form3_NameFun.btn_aplicar.Caption:='APPLY';
      end;
  20: Result:='About';
  //21: Result:='DOS GAME LAUNCHER is already running!';

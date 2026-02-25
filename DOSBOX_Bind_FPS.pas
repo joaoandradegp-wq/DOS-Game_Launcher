@@ -3,7 +3,7 @@ unit DOSBOX_Bind_FPS;
 interface
 
 uses
-  Windows, ShellAPI, SysUtils, Classes, Forms, Funcoes, Unit1, Language, Unit2;
+  Windows, ShellAPI, SysUtils, Classes, Forms, Funcoes, Unit1, Language, DLC;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

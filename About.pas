@@ -7,7 +7,7 @@ uses
   Dialogs, pngimage, ExtCtrls, StdCtrls, registry, WinSkinData, Buttons;
 
 type
-  TForm5_About = class(TForm)
+  TForm7_About = class(TForm)
     Panel_Lateral: TPanel;
     IMG_LOGO: TImage;
     IMG_TOPO: TImage;
@@ -28,7 +28,7 @@ type
   end;
 
 var
-  Form5_About: TForm5_About;
+  Form7_About: TForm7_About;
 
 implementation
 
@@ -36,19 +36,19 @@ uses Unit1, Language;
 
 {$R *.dfm}
 
-procedure TForm5_About.FormClose(Sender: TObject; var Action: TCloseAction);
+procedure TForm7_About.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-Form5_About.Release;
-Form5_About:=Nil;
+Form7_About.Release;
+Form7_About:=Nil;
 end;
 
-procedure TForm5_About.FormActivate(Sender: TObject);
+procedure TForm7_About.FormActivate(Sender: TObject);
 begin
-Form5_About.Caption:=UpperCase(Lang_DGL(20)+' '+Application.Title);
+Form7_About.Caption:=UpperCase(Lang_DGL(20)+' '+Application.Title);
 MemoSIGIL.Text:=Lang_DGL(24);
 end;
 
-procedure TForm5_About.FormKeyPress(Sender: TObject; var Key: Char);
+procedure TForm7_About.FormKeyPress(Sender: TObject; var Key: Char);
 begin
 //-----------------
 if (key = #27) then
@@ -56,12 +56,12 @@ Close;
 //-----------------
 end;
 
-procedure TForm5_About.MemoSIGILEnter(Sender: TObject);
+procedure TForm7_About.MemoSIGILEnter(Sender: TObject);
 begin
 ActiveControl:=Nil;
 end;
 
-procedure TForm5_About.SpeedButton1Click(Sender: TObject);
+procedure TForm7_About.SpeedButton1Click(Sender: TObject);
 begin
 Close;
 end;
