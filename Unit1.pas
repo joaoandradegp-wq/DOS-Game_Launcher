@@ -291,16 +291,40 @@ function pingIp( host: String): Boolean;
 var
 IdICMPClient:TIdICMPClient;
 begin
-  Try
+  try
   IdICMPClient:=TIdICMPClient.Create(nil);
   IdICMPClient.Host:=host;
   IdICMPClient.Port:=StrToInt(Trim(Form1_DGL.ip_porta.Text));
   IdICMPClient.ReceiveTimeout:=500;
   IdICMPClient.Ping;
   Result:=(IdICMPClient.ReplyStatus.BytesReceived > 0 );
-  Finally
+  finally
   IdICMPClient.Free;
   end
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function ResolveDebugPlayersUI(DefaultPlayers: Integer): Integer;
+begin
+Result := DefaultPlayers;
+
+  case PT_MessageDlg(Lang_DGL(23), Lang_DGL(22), mtCustom, [mbYes, mbNo], 0) of
+    6: Result := 1;
+    7: Result := StrToIntDef(Form1_DGL.cont_player.Text, 2);
+  end;
+  
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function SelectMapUI: string;
+begin
+Seleciona_Fases;
+
+  if Fecha_ESC then
+  Result := ''
+  else
+  Result := Map_Global;
+  
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -323,12 +347,11 @@ Wav.FileName:=ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav';
   for i:=1 to Length(Array_Games) do
   begin
   Deleta_Lixo(Array_Games[i][3],Array_Games[i][5],Array_Games[i][4]);
-  //-----------------------------------------------------------------
   RxCheckListBox1.Items.Add(UpperCase(Array_Games[i][2]));
-  //-----------------------------------------------------------------
+
     if not FileExists(ExtractFilePath(Application.ExeName)+Array_Games[i][3]+Array_Games[i][5]) then
     RxCheckListBox1.EnabledItem[i-1]:=False;
-  //-----------------------------------------------------------------
+
   end;
 
  //---------------------------------------------------------------------------
@@ -484,13 +507,13 @@ end;
 procedure TForm1_DGL.ip_localKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-//------------------------------------
-if (check_cliente.Checked = True) then
-begin
-  if Key = VK_RETURN then
-  Refresh_Lan.OnClick(Sender);
-end;
-//------------------------------------
+
+  if (check_cliente.Checked = True) then
+  begin
+    if Key = VK_RETURN then
+    Refresh_Lan.OnClick(Sender);
+  end;
+
 end;
 
 procedure TForm1_DGL.Menu_SobreClick(Sender: TObject);
@@ -507,18 +530,18 @@ end;
 
 procedure TForm1_DGL.RxCheckListBox1DblClick(Sender: TObject);
 begin
- //---------------------------------------------------------------------------------------------------
- if (check_single.Checked = True) and (btn_start.Enabled = True) and (Menu_Debug.Checked = False) then
- btn_startClick(Sender);
- //---------------------------------------------------------------------------------------------------
+
+  if (check_single.Checked = True) and (btn_start.Enabled = True) and (Menu_Debug.Checked = False) then
+  btn_startClick(Sender);
+
 end;
 
 procedure TForm1_DGL.ip_portaKeyPress(Sender: TObject; var Key: Char);
 begin
- //--------------------------------
- if not (key in ['0'..'9',#8]) then
- key:=#0;
- //--------------------------------
+  //--------------------------------
+  if not (key in ['0'..'9',#8]) then
+  key:=#0;
+  //--------------------------------
 end;
 
 procedure TForm1_DGL.ip_portaChange(Sender: TObject);
@@ -582,40 +605,42 @@ end;
 
 procedure TForm1_DGL.Menu_FirewallClick(Sender: TObject);
 begin
-  Try
+
+  try
   Firewall('CONFIG\bin\','DOSBox.exe');
   Firewall('CONFIG\bin\zdoom\','zdoom.exe');
   Firewall('DOS\QUAKE\','qwcl.exe');
   Firewall('DOS\QUAKE\','qwsv.exe');
   Firewall('DOS\QUAKE\','quakespasm.exe');
-  Finally
+  finally
   MessageBox(Application.Handle,pchar(Language.Lang_DGL(17)),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
   end;
+
 end;
 
 procedure TForm1_DGL.ip_localKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-//---------------------------------------------------------------------------
-if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
-begin
- //--------------------------------
- {DEBUG MODE}
- //--------------------------------
- if menu_debug.Checked = False then
- begin
- StatusBar1.Panels[1].Text:='';
- IMG_STATUS.Picture:=Nil;
- end;
- //--------------------------------
- btn_start.Enabled:=False;
- //--------------------------------
- if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_local.Text,1,1) = '0') then
- Refresh_Lan.Enabled:=False
- else
- Refresh_Lan.Enabled:=True;
-end;
-//---------------------------------------------------------------------------
+
+  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
+  begin
+    //--------------------------------
+    {DEBUG MODE}
+    //--------------------------------
+    if menu_debug.Checked = False then
+    begin
+    StatusBar1.Panels[1].Text:='';
+    IMG_STATUS.Picture:=Nil;
+    end;
+    //--------------------------------
+  btn_start.Enabled:=False;
+
+    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_local.Text,1,1) = '0') then
+    Refresh_Lan.Enabled:=False
+    else
+    Refresh_Lan.Enabled:=True;
+  end;
+
 end;
 
 procedure TForm1_DGL.ip_localKeyPress(Sender: TObject; var Key: Char);
@@ -651,26 +676,26 @@ end;
 procedure TForm1_DGL.ip_portaKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-//---------------------------------------------------------------------------
-if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
-begin
- //--------------------------------
- {DEBUG MODE}
- //--------------------------------
- if menu_debug.Checked = False then
- begin
- StatusBar1.Panels[1].Text:='';
- IMG_STATUS.Picture:=Nil;
- end;
- //--------------------------------
- btn_start.Enabled:=False;
- //--------------------------------
- if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
- Refresh_Lan.Enabled:=False
- else
- Refresh_Lan.Enabled:=True;
-end;
-//---------------------------------------------------------------------------
+
+  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
+  begin
+    //--------------------------------
+    {DEBUG MODE}
+    //--------------------------------
+    if menu_debug.Checked = False then
+    begin
+    StatusBar1.Panels[1].Text:='';
+    IMG_STATUS.Picture:=Nil;
+    end;
+    //--------------------------------
+  btn_start.Enabled:=False;
+
+    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
+    Refresh_Lan.Enabled:=False
+    else
+    Refresh_Lan.Enabled:=True;
+  end;
+
 end;
 
 procedure TForm1_DGL.PNGButton1Click(Sender: TObject);
@@ -796,21 +821,22 @@ case id of
    {QUAKE}
    //------------------------------------------------------------------------------
    8: begin
-        try
-        AplicaQuake(id, RxDM.StateOn);
-          //--------------------------------------------------------------------
-          {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
-          //--------------------------------------------------------------------
-          if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
-          MessageBox(Application.Handle,
-                     pchar(VarParametro_Global+#13#13+Map_Global),
-                     pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-          //--------------------------------------------------------------------
-          finally
-          ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
-                                    ,pchar(VarParametro_Global)
-                                    ,pchar(Caminho_Global),SW_NORMAL);
-          end;
+      AplicaQuake(id, RxDM.StateOn);
+        //--------------------------------------------------------------------
+        {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
+        //--------------------------------------------------------------------
+        if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
+        MessageBox(Application.Handle,
+                   pchar(VarParametro_Global+#13#13+Map_Global),
+                   pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+        //--------------------------------------------------------------------
+        if Fecha_ESC then
+        Exit;
+
+      ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
+                                 ,pchar(VarParametro_Global)
+                                 ,pchar(Caminho_Global),SW_NORMAL);
+
       end;
    //------------------------------------------------------------------------------
 
@@ -825,127 +851,42 @@ case id of
    //------------------------------------------------------------------------------
    3,4,6,7,12,13:
    begin
-   ConfigureZDoom(
-     id,                    // id do jogo (3,4,6,7,12,13)
-     RxControle.StateOn,    // mouse ativo
-     menu_debug.Checked,    // debug mode
-     player_name.Text,      // nome do jogador
-     Config_Game_Global,    // caminho do arquivo .ini
-     Array_Games[id][4],    // IWAD
-     check_single.Checked,  // singleplayer
-     combo_doom.ItemIndex,  // skin Doom
-     combo_color.ItemIndex, // cor Doom
-     Screen.Width,          // largura da tela
-     Screen.Height          // altura da tela
-   );
+   Map_Global:='';
+   ConfigureZDoom(id,RxControle.StateOn,menu_debug.Checked,player_name.Text,
+                  Config_Game_Global,
+                  Array_Games[id][4],
+                  GetZDoomMode(check_single.Checked,check_servidor.Checked),
+                  Map_Global,Modo_Game,ip_porta.Text,ip_local.Text,
+                  combo_doom.ItemIndex,combo_color.ItemIndex,
+                  Screen.Width,Screen.Height,
+                  ResolveDebugPlayersUI,
+                  SelectMapUI);
    end;
    //------------------------------------------------------------------------------
 
 end;
 
-
-//---------------------------------------------------------------------
+//--------------------------------------------------------
 // CLIENTE - CONTAGEM PRA INICIAR
-//---------------------------------------------------------------------
+//--------------------------------------------------------
 if check_cliente.Checked and (not menu_debug.Checked) then
 Contagem_Iniciar;
+//--------------------------------------------------------
 
-                        
-//---------------------------------------------------------------------
-// ZDOOM
-//---------------------------------------------------------------------
-if (Array_Games[id][7] = 'ZDOOM') then
-begin
-  VarParametro_Global := '';
+//---------------
+if Fecha_ESC then
+Exit;
+//---------------
 
-  //--------------------------------------------------
-  // SINGLE PLAYER
-  //--------------------------------------------------
-  if check_single.Checked then
-  begin
-    Seleciona_Fases;
-    if Fecha_ESC then Exit;
-
-    VarParametro_Global := ' +map ' + Map_Global;
-  end;
-
-  //--------------------------------------------------
-  // SERVIDOR
-  //--------------------------------------------------
-  if check_servidor.Checked then
-  begin
-  Arquivo_INI.WriteString('DOS','PORT_SERVER_'+Array_Games[id][7], ip_porta.Text);
-
-  Seleciona_Fases;
-
-    if Fecha_ESC then
-    Exit;
-
-    if menu_debug.Checked then
-    begin
-      case PT_MessageDlg(Lang_DGL(23), Lang_DGL(22), mtCustom, [mbYes,mbNo], 0) of
-        6: Modo_Game := 1;
-        7: Modo_Game := StrToIntDef(Form1_DGL.cont_player.Text, 2);
-      end;
-    end
-    else
-    begin
-    Modo_Game := StrToIntDef(Form1_DGL.cont_player.Text, 2);
-
-    IMG_STATUS.Picture := nil;
-    Lista_Imagens.GetBitmap(2, IMG_STATUS.Picture.Bitmap);
-    StatusBar1.Panels[1].Text := Lang_DGL(9);
-    end;
-
-    VarParametro_Global :=
-      ' -host ' + IntToStr(Modo_Game) +
-      DoomDM_Global +
-      ' -port ' + Trim(ip_porta.Text) +
-      ' +map ' + Map_Global;
-  end;
-
-  //--------------------------------------------------
-  // CLIENTE
-  //--------------------------------------------------
-  if check_cliente.Checked then
-  begin
-    VarParametro_Global :=
-      ' -join ' + Trim(ip_local.Text) +
-      ' -port ' + Trim(ip_porta.Text);
-  end;
-
-  //--------------------------------------------------
-  // DEBUG INFO
-  //--------------------------------------------------
-  if menu_debug.Checked then
-  MessageBox(Application.Handle, PChar(VarParametro_Global), PChar(Lang_DGL(23)), MB_ICONINFORMATION+MB_OK);
-
-  //--------------------------------------------------
-  // EXECUÇÃO
-  //--------------------------------------------------
-  ShellExecute(Handle,'open',PChar(ZDoom_EXE_Global),
-  PChar(
-    ' -iwad ' + Game_EXE_Global +     // <- ESSENCIAL
-    ' ' + DoomSkin_Global +
-    ' ' + DoomMod_Global +
-    ' -config ' + Array_Games[id][6] +
-    VarParametro_Global
-  ),
-  PChar(ExtractFilePath(Config_Game_Global)),SW_NORMAL);
-
-end;
-
-
-//---------------------------------------------------------------------
+//-------------------------------
 // FINALIZAÇÃO DO START
-//---------------------------------------------------------------------
+//-------------------------------
 Config_Tela(False);
 btn_start.Caption := Lang_DGL(5);
-
 img_game.Visible:=False;
 gif_dos.Visible:=True;
-
 Timer_MonitoraAPP.Enabled:=True;
+//-------------------------------
 end;
 
 procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);

@@ -63,7 +63,7 @@ begin
      end;
  11: Result:='Servidor';
  12: Result:='Porta';
- //13: Result:='Uma nova atualização está disponível!'+#13#13+'Atualizar agora?';
+ 13: Result:='Depuração';
  14: Result:='INICIAR';
  15: Result:='SERVIDOR';
  16: Result:='Execute como Administrador para incluir as plataformas DosBox e ZDoom no Firewall do Windows.';
@@ -142,7 +142,7 @@ begin
      end;
  11: Result:='Server';
  12: Result:='Port';
- //13: Result:='A new update is now available!'+#13#13+'Update now?';
+ 13: Result:='Debug';
  14: Result:='START';
  15: Result:='SERVER ADDRESS';
  16: Result:='Execute as Administrador to include DGL Services at Windows Firewall.';

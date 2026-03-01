@@ -80,6 +80,8 @@ procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: B
 
 implementation
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 procedure AplicaRegras(Index: Integer; const Regras: array of TRegra; Lista: TStringList);
 var
   i: Integer;

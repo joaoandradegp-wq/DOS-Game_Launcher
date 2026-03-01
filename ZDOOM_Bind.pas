@@ -2,9 +2,29 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, DLC;
+uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language;
 
-//----------------------------
+//--------------------------------------------------
+{USADO EM CONFIGUREZDOOM}
+//--------------------------------------------------
+type
+  TZDoomMode = (zmSinglePlayer, zmServer, zmClient);
+    TZDoomOptions = record
+    Mode: TZDoomMode;
+    Map: string;
+    HostPlayers: Integer;
+    Port: string;
+    JoinIP: string;
+    IWad: string;
+    SkinParams: string;
+    ModParams: string;
+    ConfigFile: string;
+    WorkingDir: string;
+    Executable: string;
+    ExtraDMParams: string;
+  end;
+//--------------------------------------------------
+//--------------------------------------------------
 type
   TGameFlags = record
     TemFreelook: Boolean;
@@ -16,18 +36,46 @@ type
     UsaMapTime: Boolean;
     UsaMapLabel: Boolean;
   end;
-//----------------------------
+//--------------------------------------------------
+type
+  TResolveDebugPlayers = function(DefaultPlayers: Integer): Integer;
+//--------------------------------------------------
+type
+  TSelectMapFunc = function: string;
+//--------------------------------------------------
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
-function GetCVarSection(id: Integer): String;
-function AspectRatio(W, H: Integer): Integer;
-procedure ConfigureZDoom(id: Integer; MouseAtivo, Debug: Boolean; PlayerName, ConfigFile, IWADFile: String; SinglePlayer: Boolean; DoomSkinIndex: Integer; DoomColorIndex: Integer; ScreenWidth: Integer; ScreenHeight: Integer);
+function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
+procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
+//---------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------
+procedure ConfigureZDoom(id: Integer; MouseAtivo,Debug: Boolean;
+PlayerName, ConfigFile, IWADFile: String;
+//-------------------
+Mode: TZDoomMode;
+Map: string;
+HostPlayers: Integer;
+Port,JoinIP: string;
+//-------------------
+DoomSkinIndex,DoomColorIndex,ScreenWidth,ScreenHeight: Integer;
+ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil);
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
 
 implementation
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
+begin
+  if IsSingle then
+  Result := zmSinglePlayer
+  else if IsServer then
+  Result := zmServer
+  else
+  Result := zmClient;
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function GetPlayerSection(id: Integer): String;
@@ -37,7 +85,7 @@ begin
     6:         Result := 'Heretic.Player';
     7:         Result := 'Hexen.Player';
   else
-    Result := 'Doom.Player';
+  Result := 'Doom.Player';
   end;
 end;
 //------------------------------------------------------------------------------
@@ -49,7 +97,7 @@ begin
     6:         Result := 'Heretic.ConsoleVariables';
     7:         Result := 'Hexen.ConsoleVariables';
   else
-    Result := 'Doom.ConsoleVariables';
+  Result := 'Doom.ConsoleVariables';
   end;
 end;
 //------------------------------------------------------------------------------
@@ -59,7 +107,7 @@ begin
 FillChar(Result, SizeOf(Result), 0);
 
   case id of
-    3,4: // DOOM
+    3,4: {DOOM}
     begin
     Result.TemFreelook := True;
     Result.TemCrouch   := True;
@@ -67,7 +115,7 @@ FillChar(Result, SizeOf(Result), 0);
     Result.UsaMapLabel := True;
     end;
 
-    6: // HERETIC
+    6: {HERETIC}
     begin
     Result.TemFreelook := True;
     Result.UsaMapBackground := True;
@@ -75,7 +123,7 @@ FillChar(Result, SizeOf(Result), 0);
     Result.UsaMapLabel := True;
     end;
 
-    7: // HEXEN
+    7: {HEXEN}
     begin
     Result.TemFreelook := True;
     Result.TemCrouch   := True;
@@ -111,7 +159,7 @@ PlayerSection:=GetPlayerSection(id);
 
 Ini.WriteBool(CVarSection, 'fullscreen', not Debug);
 
-  // CONFIGURAÇÃO DE VÍDEO
+  {CONFIGURAÇÃO DE VÍDEO}
   if Debug then
   begin
   Ini.WriteInteger(CVarSection, 'vid_aspect', 0);
@@ -257,37 +305,47 @@ PlayerSection: String;
 begin
 PlayerSection := GetPlayerSection(id);
            
-  if SinglePlayer then Exit;
+  if SinglePlayer then
+  Exit;
 
   case SkinIndex of
-    0:
-    begin
-      Ini.WriteString (PlayerSection, 'skin', 'base');
-      Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
-    end;
+    0: begin
+       Ini.WriteString (PlayerSection, 'skin', 'base');
+       Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
+       end;
 
-    1:
-    begin
-      Ini.WriteString(PlayerSection, 'skin', 'Phobos');
-      Ini.WriteString(PlayerSection, 'colorset', '-1');
-      Ini.WriteString(PlayerSection, 'color', 'ff 50 00');
-    end;
+    1: begin
+       Ini.WriteString(PlayerSection, 'skin', 'Phobos');
+       Ini.WriteString(PlayerSection, 'colorset', '-1');
+       Ini.WriteString(PlayerSection, 'color', 'ff 50 00');
+       end;
   end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure ConfigureZDoom(id: Integer; MouseAtivo, Debug: Boolean; PlayerName, ConfigFile, IWADFile: String; SinglePlayer: Boolean; DoomSkinIndex: Integer; DoomColorIndex: Integer; ScreenWidth: Integer; ScreenHeight: Integer);
+procedure ConfigureZDoom(id: Integer; MouseAtivo,Debug: Boolean;
+PlayerName, ConfigFile, IWADFile: String;
+//-------------------
+Mode: TZDoomMode;
+Map: string;
+HostPlayers: Integer;
+Port,JoinIP: string;
+//-------------------
+DoomSkinIndex,DoomColorIndex,ScreenWidth,ScreenHeight: Integer;
+ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil);
 var
-Ini: TMemIniFile;
-Flags: TGameFlags;
+    Ini: TMemIniFile;
+  Flags: TGameFlags;
 Section: String;
+    Opt: TZDoomOptions;
 begin
 Flags := GetGameFlags(id);
 
   case id of
   3,4,12,13: Section := 'Doom.Bindings';
-  6: Section := 'Heretic.Bindings';
-  7: Section := 'Hexen.Bindings';
+          6: Section := 'Heretic.Bindings';
+          7: Section := 'Hexen.Bindings';
   else
   Section := 'Doom.Bindings';
   end;
@@ -310,13 +368,98 @@ Flags := GetGameFlags(id);
       ApplyHexenClass(Ini, EPI_Global_DLC);
     end;
 
-  ApplyDoomSkin(Ini, id, SinglePlayer, DoomSkinIndex, DoomColorIndex);
+  ApplyDoomSkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
 
   Ini.UpdateFile;
   finally
   Ini.Free;
   end;
 
+//--------------------------------------------------
+// PREPARA EXECUÇÃO
+//--------------------------------------------------
+Opt.ConfigFile    := ConfigFile;
+Opt.IWad          := IWADFile;
+Opt.WorkingDir    := ExtractFilePath(ConfigFile);
+Opt.Executable    := ZDoom_EXE_Global;
+Opt.SkinParams    := DoomSkin_Global;
+Opt.ModParams     := DoomMod_Global;
+Opt.ExtraDMParams := DoomDM_Global;
+//--------------------------------------------------
+
+//--------------------------------------------------
+// SELEÇÃO DE MAPA
+//--------------------------------------------------
+if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') then
+begin
+  if Assigned(SelectMap) then
+  Map := SelectMap;
+
+  if Map = '' then
+  Exit;
+end;
+
+//--------------------------------------------------
+// DEBUG MODE - SIMULAR MULTIPLAYER
+//--------------------------------------------------
+if (Mode = zmServer) then
+begin
+  if Debug and Assigned(ResolveDebugPlayers) then
+  HostPlayers := ResolveDebugPlayers(HostPlayers);
+end;
+
+{MODO DE JOGO - SINGLE, SERVER ou CLIENT}
+Opt.Mode := Mode;
+
+  case Mode of zmSinglePlayer:
+  Opt.Map := Map;
+
+    zmServer: begin
+              Opt.Map := Map;
+              Opt.HostPlayers := HostPlayers;
+              Opt.Port := Port;
+              end;
+
+    zmClient: begin
+              Opt.JoinIP := JoinIP;
+              Opt.Port := Port;
+              end;
+  end;
+
+{EXECUTA}
+ExecuteZDoom(Opt, Debug);
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
+var
+Parametros: string;
+begin
+Parametros := '';
+
+  case Opt.Mode of
+    zmSinglePlayer: Parametros := ' +map ' + Opt.Map;
+          zmServer: Parametros :=
+                    ' -host ' + IntToStr(Opt.HostPlayers) + Opt.ExtraDMParams +
+                    ' -port ' + Trim(Opt.Port) +
+                    ' +map ' + Opt.Map;
+          zmClient: Parametros :=
+                    ' -join ' + Trim(Opt.JoinIP) +
+                    ' -port ' + Trim(Opt.Port);
+  end;
+
+  if Debug then
+  MessageBox(0, PChar(Parametros), PChar(Lang_DGL(13)), MB_OK);
+
+{EXECUTA}  
+ShellExecute(0,'open',PChar(Opt.Executable),PChar(
+                                           ' -iwad ' + Opt.IWad +
+                                           ' ' + Opt.SkinParams +
+                                           ' ' + Opt.ModParams +
+                                           ' -config ' + Opt.ConfigFile + Parametros),
+                                           PChar(Opt.WorkingDir), SW_NORMAL);
+                                           
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
