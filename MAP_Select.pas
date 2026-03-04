@@ -917,6 +917,7 @@ Logo_Original:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'+ExtractNamePat
   if (Form1_DGL.RxQuakeServer.StateOn = False) then
   Form1_DGL.img_game.Picture.LoadFromFile(Logo_Original);
 
+Nome_DLC_Global:='';
 Form4_Select.Release;
 Form4_Select:=Nil;
 end;

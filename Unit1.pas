@@ -815,7 +815,7 @@ case id of
    1: DOSBOX_Bind_FPS_Blood (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
    5: DOSBOX_Bind_FPS_Duke  (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
   10: DOSBOX_Bind_FPS_Shadow(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
-   8: AplicaQuake(id,RxDM.StateOn);
+   8: QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
 
    //------------------------------------------------------------------------------
    {WARCRAFT II}
