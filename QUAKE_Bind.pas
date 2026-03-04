@@ -1,0 +1,347 @@
+unit Quake_Bind;
+
+interface
+
+uses
+  Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, Dialogs,
+  Unit1, DLC, Funcoes, Language;
+
+type
+  TModoEntrada = (meTeclado, meMouse, meAmbos);
+
+  TRegra = record
+    Chave: string;
+    Valor: string;
+    Modo: TModoEntrada;
+  end;
+
+const
+  { VIDEO - DEBUG }
+  QUAKE_VIDEO_DEBUG: array[0..2] of TRegra = (
+    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "0"'),
+    (Chave:'vid_height';     Valor:'vid_height "768"'),
+    (Chave:'vid_width';      Valor:'vid_width "1024"')
+  );
+
+  { VIDEO - NORMAL }
+  QUAKE_VIDEO_NORMAL: array[0..2] of TRegra = (
+    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "1"'),
+    (Chave:'vid_height';     Valor:'vid_height "1024"'),
+    (Chave:'vid_width';      Valor:'vid_width "1280"')
+  );
+
+  { AUTOEXEC BASE }
+  QUAKE_AUTOEXEC_BASE: array[0..7] of string = (
+    'bind w "+forward"',
+    'bind a "+moveleft"',
+    'bind s "+back"',
+    'bind d "+moveright"',
+    'bind MOUSE1 "+attack"',
+    'bind MOUSE2 "+jump"',
+    'sensitivity "5.000000"',
+    '+mlook'
+  );
+
+  { QUAKEWORLD }
+  QW_EXEC_AUTOEXEC   = 'exec autoexec.cfg';
+  QW_LINE_MLOOK      = '+mlook';
+  QW_LINE_CLEAR      = 'clear';
+  QW_LINE_ECHO       = 'echo ';
+  QW_LINE_CONNECT    = 'connect ';
+  QW_PARAM_WINDOWED  = ' -startwindowed';
+  QW_PARAM_NAME      = '+name ';
+  QW_PARAM_COLOR     = ' +color ';
+  QW_FOLDER          = 'qw\';
+  QW_CONFIG_FILE     = 'config.cfg';
+  QW_AUTOEXEC_FILE   = 'autoexec.cfg';
+  QW_SERVER_EXE      = 'qwsv.exe';
+  QW_CLIENT_EXE      = 'qwcl.exe';
+
+procedure AplicaQuakeClassic(
+  const Caminho_Global: string;
+  const Debug: Boolean;
+  const CheckSingle: Boolean;
+  const CheckServidor: Boolean;
+  const CheckCliente: Boolean;
+  const NameFunAtivo: Boolean;
+  const PlayerName: string;
+  const CoolStuff_Global: string;
+  const ComboColorIndex: Integer;
+  const ContPlayerText: string;
+  const AppTitle: string;
+  const IdGameConfig: string;
+  var VarParametro_Global: string;
+  out Cancelado: Boolean
+);
+
+procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
+procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
+procedure AplicaQuakeWorldDM;
+
+implementation
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// REGRAS
+procedure AplicaRegras(Index: Integer; const Regras: array of TRegra; Lista: TStringList);
+var
+  i: Integer;
+begin
+  for i := Low(Regras) to High(Regras) do
+    if Pos(Regras[i].Chave, Lista[Index]) = 1 then
+      Lista[Index] := Regras[i].Valor;
+end;
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// CLASSIC / SPASM (MANTIDO ORIGINAL)
+procedure AplicaQuakeClassic(
+  const Caminho_Global: string;
+  const Debug: Boolean;
+  const CheckSingle: Boolean;
+  const CheckServidor: Boolean;
+  const CheckCliente: Boolean;
+  const NameFunAtivo: Boolean;
+  const PlayerName: string;
+  const CoolStuff_Global: string;
+  const ComboColorIndex: Integer;
+  const ContPlayerText: string;
+  const AppTitle: string;
+  const IdGameConfig: string;
+  var VarParametro_Global: string;
+  out Cancelado: Boolean
+);
+var
+  Config, AutoExec: TStringList;
+  Quake_Folder: string;
+  i,p: Integer;
+begin
+  Cancelado := False;
+  VarParametro_Global := ' -noserial';
+
+  Application.CreateForm(TForm2_DLC, Form2_DLC);
+  try
+    Form2_DLC.ShowModal;
+  finally
+    Form2_DLC.Free;
+  end;
+
+  if Fecha_ESC then
+  begin
+    Cancelado := True;
+    Exit;
+  end;
+
+  if not CheckCliente then
+  begin
+    Seleciona_Fases;
+    if Fecha_ESC then Exit;
+    VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global;
+  end;
+
+  case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
+    0: Quake_Folder := 'id1\';
+    1: Quake_Folder := 'hipnotic\';
+    2: Quake_Folder := 'rogue\';
+  end;
+
+  Config := TStringList.Create;
+  try
+    Config.LoadFromFile(Caminho_Global + Quake_Folder + IdGameConfig);
+
+    for i := 0 to Config.Count - 1 do
+      if Debug then
+        AplicaRegras(i, QUAKE_VIDEO_DEBUG, Config)
+      else
+        AplicaRegras(i, QUAKE_VIDEO_NORMAL, Config);
+
+    Config.SaveToFile(Caminho_Global + Quake_Folder + IdGameConfig);
+  finally
+    Config.Free;
+  end;
+
+  AutoExec := TStringList.Create;
+  try
+    for i := Low(QUAKE_AUTOEXEC_BASE) to High(QUAKE_AUTOEXEC_BASE) do
+      AutoExec.Add(QUAKE_AUTOEXEC_BASE[i]);
+
+    AutoExec.Add('name ' + Trim(PlayerName));
+    AutoExec.Add('color ' + IntToStr(ComboColorIndex));
+    AutoExec.Add('clear');
+    AutoExec.Add('echo ' + AppTitle);
+
+    AutoExec.SaveToFile(
+      IncludeTrailingPathDelimiter(Caminho_Global) +
+      Quake_Folder + 'autoexec.cfg');
+  finally
+    AutoExec.Free;
+  end;
+
+  // DEBUG AQUI
+if (Form1_DGL.menu_debug.Checked = True) and
+   (Form1_DGL.check_cliente.Checked = True) then
+begin
+  MessageBox(
+    Application.Handle,
+    PChar(VarParametro_Global + #13#13 + Map_Global),
+    PChar(Lang_DGL(23)),
+    MB_ICONINFORMATION + MB_OK);
+end;
+
+  // ?? AQUI USA O EXE GLOBAL (SPASM FUNCIONA)
+  ShellExecute(
+    Form1_DGL.Handle,
+    'open',
+    PChar(IncludeTrailingPathDelimiter(Caminho_Global) + Game_EXE_Global),
+    PChar(VarParametro_Global),
+    PChar(Caminho_Global),
+    SW_NORMAL);
+end;
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
+var
+  Cancelado: Boolean;
+begin
+  if EhDeathMatch then Exit;
+
+  AplicaQuakeClassic(
+    Caminho_Global,
+    Form1_DGL.menu_debug.Checked,
+    Form1_DGL.check_single.Checked,
+    Form1_DGL.check_servidor.Checked,
+    Form1_DGL.check_cliente.Checked,
+    Form1_DGL.RxOpcoes.StateOn,
+    Form1_DGL.player_name.Text,
+    CoolStuff_Global,
+    Form1_DGL.combo_color.ItemIndex,
+    Form1_DGL.cont_player.Text,
+    Application.Title,
+    Array_Games[id][6],
+    VarParametro_Global,
+    Cancelado
+  );
+end;
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaQuakeWorldDM;
+var
+  Config_Game_Global: string;
+  Encontrou: Boolean;
+  ArquivoCFG: TStringList;
+  i: Integer;
+  QWPath: string;
+  ClientExe: string;
+  ServerExe: string;
+  ClientParams: string;
+  ServerParams: string;
+begin
+Config_Game_Global :=
+    IncludeTrailingPathDelimiter(Caminho_Global) +
+    'qw\config.cfg';
+
+ if FileExists(Config_Game_Global) then
+begin
+  ArquivoCFG := TStringList.Create;
+  try
+    ArquivoCFG.LoadFromFile(Config_Game_Global);
+
+    Encontrou := False;
+
+    for i := 0 to ArquivoCFG.Count - 1 do
+      if Trim(LowerCase(ArquivoCFG[i])) = 'exec autoexec.cfg' then
+      begin
+        Encontrou := True;
+        Break;
+      end;
+
+    if not Encontrou then
+      ArquivoCFG.Add('exec autoexec.cfg');
+
+    ArquivoCFG.SaveToFile(Config_Game_Global);
+  finally
+    ArquivoCFG.Free;
+  end;
+end;
+
+
+  QWPath    := IncludeTrailingPathDelimiter(Caminho_Global);
+  ClientExe := QWPath + 'qwcl.exe';
+  ServerExe := QWPath + 'qwsv.exe';
+
+  Nome_DLC_Global := 'QuakeWorld';
+
+  //--------------------------------------------------------------------
+  // SE FOR HOST (SERVER MARCADO)
+  //--------------------------------------------------------------------
+  if Form1_DGL.check_servidor.Checked then
+  begin
+  Seleciona_Fases;
+
+    if Fecha_ESC then
+    Exit;
+
+    ServerParams := '+map ' + Map_Global;
+
+    if Form1_DGL.menu_debug.Checked then
+      MessageBox(
+        Application.Handle,
+        PChar('SERVER (HIDDEN)' + #13#13 + ServerParams),
+        'DEBUG QW SERVER',
+        MB_ICONINFORMATION + MB_OK);
+
+    ShellExecute(
+      Form1_DGL.Handle,
+      'open',
+      PChar(ServerExe),
+      PChar(ServerParams),
+      PChar(QWPath),
+      SW_HIDE);  // ?? HIDDEN COMO SUA LÓGICA ANTIGA
+  end;
+
+  //--------------------------------------------------------------------
+  // CLIENTE (SEMPRE ABRE)
+  //--------------------------------------------------------------------
+  ClientParams :=
+    '+name "' + Trim(Form1_DGL.player_name.Text) + '" ' +
+    '+color ' + IntToStr(Form1_DGL.combo_color.ItemIndex);
+
+    // ?? DEBUG = JANELA
+  if Form1_DGL.menu_debug.Checked then
+  ClientParams := '-startwindowed ' + ClientParams;
+
+  // Se for host, conecta em si mesmo
+  if Form1_DGL.check_servidor.Checked then
+    ClientParams := ClientParams + ' +connect 127.0.0.1'
+  else
+  if Trim(Form1_DGL.ip_local.Text) <> '' then
+    ClientParams := ClientParams + ' +connect ' + Trim(Form1_DGL.ip_local.Text);
+
+  if Form1_DGL.menu_debug.Checked then
+    MessageBox(
+      Application.Handle,
+      PChar('CLIENT' + #13#13 + ClientParams),
+      'DEBUG QW CLIENT',
+      MB_ICONINFORMATION + MB_OK);
+
+  ShellExecute(
+    Form1_DGL.Handle,
+    'open',
+    PChar(ClientExe),
+    PChar(ClientParams),
+    PChar(QWPath),
+    SW_NORMAL);
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
+begin
+  if DeathmatchAtivo then
+    AplicaQuakeWorldDM
+  else
+    AplicaQuakeSingle(id, DeathmatchAtivo);
+end;
+
+end.

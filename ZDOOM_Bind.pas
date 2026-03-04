@@ -355,6 +355,7 @@ Flags := GetGameFlags(id);
   ApplyGlobalSettings(Ini, id, Flags, MouseAtivo, Debug, IWADFile, PlayerName, ScreenWidth, ScreenHeight);
   ApplyBindings(Ini, Section, Flags, MouseAtivo);
 
+    {HEXEN}
     if id = 7 then
     begin
     Application.CreateForm(TForm2_DLC, Form2_DLC);
@@ -457,8 +458,8 @@ ShellExecute(0,'open',PChar(Opt.Executable),PChar(
                                            ' -iwad ' + Opt.IWad +
                                            ' ' + Opt.SkinParams +
                                            ' ' + Opt.ModParams +
-                                           ' -config ' + Opt.ConfigFile + Parametros),
-                                           PChar(Opt.WorkingDir), SW_NORMAL);
+                                           ' -config ' + Opt.ConfigFile + Parametros)
+                                           ,PChar(Opt.WorkingDir), SW_NORMAL);
                                            
 end;
 //------------------------------------------------------------------------------

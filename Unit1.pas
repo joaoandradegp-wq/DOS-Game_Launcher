@@ -229,7 +229,7 @@ SW_MouseAnalogY = 52312;
 implementation
 
 uses IniFiles, Funcoes, About, NameFun, MAP_Select, Mouse_Sense, Language,
-DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS;
+DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind;
 
 var
 Arquivo_INI:TIniFile;
@@ -567,33 +567,35 @@ end;
 procedure TForm1_DGL.Timer_MonitoraAPPTimer(Sender: TObject);
 begin
 Timer_MonitoraAPP.Interval:=1000;
-                                     
- if not (AppAberto(Array_Games[id][7]+'.exe') or AppAberto('qwcl.exe') or AppAberto('qwsv.exe') or AppAberto(Array_Games[id][4]) ) then
- begin
- Form1_DGL.ClientHeight:=461;
- Form1_DGL.ClientWidth:=633;
- Form1_DGL.Left:=(Screen.Width  div 2)-(Form1_DGL.Width  div 2);
- Form1_DGL.Top :=(Screen.Height div 2)-(Form1_DGL.Height div 2);
 
-  //--------------------------------------------------------------------
-  {DEBUG MODE - DOSBOX}
-  //--------------------------------------------------------------------
-  if menu_debug.Checked = False then
-  Deleta_Lixo(Array_Games[id][3],Array_Games[id][5],Array_Games[id][4]);
-  //--------------------------------------------------------------------
-                                    
-  //-----------------------------------
-  {QUAKEWORLD - SERVIDOR}
-  //-----------------------------------
-  if (id = 8) then
-  Fecha_EXE(Caminho_Global+'qwsv.exe');
-  //-----------------------------------
+if (id = 8) then
+begin
+  if AppAberto('qwsv.exe') and not AppAberto('qwcl.exe') then
+    Fecha_EXE(Caminho_Global + 'qwsv.exe');
+end;
 
- btn_start.Caption:=Lang_DGL(14);
- Config_Tela(True);
- Timer_MonitoraAPP.Enabled:=False;
- Timer_MonitoraAPP.Interval:=5000;
- end;
+  if not (AppAberto(Array_Games[id][7]+'.exe') or
+          AppAberto('qwcl.exe') or
+          AppAberto('qwsv.exe') or
+          AppAberto(Array_Games[id][4])) then
+  begin
+  Form1_DGL.ClientHeight:=461;
+  Form1_DGL.ClientWidth:=633;
+  Form1_DGL.Left:=(Screen.Width  div 2)-(Form1_DGL.Width  div 2);
+  Form1_DGL.Top :=(Screen.Height div 2)-(Form1_DGL.Height div 2);
+
+    //--------------------------------------------------------------------
+    {DEBUG MODE - DOSBOX}
+    //--------------------------------------------------------------------
+    if menu_debug.Checked = False then
+    Deleta_Lixo(Array_Games[id][3],Array_Games[id][5],Array_Games[id][4]);
+    //--------------------------------------------------------------------
+
+  btn_start.Caption:=Lang_DGL(14);
+  Config_Tela(True);
+  Timer_MonitoraAPP.Enabled:=False;
+  Timer_MonitoraAPP.Interval:=5000;
+  end;
 
 end;
 
@@ -791,24 +793,21 @@ Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
 Fecha_ESC:=False;
 
-//---------------------------------------------------------------------------
-if (player_name.Enabled = True) and (Length(Trim(player_name.Text)) = 0) then
-begin
-MessageBox(Application.Handle,pchar(Lang_DGL(1))
-                             ,pchar(Application.Title),MB_ICONWARNING+MB_OK);
-player_name.SetFocus;
-Exit;
-end;
-//---------------------------------------------------------------------------
+  if (player_name.Enabled = True) and (Length(Trim(player_name.Text)) = 0) then
+  begin
+  MessageBox(Application.Handle,pchar(Lang_DGL(1)),pchar(Application.Title),MB_ICONWARNING+MB_OK);
+  player_name.SetFocus;
+  Exit;
+  end;
 
- //---------------------------------
- {SINGLE PLAYER OU MULTIPLAYER}
- //---------------------------------
- if check_single.Checked = True then
- Game_EXE_Global:=Array_Games[id][5]
- else
- Game_EXE_Global:=Array_Games[id][4];
- //---------------------------------
+  //---------------------------------
+  {SINGLE PLAYER OU MULTIPLAYER}
+  //---------------------------------
+  if check_single.Checked = True then
+  Game_EXE_Global:=Array_Games[id][5]
+  else
+  Game_EXE_Global:=Array_Games[id][4];
+  //---------------------------------
 
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
@@ -816,35 +815,12 @@ case id of
    1: DOSBOX_Bind_FPS_Blood (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
    5: DOSBOX_Bind_FPS_Duke  (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
   10: DOSBOX_Bind_FPS_Shadow(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
-
-   //------------------------------------------------------------------------------
-   {QUAKE}
-   //------------------------------------------------------------------------------
-   8: begin
-      AplicaQuake(id, RxDM.StateOn);
-        //--------------------------------------------------------------------
-        {DEBUG MODE - QUAKE/QUAKEWORLD - CLIENTE}
-        //--------------------------------------------------------------------
-        if (menu_debug.Checked = True) and (check_cliente.Checked = True) then
-        MessageBox(Application.Handle,
-                   pchar(VarParametro_Global+#13#13+Map_Global),
-                   pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-        //--------------------------------------------------------------------
-        if Fecha_ESC then
-        Exit;
-
-      ShellExecute(Handle,'open',pchar(Caminho_Global+'\'+Array_Games[id][5])
-                                 ,pchar(VarParametro_Global)
-                                 ,pchar(Caminho_Global),SW_NORMAL);
-
-      end;
-   //------------------------------------------------------------------------------
+   8: AplicaQuake(id,RxDM.StateOn);
 
    //------------------------------------------------------------------------------
    {WARCRAFT II}
    //------------------------------------------------------------------------------
    11: AplicaWarcraft2(Config_Game_Global, check_single.Checked, player_name.Text);
-   //------------------------------------------------------------------------------
 
    //------------------------------------------------------------------------------
    {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
@@ -862,26 +838,26 @@ case id of
                   ResolveDebugPlayersUI,
                   SelectMapUI);
    end;
-   //------------------------------------------------------------------------------
 
 end;
 
-//--------------------------------------------------------
-// CLIENTE - CONTAGEM PRA INICIAR
-//--------------------------------------------------------
-if check_cliente.Checked and (not menu_debug.Checked) then
-Contagem_Iniciar;
-//--------------------------------------------------------
+  //--------------------------------------------------------
+  // CLIENTE - CONTAGEM PRA INICIAR
+  //--------------------------------------------------------
+  if check_cliente.Checked and (not menu_debug.Checked) then
+  Contagem_Iniciar;
+  //--------------------------------------------------------
 
-//---------------
-if Fecha_ESC then
-Exit;
-//---------------
-
+  //---------------
+  if Fecha_ESC then
+  Exit;
+  //---------------
+                      
 //-------------------------------
 // FINALIZAÇÃO DO START
 //-------------------------------
 Config_Tela(False);
+//-------------------------------
 btn_start.Caption := Lang_DGL(5);
 img_game.Visible:=False;
 gif_dos.Visible:=True;
