@@ -9,21 +9,13 @@ uses
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
 function EsperaDOSBox(TimeoutMS: Integer): HWND;
 procedure AtivaJanela(h: HWND);
 procedure EnviaTecla(h: HWND; VK: Word);
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function GetInternalIP: String;
 function GetExternalIP: String;
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
-
-type
-TStringArray = Array of String;
-function  SplitString(Expression:String; Delimiter:String):TStringArray;
-
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
 function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
@@ -48,15 +40,35 @@ procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
 procedure Setup_Teclas(Game:Integer);
 procedure Modo_Game(Tipo:Integer);
 procedure Lista_Cores(Game:Integer);
-function  Quake_Color(Cor:Integer):Integer;
 function  Config_Tela(On_Off:Boolean):Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 
 implementation
 
-uses DOSBOX_Bind_FPS;
+uses DOSBOX_Bind_FPS, Quake_Bind;
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
+var
+P1, P2: Integer;
+S: string;
+begin
+Result := False;
+P1 := Pos('"', Linha);
+
+  if P1 = 0 then
+  Exit;
+
+P2 := Pos('"', Copy(Linha, P1 + 1, MaxInt));
+
+  if P2 = 0 then
+  Exit;
+
+S := Copy(Linha, P1 + 1, P2 - 1);
+Result := TryStrToInt(S, Numero);
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function EsperaDOSBox(TimeoutMS: Integer): HWND;
@@ -735,7 +747,7 @@ end;
 procedure Lista_Cores(Game:Integer);
 var
 Config_Game,Nome_Game:String;
-i:Integer;
+i, ValorInt:Integer;
 Config_Fisico:TStringList;
 Arquivo_INI:TIniFile;
 begin
@@ -850,9 +862,8 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
      begin
        if Pos('_cl_color ',Config_Fisico[i]) = 1 then
        begin
- //AQUI
-     //  Form1_DGL.combo_color.ItemIndex:=Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)));
-       showmessage(Inttostr(Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)))));
+         if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
+         Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
        Break;
        end;
      end;
@@ -917,54 +928,6 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
  end;
  //------------------------------------------------------------------------------------------------
 
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function Quake_Color(Cor:Integer):Integer;
-begin
-
- case Cor of
-   0: Result:=0;
-  17: Result:=1;
-  34: Result:=2;
-  51: Result:=3;
-  68: Result:=4;
-  85: Result:=5;
- 102: Result:=6;
- 119: Result:=7;
- 136: Result:=8;
- 153: Result:=9;
- 170: Result:=10;
- 187: Result:=11;
- 204: Result:=12;
- 221: Result:=13;
- else
- Result:=0
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function SplitString(Expression:String; Delimiter:String):TStringArray;
-var
-Res:TStringArray;
-ResCount:DWORD;
-dLength:DWORD;
-StartIndex:DWORD;
-sTemp:String;
-begin
-dLength:=Length(Expression);
-StartIndex:=1;
-ResCount:=0;
-  repeat
-    sTemp:=Copy(Expression,StartIndex,Pos(Delimiter,Copy(Expression,StartIndex,Length(Expression)))-1);
-    SetLength(Res,Length(Res)+1);
-    SetLength(Res[ResCount],Length(sTemp));
-    Res[ResCount]:=sTemp;
-    StartIndex:=StartIndex+Length(sTemp)+Length(Delimiter);
-    ResCount:=ResCount+1;
-  until StartIndex > dLength;
-  Result:=Res;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

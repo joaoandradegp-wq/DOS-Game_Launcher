@@ -69,6 +69,7 @@ procedure AplicaQuakeClassic(
 procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
 procedure AplicaQuakeWorldDM(ServerDedicado: Boolean);
 procedure QUAKE_Bind_Spasm (id: Integer; DeathmatchAtivo, ServerDedicado: Boolean);
+function  Quake_Color(Cor:Integer):Integer;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -290,7 +291,6 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
                                        PChar(ServerParams),
                                        PChar(QWPath),SW_NORMAL);
-
   end;
 
   {CLIENTE}
@@ -327,6 +327,31 @@ begin
   else
   AplicaQuakeSingle(id, DeathmatchAtivo);
   
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function Quake_Color(Cor:Integer):Integer;
+begin
+
+ case Cor of
+   0: Result:=0;
+  17: Result:=1;
+  34: Result:=2;
+  51: Result:=3;
+  68: Result:=4;
+  85: Result:=5;
+ 102: Result:=6;
+ 119: Result:=7;
+ 136: Result:=8;
+ 153: Result:=9;
+ 170: Result:=10;
+ 187: Result:=11;
+ 204: Result:=12;
+ 221: Result:=13;
+ else
+ Result:=0
+ end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
