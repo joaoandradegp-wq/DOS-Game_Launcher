@@ -3,22 +3,25 @@ unit Funcoes;
 interface
 
 uses
-IdHTTP,GraphicEx,SysUtils,Forms,Classes,Windows,PsAPI,
-ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32,IdIcmpClient,Messages;
+  IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, PsAPI, ShellApi,
+  Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
+  IniFiles, Unit1, NameFun, MAP_Select, Splash, Mouse_Sense, Language;
 
-
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
 function EsperaDOSBox(TimeoutMS: Integer): HWND;
 procedure AtivaJanela(h: HWND);
 procedure EnviaTecla(h: HWND; VK: Word);
-
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function GetInternalIP: String;
 function GetExternalIP: String;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+
 type
 TStringArray = Array of String;
 function  SplitString(Expression:String; Delimiter:String):TStringArray;
+
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function  ProcessExists(exeFileName: String): Boolean;
@@ -33,22 +36,14 @@ procedure Fecha_EXE(Executavel:String);
 function  AppAberto(const NomeExe: string): Boolean;
 function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
 function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
 function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
 procedure Tela_Cheia;
 procedure Contagem_Iniciar;
 procedure Seleciona_Fases;
 procedure Funcao_Config_Opcoes;
-function  SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function  Episodio_Numero(Episodio:String):Integer;
-function  SW_DLC_Archive(DLC:Integer):String;
-function  SW_DLC_Exists(DLC:Integer):Boolean;
 function  Listar_Arquivos(Lista:TListBox;Caminho,Extensao:String):String;
-procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
 procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
 procedure Setup_Teclas(Game:Integer);
 procedure Modo_Game(Tipo:Integer);
@@ -57,14 +52,13 @@ function  Quake_Color(Cor:Integer):Integer;
 function  Config_Tela(On_Off:Boolean):Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+
 implementation
 
-uses IniFiles, Unit1, NameFun, MAP_Select, Splash, Mouse_Sense, Language;
-
+uses DOSBOX_Bind_FPS;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-
 function EsperaDOSBox(TimeoutMS: Integer): HWND;
 var
   h: HWND;
@@ -96,7 +90,6 @@ begin
   PostMessage(h, WM_KEYDOWN, VK, 0);
   PostMessage(h, WM_KEYUP, VK, 0);
 end;
-
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
@@ -248,37 +241,6 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function SIGIL_DLC_Exists(DLC:Integer):Boolean;
-var
-Var_Pesquisa:TSearchRec;
-begin
-
- case DLC of
- 1: begin
-      if FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[0]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_SHREDS.wad',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[1]:=' -file '+Var_Pesquisa.Name;
-      end;
-    end;
- 2: begin
-      if FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[2]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_II_MP3_V*.WAD',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[3]:=' -file '+Var_Pesquisa.Name;
-      end;
- end
- else
- Result:=False;
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function ProcessExists(exeFileName: String):Boolean;
 var
   ContinueLoop: BOOL;
@@ -317,54 +279,6 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function SW_DLC_Archive(DLC:Integer):String;
-begin
-
-  case DLC of
-  1: begin
-       {GOG}
-       if FileExists(Caminho_Global+'Wanton.dat') then
-       Result:='Wanton.dat';
-       {ORIGINAL}
-       if FileExists(Caminho_Global+'wt.dat') then
-       Result:='wt.dat';
-     end;
-  2: begin
-       {GOG}
-       if FileExists(Caminho_Global+'\dragon\sw.exe') then
-       Result:='sw.exe';
-       {ORIGINAL}
-       if FileExists(Caminho_Global+'sw_td.exe') then
-       Result:='sw_td.exe';
-     end;
-  end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function SW_DLC_Exists(DLC:Integer):Boolean;
-begin
-
-  case DLC of
-  1: begin
-       {1.GOG - 2.ORIGINAL}
-       if (FileExists(Caminho_Global+'Wanton.dat')) or (FileExists(Caminho_Global+'wt.dat')) then
-       Result:=True
-       else
-       Result:=False;
-     end;
-  2: begin
-       {1.GOG - 2.ORIGINAL}
-       if (DirectoryExists(Caminho_Global+'dragon\')) or (FileExists(Caminho_Global+'sw_td.exe')) then
-       Result:=True
-       else
-       Result:=False;
-     end;
-  end;
-  
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure Copia_Pasta(Origem,Destino:String);
 var
 dados:TSHFileOpStruct;
@@ -380,137 +294,6 @@ FillChar(Dados,SizeOf(Dados), 0);
 SHFileOperation(dados);
 end;
 //------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
-var
-arq_entrada,arq_saida: TStringList;
-i,j,k,cont:Integer;
-begin
-cont:=0;
-k:=0;
-arq_entrada:=TStringList.Create;
-arq_entrada.LoadFromFile(Caminho_Global+'blood.ini');
-
-arq_saida:=TStringList.Create;
-arq_saida.Add(arq_entrada.Strings[47]);
-arq_saida.Add('');
-arq_saida.Add('[Episode1]');
-arq_saida.Add('Title   = '+Form4_Select.ListBox_Episodio.Items[Form4_Select.ListBox_Episodio.ItemIndex]);
-
-  //----------------------------------------------------------------------------
-  {LISTA OS CAPÍTULOS - RESUMO}
-  //----------------------------------------------------------------------------
-  for i:=num_capitulo to qtde_capitulos do
-  begin
-  Inc(cont);
-
-    case num_episodio of
- 1..4: begin {BLOOD - LEVEL 1 ATÉ 4}
-         if i = 5 then
-         begin
-           case num_episodio of
-           1,3: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M8');
-           2,4: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9');
-           end;
-         end
-         else
-         begin
-            case i of
-            6..9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
-            else
-            arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
-            end;
-         end;
-       end;
-    5: begin {CRYPTIC PASSAGE - LEVEL 5}
-         if i = 7 then
-         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cpsl')
-         else
-         begin
-           case i of
-           8..10: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i-1));
-           else
-           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i));
-           end;
-         end;
-       end;
-    6: begin {PLASMA PAK - EPISODE 6}
-         if i = 7 then
-         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9')
-         else
-         begin
-           case i of
-           8,9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
-           else
-           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
-           end;
-         end;
-       end;
-    7: begin {BLOODBATH - EPISODE 7}
-         case num_capitulo of
-           1..8: arq_saida.Add('Map1    = '+'bb'   +IntToStr(num_capitulo));   //Blood
-          9..11: arq_saida.Add('Map1    = '+'DM'   +IntToStr(num_capitulo-8)); //Plasma Pak
-         12..15: arq_saida.Add('Map1    = '+'cpbb0'+IntToStr(num_capitulo-11));//Cryptic Passage
-         end;
-       Break;
-       end;
-    end;
-
-  end;
-  //----------------------------------------------------------------------------
-
-  //----------------------------------------------------------------------------
-  {LISTA OS CAPÍTULOS - DETALHADO}
-  //----------------------------------------------------------------------------
-  for i:=160 to arq_entrada.Count-1 do
-  begin
-    {CRYPTIC BLOODBATH}
-    if (num_episodio = 7) then
-    begin
-      case num_capitulo of
-      12,13,14,15: begin
-                     if Pos(';Episode 8',arq_entrada.Strings[i]) = 1 then
-                     Break;
-                   end;
-      else
-      begin
-        if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
-        Break;
-      end;
-      end;
-    end
-    else
-    begin
-      if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
-      Break;
-    end;
-  end;
-  //----------------------------------------------------------------------------
-
-  arq_saida.Add('');
-  arq_saida.Add(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-
-  //-----------------------------------------------------
-  {LISTA ATÉ ENCONTRAR A PALAVRA ";EPISODE"}
-  //-----------------------------------------------------
-  for j:=i to arq_entrada.Count-1 do
-  begin
-
-    if (copy(arq_entrada.Strings[j],1,8)=';Episode') then
-    Inc(k);
-
-    if k = 2 then
-    Break
-    else
-    arq_saida.Add(arq_entrada.Strings[j]);
-
-  end;
-  //-----------------------------------------------------
-
-arq_saida.SaveToFile(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'phobos.ini');
-FreeAndNil(arq_entrada);
-FreeAndNil(arq_saida);
-end;
 //------------------------------------------------------------------------------
 function Windows64:Boolean;
 type
@@ -648,18 +431,6 @@ Janela:=FindWindow(nil,pchar(Executavel));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-{function ZeroEsquerda(Numero:Integer):String;
-begin
-
- case Numero of
- 1,2,3,4,5,6,7,8,9: Result:='0'+IntToStr(Numero);
- else
- Result:=IntToStr(Numero);
- end;
-
-end;    }
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure Seleciona_Fases;
 begin
 Application.CreateForm(TForm4_Select, Form4_Select);
@@ -710,12 +481,9 @@ var
 Caminho_INI:String;
 Arquivo_INI:TIniFile;
 begin
-//------------------------------------------------------------------------------
 Caminho_INI:=ExtractFilePath(Application.ExeName)+'dos.ini';
 Form1_DGL.Refresh_Lan.Glyph:=Nil;
-//------------------------------------------------------------------------------
 CoolStuff_Global:='';
-//------------------------------------------------------------------------------
 
  case Tipo of
   {SINGLE PLAYER}
@@ -972,13 +740,11 @@ Config_Fisico:TStringList;
 Arquivo_INI:TIniFile;
 begin
 
-//------------------------------------------------------------------------------------------
 if (Game = 8) then
 Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+'id1\'+Array_Games[Game][6]
 else
 Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+Array_Games[Game][6];
 Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
-//------------------------------------------------------------------------------------------
 
  if (Game = 3) or (Game = 4) then
  begin
@@ -1084,7 +850,9 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
      begin
        if Pos('_cl_color ',Config_Fisico[i]) = 1 then
        begin
-       Form1_DGL.combo_color.ItemIndex:=Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)));
+ //AQUI
+     //  Form1_DGL.combo_color.ItemIndex:=Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)));
+       showmessage(Inttostr(Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)))));
        Break;
        end;
      end;

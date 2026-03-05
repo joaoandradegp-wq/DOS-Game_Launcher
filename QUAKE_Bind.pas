@@ -9,7 +9,7 @@ uses
 //--------------------------------------------------
 type
   TModoEntrada = (meTeclado, meMouse, meAmbos);
-
+//--------------------------------------------------
   TRegra = record
     Chave: string;
     Valor: string;
@@ -23,7 +23,6 @@ const
     (Chave:'vid_height';     Valor:'vid_height "768"'),
     (Chave:'vid_width';      Valor:'vid_width "1024"')
   );
-//--------------------------------------------------
   { VIDEO - NORMAL }
   QUAKE_VIDEO_NORMAL: array[0..2] of TRegra = (
     (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "1"'),
@@ -44,21 +43,12 @@ const
   );
 //--------------------------------------------------
   { QUAKEWORLD }
-  QW_EXEC_AUTOEXEC   = 'exec autoexec.cfg';
-  QW_LINE_MLOOK      = '+mlook';
-  QW_LINE_CLEAR      = 'clear';
-  QW_LINE_ECHO       = 'echo ';
-  QW_LINE_CONNECT    = 'connect ';
-  QW_PARAM_WINDOWED  = ' -startwindowed';
-  QW_PARAM_NAME      = '+name ';
-  QW_PARAM_COLOR     = ' +color ';
-  QW_FOLDER          = 'qw\';
-  QW_CONFIG_FILE     = 'config.cfg';
-  QW_AUTOEXEC_FILE   = 'autoexec.cfg';
-  QW_SERVER_EXE      = 'qwsv.exe';
-  QW_CLIENT_EXE      = 'qwcl.exe';
+  QW_SERVER_EXE = 'qwsv.exe';
+  QW_CLIENT_EXE = 'qwcl.exe';
 //--------------------------------------------------
-//--------------------------------------------------
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 procedure AplicaQuakeClassic(
   const Caminho_Global: string;
   const Debug: Boolean;
@@ -78,7 +68,7 @@ procedure AplicaQuakeClassic(
 //------------------------------------------------------------------------------
 procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
 procedure AplicaQuakeWorldDM(ServerDedicado: Boolean);
-procedure QUAKE_Bind_Spasm(id: Integer; DeathmatchAtivo, ServerDedicado: Boolean);
+procedure QUAKE_Bind_Spasm (id: Integer; DeathmatchAtivo, ServerDedicado: Boolean);
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -169,6 +159,26 @@ VarParametro_Global := ' -noserial';
 
   AutoExec.Add('name ' + Trim(PlayerName));
   AutoExec.Add('color ' + IntToStr(ComboColorIndex));
+
+  if CheckServidor then
+  begin
+  AutoExec.Add('hostname DGL '+PlayerName);
+  AutoExec.Add('maxplayers '+ContPlayerText);
+  AutoExec.Add('coop 1');
+  AutoExec.Add('teamplay off');
+  AutoExec.Add('skill 1');
+  AutoExec.Add('fraglimit none');
+  AutoExec.Add('timelimit none');
+  AutoExec.Add('pausable 0');
+  end
+  else
+    if CheckCliente then
+    AutoExec.Add('connect '+Form1_DGL.ip_local.Text);
+
+  {QUAKE - APENAS O NAMEFUN}
+  if NameFunAtivo then
+  AutoExec.Add('exec '+Copy(CoolStuff_Global,7,Pos('.scr',CoolStuff_Global)-3));
+
   AutoExec.Add('clear');
   AutoExec.Add('echo ' + AppTitle);
 
@@ -193,6 +203,7 @@ procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
 var
 Cancelado: Boolean;
 begin
+
   if EhDeathMatch then
   Exit;
 
@@ -250,9 +261,8 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
 
   //--------------------------------------------------------
   QWPath    := IncludeTrailingPathDelimiter(Caminho_Global);
-  ClientExe := QWPath + 'qwcl.exe';
-  ServerExe := QWPath + 'qwsv.exe';
-  Nome_DLC_Global := 'QuakeWorld';
+  ClientExe := QWPath + QW_CLIENT_EXE;
+  ServerExe := QWPath + QW_SERVER_EXE;
   //--------------------------------------------------------
 
   {SERVER}
@@ -265,9 +275,10 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
 
   ServerParams := '+map ' + Map_Global;
 
-    if Form1_DGL.menu_debug.Checked then
-      MessageBox(Application.Handle,PChar('SERVER (HIDDEN)' + #13#13 + ServerParams),
-                                          'DEBUG QW SERVER',MB_ICONINFORMATION + MB_OK);
+  {DEBUG - SERVER}
+  if (Form1_DGL.menu_debug.Checked) and (ServerDedicado = True) then
+  MessageBox(Application.Handle,pchar(ServerParams),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+
 
   {SERVER}
   if ServerDedicado = False then
@@ -297,8 +308,9 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
     if Trim(Form1_DGL.ip_local.Text) <> '' then
     ClientParams := ClientParams + ' +connect ' + Trim(Form1_DGL.ip_local.Text);
 
-  if Form1_DGL.menu_debug.Checked then
-  MessageBox(Application.Handle,PChar('CLIENT' + #13#13 + ClientParams),'DEBUG QW CLIENT',MB_ICONINFORMATION + MB_OK);
+  {DEBUG - CLIENT}
+  if Form1_DGL.menu_debug.Checked and (ServerDedicado = False) then
+  MessageBox(Application.Handle,pchar(ServerParams+#13+ClientParams),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
 
   {SERVER}
   if ServerDedicado = False then
@@ -316,5 +328,6 @@ begin
   AplicaQuakeSingle(id, DeathmatchAtivo);
   
 end;
-
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 end.

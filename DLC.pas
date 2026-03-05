@@ -29,7 +29,7 @@ var
 
 implementation
 
-uses Unit1,Language,Funcoes,ZDOOM_Bind;
+uses Unit1, Language, Funcoes, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 {$R *.dfm}
 

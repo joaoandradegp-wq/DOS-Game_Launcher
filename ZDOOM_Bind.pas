@@ -46,18 +46,17 @@ type
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
+function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
 procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
 procedure ConfigureZDoom(id: Integer; MouseAtivo,Debug: Boolean;
 PlayerName, ConfigFile, IWADFile: String;
-//-------------------
 Mode: TZDoomMode;
 Map: string;
 HostPlayers: Integer;
 Port,JoinIP: string;
-//-------------------
 DoomSkinIndex,DoomColorIndex,ScreenWidth,ScreenHeight: Integer;
 ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil);
 //---------------------------------------------------------------------------------------
@@ -65,6 +64,37 @@ ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil
 
 implementation
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function SIGIL_DLC_Exists(DLC:Integer):Boolean;
+var
+Var_Pesquisa:TSearchRec;
+begin
+
+ case DLC of
+ 1: begin
+      if FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0 then
+      begin
+      Result:=True;
+      Array_SIGIL_DLC_Name[0]:=Var_Pesquisa.Name;
+        if FindFirst(Caminho_Global+'SIGIL_SHREDS.wad',faAnyFile,Var_Pesquisa) = 0 then
+        Array_SIGIL_DLC_Name[1]:=' -file '+Var_Pesquisa.Name;
+      end;
+    end;
+ 2: begin
+      if FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0 then
+      begin
+      Result:=True;
+      Array_SIGIL_DLC_Name[2]:=Var_Pesquisa.Name;
+        if FindFirst(Caminho_Global+'SIGIL_II_MP3_V*.WAD',faAnyFile,Var_Pesquisa) = 0 then
+        Array_SIGIL_DLC_Name[3]:=' -file '+Var_Pesquisa.Name;
+      end;
+ end
+ else
+ Result:=False;
+ end;
+
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;

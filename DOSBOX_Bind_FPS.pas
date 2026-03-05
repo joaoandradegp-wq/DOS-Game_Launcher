@@ -3,9 +3,14 @@ unit DOSBOX_Bind_FPS;
 interface
 
 uses
-  Windows, ShellAPI, SysUtils, Classes, Forms, Funcoes, Unit1, Language, DLC;
+  Windows, ShellAPI, SysUtils, Classes, Forms,
+  Unit1, Funcoes, Language, DLC, MAP_Select;
 
 //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function  SW_DLC_Archive(DLC:Integer):String;
+function  SW_DLC_Exists(DLC:Integer):Boolean;
+procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
 //------------------------------------------------------------------------------
 procedure DOSBOX_Bind_FPS_Blood(
   HandleApp: HWND;
@@ -64,10 +69,179 @@ implementation
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-const
-ID_MouseAnalogX = 8112;
-ID_MouseAnalogY = 20312;
+function SW_DLC_Archive(DLC:Integer):String;
+begin
 
+  case DLC of
+  1: begin
+       {GOG}
+       if FileExists(Caminho_Global+'Wanton.dat') then
+       Result:='Wanton.dat';
+       {ORIGINAL}
+       if FileExists(Caminho_Global+'wt.dat') then
+       Result:='wt.dat';
+     end;
+  2: begin
+       {GOG}
+       if FileExists(Caminho_Global+'\dragon\sw.exe') then
+       Result:='sw.exe';
+       {ORIGINAL}
+       if FileExists(Caminho_Global+'sw_td.exe') then
+       Result:='sw_td.exe';
+     end;
+  end;
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function SW_DLC_Exists(DLC:Integer):Boolean;
+begin
+
+  case DLC of
+  1: begin
+       {1.GOG - 2.ORIGINAL}
+       if (FileExists(Caminho_Global+'Wanton.dat')) or (FileExists(Caminho_Global+'wt.dat')) then
+       Result:=True
+       else
+       Result:=False;
+     end;
+  2: begin
+       {1.GOG - 2.ORIGINAL}
+       if (DirectoryExists(Caminho_Global+'dragon\')) or (FileExists(Caminho_Global+'sw_td.exe')) then
+       Result:=True
+       else
+       Result:=False;
+     end;
+  end;
+  
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
+var
+arq_entrada,arq_saida: TStringList;
+i,j,k,cont:Integer;
+begin
+cont:=0;
+k:=0;
+arq_entrada:=TStringList.Create;
+arq_entrada.LoadFromFile(Caminho_Global+'blood.ini');
+
+arq_saida:=TStringList.Create;
+arq_saida.Add(arq_entrada.Strings[47]);
+arq_saida.Add('');
+arq_saida.Add('[Episode1]');
+arq_saida.Add('Title   = '+Form4_Select.ListBox_Episodio.Items[Form4_Select.ListBox_Episodio.ItemIndex]);
+
+  {LISTA OS CAPÍTULOS - RESUMO}
+  for i:=num_capitulo to qtde_capitulos do
+  begin
+  Inc(cont);
+
+    case num_episodio of
+ 1..4: begin {BLOOD - LEVEL 1 ATÉ 4}
+         if i = 5 then
+         begin
+           case num_episodio of
+           1,3: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M8');
+           2,4: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9');
+           end;
+         end
+         else
+         begin
+            case i of
+            6..9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
+            else
+            arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
+            end;
+         end;
+       end;
+    5: begin {CRYPTIC PASSAGE - LEVEL 5}
+         if i = 7 then
+         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cpsl')
+         else
+         begin
+           case i of
+           8..10: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i-1));
+           else
+           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i));
+           end;
+         end;
+       end;
+    6: begin {PLASMA PAK - EPISODE 6}
+         if i = 7 then
+         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9')
+         else
+         begin
+           case i of
+           8,9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
+           else
+           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
+           end;
+         end;
+       end;
+    7: begin {BLOODBATH - EPISODE 7}
+         case num_capitulo of
+           1..8: arq_saida.Add('Map1    = '+'bb'   +IntToStr(num_capitulo));   //Blood
+          9..11: arq_saida.Add('Map1    = '+'DM'   +IntToStr(num_capitulo-8)); //Plasma Pak
+         12..15: arq_saida.Add('Map1    = '+'cpbb0'+IntToStr(num_capitulo-11));//Cryptic Passage
+         end;
+       Break;
+       end;
+    end;
+
+  end;
+
+  //----------------------------------------------------------------------------
+  {LISTA OS CAPÍTULOS - DETALHADO}
+  //----------------------------------------------------------------------------
+  for i:=160 to arq_entrada.Count-1 do
+  begin
+    {CRYPTIC BLOODBATH}
+    if (num_episodio = 7) then
+    begin
+      case num_capitulo of
+      12,13,14,15: begin
+                     if Pos(';Episode 8',arq_entrada.Strings[i]) = 1 then
+                     Break;
+                   end;
+      else
+      begin
+        if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
+        Break;
+      end;
+      end;
+    end
+    else
+    begin
+      if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
+      Break;
+    end;
+  end;
+
+  arq_saida.Add('');
+  arq_saida.Add(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
+
+  //-----------------------------------------------------
+  {LISTA ATÉ ENCONTRAR A PALAVRA ";EPISODE"}
+  //-----------------------------------------------------
+  for j:=i to arq_entrada.Count-1 do
+  begin
+
+    if (copy(arq_entrada.Strings[j],1,8)=';Episode') then
+    Inc(k);
+
+    if k = 2 then
+    Break
+    else
+    arq_saida.Add(arq_entrada.Strings[j]);
+
+  end;
+
+arq_saida.SaveToFile(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'phobos.ini');
+FreeAndNil(arq_entrada);
+FreeAndNil(arq_saida);
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
@@ -629,8 +803,8 @@ ReplaceLinePrefix(CFG,'MusicOn =','MusicOn = 1');
 
     if (Mouse_Global > 0) then
     begin
-    ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(MouseAnalogX+Mouse_Global));
-    ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(MouseAnalogY+Mouse_Global));
+    ReplaceLinePrefix(CFG,'MouseAnalogScale0 =','MouseAnalogScale0 = '+IntToStr(SW_MouseAnalogX+Mouse_Global));
+    ReplaceLinePrefix(CFG,'MouseAnalogScale1 =','MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY+Mouse_Global));
     end;
 
   end

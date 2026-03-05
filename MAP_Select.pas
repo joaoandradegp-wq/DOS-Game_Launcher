@@ -621,7 +621,7 @@ Array_Capitulos: Array[1..425] of Array[1..4] of String =
 
 implementation
 
-uses Unit1, Funcoes, Language;
+uses Unit1, Funcoes, Language, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 {$R *.dfm}
 
