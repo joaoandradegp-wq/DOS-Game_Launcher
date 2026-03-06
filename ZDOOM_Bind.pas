@@ -66,6 +66,12 @@ implementation
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+function IsIWAD(const FileName: string): Boolean;
+begin
+  Result := LowerCase(ExtractFileExt(FileName)) = '.wad';
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 var
 Var_Pesquisa:TSearchRec;
@@ -171,12 +177,14 @@ end;
 //------------------------------------------------------------------------------
 function AspectRatio(W, H: Integer): Integer;
 begin
+
   if (W * 9 = H * 16) then
   Result := 1
   else if (W * 3 = H * 4) then
   Result := 0
   else
   Result := 0;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -413,7 +421,11 @@ Opt.ConfigFile    := ConfigFile;
 Opt.IWad          := IWADFile;
 Opt.WorkingDir    := ExtractFilePath(ConfigFile);
 Opt.Executable    := ZDoom_EXE_Global;
-Opt.SkinParams    := DoomSkin_Global;
+
+  {DOOM II - SKIN PHOBOS}
+  if Form1_DGL.combo_doom.ItemIndex = 1 then
+  Opt.SkinParams    := DoomSkin_Global;
+
 Opt.ModParams     := DoomMod_Global;
 Opt.ExtraDMParams := DoomDM_Global;
 //--------------------------------------------------
@@ -465,7 +477,7 @@ end;
 //------------------------------------------------------------------------------
 procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
 var
-Parametros: string;
+Parametros, BaseParams: string;
 begin
 Parametros := '';
 
@@ -480,17 +492,24 @@ Parametros := '';
                     ' -port ' + Trim(Opt.Port);
   end;
 
-  if Debug then
-  MessageBox(0, PChar(Parametros), PChar(Lang_DGL(13)), MB_OK);
+  {NO CASO DO WOLF3D}
+  if IsIWAD(Opt.IWad) then
+  BaseParams := ' -iwad "' + Opt.IWad + '"'
+  else
+  BaseParams := ' -file "' + Opt.IWad + '"';
 
-{EXECUTA}  
-ShellExecute(0,'open',PChar(Opt.Executable),PChar(
-                                           ' -iwad ' + Opt.IWad +
-                                           ' ' + Opt.SkinParams +
-                                           ' ' + Opt.ModParams +
-                                           ' -config ' + Opt.ConfigFile + Parametros)
-                                           ,PChar(Opt.WorkingDir), SW_NORMAL);
-                                           
+  if Debug then
+  MessageBox(0, PChar(BaseParams +
+                             ' ' + Opt.SkinParams +
+                             ' ' + Opt.ModParams +
+                    ' -config "' + Opt.ConfigFile + '"' + Parametros), PChar(Lang_DGL(13)), MB_OK);
+
+{EXECUTA}
+ShellExecute(0, 'open', PChar(Opt.Executable), PChar(BaseParams +
+                                                     ' ' + Opt.SkinParams +
+                                                     ' ' + Opt.ModParams +
+                                            ' -config "' + Opt.ConfigFile + '"' + Parametros), PChar(Opt.WorkingDir), SW_NORMAL);
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

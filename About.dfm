@@ -1,4 +1,4 @@
-object Form5_About: TForm5_About
+object Form7_About: TForm7_About
   Left = 601
   Top = 216
   BorderIcons = []
