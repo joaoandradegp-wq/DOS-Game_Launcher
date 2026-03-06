@@ -39,6 +39,7 @@ begin
      Form1_DGL.Label3.Caption:='PORTA:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='SENSIBILIDADE';
+     Form1_DGL.Label_DM.Caption:='COOPERATIVO';
      Form1_DGL.Label_Opcoes.Caption:='OPÇÕES';
      Form1_DGL.Label_QuakeServer.Caption:='SERVIDOR DEDICADO';
      Form1_DGL.check_single.Caption:='JOGAR';
@@ -77,7 +78,7 @@ begin
      Form3_NameFun.btn_aplicar.Caption:='APLICAR';
      end;
  20: Result:='Sobre o';
- //21: Result:='O DOS GAME LAUNCHER já está em execução!';
+ //21: Result:='COOPERATIVO';
  22: Result:='Gostaria de simular uma sessão Multiplayer?';
  23: Result:='MODO DE DEPURAÇÃO';
  24: Result:='DOS Game Launcher é um projeto pessoal criado para jogar com alguns amigos, igual fazíamos na década de 90.'+#13+#10+#13+#10+
@@ -118,6 +119,7 @@ begin
      Form1_DGL.Label3.Caption:='PORT:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='MOUSE SENSITIVITY';
+     Form1_DGL.Label_DM.Caption:='COOPERATIVE';
      Form1_DGL.Label_Opcoes.Caption:='OPTIONS';
      Form1_DGL.Label_QuakeServer.Caption:='DEDICATED SERVER';
      Form1_DGL.check_single.Caption:='SINGLE PLAYER';
@@ -156,7 +158,7 @@ begin
      Form3_NameFun.btn_aplicar.Caption:='APPLY';
      end;
  20: Result:='About';
- //21: Result:='DOS GAME LAUNCHER is already running!';
+ //21: Result:='COOPERATIVE';
  22: Result:='Would you like to simulate a Multiplayer session?';
  23: Result:='DEBUG MODE';
  24: Result:='DOS Game Launcher is a personal project i´ve maded to play with some friends like in the 90´s.'+#13+#10+#13+#10+

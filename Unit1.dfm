@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 275
-  Top = 144
+  Left = 622
+  Top = 156
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461

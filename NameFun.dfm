@@ -1,4 +1,4 @@
-object Form3_QuakeWorld: TForm3_QuakeWorld
+object Form3_NameFun: TForm3_NameFun
   Left = 461
   Top = 193
   BorderIcons = [biSystemMenu]

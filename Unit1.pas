@@ -958,6 +958,8 @@ end;
  
 procedure TForm1_DGL.RxDMOff(Sender: TObject);
 begin
+Label_DM.Caption:=Lang_DGL(21);
+
  if (Array_Games[id][7] = 'ZDOOM') then
  DoomDM_Global:='';
 
@@ -972,6 +974,8 @@ end;
 
 procedure TForm1_DGL.RxDMOn(Sender: TObject);
 begin
+Label_DM.Caption:='DEATHMATCH';
+
  if (Array_Games[id][7] = 'ZDOOM') then
  DoomDM_Global:=' -deathmatch -nomonsters ';
 
