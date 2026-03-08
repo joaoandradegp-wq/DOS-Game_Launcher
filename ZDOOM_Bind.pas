@@ -68,7 +68,7 @@ implementation
 //------------------------------------------------------------------------------
 function IsIWAD(const FileName: string): Boolean;
 begin
-  Result := LowerCase(ExtractFileExt(FileName)) = '.wad';
+Result := LowerCase(ExtractFileExt(FileName)) = '.wad';
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

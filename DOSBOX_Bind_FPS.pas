@@ -697,7 +697,7 @@ procedure ConfigureSWCFG(
 );
 var
 CFG: TStringList;
-Arq: string;
+Arq,LevelNum: string;
 begin
 
 Arq := CaminhoJogo + 'sw.cfg';
@@ -872,35 +872,31 @@ ReplaceLinePrefix(CFG,'MusicOn =','MusicOn = 1');
   ReplaceLinePrefix(CFG,'AutoAim =','AutoAim = 1');
   ReplaceLinePrefix(CFG,'MouseAimingOn =','MouseAimingOn = 0');
   end;
-   ReplaceLinePrefix(CFG,'MouseInvert = 0','MouseInvert = 1');
+  ReplaceLinePrefix(CFG,'MouseInvert = 0','MouseInvert = 1');
 
   {MULTIPLAYER}
   if not check_single then
   begin
   ReplaceLinePrefix(CFG,'NumberPlayers =','NumberPlayers = '+NumPlayers);
-  ReplaceLinePrefix(CFG,'PlayerName','PlayerName = "'+PlayerName+'"');
+  ReplaceLinePrefix(CFG,'PlayerName =','PlayerName = "'+PlayerName+'"');ReplaceLinePrefix(CFG,'PlayerName','PlayerName = "'+PlayerName+'"');
   end;
 
 CFG.SaveToFile(Arq);
 CFG.Free;
 
-  {PARAMETROS + DLC}
-  Parametros := '';
+LevelNum := Map_Global;
+LevelNum := StringReplace(LevelNum,'level','',[rfIgnoreCase]);
+LevelNum := StringReplace(LevelNum,'-','',[rfReplaceAll]);
+LevelNum := StringReplace(LevelNum,'/l','',[rfIgnoreCase]);
 
-  case EPI_Global_DLC of
-    0,1: begin
-         // jogo base
-         end;
-      2: begin
-         //Wanton Destruction
-         Parametros := '';
-         end;
-      3: begin
-         //Twin Dragon
-         Game_EXE_Global := SW_DLC_Archive(2);
-         end;
-  end;
+  {PARAMETROS + WANTON DESTRUCTION}
+  if check_single then
+  Parametros := ' '+Map_Global;
 
+  {TWIN DRAGON}
+  if EPI_Global_DLC = 3 then
+  Game_EXE_Global := SW_DLC_Archive(2);
+  
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1051,10 +1047,6 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
            end;
       end;
 
-      {SINGLE PLAYER + DEBUG}
-      if check_single and menu_debug then
-      MessageBox(Application.Handle,pchar(Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
-
       {MULTIPLAYER + DEBUG}
       if (not check_single) and menu_debug then
       begin
@@ -1073,8 +1065,20 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
           0,1: L.Add('@COPY sw.dat sw.exe');
             2: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
             3: begin
+               Game_EXE_Global:=SW_DLC_Archive(2);
                  if SW_DLC_Archive(2) = 'sw.exe' then
                  L.Add('cd dragon');
+               end;
+            4: begin
+                 case CAP_Global_DLC of
+                   0..5: L.Add('@COPY sw.dat sw.exe');
+                   6..9: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
+                 10..12: begin
+                         Game_EXE_Global:=SW_DLC_Archive(2);
+                           if (SW_DLC_Archive(2) = 'sw.exe') then
+                           L.Add('cd dragon');
+                         end;
+                 end;
                end;
         end;
       end;
@@ -1091,6 +1095,12 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
 
     Break;
     end;
+
+    {SINGLE PLAYER + DEBUG}
+    if check_single and menu_debug then
+    MessageBox(Application.Handle,pchar(Game_EXE_Global+#13+Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+
+
 L.SaveToFile(Arq_DosBox);
 L.Free;
 end;
@@ -1218,12 +1228,21 @@ begin
   {SELEÇÃO DLC / FASE}
   if check_single then
   begin
-    Application.CreateForm(TForm2_DLC, Form2_DLC);
-    Form2_DLC.ShowModal;
-    Form2_DLC.Free;
+  Seleciona_Fases;
 
     if Fecha_ESC then
     Exit;
+
+  end
+  else
+  begin
+  Application.CreateForm(TForm2_DLC, Form2_DLC);
+  Form2_DLC.ShowModal;
+  Form2_DLC.Free;
+
+    if Fecha_ESC then
+    Exit;
+    
   end;
 
 {CFG + DLC + PARAMETROS}

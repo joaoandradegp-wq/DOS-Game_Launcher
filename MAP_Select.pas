@@ -629,7 +629,6 @@ procedure TForm4_Select.FormCreate(Sender: TObject);
 begin
 Lang_DGL(10);
 
- //case AnsiIndexStr(Nome_DLC_Global,['',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
  case AnsiIndexStr(Nome_DLC_Global,['Quake','QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
    0,1: Game_Pack:=0;
      2: Game_Pack:=38;

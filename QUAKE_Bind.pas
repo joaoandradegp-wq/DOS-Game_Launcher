@@ -261,6 +261,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   end;
 
   //--------------------------------------------------------
+  Nome_DLC_Global := 'QuakeWorld';
   QWPath    := IncludeTrailingPathDelimiter(Caminho_Global);
   ClientExe := QWPath + QW_CLIENT_EXE;
   ServerExe := QWPath + QW_SERVER_EXE;
