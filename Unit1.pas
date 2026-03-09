@@ -719,12 +719,22 @@ Label_Controle.Caption:='MOUSE';
 end;
 
 procedure TForm1_DGL.RxBrutalOn(Sender: TObject);
+var
+Nome: string;
 begin
+Nome:=LowerCase(ExtractFileName(LoadingMod.FileName));
+
 LoadingMod.FileName:='';
 LoadingMod.InitialDir:=Caminho_Global;
 
  if LoadingMod.Execute then
  DoomMod_Global:=LoadingMod.FileName;
+
+ if EhIWADBloqueado(LoadingMod.FileName) then
+ begin                  Trocar Showmessage , fazer o Ingles e ignorar selecao de mapa se for um .wad
+ ShowMessage('Esse arquivo é o IWAD do jogo. Selecione apenas mods.');
+ RxBrutal.StateOn:=False;
+ end;
 
  if Length(DoomMod_Global) = 0 then
  RxBrutal.StateOn:=False;

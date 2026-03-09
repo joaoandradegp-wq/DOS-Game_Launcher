@@ -46,6 +46,7 @@ type
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
+function EhIWADBloqueado(const Arquivo: string): Boolean;
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
 procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
@@ -64,6 +65,26 @@ ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil
 
 implementation
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function EhIWADBloqueado(const Arquivo: string): Boolean;
+var
+i: Integer;
+NomeArquivo: string;
+begin
+Result := False;
+NomeArquivo := LowerCase(ExtractFileName(Arquivo));
+
+  for i := Low(Array_Games) to High(Array_Games) do
+  begin
+    if LowerCase(Array_Games[i][4]) = NomeArquivo then
+    begin
+    Result := True;
+    Exit;
+    end;
+  end;
+  
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function IsIWAD(const FileName: string): Boolean;

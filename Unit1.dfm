@@ -1265,9 +1265,9 @@ object Form1_DGL: TForm1_DGL
   object Label_Brutal: TLabel
     Left = 522
     Top = 261
-    Width = 68
+    Width = 29
     Height = 13
-    Caption = 'BRUTAL DOOM'
+    Caption = 'MODS'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -11
@@ -1688,7 +1688,6 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
-      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -3239,7 +3238,7 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object LoadingMod: TOpenDialog
-    Filter = 'Brutal DooM Files (*.pk3)|*.pk3'
+    Filter = 'DooM Mods (*.wad)|*.wad|Brutal DooM Files (*.pk3)|*.pk3'
     OptionsEx = [ofExNoPlacesBar]
     Left = 488
     Top = 24
