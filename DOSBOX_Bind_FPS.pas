@@ -67,6 +67,10 @@ procedure DOSBOX_Bind_FPS_Shadow(
 
 implementation
 
+const
+CFG_ScreenWidth = 800;
+CFG_ScreenHeight = 600;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function SW_DLC_Archive(DLC:Integer):String;
@@ -271,8 +275,8 @@ CFG := TStringList.Create;
 CFG.LoadFromFile(Arq);
 
 ReplaceLinePrefix(CFG,'ScreenMode =','ScreenMode = 1');
-ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = 640');
-ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = 480');
+ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = '+IntToStr(CFG_ScreenWidth));
+ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = '+IntToStr(CFG_ScreenHeight));
 
 ReplaceLinePrefix(CFG,'Size =','Size = 1');
 ReplaceLinePrefix(CFG,'Gamma =','Gamma = 0');
@@ -487,8 +491,8 @@ CFG.LoadFromFile(Arq);
 
 {VIDEO}
 ReplaceLinePrefix(CFG,'ScreenMode =','ScreenMode = 1');
-ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = 640');
-ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = 480');
+ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = '+IntToStr(CFG_ScreenWidth));
+ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = '+IntToStr(CFG_ScreenHeight));
 
 {SOUND}
 ReplaceLinePrefix(CFG,'FXDevice =','FXDevice = 0');
@@ -707,8 +711,8 @@ CFG.LoadFromFile(Arq);
 
 {VIDEO}
 ReplaceLinePrefix(CFG,'ScreenMode =','ScreenMode = 1');
-ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = 640');
-ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = 480');
+ReplaceLinePrefix(CFG,'ScreenWidth =','ScreenWidth = '+IntToStr(CFG_ScreenWidth));
+ReplaceLinePrefix(CFG,'ScreenHeight =','ScreenHeight = '+IntToStr(CFG_ScreenHeight));
 ReplaceLinePrefix(CFG,'ScreenGamma =','ScreenGamma = 0');
 
 {SOUND}
@@ -982,8 +986,11 @@ L.LoadFromFile(Arq_DosBox);
 ReplaceLinePrefix(L,'fullscreen=','fullscreen='+BoolToStr(not menu_debug,True));
 ReplaceLinePrefix(L,'fullresolution=','fullresolution=0x0');
 
-  {NÃO TEM PLACA DE VÍDEO - INTEL}
-  if ProcessExists('igfxTray.exe') = True then
+  if menu_debug then
+  ReplaceLinePrefix(L,'windowresolution=','windowresolution=1024x768');
+  
+  {NÃO TEM PLACA DE VÍDEO - INTEL e NVIDIA}
+  if ProcessExists('igfxTray.exe') or ProcessExists('NVIDIA Overlay.exe') then
   ReplaceLinePrefix(L,'output=','output=opengl')
   else
   ReplaceLinePrefix(L,'output=','output=overlay');
@@ -1044,7 +1051,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
         10: begin
               if FileExists(CaminhoJogo+'GAME.DAT') then
               L.Add('imgmount d "..\GAME.DAT" -t iso');
-           end;
+            end;
       end;
 
       {MULTIPLAYER + DEBUG}
@@ -1061,6 +1068,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       {SHADOW WARRIOR - DLC}
       if id = 10 then
       begin
+
         case EPI_Global_DLC of
           0,1: L.Add('@COPY sw.dat sw.exe');
             2: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
@@ -1069,7 +1077,9 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
                  if SW_DLC_Archive(2) = 'sw.exe' then
                  L.Add('cd dragon');
                end;
+            {DEBUG - EPISÓDIO DEATHMATCH SINGLE PLAYER}
             4: begin
+
                  case CAP_Global_DLC of
                    0..5: L.Add('@COPY sw.dat sw.exe');
                    6..9: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
@@ -1079,8 +1089,10 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
                            L.Add('cd dragon');
                          end;
                  end;
+
                end;
         end;
+
       end;
 
     L.Add('nolfblim.com');

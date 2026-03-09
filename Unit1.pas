@@ -228,7 +228,7 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, NameFun, MAP_Select, Mouse_Sense, Language,
+uses IniFiles, Funcoes, About, QUAKE_NameFun, MAP_Select, Mouse_Sense, Language,
 DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind;
 
 var

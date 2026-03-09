@@ -5,7 +5,7 @@ interface
 uses
   IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, PsAPI, ShellApi,
   Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
-  IniFiles, Unit1, NameFun, MAP_Select, Splash, Mouse_Sense, Language;
+  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Splash, Mouse_Sense, Language;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------

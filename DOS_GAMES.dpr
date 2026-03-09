@@ -6,7 +6,7 @@ uses
   SysUtils,
   Unit1 in 'Unit1.pas' {Form1_DGL},
   DLC in 'DLC.pas' {Form2_DLC},
-  NameFun in 'NameFun.pas' {Form3_NameFun},
+  QUAKE_NameFun in 'QUAKE_NameFun.pas' {Form3_NameFun},
   MAP_Select in 'MAP_Select.pas' {Form4_Select},
   Splash in 'Splash.pas' {Form5_Splash},
   Mouse_Sense in 'Mouse_Sense.pas' {Form6_Mouse},

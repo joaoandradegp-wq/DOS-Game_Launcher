@@ -1,4 +1,4 @@
-unit Quake_Bind;
+unit QUAKE_Bind;
 
 interface
 

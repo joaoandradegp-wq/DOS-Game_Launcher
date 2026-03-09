@@ -1,4 +1,4 @@
-unit NameFun;
+unit QUAKE_NameFun;
 
 interface
 

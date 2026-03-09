@@ -8,7 +8,7 @@ function Lang_DGL(id:Integer):String;
 
 implementation
 
-uses Funcoes, Unit1, MAP_Select, NameFun, About;
+uses Funcoes, Unit1, MAP_Select, QUAKE_NameFun, About;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
