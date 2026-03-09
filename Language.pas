@@ -92,6 +92,7 @@ begin
  29: Result:='&Sim';
  30: Result:='&Não';
  31: Result:='&Cancelar';
+ 32: Result:='Esse é o arquivo do próprio jogo, selecione apenas MODS.';
  end;
 
 end
@@ -172,6 +173,7 @@ begin
  29: Result:='&Yes';
  30: Result:='&No';
  31: Result:='&Cancel';
+ 32: Result:='This is a game file. Please select MOD files only.';
  end;
 
 end;

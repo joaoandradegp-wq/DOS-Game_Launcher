@@ -46,7 +46,7 @@ type
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
-function EhIWADBloqueado(const Arquivo: string): Boolean;
+function BlockIWAD(const Arquivo: string): Boolean;
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
 procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
@@ -67,7 +67,7 @@ implementation
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function EhIWADBloqueado(const Arquivo: string): Boolean;
+function BlockIWAD(const Arquivo: string): Boolean;
 var
 i: Integer;
 NomeArquivo: string;
