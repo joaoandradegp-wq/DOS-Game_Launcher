@@ -865,7 +865,6 @@ btn_aplicar.Enabled:=False;
         Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1]
         else
         ListBox_Capitulo.Enabled:=False;
-
         {
         if (FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0) then
         begin

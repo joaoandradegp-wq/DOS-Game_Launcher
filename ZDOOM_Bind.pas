@@ -513,11 +513,15 @@ Parametros := '';
                     ' -port ' + Trim(Opt.Port);
   end;
 
-  {NO CASO DO WOLF3D}
+  {WOLF3D}
   if IsIWAD(Opt.IWad) then
   BaseParams := ' -iwad "' + Opt.IWad + '"'
   else
   BaseParams := ' -file "' + Opt.IWad + '"';
+
+  {DOOM - SIGIL}
+  if (id = 3) and BlockIWAD(Game_EXE_Global) = False then
+  BaseParams := BaseParams + ' -file ' +Game_EXE_Global;
 
   if Debug then
   MessageBox(0, PChar(BaseParams +
