@@ -435,9 +435,9 @@ Flags := GetGameFlags(id);
   Ini.Free;
   end;
 
-//--------------------------------------------------
+//-----------------------------------------------------
 // PREPARA EXECUÇÃO
-//--------------------------------------------------
+//-----------------------------------------------------
 Opt.ConfigFile    := ConfigFile;
 Opt.IWad          := IWADFile;
 Opt.WorkingDir    := ExtractFilePath(ConfigFile);
@@ -447,30 +447,33 @@ Opt.Executable    := ZDoom_EXE_Global;
   if Form1_DGL.combo_doom.ItemIndex = 1 then
   Opt.SkinParams    := DoomSkin_Global;
 
-Opt.ModParams     := DoomMod_Global;
+  {DOOM II - ONE-HUMANITY}
+  if ExtractFileExt(DoomMod_Global) = '.wad' then
+  Opt.ModParams := '-file ' + '"'+ DoomMod_Global +'"';
+
 Opt.ExtraDMParams := DoomDM_Global;
-//--------------------------------------------------
+//-----------------------------------------------------
 
-//--------------------------------------------------
-// SELEÇÃO DE MAPA
-//--------------------------------------------------
-if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') then
-begin
-  if Assigned(SelectMap) then
-  Map := SelectMap;
+  {SELEÇÃO DE MAPA}
+  if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') and (Form1_DGL.RxBrutal.StateOn = False) then
+  begin
+    if Assigned(SelectMap) then
+    Map := SelectMap;
 
-  if Map = '' then
-  Exit;
-end;
+    if Map = '' then
+    Exit;
+  end;
 
-//--------------------------------------------------
-// DEBUG MODE - SIMULAR MULTIPLAYER
-//--------------------------------------------------
-if (Mode = zmServer) then
-begin
-  if Debug and Assigned(ResolveDebugPlayers) then
-  HostPlayers := ResolveDebugPlayers(HostPlayers);
-end;
+  {DOOM II - MOD DE FASE PARA COMEÇAR NA PRIMEIRA}
+  if (id = 4) and (Form1_DGL.RxBrutal.StateOn) then
+  Map := 'MAP01';
+
+  {DEBUG MODE - SIMULAR MULTIPLAYER}
+  if (Mode = zmServer) then
+  begin
+    if Debug and Assigned(ResolveDebugPlayers) then
+    HostPlayers := ResolveDebugPlayers(HostPlayers);
+  end;
 
 {MODO DE JOGO - SINGLE, SERVER ou CLIENT}
 Opt.Mode := Mode;
@@ -489,6 +492,7 @@ Opt.Mode := Mode;
               Opt.Port := Port;
               end;
   end;
+
 
 {EXECUTA}
 ExecuteZDoom(Opt, Debug);
@@ -515,16 +519,16 @@ Parametros := '';
 
   {WOLF3D}
   if IsIWAD(Opt.IWad) then
-  BaseParams := ' -iwad "' + Opt.IWad + '"'
+  BaseParams := '-iwad "' + Opt.IWad + '"'
   else
-  BaseParams := ' -file "' + Opt.IWad + '"';
+  BaseParams := '-file "' + Opt.IWad + '"';
 
   {DOOM - SIGIL}
-  if (id = 3) and BlockIWAD(Game_EXE_Global) = False then
+  if (id = 3) and (BlockIWAD(Game_EXE_Global) = False) then
   BaseParams := BaseParams + ' -file ' +Game_EXE_Global;
 
   if Debug then
-  MessageBox(0, PChar(BaseParams +
+  MessageBox(0, PChar(' '+BaseParams +
                              ' ' + Opt.SkinParams +
                              ' ' + Opt.ModParams +
                     ' -config "' + Opt.ConfigFile + '"' + Parametros), PChar(Lang_DGL(13)), MB_OK);
