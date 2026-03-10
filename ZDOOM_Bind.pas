@@ -46,7 +46,7 @@ type
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
-function BlockIWAD(const Arquivo: string): Boolean;
+function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
 procedure ExecuteZDoom(const Opt: TZDoomOptions; Debug: Boolean);
@@ -65,25 +65,50 @@ ResolveDebugPlayers: TResolveDebugPlayers = nil; SelectMap: TSelectMapFunc = nil
 
 implementation
 
+const
+CFG_vid_defwidth = 800;
+CFG_vid_defheight = 600;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function BlockIWAD(const Arquivo: string): Boolean;
+function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
 var
 i: Integer;
 NomeArquivo: string;
+const
+Array_WAD: array[1..3] of string = ('sigil', 'plutonia', 'tnt');
 begin
 Result := False;
 NomeArquivo := LowerCase(ExtractFileName(Arquivo));
 
-  for i := Low(Array_Games) to High(Array_Games) do
+  if Chave then
   begin
-    if LowerCase(Array_Games[i][4]) = NomeArquivo then
+  //----------------------------------------------------
+    for i := Low(Array_Games) to High(Array_Games) do
     begin
-    Result := True;
-    Exit;
+      if LowerCase(Array_Games[i][4]) = NomeArquivo then
+      begin
+      Result := True;
+      Exit;
+      end;
     end;
+  //----------------------------------------------------
+  end
+  else
+  begin
+  //----------------------------------------------------
+    {Evita usuários carregarem IWAD como MOD}
+    for i := Low(Array_WAD) to High(Array_WAD) do
+    begin
+      if Pos(Array_WAD[i], NomeArquivo) > 0 then
+      begin
+      Result := True;
+      Exit;
+      end;
+    end;
+  //----------------------------------------------------
   end;
-  
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -223,12 +248,12 @@ Ini.WriteBool(CVarSection, 'fullscreen', not Debug);
   begin
   Ini.WriteInteger(CVarSection, 'vid_aspect', 0);
   Ini.WriteBool   (CVarSection, 'vid_vsync', False);
-  Ini.WriteInteger(CVarSection, 'vid_defwidth', 640);
-  Ini.WriteInteger(CVarSection, 'vid_defheight', 480);
+  Ini.WriteInteger(CVarSection, 'vid_defwidth', CFG_vid_defwidth);
+  Ini.WriteInteger(CVarSection, 'vid_defheight', CFG_vid_defheight);
   end
   else
   begin
-  Ini.WriteInteger(CVarSection, 'vid_aspect',AspectRatio(ScreenWidth, ScreenHeight));
+  Ini.WriteInteger(CVarSection, 'vid_aspect', AspectRatio(ScreenWidth, ScreenHeight));
   Ini.WriteBool   (CVarSection, 'vid_vsync', True);
   Ini.WriteInteger(CVarSection, 'vid_defwidth', ScreenWidth);
   Ini.WriteInteger(CVarSection, 'vid_defheight', ScreenHeight);
@@ -524,7 +549,7 @@ Parametros := '';
   BaseParams := '-file "' + Opt.IWad + '"';
 
   {DOOM - SIGIL}
-  if (id = 3) and (BlockIWAD(Game_EXE_Global) = False) then
+  if (id = 3) and (BlockIWAD(Game_EXE_Global,True) = False) then
   BaseParams := BaseParams + ' -file ' +Game_EXE_Global;
 
   if Debug then

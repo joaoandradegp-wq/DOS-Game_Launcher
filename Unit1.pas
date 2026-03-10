@@ -690,6 +690,7 @@ begin
     IMG_STATUS.Picture:=Nil;
     end;
     //--------------------------------
+    
   btn_start.Enabled:=False;
 
     if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
@@ -730,8 +731,9 @@ LoadingMod.InitialDir:=Caminho_Global;
  if LoadingMod.Execute then
  DoomMod_Global:=LoadingMod.FileName;
 
- if BlockIWAD(LoadingMod.FileName) then
+ if BlockIWAD(LoadingMod.FileName,True) or BlockIWAD(LoadingMod.FileName,False) then
  begin
+ LoadingMod.FileName:='';
  RxBrutal.StateOn:=False;
  MessageBox(Application.Handle,PChar(Lang_DGL(32)),PChar(Application.Title),MB_ICONERROR+MB_OK);
  RxBrutal.StateOn:=True;
