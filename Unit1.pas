@@ -799,8 +799,6 @@ ActiveControl:=Nil;
 end;
 
 procedure TForm1_DGL.btn_startClick(Sender: TObject);
-var
-Modo_Game:Integer;
 begin
 Config_Game_Global:=Caminho_Global+Array_Games[id][6];
 VarParametro_Global:='';
@@ -841,15 +839,27 @@ case id of
    3,4,6,7,12,13:
    begin
    Map_Global:='';
-   ConfigureZDoom(id,RxControle.StateOn,menu_debug.Checked,player_name.Text,
-                  Config_Game_Global,
-                  Array_Games[id][4],
-                  GetZDoomMode(check_single.Checked,check_servidor.Checked),
-                  Map_Global,Modo_Game,ip_porta.Text,ip_local.Text,
-                  combo_doom.ItemIndex,combo_color.ItemIndex,
-                  Screen.Width,Screen.Height,
-                  ResolveDebugPlayersUI,
-                  SelectMapUI);
+   ConfigureZDoom(
+     id,
+     RxControle.StateOn,
+     menu_debug.Checked,
+     player_name.Text,
+     Config_Game_Global,
+     Array_Games[id][4],
+
+     GetZDoomMode(check_single.Checked,check_servidor.Checked),
+     Map_Global,
+     StrToIntDef(cont_player.Text,2),
+     ip_porta.Text,
+     ip_local.Text,
+
+     combo_doom.ItemIndex,
+     combo_color.ItemIndex,
+     Screen.Width,
+     Screen.Height,
+
+     ResolveDebugPlayersUI,
+     SelectMapUI);
    end;
 
 end;
