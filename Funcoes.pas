@@ -9,6 +9,17 @@ uses
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
+{NO_DOSBOX_Bind e DOSBOX_Bind_FPS}
+//----------------------------------------------------------------------
+procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
+procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
+//----------------------------------------------------------------------
+{NO_DOSBOX_Bind}
+//----------------------------------------------------------------------
+function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
+procedure SendKey(Key: Word);
+procedure SendChar(C: Char);
+//----------------------------------------------------------------------
 function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
 function EsperaDOSBox(TimeoutMS: Integer): HWND;
 procedure AtivaJanela(h: HWND);
@@ -30,7 +41,6 @@ function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
 function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
 function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
-procedure Tela_Cheia;
 procedure Contagem_Iniciar;
 procedure Seleciona_Fases;
 procedure Funcao_Config_Opcoes;
@@ -48,6 +58,78 @@ implementation
 
 uses DOSBOX_Bind_FPS, Quake_Bind;
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
+begin
+ShellExecute(HandleApp,'open',PChar(DosBox_EXE_Global),PChar('-conf '+ExtractFileName(Arq_DosBox)),PChar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
+var i: Integer;
+begin
+  for i := 0 to L.Count-1 do
+    if Pos(Prefix, L[i]) = 1 then
+    L[i] := NewValue;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure SendKey(Key: Word);
+var
+Input: TInput;
+begin
+ZeroMemory(@Input, SizeOf(Input));
+Input.Itype := INPUT_KEYBOARD;
+Input.ki.wVk := Key;
+SendInput(1, Input, SizeOf(Input));
+
+Sleep(30);
+
+ZeroMemory(@Input, SizeOf(Input));
+Input.Itype := INPUT_KEYBOARD;
+Input.ki.wVk := Key;
+Input.ki.dwFlags := KEYEVENTF_KEYUP;
+SendInput(1, Input, SizeOf(Input));
+
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure SendChar(C: Char);
+begin
+SendKey(Ord(UpCase(C)));
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
+var
+Start: DWORD;
+h: HWND;
+Title: array[0..255] of Char;
+begin
+Start := GetTickCount;
+Result := 0;
+
+  repeat
+  h := GetWindow(GetDesktopWindow, GW_CHILD);
+
+    while h <> 0 do
+    begin
+    GetWindowText(h, Title, 255);
+
+      if Pos(LowerCase(WindowText), LowerCase(Title)) > 0 then
+      begin
+      Result := h;
+      Exit;
+      end;
+
+    h := GetWindow(h, GW_HWNDNEXT);
+    end;
+
+  Sleep(50);
+  until GetTickCount - Start > DWORD(Timeout);
+
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
@@ -379,15 +461,6 @@ begin
 ID:=GetSystemDefaultLangID;
 VerLanguageName(ID,Language,100);
 Result:=LowerCase(Copy(String(Language),0,3));
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure Tela_Cheia;
-begin
-keybd_event(VK_MENU,  0,0,0);
-keybd_event(VK_RETURN,0,0,0);
-keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-keybd_event(VK_MENU,  0,KEYEVENTF_KEYUP,0);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1018,41 +1091,6 @@ begin
    keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
    end;
  end;
-
- {WARCRAFT II}
- if (Game = 11) then
- begin
- Sleep(200);
- keybd_event(ORD('M'),0,0,0);
- keybd_event(ORD('M'),0,KEYEVENTF_KEYUP,0);
- Sleep(200);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(200);
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(200);
-   {SERVIDOR}
-   if (Form1_DGL.check_servidor.Checked = True) then
-   begin
-   keybd_event(ORD('C'),0,0,0);
-   keybd_event(ORD('C'),0,KEYEVENTF_KEYUP,0);
-   end;
-   {CLIENTE}
-   if (Form1_DGL.check_cliente.Checked = True) then
-   begin
-   keybd_event(VK_DOWN,0,0,0);
-   keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
-   Sleep(200);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
- end;
- //-------------------------------------------------------------
 
 end;
 //------------------------------------------------------------------------------

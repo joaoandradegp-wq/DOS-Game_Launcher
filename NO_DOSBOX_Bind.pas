@@ -3,8 +3,8 @@ unit NO_DOSBOX_Bind;
 interface
 
 uses
-  Classes, SysUtils, StrUtils, ShellAPI, Forms,
-  Windows, dialogs, Unit1, DLC, Funcoes, Language,
+  Classes, SysUtils, Forms,
+  Windows, Unit1, Funcoes, Language,
   IniFiles, Messages;
 
 //------------------------------------------------------------------------------
@@ -20,7 +20,6 @@ procedure DOSBOX_Bind_WAR2(
   check_cliente: Boolean;
   ip_porta: string;
   ip_local: string;
-  NumPlayers: string;
   PlayerName: string
 );
 //------------------------------------------------------------------------------
@@ -28,111 +27,61 @@ procedure DOSBOX_Bind_WAR2(
 
 implementation
 
-procedure SendKey(Key: Word);
-var
-  Input: TInput;
-begin
-  ZeroMemory(@Input, SizeOf(Input));
-  Input.Itype := INPUT_KEYBOARD;
-  Input.ki.wVk := Key;
-  SendInput(1, Input, SizeOf(Input));
-
-  Sleep(30);
-
-  ZeroMemory(@Input, SizeOf(Input));
-  Input.Itype := INPUT_KEYBOARD;
-  Input.ki.wVk := Key;
-  Input.ki.dwFlags := KEYEVENTF_KEYUP;
-  SendInput(1, Input, SizeOf(Input));
-end;
-
-procedure SendChar(C: Char);
-begin
-  SendKey(Ord(UpCase(C)));
-end;
-
-function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
-var
-  Start: DWORD;
-  h: HWND;
-  Title: array[0..255] of Char;
-begin
-  Start := GetTickCount;
-  Result := 0;
-
-  repeat
-    h := GetWindow(GetDesktopWindow, GW_CHILD);
-
-    while h <> 0 do
-    begin
-      GetWindowText(h, Title, 255);
-
-      if Pos(LowerCase(WindowText), LowerCase(Title)) > 0 then
-      begin
-        Result := h;
-        Exit;
-      end;
-
-      h := GetWindow(h, GW_HWNDNEXT);
-    end;
-
-    Sleep(50);
-
-  until GetTickCount - Start > DWORD(Timeout);
-end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure Warcraft2MenuSetup(Servidor, Cliente: Boolean);
 begin
-  Sleep(300);
+Sleep(300);
 
-  SendChar('M');      // Multiplayer
-  Sleep(400);
+{MULTIPLAYER}
+SendChar('M');      
+Sleep(400);
 
-  SendKey(VK_RETURN); // Network
-  Sleep(400);
+{NETWORK}
+SendKey(VK_RETURN);
+Sleep(400);
 
-  SendKey(VK_DOWN);   // IPX
-  SendKey(VK_DOWN);
-  SendKey(VK_RETURN);
+{IPX}
+SendKey(VK_DOWN);
+SendKey(VK_DOWN);
+SendKey(VK_RETURN);
 
-  Sleep(400);
+Sleep(400);
 
   if Servidor then
-    SendChar('C');
+  SendChar('C');
 
   if Cliente then
   begin
-    SendKey(VK_DOWN);
-    Sleep(200);
-    SendKey(VK_RETURN);
+  SendKey(VK_DOWN);
+  Sleep(200);
+  SendKey(VK_RETURN);
   end;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure SkipWarcraftIntro;
 var
-  T: DWORD;
+T: DWORD;
 begin
-  T := GetTickCount;
+T := GetTickCount;
 
   while GetTickCount - T < 5000 do
   begin
-    SendKey(VK_RETURN);
-    Sleep(300);
+  SendKey(VK_RETURN);
+  Sleep(300);
   end;
-end;
 
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure AfterDOSBoxStart(WindowName: string; IDGame: Integer; Servidor, Cliente, menu_debug: Boolean);
 var
 hGame: HWND;
 begin
-  if Debug then
+
+  if menu_debug then
   Exit;
 
 hGame := WaitForWindowLike(WindowName, 10000);
@@ -158,15 +107,6 @@ Sleep(1000);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
-var i: Integer;
-begin
-  for i := 0 to L.Count-1 do
-    if Pos(Prefix, L[i]) = 1 then
-    L[i] := NewValue;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure ConfigureWarcraft2CFG(Ini: TMemIniFile; const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
 begin
 Ini.WriteString ('', 'cdpath' , 'd:\');
@@ -175,12 +115,6 @@ Ini.WriteInteger('', 'intro'  , Ord(CheckSingle));
 Ini.WriteString ('', 'name'   , PlayerName);
 
 Ini.UpdateFile;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
-begin
-ShellExecute(HandleApp,'open',PChar(DosBox_EXE_Global),PChar('-conf '+ExtractFileName(Arq_DosBox)),PChar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -295,7 +229,6 @@ procedure DOSBOX_Bind_WAR2(
   check_cliente: Boolean;
   ip_porta: string;
   ip_local: string;
-  NumPlayers: string;
   PlayerName: string
 );
 var
@@ -304,7 +237,7 @@ Arq_DosBox: string;
 Ini: TMemIniFile;
 begin
 
-  {WAR2 CFG}
+  {CFG}
   Ini := TMemIniFile.Create(CaminhoJogo+'war2.ini');
   try
   ConfigureWarcraft2CFG(Ini, '', check_single, PlayerName);

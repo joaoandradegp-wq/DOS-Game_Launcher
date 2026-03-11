@@ -3,7 +3,7 @@ unit DOSBOX_Bind_FPS;
 interface
 
 uses
-  Windows, ShellAPI, SysUtils, Classes, Forms,
+  Windows, SysUtils, Classes, Forms,
   Unit1, Funcoes, Language, DLC, MAP_Select;
 
 //------------------------------------------------------------------------------
@@ -245,15 +245,6 @@ arq_saida.Add('Title   = '+Form4_Select.ListBox_Episodio.Items[Form4_Select.List
 arq_saida.SaveToFile(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'phobos.ini');
 FreeAndNil(arq_entrada);
 FreeAndNil(arq_saida);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
-var i: Integer;
-begin
-  for i := 0 to L.Count-1 do
-    if Pos(Prefix, L[i]) = 1 then
-    L[i] := NewValue;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1122,12 +1113,6 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
 
 L.SaveToFile(Arq_DosBox);
 L.Free;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
-begin
-ShellExecute(HandleApp,'open',PChar(DosBox_EXE_Global),PChar('-conf '+ExtractFileName(Arq_DosBox)),PChar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
