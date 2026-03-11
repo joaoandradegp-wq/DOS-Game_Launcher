@@ -2,385 +2,325 @@ unit NO_DOSBOX_Bind;
 
 interface
 
-uses Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, dialogs, Unit1, DLC, Funcoes, Language;
-
-type
-  TModoEntrada = (meTeclado, meMouse, meAmbos);
-
-  TRegra = record
-    Chave: string;     // texto que identifica a linha no CFG
-    Valor: string;       // valor que será aplicado
-    Modo: TModoEntrada;  // quando aplicar
-  end;
-
-//------------------------------------------------------------------------------
-const
-  {VIDEO - DEBUG}
-  QUAKE_VIDEO_DEBUG: array[0..2] of TRegra = (
-    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "0"'),
-    (Chave:'vid_height';     Valor:'vid_height "768"'),
-    (Chave:'vid_width';      Valor:'vid_width "1024"')
-  );
-
-  {VIDEO - NORMAL}
-  QUAKE_VIDEO_NORMAL: array[0..2] of TRegra = (
-    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "1"'),
-    (Chave:'vid_height';     Valor:'vid_height "1024"'),
-    (Chave:'vid_width';      Valor:'vid_width "1280"')
-  );
-
-  {AUTOEXEC BASE}
-  QUAKE_AUTOEXEC_BASE: array[0..7] of string = (
-    'bind w "+forward"',
-    'bind a "+moveleft"',
-    'bind s "+back"',
-    'bind d "+moveright"',
-    'bind MOUSE1 "+attack"',
-    'bind MOUSE2 "+jump"',
-    'sensitivity "5.000000"',
-    '+mlook'
-  );
-//------------------------------------------------------------------------------
-const
-  QW_EXEC_AUTOEXEC   = 'exec autoexec.cfg';
-  QW_LINE_MLOOK      = '+mlook';
-  QW_LINE_CLEAR      = 'clear';
-  QW_LINE_ECHO       = 'echo ';
-  QW_LINE_CONNECT    = 'connect ';
-  QW_PARAM_WINDOWED  = ' -startwindowed';
-  QW_PARAM_NAME      = '+name ';
-  QW_PARAM_COLOR     = ' +color ';
-  QW_FOLDER          = 'qw\';
-  QW_CONFIG_FILE     = 'config.cfg';
-  QW_AUTOEXEC_FILE   = 'autoexec.cfg';
-  QW_SERVER_EXE      = 'qwsv.exe';
-  QW_CLIENT_EXE      = 'qwcl.exe';
-//------------------------------------------------------------------------------
-const
-  //----------------------------------------------------------------------------
-  {WARCRAFT II - REGRAS DE CONFIGURAÇÃO}
-  //----------------------------------------------------------------------------
-  WARCRAFT2_REGRAS: array[0..3] of TRegra = (
-    (Chave: 'cdpath='; Valor: 'cdpath=d:\'),
-    (Chave: 'mscroll='; Valor: 'mscroll=0'),
-    (Chave: 'intro='; Valor: ''), // Valor será aplicado dinamicamente (1 ou 0)
-    (Chave: 'name='; Valor: '')   // Valor será aplicado dinamicamente (nome do player)
-  );
-//------------------------------------------------------------------------------
+uses
+  Classes, SysUtils, StrUtils, ShellAPI, Forms,
+  Windows, dialogs, Unit1, DLC, Funcoes, Language,
+  IniFiles, Messages;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaQuakeClassic(const Caminho_Global: string; const Debug: Boolean; const CheckSingle: Boolean; const CheckServidor: Boolean; const CheckCliente: Boolean; const NameFunAtivo: Boolean; const PlayerName: string; const CoolStuff_Global: string; const ComboColorIndex: Integer; const ContPlayerText: string; const AppTitle: string; const IdGameConfig: string; var VarParametro_Global: string; out Cancelado: Boolean);
-procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
-procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
-procedure AplicaQuakeWorldDM;
-procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
+procedure DOSBOX_Bind_WAR2(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string
+);
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
 implementation
 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure AplicaRegras(Index: Integer; const Regras: array of TRegra; Lista: TStringList);
+procedure SendKey(Key: Word);
 var
-  i: Integer;
+  Input: TInput;
 begin
-  for i := Low(Regras) to High(Regras) do
+  ZeroMemory(@Input, SizeOf(Input));
+  Input.Itype := INPUT_KEYBOARD;
+  Input.ki.wVk := Key;
+  SendInput(1, Input, SizeOf(Input));
+
+  Sleep(30);
+
+  ZeroMemory(@Input, SizeOf(Input));
+  Input.Itype := INPUT_KEYBOARD;
+  Input.ki.wVk := Key;
+  Input.ki.dwFlags := KEYEVENTF_KEYUP;
+  SendInput(1, Input, SizeOf(Input));
+end;
+
+procedure SendChar(C: Char);
+begin
+  SendKey(Ord(UpCase(C)));
+end;
+
+function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
+var
+  Start: DWORD;
+  h: HWND;
+  Title: array[0..255] of Char;
+begin
+  Start := GetTickCount;
+  Result := 0;
+
+  repeat
+    h := GetWindow(GetDesktopWindow, GW_CHILD);
+
+    while h <> 0 do
+    begin
+      GetWindowText(h, Title, 255);
+
+      if Pos(LowerCase(WindowText), LowerCase(Title)) > 0 then
+      begin
+        Result := h;
+        Exit;
+      end;
+
+      h := GetWindow(h, GW_HWNDNEXT);
+    end;
+
+    Sleep(50);
+
+  until GetTickCount - Start > DWORD(Timeout);
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure Warcraft2MenuSetup(Servidor, Cliente: Boolean);
+begin
+  Sleep(300);
+
+  SendChar('M');      // Multiplayer
+  Sleep(400);
+
+  SendKey(VK_RETURN); // Network
+  Sleep(400);
+
+  SendKey(VK_DOWN);   // IPX
+  SendKey(VK_DOWN);
+  SendKey(VK_RETURN);
+
+  Sleep(400);
+
+  if Servidor then
+    SendChar('C');
+
+  if Cliente then
   begin
-    if Pos(Regras[i].Chave, Lista[Index]) = 1 then
-      Lista[Index] := Regras[i].Valor;
+    SendKey(VK_DOWN);
+    Sleep(200);
+    SendKey(VK_RETURN);
   end;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaQuakeClassic(
-  const Caminho_Global: string;
-  const Debug: Boolean;
-  const CheckSingle: Boolean;
-  const CheckServidor: Boolean;
-  const CheckCliente: Boolean;
-  const NameFunAtivo: Boolean;
-  const PlayerName: string;
-  const CoolStuff_Global: string;
-  const ComboColorIndex: Integer;
-  const ContPlayerText: string;
-  const AppTitle: string;
-  const IdGameConfig: string; // Array_Games[id][6]
-  var VarParametro_Global: string;
-  out Cancelado: Boolean
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure SkipWarcraftIntro;
+var
+  T: DWORD;
+begin
+  T := GetTickCount;
+
+  while GetTickCount - T < 5000 do
+  begin
+    SendKey(VK_RETURN);
+    Sleep(300);
+  end;
+end;
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure AfterDOSBoxStart(WindowName: string; IDGame: Integer; Servidor, Cliente, menu_debug: Boolean);
+var
+hGame: HWND;
+begin
+  if Debug then
+  Exit;
+
+hGame := WaitForWindowLike(WindowName, 10000);
+
+  if hGame = 0 then
+  Exit;
+
+ShowWindow(hGame, SW_RESTORE);
+SetForegroundWindow(hGame);
+SetActiveWindow(hGame);
+
+Sleep(1000);
+
+  if IDGame = 11 then
+  begin
+  SkipWarcraftIntro;
+  Sleep(1500);
+  SendKey(VK_ESCAPE);
+  Sleep(400);
+  Warcraft2MenuSetup(Servidor, Cliente);
+  end;
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
+var i: Integer;
+begin
+  for i := 0 to L.Count-1 do
+    if Pos(Prefix, L[i]) = 1 then
+    L[i] := NewValue;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureWarcraft2CFG(Ini: TMemIniFile; const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
+begin
+Ini.WriteString ('', 'cdpath' , 'd:\');
+Ini.WriteInteger('', 'mscroll', 0);
+Ini.WriteInteger('', 'intro'  , Ord(CheckSingle));
+Ini.WriteString ('', 'name'   , PlayerName);
+
+Ini.UpdateFile;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
+begin
+ShellExecute(HandleApp,'open',PChar(DosBox_EXE_Global),PChar('-conf '+ExtractFileName(Arq_DosBox)),PChar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure ConfigureDOSBoxCONF(
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  Parametros: string;
+  var Arq_DosBox: string
 );
 var
-Config: TStringList;
-AutoExec: TStringList;
-Quake_Folder: String;
-i,p: Integer;
-begin
-  Cancelado := False;
-
-  VarParametro_Global := ' -noserial';
-  Quake_Folder := '';
-
-  Application.CreateForm(TForm2_DLC, Form2_DLC);
-  try
-  Form2_DLC.ShowModal;
-  finally
-  Form2_DLC.Free;
-  end;
-
-  if Fecha_ESC then
-  begin
-  Cancelado := True;
-  Exit;
-  end;
-
-  if (not FileExists(Caminho_Global+'game.cue')  and (EPI_Global_DLC = 1)) or
-     (not FileExists(Caminho_Global+'gamea.cue') and (EPI_Global_DLC = 2)) or
-     (not FileExists(Caminho_Global+'gamed.cue') and (EPI_Global_DLC = 3)) then
-    VarParametro_Global := VarParametro_Global + ' -nocdaudio';
-
-  if not CheckCliente then
-  begin
-  Seleciona_Fases;
-    if Fecha_ESC then
-    begin
-    Cancelado := True;
-    Exit;
-    end;
-  VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global;
-  end;
-
-  case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
-  0: Quake_Folder := 'id1\';
-  1: Quake_Folder := 'hipnotic\';
-  2: Quake_Folder := 'rogue\';
-  end;
-
-  {PATCH config.cfg}
-  Config := TStringList.Create;
-  try
-  Config.LoadFromFile(Caminho_Global + Quake_Folder + IdGameConfig);
-
-    for i := 0 to Config.Count - 1 do
-    begin
-      if Debug then
-      AplicaRegras(i, QUAKE_VIDEO_DEBUG, Config)
-      else
-      AplicaRegras(i, QUAKE_VIDEO_NORMAL, Config);
-    end;
-
-  Config.SaveToFile(Caminho_Global + Quake_Folder + IdGameConfig);
-  finally
-  Config.Free;
-  end;
-
-  if Debug then
-  MessageBox(Application.Handle, PChar(VarParametro_Global), PChar(Lang_DGL(23)), MB_ICONINFORMATION + MB_OK);
-
-  {AUTOEXEC}
-  AutoExec := TStringList.Create;
-  try
-    for i := Low(QUAKE_AUTOEXEC_BASE) to High(QUAKE_AUTOEXEC_BASE) do
-    AutoExec.Add(QUAKE_AUTOEXEC_BASE[i]);
-
-      if CheckSingle then
-      AutoExec.Add('name Ranger')
-      else
-      begin
-        if CheckServidor then
-        begin
-        AutoExec.Add('hostname DGL');
-        AutoExec.Add('maxplayers ' + ContPlayerText);
-        AutoExec.Add('coop 1');
-        AutoExec.Add('teamplay off');
-        AutoExec.Add('skill 1');
-        AutoExec.Add('fraglimit none');
-        AutoExec.Add('timelimit none');
-        AutoExec.Add('pausable 0');
-        end
-        else
-        AutoExec.Add('connect DGL');
-
-      if NameFunAtivo then
-      begin
-      p := Pos('.scr', CoolStuff_Global);
-        if p > 0 then
-        AutoExec.Add('exec ' + Copy(CoolStuff_Global,7,Pos('.scr',CoolStuff_Global)-3));
-      end
-      else
-      AutoExec.Add('name ' + Trim(PlayerName));
-
-    AutoExec.Add('color ' + IntToStr(ComboColorIndex));
-    end;
-
-  AutoExec.Add('clear');
-  AutoExec.Add('echo ' + AppTitle);
-
-  AutoExec.SaveToFile(IncludeTrailingPathDelimiter(Caminho_Global) + Quake_Folder + 'autoexec.cfg');
-  finally
-  AutoExec.Free;
-  end;
-  
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure AplicaQuakeSingle(id: Integer; EhDeathMatch: Boolean);
-var
-Cancelado: Boolean;
-begin
-  if EhDeathMatch then
-  Exit;
-
-  AplicaQuakeClassic(
-    Caminho_Global,
-    Form1_DGL.menu_debug.Checked,
-    Form1_DGL.check_single.Checked,
-    Form1_DGL.check_servidor.Checked,
-    Form1_DGL.check_cliente.Checked,
-    Form1_DGL.RxOpcoes.StateOn,
-    Form1_DGL.player_name.Text,
-    CoolStuff_Global,
-    Form1_DGL.combo_color.ItemIndex,
-    Form1_DGL.cont_player.Text,
-    Application.Title,
-    Array_Games[id][6],
-    VarParametro_Global,
-    Cancelado
-  );
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure AplicaQuake(id: Integer; DeathmatchAtivo: Boolean);
-begin
-
-  if DeathmatchAtivo then
-  AplicaQuakeWorldDM
-  else
-  AplicaQuakeSingle(id, DeathmatchAtivo);
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure AplicaQuakeWorldDM;
-var
-Arquivo: TStringList;
-QW_Server: string;
-QW_WinMode: string;
-QW_Server_Debug: Integer;
-Config_Game_Global: string;
-begin
-
-QW_Server := Caminho_Global + QW_SERVER_EXE;
-Nome_DLC_Global := 'QuakeWorld';
-Game_EXE_Global := QW_CLIENT_EXE;
-
-  if Form1_DGL.menu_debug.Checked then
-  begin
-  QW_WinMode := QW_PARAM_WINDOWED;
-  QW_Server_Debug := SW_NORMAL;
-  end
-  else
-  begin
-  QW_WinMode := '';
-  QW_Server_Debug := SW_HIDE;
-  end;
-
-  Config_Game_Global := Caminho_Global + QW_FOLDER + QW_CONFIG_FILE;
-
-  Arquivo := TStringList.Create;
-  try
-  Arquivo.LoadFromFile(Config_Game_Global);
-
-    if (Arquivo.Count = 0) or (Arquivo[Arquivo.Count-1] <> QW_EXEC_AUTOEXEC) then
-    Arquivo.Add(QW_EXEC_AUTOEXEC);
-
-  Arquivo.SaveToFile(Config_Game_Global);
-  finally
-  Arquivo.Free;
-  end;
-
-  Arquivo := TStringList.Create;
-  try
-  Arquivo.Add(QW_LINE_MLOOK);
-  Arquivo.Add(QW_LINE_CONNECT + Form1_DGL.ip_local.Text);
-  Arquivo.Add(QW_LINE_CLEAR);
-  Arquivo.Add(QW_LINE_ECHO + Application.Title);
-
-  Arquivo.SaveToFile(ExtractFilePath(Config_Game_Global) + QW_AUTOEXEC_FILE);
-  finally
-  Arquivo.Free;
-  end;
-
-  if not Form1_DGL.RXOpcoes.StateOn then
-  CoolStuff_Global := QW_PARAM_NAME + Trim(Form1_DGL.player_name.Text);
-
-  VarParametro_Global := QW_WinMode + ' ' + CoolStuff_Global + QW_PARAM_COLOR + IntToStr(Form1_DGL.combo_color.ItemIndex);
-
-  if Form1_DGL.check_servidor.Checked then
-  begin
-  Seleciona_Fases;
-
-    if Fecha_ESC then
-    Exit;
-
-    if Form1_DGL.menu_debug.Checked then
-    MessageBox(Application.Handle, PChar(VarParametro_Global + #13#13 + Map_Global), PChar(Lang_DGL(23)), MB_ICONINFORMATION + MB_OK);
-
-    if Form1_DGL.RxQuakeServer.StateOn then
-    begin
-    Config_Tela(False);
-    Form1_DGL.btn_start.Caption := Lang_DGL(5);
-
-    ShellExecute(Form1_DGL.Handle, 'open', PChar(QW_Server), PChar('+map ' + Map_Global), PChar(ExtractFilePath(QW_Server)), SW_MAXIMIZE);
-
-    Form1_DGL.Timer_MonitoraAPP.Enabled := True;
-    Exit;
-    end
-    else
-    ShellExecute(Form1_DGL.Handle, 'open', PChar(QW_Server), PChar('+map ' + Map_Global), PChar(ExtractFilePath(QW_Server)), QW_Server_Debug);
-  end;
-
-  if (not Form1_DGL.menu_debug.Checked) and Form1_DGL.check_cliente.Checked then
-  Contagem_Iniciar;
-
-ShellExecute(Form1_DGL.Handle, 'open', PChar(ExtractFilePath(QW_Server) + Game_EXE_Global), PChar(VarParametro_Global), PChar(ExtractFilePath(QW_Server)), SW_NORMAL);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure AplicaWarcraft2(const Config_Game_Global: string; const CheckSingle: Boolean; const PlayerName: string);
-var
-Arquivo: TStringList;
+L: TStringList;
 i: Integer;
 begin
-Arquivo := TStringList.Create;
-  try
-  Arquivo.LoadFromFile(Config_Game_Global);
+Arq_DosBox := CaminhoJogo + LowerCase(ChangeFileExt(Game_EXE_Global,'')) + '_dosbox.conf';
 
-    for i := 0 to Arquivo.Count - 1 do
-    begin
-    AplicaRegras(i, WARCRAFT2_REGRAS, Arquivo);
+CopyFile(PChar(ExtractFilePath(DosBox_EXE_Global)+'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
 
-      if Pos('intro=', Arquivo[i]) = 1 then
-      begin
-        if CheckSingle then
-        Arquivo[i] := 'intro=1'
-        else
-        Arquivo[i] := 'intro=0';
-      end;
+L := TStringList.Create;
+L.LoadFromFile(Arq_DosBox);
 
-      if Pos('name=', Arquivo[i]) = 1 then
-      begin
-        if not CheckSingle then
-        Arquivo[i] := 'name=' + Trim(PlayerName);
-      end;
+ReplaceLinePrefix(L,'fullscreen=','fullscreen='+BoolToStr(not menu_debug,True));
+ReplaceLinePrefix(L,'fullresolution=','fullresolution=desktop');
 
-    end;
-    Arquivo.SaveToFile(Config_Game_Global);
-  finally
-  Arquivo.Free;
-  end;
+  if menu_debug then
+  ReplaceLinePrefix(L,'windowresolution=','windowresolution=1024x768');
   
+  {NÃO TEM PLACA DE VÍDEO - INTEL e NVIDIA}
+  if ProcessExists('igfxTray.exe') or ProcessExists('NVIDIA Overlay.exe') then
+  ReplaceLinePrefix(L,'output=','output=opengl')
+  else
+  ReplaceLinePrefix(L,'output=','output=overlay');
+
+ReplaceLinePrefix(L,'memsize=','memsize=64');
+ReplaceLinePrefix(L,'aspect=','aspect=true');
+ReplaceLinePrefix(L,'scaler=','scaler=normal2x');
+ReplaceLinePrefix(L,'core=','core=dynamic');
+ReplaceLinePrefix(L,'cycles=','cycles=max');
+ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
+
+  //--------------------------------
+  {IPX}
+  //--------------------------------
+  for i := 0 to L.Count-1 do
+  begin
+    if Pos('ipx=', L[i]) = 1 then
+    begin
+      if check_single then
+      L[i] := 'ipx=false'
+      else
+      L[i] := 'Enable=1'    +#13#10+
+              'Connection=1'+#13#10+
+              'ipx=true';
+    end;
+  end;
+  //--------------------------------
+
+  for i := 0 to L.Count-1 do
+    if Pos('[autoexec]',L[i]) = 1 then
+    begin
+      if not menu_debug then
+      L.Add('@ECHO OFF');
+
+      if DirectoryExists(ExtractFilePath(CaminhoJogo)) then
+      L.Add('mount c "'+IncludeTrailingPathDelimiter(CaminhoJogo)+'"')
+      else
+      MessageBox(Application.Handle,PChar(Lang_DGL(8)+':'+#13#13+ExtractFilePath(Arq_DosBox)),PChar(Application.Title),MB_ICONERROR+MB_OK);
+
+    L.Add('mount d "'+ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'" -t cdrom');
+    L.Add('c:');
+
+      if not menu_debug then
+      L.Add('cls');
+
+      if check_servidor then
+      L.Add('ipxnet startserver '+ip_porta);
+
+      if check_cliente then
+      L.Add('ipxnet connect '+ip_local+' '+ip_porta);
+
+    L.Add(Game_EXE_Global+Parametros);
+
+      if not menu_debug then
+      L.Add('Exit.');
+
+    Break;
+    end;
+
+    {SINGLE PLAYER + DEBUG}
+    if check_single and menu_debug then
+    MessageBox(Application.Handle,pchar(Game_EXE_Global+#13+Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+
+L.SaveToFile(Arq_DosBox);
+L.Free;
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_WAR2(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string
+);
+var
+Parametros: string;
+Arq_DosBox: string;
+Ini: TMemIniFile;
+begin
+
+  {WAR2 CFG}
+  Ini := TMemIniFile.Create(CaminhoJogo+'war2.ini');
+  try
+  ConfigureWarcraft2CFG(Ini, '', check_single, PlayerName);
+  finally
+  Ini.Free;
+  end;
+
+{DOSBOX CONF}
+ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
+
+{RUN}
+RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
+
+{POST START}
+AfterDOSBoxStart('SDL_app', id, check_servidor, check_cliente, menu_debug);
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

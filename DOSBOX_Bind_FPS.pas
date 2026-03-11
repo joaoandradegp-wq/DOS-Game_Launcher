@@ -68,8 +68,8 @@ procedure DOSBOX_Bind_FPS_Shadow(
 implementation
 
 const
-CFG_ScreenWidth = 800;
-CFG_ScreenHeight = 600;
+CFG_ScreenWidth = 640;
+CFG_ScreenHeight = 480;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -984,23 +984,30 @@ L := TStringList.Create;
 L.LoadFromFile(Arq_DosBox);
 
 ReplaceLinePrefix(L,'fullscreen=','fullscreen='+BoolToStr(not menu_debug,True));
-ReplaceLinePrefix(L,'fullresolution=','fullresolution=0x0');
+ReplaceLinePrefix(L,'fullresolution=','fullresolution=desktop');
 
   if menu_debug then
   ReplaceLinePrefix(L,'windowresolution=','windowresolution=1024x768');
   
   {NÃO TEM PLACA DE VÍDEO - INTEL e NVIDIA}
   if ProcessExists('igfxTray.exe') or ProcessExists('NVIDIA Overlay.exe') then
-  ReplaceLinePrefix(L,'output=','output=opengl')
+  begin
+  ReplaceLinePrefix(L,'output=','output=opengl');
+  //ReplaceLinePrefix(L,'vsync=','vsync=true');
+  end
   else
+  begin
   ReplaceLinePrefix(L,'output=','output=overlay');
+  //ReplaceLinePrefix(L,'vsync=','vsync=false');
+  end;
 
 ReplaceLinePrefix(L,'machine=','machine=vesa_nolfb');
 ReplaceLinePrefix(L,'memsize=','memsize=64');
 ReplaceLinePrefix(L,'aspect=','aspect=true');
 ReplaceLinePrefix(L,'scaler=','scaler=normal2x');
 ReplaceLinePrefix(L,'core=','core=dynamic');
-ReplaceLinePrefix(L,'cycles=','cycles=max 105%');
+ReplaceLinePrefix(L,'cycles=','cycles=max');
+ReplaceLinePrefix(L,'cputype=','cputype=auto');
 ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
 
   //--------------------------------

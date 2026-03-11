@@ -470,7 +470,7 @@ Opt.Executable    := ZDoom_EXE_Global;
 
   {DOOM II - SKIN PHOBOS}
   if Form1_DGL.combo_doom.ItemIndex = 1 then
-  Opt.SkinParams    :=  ' -file ' + DoomSkin_Global;
+  Opt.SkinParams:= ' -file ' + DoomSkin_Global;
 
   {DOOM II - ONE-HUMANITY}
   if ExtractFileExt(DoomMod_Global) = '.wad' then
