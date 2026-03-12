@@ -29,6 +29,9 @@ implementation
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+function BlockInput(fBlockIt: BOOL): BOOL; stdcall; external 'user32.dll';
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 procedure Warcraft2MenuSetup(Servidor, Cliente: Boolean);
 begin
 Sleep(300);
@@ -84,7 +87,7 @@ begin
   if menu_debug then
   Exit;
 
-hGame := WaitForWindowLike(WindowName, 10000);
+hGame := WaitForWindowLike(WindowName, 15000);
 
   if hGame = 0 then
   Exit;
@@ -93,15 +96,23 @@ ShowWindow(hGame, SW_RESTORE);
 SetForegroundWindow(hGame);
 SetActiveWindow(hGame);
 
-Sleep(1000);
+BlockInput(True);
 
-  if IDGame = 11 then
-  begin
-  SkipWarcraftIntro;
-  Sleep(1500);
-  SendKey(VK_ESCAPE);
-  Sleep(400);
-  Warcraft2MenuSetup(Servidor, Cliente);
+  try
+  Sleep(1000);
+
+    if IDGame = 11 then
+    begin
+    Sleep(3000);
+    SkipWarcraftIntro;
+    Sleep(3500);
+    SendKey(VK_ESCAPE);
+    Sleep(400);
+    Warcraft2MenuSetup(Servidor, Cliente);
+    end;
+
+  finally
+  BlockInput(False);
   end;
 
 end;
