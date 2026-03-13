@@ -47,7 +47,6 @@ procedure Funcao_Config_Opcoes;
 function  Episodio_Numero(Episodio:String):Integer;
 function  Listar_Arquivos(Lista:TListBox;Caminho,Extensao:String):String;
 procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
-procedure Setup_Teclas(Game:Integer);
 procedure Modo_Game(Tipo:Integer);
 procedure Lista_Cores(Game:Integer);
 function  Config_Tela(On_Off:Boolean):Boolean;
@@ -1050,47 +1049,6 @@ begin
   DeleteFile(PAnsiChar(Pasta_App+'qw\autoexec.cfg'));
 end;
 //----------------------------------------------
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure Setup_Teclas(Game:Integer);
-begin
- //-------------------------------------------------------------
- //MODO MULTIPLAYER - SELEÇÃO AUTOMATICA DE SETUPS
- //-------------------------------------------------------------
-
- {RISE OF THE TRIAD}
- if (Game = 9) then
- begin
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- Sleep(300);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(300);
-   {SERVIDOR}
-   if (Form1_DGL.check_servidor.Checked = True) then
-   begin
-   keybd_event(VK_DOWN,0,0,0);
-   keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
-   {CLIENTE}
-   if (Form1_DGL.check_cliente.Checked = True) then
-   begin
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
- end;
 
 end;
 //------------------------------------------------------------------------------
