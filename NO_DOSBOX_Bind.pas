@@ -7,6 +7,8 @@ uses
   Windows, Unit1, Funcoes, Language,
   IniFiles, Messages;
 
+//Dialogs - Para testar com ShowMessage();
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure DOSBOX_Bind_WAR2(
@@ -70,7 +72,7 @@ Arq := CaminhoJogo + 'setup.rot';
 CFG := TStringList.Create;
 CFG.LoadFromFile(Arq);
 
-  if check_single then
+  if not check_single then
   begin
   ReplaceLinePrefix(CFG,'CODENAME'  ,'CODENAME            '+PlayerName);
   ReplaceLinePrefix(CFG,'NUMPLAYERS','NUMPLAYERS          '+NumPlayers);
@@ -147,31 +149,31 @@ end;
 //------------------------------------------------------------------------------
 procedure ROTTMenuSetup(Servidor, Cliente: Boolean);
 begin
-Sleep(300);
+Sleep(6000); // esperar menu aparecer
 
-SendKey(VK_DOWN);
-Sleep(300);
-
-SendKey(VK_RETURN);
-Sleep(300);
-
-  {SERVIDOR}
+  {HOST}
   if Servidor then
   begin
   SendKey(VK_DOWN);
   Sleep(300);
   SendKey(VK_RETURN);
+  Sleep(500);
+  SendKey(VK_DOWN);
   Sleep(300);
   SendKey(VK_RETURN);
-  Sleep(300);
+  Sleep(500);
+  SendKey(VK_RETURN);
+  Sleep(500);
   SendKey(VK_RETURN);
   end;
 
-  {CLIENTE}
-  if Cliente then
-  begin
+{JOIN}
+if Cliente then
+begin
+  SendKey(VK_DOWN);
+  Sleep(300);
   SendKey(VK_RETURN);
-  end;
+end;
 
 end;
 //------------------------------------------------------------------------------
@@ -458,6 +460,10 @@ ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,che
 
 {RUN}
 RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
+
+  {POST START}
+  if not menu_debug then
+  AfterDOSBoxStart('SDL_app', id, check_servidor, check_cliente, menu_debug);
 
 end;
 //------------------------------------------------------------------------------
