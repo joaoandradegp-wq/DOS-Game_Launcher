@@ -8,7 +8,6 @@ uses
   IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Splash, Mouse_Sense, Language;
 
 //----------------------------------------------------------------------
-//----------------------------------------------------------------------
 {NO_DOSBOX_Bind e DOSBOX_Bind_FPS}
 //----------------------------------------------------------------------
 procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
@@ -20,27 +19,25 @@ function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
 procedure SendKey(Key: Word);
 procedure SendChar(C: Char);
 //----------------------------------------------------------------------
-function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
-function EsperaDOSBox(TimeoutMS: Integer): HWND;
-procedure AtivaJanela(h: HWND);
-procedure EnviaTecla(h: HWND; VK: Word);
-procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function GetInternalIP: String;
 function GetExternalIP: String;
+function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+//----------------------------------------------------------------------
+procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
 function  GetLanguageWin:String;
 procedure Firewall(Pasta,Executavel:String);
-procedure Copia_Pasta(Origem,Destino:String);
-procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
 function  AppAberto(const NomeExe: string): Boolean;
+//----------------------------------------------------------------------
 function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
-function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
-function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+function  ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
+procedure Copia_Pasta(Origem,Destino:String);
+//----------------------------------------------------------------------
 procedure Contagem_Iniciar;
 procedure Seleciona_Fases;
 procedure Funcao_Config_Opcoes;
@@ -149,39 +146,6 @@ P2 := Pos('"', Copy(Linha, P1 + 1, MaxInt));
 
 S := Copy(Linha, P1 + 1, P2 - 1);
 Result := TryStrToInt(S, Numero);
-end;
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
-function EsperaDOSBox(TimeoutMS: Integer): HWND;
-var
-  h: HWND;
-  T0: Cardinal;
-begin
-  Result := 0;
-  T0 := GetTickCount;
-
-  repeat
-    h := FindWindow('SDL_app', nil);
-    if h <> 0 then
-    begin
-      Result := h;
-      Exit;
-    end;
-    Sleep(50);
-  until GetTickCount - T0 > Cardinal(TimeoutMS);
-end;
-
-procedure AtivaJanela(h: HWND);
-begin
-  if h = 0 then Exit;
-  ShowWindow(h, SW_RESTORE);
-  SetForegroundWindow(h);
-  SetFocus(h);
-end;
-procedure EnviaTecla(h: HWND; VK: Word);
-begin
-  PostMessage(h, WM_KEYDOWN, VK, 0);
-  PostMessage(h, WM_KEYUP, VK, 0);
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -1109,24 +1073,25 @@ end;
 //------------------------------------------------------------------------------
 function AppAberto(const NomeExe: string): Boolean;
 var
-  Snap: THandle;
-  ProcEntry: TProcessEntry32;
+Snap: THandle;
+ProcEntry: TProcessEntry32;
 begin
-  Result := False;
+Result := False;
+Snap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
-  Snap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-  if Snap = INVALID_HANDLE_VALUE then Exit;
+  if Snap = INVALID_HANDLE_VALUE then
+  Exit;
 
   try
-    ProcEntry.dwSize := SizeOf(TProcessEntry32);
+  ProcEntry.dwSize := SizeOf(TProcessEntry32);
 
     if Process32First(Snap, ProcEntry) then
     repeat
       // ProcEntry.szExeFile é PChar ANSI no Delphi 7
       if AnsiSameText(string(ProcEntry.szExeFile), NomeExe) then
       begin
-        Result := True;
-        Break;
+      Result := True;
+      Break;
       end;
 
     until not Process32Next(Snap, ProcEntry);
@@ -1134,6 +1099,7 @@ begin
   finally
     CloseHandle(Snap);
   end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1142,6 +1108,7 @@ var
 pathAjustado:String;
 begin
 pathAjustado:=path;
+
  if FileExists(pathAjustado) then
  pathAjustado:=ExtractFileDir(pathAjustado);
 
@@ -1476,39 +1443,8 @@ Form1_DGL.gif_dos.Visible:=False;
       Form1_DGL.RxSense.Visible       :=False;
       Form1_DGL.Label_Sense.Visible   :=False;
 
-        //----------------------------------------------------------------------------------------------------------------
-        {ARQUIVOS DO GLQUAKE.EXE}
-{        //----------------------------------------------------------------------------------------------------------------
-        if not FileExists(Caminho_Global+'Glquake.exe') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\Glquake.exe') ,pchar(Caminho_Global+'Glquake.exe') ,False);
-        if not FileExists(Caminho_Global+'glide2x.dll') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\glide2x.dll') ,pchar(Caminho_Global+'glide2x.dll') ,False);
-        if not FileExists(Caminho_Global+'opengl32.dll') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\opengl32.dll'),pchar(Caminho_Global+'opengl32.dll'),False);
-        if not FileExists(Caminho_Global+'Winquake.exe') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\Winquake.exe'),pchar(Caminho_Global+'Winquake.exe'),False);
-        //----------------------------------------------------------------------------------------------------------------
-    }
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
-                          { VERSAO ATUAL DO QUASE CASO INSTALE UMA ANTIGA, MAS NAO USO MAIS
-       if FileExists(Pasta_INI_Global+'quake\quake.exe') then
-        begin
-        //-------------------------------------------------------------------
-        AssignFile(Arquivo_Quake_Default,Pasta_INI_Global+'quake\quake.exe'); //PASTA CONFIG
-        AssignFile(Arquivo_Quake_Atual  ,Caminho_Global  +'quake.exe');       //PASTA DO JOGO
-        Reset(Arquivo_Quake_Default);
-        Reset(Arquivo_Quake_Atual);
-        //-------------------------------------------------------------------
-
-          if FileSize(Arquivo_Quake_Default) > FileSize(Arquivo_Quake_Atual) then
-          CopyFile(pchar(Pasta_INI_Global+'quake\quake.exe'),pchar(Caminho_Global+'quake.exe'),False);
-
-        //-------------------------------
-        CloseFile(Arquivo_Quake_Default); //PASTA CONFIG
-        CloseFile(Arquivo_Quake_Atual);   //PASTA DO JOGO
-        //-------------------------------
-        end;          }
 
         Try
           if not DirectoryExists(Caminho_Global+'id1\skins\') then
@@ -1556,7 +1492,7 @@ Form1_DGL.gif_dos.Visible:=False;
      Lista_Cores(id);
      end;
      else
-     Form1_DGL.combo_color.Visible:=False;
+     Form1_DGL.combo_color.Visible :=False;
      Form1_DGL.RxOpcoes.Visible    :=False;
      Form1_DGL.Label_Opcoes.Visible:=False;
      Form1_DGL.RxDM.Visible        :=False;

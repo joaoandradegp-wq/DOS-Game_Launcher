@@ -3,43 +3,14 @@ unit NO_DOSBOX_Bind;
 interface
 
 uses
-  Classes, SysUtils, Forms,
-  Windows, Unit1, Funcoes, Language,
-  IniFiles, Messages;
+  Classes, SysUtils, Forms, Windows, Unit1, Funcoes,
+  Language, IniFiles, Messages;
 
 //Dialogs - Para testar com ShowMessage();
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure DOSBOX_Bind_WAR2(
-  HandleApp: HWND;
-  DosBox_EXE_Global: string;
-  CaminhoJogo: string;
-  Game_EXE_Global: string;
-  menu_debug: Boolean;
-  check_single: Boolean;
-  check_servidor: Boolean;
-  check_cliente: Boolean;
-  ip_porta: string;
-  ip_local: string;
-  PlayerName: string
-);
-//------------------------------------------------------------------------------
-procedure DOSBOX_Bind_Constructor(
-  HandleApp: HWND;
-  DosBox_EXE_Global: string;
-  CaminhoJogo: string;
-  Game_EXE_Global: string;
-  menu_debug: Boolean;
-  check_single: Boolean;
-  check_servidor: Boolean;
-  check_cliente: Boolean;
-  ip_porta: string;
-  ip_local: string;
-  PlayerName: string
-);
-//------------------------------------------------------------------------------
-procedure DOSBOX_Bind_ROTT(
+procedure DOSBOX_Bind_NEWS(
   HandleApp: HWND;
   DosBox_EXE_Global: string;
   CaminhoJogo: string;
@@ -58,9 +29,6 @@ procedure DOSBOX_Bind_ROTT(
 
 implementation
 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function BlockInput(fBlockIt: BOOL): BOOL; stdcall; external 'user32.dll';
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure ConfigureROTTCFG(CaminhoJogo: string; check_single: Boolean; NumPlayers: string; PlayerName: string);
@@ -117,7 +85,7 @@ end;
 //------------------------------------------------------------------------------
 procedure Warcraft2MenuSetup(Servidor, Cliente: Boolean);
 begin
-Sleep(300);
+Sleep(5000);
 
 {MULTIPLAYER}
 SendChar('M');      
@@ -149,7 +117,7 @@ end;
 //------------------------------------------------------------------------------
 procedure ROTTMenuSetup(Servidor, Cliente: Boolean);
 begin
-Sleep(6000); // esperar menu aparecer
+Sleep(5000);
 
   {HOST}
   if Servidor then
@@ -167,13 +135,13 @@ Sleep(6000); // esperar menu aparecer
   SendKey(VK_RETURN);
   end;
 
-{JOIN}
-if Cliente then
-begin
+  {JOIN}
+  if Cliente then
+  begin
   SendKey(VK_DOWN);
   Sleep(300);
   SendKey(VK_RETURN);
-end;
+  end;
 
 end;
 //------------------------------------------------------------------------------
@@ -193,14 +161,10 @@ T := GetTickCount;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AfterDOSBoxStart(WindowName: string; IDGame: Integer; Servidor, Cliente, menu_debug: Boolean);
+procedure AfterDOSBoxStart(WindowName: string; IDGame: Integer; Servidor, Cliente:Boolean);
 var
 hGame: HWND;
 begin
-
-  if menu_debug then
-  Exit;
-
 hGame := WaitForWindowLike(WindowName, 15000);
 
   if hGame = 0 then
@@ -210,31 +174,22 @@ ShowWindow(hGame, SW_RESTORE);
 SetForegroundWindow(hGame);
 SetActiveWindow(hGame);
 
-BlockInput(True);
 
-  try
-  Sleep(1000);
+  {RISE OF THE TRIAD}
+  if IDGame = 9 then
+  begin
+  Sleep(400);
+  ROTTMenuSetup(Servidor, Cliente);
+  end;
 
-    {RISE OF THE TRIAD}
-    if IDGame = 9 then
-    begin
-    Sleep(400);
-    ROTTMenuSetup(Servidor, Cliente);
-    end;
-
-    {WARCRAFT II}
-    if IDGame = 11 then
-    begin
-    Sleep(3000);
-    SkipWarcraftIntro;
-    Sleep(3500);
-    SendKey(VK_ESCAPE);
-    Sleep(400);
-    Warcraft2MenuSetup(Servidor, Cliente);
-    end;
-
-  finally
-  BlockInput(False);
+  {WARCRAFT II}
+  if IDGame = 11 then
+  begin
+  Sleep(3000);
+  SkipWarcraftIntro;
+  Sleep(3500);
+  SendKey(VK_ESCAPE);
+  Warcraft2MenuSetup(Servidor, Cliente);
   end;
 
 end;
@@ -352,7 +307,7 @@ L.Free;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure DOSBOX_Bind_WAR2(
+procedure DOSBOX_Bind_NEWS(
   HandleApp: HWND;
   DosBox_EXE_Global: string;
   CaminhoJogo: string;
@@ -363,6 +318,7 @@ procedure DOSBOX_Bind_WAR2(
   check_cliente: Boolean;
   ip_porta: string;
   ip_local: string;
+  NumPlayers: string; {RISE OF THE TRIAD}
   PlayerName: string
 );
 var
@@ -372,98 +328,43 @@ Ini: TMemIniFile;
 begin
 
   {CFG}
-  Ini := TMemIniFile.Create(CaminhoJogo+'war2.ini');
-  try
-  ConfigureWarcraft2CFG(Ini, check_single, PlayerName);
-  finally
-  Ini.Free;
-  end;
+  case id of
+  2: begin
+     Ini := TMemIniFile.Create(CaminhoJogo+'SETTINGS\SYSTEM.ini');
+       try
+       ConfigureConstructorCFG(Ini, check_single, PlayerName);
+       finally
+       Ini.Free;
+       end;
+     end;
+  9: begin
+     Ini := TMemIniFile.Create(CaminhoJogo+'setup.rot');
+       try
+       ConfigureROTTCFG(CaminhoJogo, check_single, NumPlayers, PlayerName);
+       finally
+       Ini.Free;
+       end;
+     end;
+ 11: begin
+     Ini := TMemIniFile.Create(CaminhoJogo+'war2.ini');
+       try
+       ConfigureWarcraft2CFG(Ini, check_single, PlayerName);
+       finally
+       Ini.Free;
+       end;
+     end;
+ end;
+
 
 {DOSBOX CONF}
-ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
-
-{RUN}
-RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
-
-{POST START}
-AfterDOSBoxStart('SDL_app', id, check_servidor, check_cliente, menu_debug);
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure DOSBOX_Bind_Constructor(
-  HandleApp: HWND;
-  DosBox_EXE_Global: string;
-  CaminhoJogo: string;
-  Game_EXE_Global: string;
-  menu_debug: Boolean;
-  check_single: Boolean;
-  check_servidor: Boolean;
-  check_cliente: Boolean;
-  ip_porta: string;
-  ip_local: string;
-  PlayerName: string
-);
-var
-Parametros: string;
-Arq_DosBox: string;
-Ini: TMemIniFile;
-begin
-
-  {CFG}
-  Ini := TMemIniFile.Create(CaminhoJogo+'SETTINGS\SYSTEM.ini');
-  try
-  ConfigureConstructorCFG(Ini, check_single, PlayerName);
-  finally
-  Ini.Free;
-  end;
-
-{DOSBOX CONF}
-ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
-
-{RUN}
-RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure DOSBOX_Bind_ROTT(
-  HandleApp: HWND;
-  DosBox_EXE_Global: string;
-  CaminhoJogo: string;
-  Game_EXE_Global: string;
-  menu_debug: Boolean;
-  check_single: Boolean;
-  check_servidor: Boolean;
-  check_cliente: Boolean;
-  ip_porta: string;
-  ip_local: string;
-  NumPlayers: string;
-  PlayerName: string
-);
-var
-Parametros: string;
-Arq_DosBox: string;
-Ini: TMemIniFile;
-begin
-
-  {CFG}
-  Ini := TMemIniFile.Create(CaminhoJogo+'setup.rot');
-  try
-  ConfigureROTTCFG(CaminhoJogo,check_single,NumPlayers,PlayerName);
-  finally
-  Ini.Free;
-  end;
-
-{DOSBOX CONF}
-ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
+ConfigureDOSBoxCONF(DosBox_EXE_Global, CaminhoJogo, Game_EXE_Global, menu_debug,check_single, check_servidor, check_cliente, ip_porta, ip_local, Parametros, Arq_DosBox);
 
 {RUN}
 RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
 
   {POST START}
-  if not menu_debug then
-  AfterDOSBoxStart('SDL_app', id, check_servidor, check_cliente, menu_debug);
+  if (not menu_debug) and ( (id = 9) or (id = 11) ) then
+  AfterDOSBoxStart('SDL_app', id, check_servidor, check_cliente);
 
 end;
 //------------------------------------------------------------------------------
