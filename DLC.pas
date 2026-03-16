@@ -53,7 +53,7 @@ begin
       end;
    8: begin
       Form2_DLC.Caption:=Array_Games[id][2];
-      PACK00.Caption:=UpperCase(Form2_DLC.Caption);
+      PACK00.Caption:='QUAKE';
       PACK01.Caption:='SCOURGE OF ARMAGON';
       PACK02.Caption:='DISSOLUTION OF ETERNITY';
       PACK01.Enabled:=DirectoryExists(Caminho_Global+'hipnotic\');
@@ -76,7 +76,10 @@ begin
 
   case id of
      3: Game_EXE_Global:=Array_Games[id][5];
-     8: EPI_Global_DLC:=1;
+     8: begin
+        EPI_Global_DLC:=1;
+        Nome_DLC_Global:='Quake';
+        end;
   7,10: EPI_Global_DLC:=1;
   end;
 

@@ -629,11 +629,13 @@ procedure TForm4_Select.FormCreate(Sender: TObject);
 begin
 Lang_DGL(10);
 
- case AnsiIndexStr(Nome_DLC_Global,['Quake','QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
-   0,1: Game_Pack:=0;
-     2: Game_Pack:=38;
-     3: Game_Pack:=56;
- end;
+  case EPI_Global_DLC of
+  0,1: Game_Pack:=0;
+    2: Game_Pack:=38;
+    3: Game_Pack:=56;
+  end;
+
+  ShowMessage('EPI='+IntToStr(EPI_Global_DLC)+'  Game_Pack='+IntToStr(Game_Pack));
 
 end;
 
@@ -734,7 +736,8 @@ Fecha_ESC:=False;
    begin
      if (id = 8) then
      begin
-       case AnsiIndexStr(Nome_DLC_Global,['',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
+       case EPI_Global_DLC of
+     //case AnsiIndexStr(Nome_DLC_Global,['Quake',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
        0,1,2: begin
               ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
                 if (i = 37) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then

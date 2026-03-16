@@ -10,26 +10,7 @@ uses
 type
   TModoEntrada = (meTeclado, meMouse, meAmbos);
 //--------------------------------------------------
-  TRegra = record
-    Chave: string;
-    Valor: string;
-    Modo: TModoEntrada;
-  end;
-//--------------------------------------------------
 const
-  { VIDEO - DEBUG }
-  QUAKE_VIDEO_DEBUG: array[0..2] of TRegra = (
-    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "0"'),
-    (Chave:'vid_height';     Valor:'vid_height "768"'),
-    (Chave:'vid_width';      Valor:'vid_width "1024"')
-  );
-  { VIDEO - NORMAL }
-  QUAKE_VIDEO_NORMAL: array[0..2] of TRegra = (
-    (Chave:'vid_fullscreen'; Valor:'vid_fullscreen "1"'),
-    (Chave:'vid_height';     Valor:'vid_height "1024"'),
-    (Chave:'vid_width';      Valor:'vid_width "1280"')
-  );
-//--------------------------------------------------
   { AUTOEXEC BASE }
   QUAKE_AUTOEXEC_BASE: array[0..7] of string = (
     'bind w "+forward"',
@@ -41,7 +22,6 @@ const
     'sensitivity "5.000000"',
     '+mlook'
   );
-//--------------------------------------------------
   { QUAKEWORLD }
   QW_SERVER_EXE = 'qwsv.exe';
   QW_CLIENT_EXE = 'qwcl.exe';
@@ -77,16 +57,6 @@ implementation
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure AplicaRegras(Index: Integer; const Regras: array of TRegra; Lista: TStringList);
-var
-i: Integer;
-begin
-  for i := Low(Regras) to High(Regras) do
-    if Pos(Regras[i].Chave, Lista[Index]) = 1 then
-      Lista[Index] := Regras[i].Valor;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure AplicaQuakeClassic(
   const Caminho_Global: string;
   const Debug: Boolean;
@@ -104,12 +74,12 @@ procedure AplicaQuakeClassic(
   out Cancelado: Boolean
 );
 var
-Config, AutoExec: TStringList;
+AutoExec: TStringList;
 Quake_Folder: string;
 i: Integer;
 begin
 Cancelado := False;
-VarParametro_Global := ' -noserial';
+VarParametro_Global := VarParametro_Global + ' -noserial';
 
   Application.CreateForm(TForm2_DLC, Form2_DLC);
   try
@@ -132,31 +102,30 @@ VarParametro_Global := ' -noserial';
   VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global;
   end;
 
-  case AnsiIndexStr(Nome_DLC_Global,['','Scourge of Armagon','Dissolution of Eternity']) of
-    0: Quake_Folder := 'id1\';
-    1: Quake_Folder := 'hipnotic\';
-    2: Quake_Folder := 'rogue\';
-  end;
-
-  Config := TStringList.Create;
-  try
-  Config.LoadFromFile(Caminho_Global + Quake_Folder + IdGameConfig);
-
-    for i := 0 to Config.Count - 1 do
-      if Debug then
-      AplicaRegras(i, QUAKE_VIDEO_DEBUG, Config)
-      else
-      AplicaRegras(i, QUAKE_VIDEO_NORMAL, Config);
-
-  Config.SaveToFile(Caminho_Global + Quake_Folder + IdGameConfig);
-  finally
-  Config.Free;
+  case EPI_Global_DLC of
+  2: Quake_Folder := 'hipnotic\';
+  3: Quake_Folder := 'rogue\';
+  else
+  Quake_Folder := 'id1\';
   end;
 
   AutoExec := TStringList.Create;
   try
     for i := Low(QUAKE_AUTOEXEC_BASE) to High(QUAKE_AUTOEXEC_BASE) do
     AutoExec.Add(QUAKE_AUTOEXEC_BASE[i]);
+
+    if Debug then
+    begin
+    AutoExec.Add('vid_fullscreen "0"');
+    AutoExec.Add('vid_width "1024"');
+    AutoExec.Add('vid_height "768"');
+    end
+    else
+    begin
+    AutoExec.Add('vid_fullscreen "1"');
+    AutoExec.Add('vid_width "1024"');
+    AutoExec.Add('vid_height "768"');
+    end;
 
   AutoExec.Add('name ' + Trim(PlayerName));
   AutoExec.Add('color ' + IntToStr(ComboColorIndex));

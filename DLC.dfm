@@ -1,6 +1,6 @@
 object Form2_DLC: TForm2_DLC
-  Left = 775
-  Top = 311
+  Left = 814
+  Top = 465
   BorderIcons = []
   BorderStyle = bsSingle
   ClientHeight = 105
