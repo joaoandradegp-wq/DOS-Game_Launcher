@@ -7,6 +7,23 @@ uses
   Unit1, Funcoes, Language, DLC, MAP_Select;
 
 //------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Games(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string;
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function  SW_DLC_Archive(DLC:Integer):String;
 function  SW_DLC_Exists(DLC:Integer):Boolean;
@@ -1255,6 +1272,77 @@ ConfigureSWCFG(CaminhoJogo,Game_EXE_Global,RxControle_Mouse,check_single,NumPlay
   {COMMIT}
   if not check_single then
   ConfigureCommitShadowWarrior(CaminhoJogo, NumPlayers, Game_EXE_Global);
+
+{DOSBOX CONF}
+ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);
+
+{RUN}
+RunDOSBox(HandleApp, DosBox_EXE_Global, Arq_DosBox);
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure DOSBOX_Bind_FPS_Games(
+  HandleApp: HWND;
+  DosBox_EXE_Global: string;
+  CaminhoJogo: string;
+  Game_EXE_Global: string; {SHADOW WARRIOR}
+  menu_debug: Boolean;
+  RxControle_Mouse: Boolean;
+  check_single: Boolean;
+  check_servidor: Boolean;
+  check_cliente: Boolean;
+  ip_porta: string;
+  ip_local: string;
+  NumPlayers: string;
+  PlayerName: string;
+  Mouse_Global: Integer
+);
+var
+Parametros: string;
+Arq_DosBox: string;
+begin
+
+  if check_single then
+  begin
+  Seleciona_Fases;
+
+    if Fecha_ESC then
+    Exit;
+
+  end
+  else
+  begin
+
+    if (id = 10) then
+    begin
+    Application.CreateForm(TForm2_DLC, Form2_DLC);
+    Form2_DLC.ShowModal;
+    Form2_DLC.Free;
+
+      if Fecha_ESC then
+      Exit;
+
+    end;
+    
+  end;
+
+  {CFG}
+  case id of
+  10: ConfigureSWCFG   (CaminhoJogo,Game_EXE_Global,RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
+   5: ConfigureDukeCFG (CaminhoJogo,                RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
+   1: ConfigureBloodCFG(CaminhoJogo,                RxControle_Mouse,check_single,NumPlayers,PlayerName,Mouse_Global,Parametros);
+  end;
+
+  {COMMIT}
+  if not check_single then
+  begin
+    case id of
+    10: ConfigureCommitShadowWarrior(CaminhoJogo, NumPlayers, Game_EXE_Global);
+     5: ConfigureCommitDuke         (CaminhoJogo, NumPlayers);
+     1: ConfigureCommitBlood        (CaminhoJogo, NumPlayers, Game_EXE_Global);
+     end;
+  end;
 
 {DOSBOX CONF}
 ConfigureDOSBoxCONF(DosBox_EXE_Global,CaminhoJogo,Game_EXE_Global,menu_debug,RxControle_Mouse,check_single,check_servidor,check_cliente,ip_porta,ip_local,Parametros,Arq_DosBox);

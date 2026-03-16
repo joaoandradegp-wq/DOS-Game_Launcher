@@ -823,10 +823,16 @@ Fecha_ESC:=False;
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
 
-   1: DOSBOX_Bind_FPS_Blood (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+{  1: DOSBOX_Bind_FPS_Blood (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
    5: DOSBOX_Bind_FPS_Duke  (Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
-   8:  QUAKE_Bind_Spasm     (id,RxDM.StateOn,RxQuakeServer.StateOn);
   10: DOSBOX_Bind_FPS_Shadow(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+}
+   
+   1,5,10:
+   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+
+   8:
+   QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
 
    {CONSTRUCTOR - RISE OF THE TRIAD - WARCRAFT II}
    2,9,11:
@@ -872,7 +878,7 @@ end;
   if Fecha_ESC then
   Exit;
   //---------------
-                      
+
 //-------------------------------
 // FINALIZAÇÃO DO START
 //-------------------------------
