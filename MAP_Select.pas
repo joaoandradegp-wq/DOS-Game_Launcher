@@ -730,7 +730,7 @@ Fecha_ESC:=False;
  //---------------------------------------------------------------------
  {EPISÓDIOS}
  //---------------------------------------------------------------------
- for i:=1 to Length(Array_Episodios) do
+ for i:=1 to High(Array_Episodios) do
  begin
    if (StrToInt(Array_Episodios[i][1]) = id) then
    begin

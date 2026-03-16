@@ -823,9 +823,11 @@ Fecha_ESC:=False;
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
 
+   {BLOOD - DUKE NUKEM - SHADOW WARRIOR} 
    1,5,10:
    DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
 
+   {QUAKE}
    8:
    QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
 
