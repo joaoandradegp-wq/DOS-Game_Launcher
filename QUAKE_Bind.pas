@@ -22,9 +22,14 @@ const
     'sensitivity "5.000000"',
     '+mlook'
   );
+
   { QUAKEWORLD }
   QW_SERVER_EXE = 'qwsv.exe';
   QW_CLIENT_EXE = 'qwcl.exe';
+
+  { RESOLUÇÃO - JANELA E FULLSCREEN }
+  q_width = 1024;
+  q_height = 768;
 //--------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -99,8 +104,20 @@ VarParametro_Global := VarParametro_Global + ' -noserial';
   Seleciona_Fases;
     if Fecha_ESC then
     Exit;
-  VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global;
+
+    if debug then
+    VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global + ' -window ' + '-width '+IntToStr(q_width)+' -height ' + IntToStr(q_height)
+    else
+    VarParametro_Global := VarParametro_Global + ' +map ' + Map_Global + ' -fullscreen ' + '-width '+IntToStr(q_width)+' -height ' + IntToStr(q_height);
+  end
+  else
+  begin
+    if debug then
+    VarParametro_Global := VarParametro_Global + ' -window ' + '-width '+IntToStr(q_width)+' -height ' + IntToStr(q_height)
+    else
+    VarParametro_Global := VarParametro_Global + ' -fullscreen ' + '-width '+IntToStr(q_width)+' -height ' + IntToStr(q_height);
   end;
+
 
   case EPI_Global_DLC of
   2: Quake_Folder := 'hipnotic\';
@@ -113,19 +130,6 @@ VarParametro_Global := VarParametro_Global + ' -noserial';
   try
     for i := Low(QUAKE_AUTOEXEC_BASE) to High(QUAKE_AUTOEXEC_BASE) do
     AutoExec.Add(QUAKE_AUTOEXEC_BASE[i]);
-
-    if Debug then
-    begin
-    AutoExec.Add('vid_fullscreen "0"');
-    AutoExec.Add('vid_width "1024"');
-    AutoExec.Add('vid_height "768"');
-    end
-    else
-    begin
-    AutoExec.Add('vid_fullscreen "1"');
-    AutoExec.Add('vid_width "1024"');
-    AutoExec.Add('vid_height "768"');
-    end;
 
   AutoExec.Add('name ' + Trim(PlayerName));
   AutoExec.Add('color ' + IntToStr(ComboColorIndex));
