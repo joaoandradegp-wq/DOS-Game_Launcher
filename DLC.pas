@@ -61,7 +61,7 @@ begin
       end;
   10: begin
       Form2_DLC.Caption:=Array_Games[id][2];
-      PACK00.Caption:=UpperCase(Form2_DLC.Caption);
+      PACK00.Caption:='SHADOW WARRIOR';
       PACK01.Caption:='WANTON DESTRUCTION';
       PACK02.Caption:='TWIN DRAGON';
       PACK01.Enabled:=SW_DLC_Exists(1);

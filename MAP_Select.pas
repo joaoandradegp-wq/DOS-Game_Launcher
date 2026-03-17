@@ -630,51 +630,41 @@ begin
 Lang_DGL(10);
 
   case EPI_Global_DLC of
-  0,1: Game_Pack:=0;
+    1: Game_Pack:=0;
     2: Game_Pack:=38;
     3: Game_Pack:=56;
   end;
-
-  ShowMessage('EPI='+IntToStr(EPI_Global_DLC)+'  Game_Pack='+IntToStr(Game_Pack));
 
 end;
 
 procedure TForm4_Select.btn_aplicarClick(Sender: TObject);
 var
-EPI,CAP,i:Integer;
+EPI,CAP,i,Offset:Integer;
 begin
 EPI:=ListBox_Episodio.ItemIndex;
 CAP:=ListBox_Capitulo.ItemIndex;
 
-  for i:=1 to Length(Array_Capitulos) do
+  for i:=1 to High(Array_Capitulos) do
   begin
-                   
-    {PROCURA DENTRO DO VETOR, O JOGO E O EPISÓDIO SELECIONADO}
-    {JOGO     - Array_Capitulos[i][1]}
-    {EPISÓDIO - Array_Capitulos[i][2]}
     if (id = StrToInt(Array_Capitulos[i][1])) and (EPI+1 = StrToInt(Array_Capitulos[i][2])) then
     begin
+    Offset:=0;
 
       if (id = 8) and (EPI_Global_DLC > 1) then
       begin
         case EPI of
-        2: begin
-             if EPI_Global_DLC = 2 then
-             Map_Global:=Array_Capitulos[i+CAP+Game_Pack-3][4]
+          2: if EPI_Global_DLC = 2 then
+             Offset := Game_Pack-3
              else
-             Map_Global:=Array_Capitulos[i+CAP+Game_Pack-1][4];
-           end;
-        3: Map_Global:=Array_Capitulos[i+CAP+Game_Pack-4][4];
+             Offset := Game_Pack-1;
+          3: Offset := Game_Pack-4;
         else
-        Map_Global:=Array_Capitulos[i+CAP+Game_Pack][4];
+        Offset := Game_Pack;
         end;
-      end
-      else
-      Map_Global:=Array_Capitulos[i+CAP][4];
-
+      end;
+    Map_Global := Array_Capitulos[i + CAP + Offset][4];
     Break;
     end;
-
   end;
 
   {DOOM - VERIFICA QUAL WAD VAI RODAR, ORIGINAL OU SIGIL}
@@ -737,22 +727,21 @@ Fecha_ESC:=False;
      if (id = 8) then
      begin
        case EPI_Global_DLC of
-     //case AnsiIndexStr(Nome_DLC_Global,['Quake',UpperCase(Copy(Nome_DLC_Global,0,5)),'QuakeWorld','Scourge of Armagon','Dissolution of Eternity']) of
-       0,1,2: begin
+           1: begin
               ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-                if (i = 37) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
+                if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
                 Break;
-                if (i = 38) and (Form1_DGL.check_servidor.Checked) then
+                if (i = 39) and (Form1_DGL.check_servidor.Checked) then
+                Break;
+              end;
+           2: begin
+              ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
+                if (i = 36) then
                 Break;
               end;
            3: begin
-              ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
-                if (i = 35) then
-                Break;
-              end;
-           4: begin
               ListBox_Episodio.Items.Add(Array_Episodios[i+11][3]);
-                if (i = 34) then
+                if (i = 35) then
                 Break;
               end;
        end;
