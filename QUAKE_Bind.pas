@@ -162,8 +162,13 @@ VarParametro_Global := VarParametro_Global + ' -noserial';
   end;
 
   {DEBUG}
-  if (Form1_DGL.menu_debug.Checked = True) and (Form1_DGL.check_cliente.Checked = True) then
-  MessageBox(Application.Handle,PChar(VarParametro_Global + #13#13 + Map_Global),
+  if (Form1_DGL.menu_debug.Checked = True) then
+  MessageBox(Application.Handle,PChar(IncludeTrailingPathDelimiter(Caminho_Global)
+                                      + #13#13 + Game_EXE_Global
+                                      + #13    + Quake_Folder
+                                      + #13#13 + VarParametro_Global
+                                      + #13#13 + Map_Global
+                                      + #13    + CoolStuff_Global),
                                 PChar(Lang_DGL(23)),MB_ICONINFORMATION + MB_OK);
 
   {EXECUTÁVEL GLOBAL}
