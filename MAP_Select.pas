@@ -708,14 +708,14 @@ i:Integer;
 begin
 Fecha_ESC:=False;
 
- //------------------------------------------------------------
- if (Nome_DLC_Global = 'QuakeWorld') then
+ //---------------------------------------------------------------------
+ if (Nome_DLC_Global = 'QuakeWorld') or (Nome_DLC_Global = 'Quake') then
  Form4_Select.Caption:=Nome_DLC_Global
  else if Length(Nome_DLC_Global) > 0 then
  Form4_Select.Caption:=Array_Games[id][2]+' - '+Nome_DLC_Global
  else
  Form4_Select.Caption:=Array_Games[id][2];
- //------------------------------------------------------------
+ //---------------------------------------------------------------------
 
  //---------------------------------------------------------------------
  {EPISÓDIOS}
@@ -825,7 +825,6 @@ btn_aplicar.Enabled:=False;
    for i:=1 to Length(Array_Capitulos) do
    begin
      if (StrToInt(Array_Capitulos[i][1]) = id) and (Episodio_Numero(Episodio_Nome) = (StrToInt(Array_Capitulos[i][2]))) then
-   //if (StrToInt(Array_Capitulos[i][1]) = id) and (StrToInt(Array_Capitulos[i][2]) = (EPI+Game_Pack)) then
      ListBox_Capitulo.Items.Add(Array_Capitulos[i][3]);
    end;
  end
@@ -857,17 +856,6 @@ btn_aplicar.Enabled:=False;
         Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1]
         else
         ListBox_Capitulo.Enabled:=False;
-        {
-        if (FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0) then
-        begin
-          if FileExists(Caminho_Global+'SIGIL_SHREDS.wad') then
-          Game_EXE_Global:=Var_Pesquisa.Name+' -file '+Array_SIGIL_DLC_Name[1]
-          else
-          Game_EXE_Global:=Var_Pesquisa.Name;
-        end
-        else
-        ListBox_Capitulo.Enabled:=False;
-        }
 
       end;
    5: begin
@@ -877,18 +865,6 @@ btn_aplicar.Enabled:=False;
         Game_EXE_Global:=Array_SIGIL_DLC_Name[2]+Array_SIGIL_DLC_Name[3]
         else
         ListBox_Capitulo.Enabled:=False;
-
-        {
-        if (FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0) then
-        begin
-          if FileExists(Caminho_Global+'SIGIL_II_MP3_V1_0.WAD') then
-          Game_EXE_Global:=Var_Pesquisa.Name+' -file '+Array_SIGIL_DLC_Name[3]
-          else
-          Game_EXE_Global:=Var_Pesquisa.Name;
-        end
-        else
-        ListBox_Capitulo.Enabled:=False;
-        }
 
       end;
    end;
@@ -919,11 +895,13 @@ end;
 
 procedure TForm4_Select.FormKeyPress(Sender: TObject; var Key: Char);
 begin
- if (key = #27) then
- begin
- Close;
- Fecha_ESC:=True;
- end;
+
+  if (key = #27) then
+  begin
+  Close;
+  Fecha_ESC:=True;
+  end;
+
 end;
 
 end.
