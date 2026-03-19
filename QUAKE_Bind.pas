@@ -136,7 +136,7 @@ VarParametro_Global := VarParametro_Global + ' -noserial';
 
   if CheckServidor then
   begin
-  AutoExec.Add('hostname DGL '+PlayerName);
+  AutoExec.Add('hostname [Q]'+Trim(PlayerName));
   AutoExec.Add('maxplayers '+ContPlayerText);
   AutoExec.Add('coop 1');
   AutoExec.Add('teamplay off');

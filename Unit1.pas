@@ -121,6 +121,11 @@ type
     RxQuakeServer: TRxSwitch;
     Label_QuakeServer: TLabel;
     combo_doom: TComboBox;
+    logo_doom: TImage;
+    logo_quake: TImage;
+    logo_blood: TImage;
+    logo_hexen: TImage;
+    logo_duke3d: TImage;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure check_servidorClick(Sender: TObject);
