@@ -126,6 +126,12 @@ type
     logo_blood: TImage;
     logo_hexen: TImage;
     logo_duke3d: TImage;
+    logo_rott: TImage;
+    logo_heretic: TImage;
+    logo_warcraft: TImage;
+    logo_wolf3d: TImage;
+    logo_constructor: TImage;
+    logo_shadow: TImage;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure check_servidorClick(Sender: TObject);

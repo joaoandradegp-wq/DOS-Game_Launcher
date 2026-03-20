@@ -1202,18 +1202,32 @@ Form1_DGL.gif_dos.Visible:=False;
  Form1_DGL.check_servidor.Enabled:=True;
  Form1_DGL.check_cliente.Enabled :=True;
 
-Form1_DGL.logo_blood.Visible  := False;
-Form1_DGL.logo_doom.Visible   := False;
-Form1_DGL.logo_duke3d.Visible := False;
-Form1_DGL.logo_hexen.Visible  := False;
-Form1_DGL.logo_quake.Visible  := False;
+//--------------------------------------
+Form1_DGL.logo_blood.Visible := False;
+Form1_DGL.logo_doom.Visible  := False;
+Form1_DGL.logo_duke3d.Visible:= False;
+Form1_DGL.logo_hexen.Visible := False;
+Form1_DGL.logo_quake.Visible := False;
+Form1_DGL.logo_rott.Visible  := False;
+Form1_DGL.logo_heretic.Visible:= False;
+Form1_DGL.logo_warcraft.Visible:= False;
+Form1_DGL.logo_wolf3d.Visible:= False;
+Form1_DGL.logo_constructor.Visible:= False;
+Form1_DGL.logo_shadow.Visible     := False;
+//--------------------------------------
 
    case id of
-     1: Form1_DGL.logo_blood.visible := True;
-   3,4: Form1_DGL.logo_doom.visible := True;
-     5: Form1_DGL.logo_duke3d.Visible := True;
-     7: Form1_DGL.logo_hexen.Visible := True;
-     8: Form1_DGL.logo_quake.Visible := True;
+     1: Form1_DGL.logo_blood.visible      := True;
+     2: Form1_DGL.logo_constructor.Visible:= True;
+   3,4: Form1_DGL.logo_doom.visible       := True;
+     5: Form1_DGL.logo_duke3d.Visible     := True;
+     6: Form1_DGL.logo_heretic.Visible    := True;
+     7: Form1_DGL.logo_hexen.Visible      := True;
+     8: Form1_DGL.logo_quake.Visible      := True;
+     9: Form1_DGL.logo_rott.Visible       := True;
+    10: Form1_DGL.logo_shadow.Visible     := True;
+    11: Form1_DGL.logo_warcraft.Visible   := True;
+ 12,13: Form1_DGL.logo_wolf3d.Visible     := True;
    end;
 
    //---------------------------------------------------
