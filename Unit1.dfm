@@ -1610,7 +1610,7 @@ object Form1_DGL: TForm1_DGL
     OnClick = btn_startClick
   end
   object logo_quake: TImage
-    Left = 368
+    Left = 420
     Top = 0
     Width = 287
     Height = 390
@@ -1897,7 +1897,7 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object logo_blood: TImage
-    Left = 232
+    Left = 350
     Top = 0
     Width = 420
     Height = 420
@@ -4086,8 +4086,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object logo_hexen: TImage
-    Left = 352
-    Top = 0
+    Left = 380
+    Top = 10
     Width = 320
     Height = 325
     AutoSize = True
@@ -4384,7 +4384,7 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object logo_duke3d: TImage
-    Left = 380
+    Left = 400
     Top = 0
     Width = 406
     Height = 400
@@ -6138,7 +6138,7 @@ object Form1_DGL: TForm1_DGL
   object check_single: TRadioButton
     Left = 232
     Top = 296
-    Width = 73
+    Width = 105
     Height = 17
     Caption = 'JOGAR'
     Checked = True

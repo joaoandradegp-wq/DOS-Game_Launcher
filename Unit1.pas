@@ -292,23 +292,6 @@ Mensagem.Free;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function pingIp( host: String): Boolean;
-var
-IdICMPClient:TIdICMPClient;
-begin
-  try
-  IdICMPClient:=TIdICMPClient.Create(nil);
-  IdICMPClient.Host:=host;
-  IdICMPClient.Port:=StrToInt(Trim(Form1_DGL.ip_porta.Text));
-  IdICMPClient.ReceiveTimeout:=500;
-  IdICMPClient.Ping;
-  Result:=(IdICMPClient.ReplyStatus.BytesReceived > 0 );
-  finally
-  IdICMPClient.Free;
-  end
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function ResolveDebugPlayersUI(DefaultPlayers: Integer): Integer;
 begin
 Result := DefaultPlayers;

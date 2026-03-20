@@ -1202,6 +1202,20 @@ Form1_DGL.gif_dos.Visible:=False;
  Form1_DGL.check_servidor.Enabled:=True;
  Form1_DGL.check_cliente.Enabled :=True;
 
+Form1_DGL.logo_blood.Visible  := False;
+Form1_DGL.logo_doom.Visible   := False;
+Form1_DGL.logo_duke3d.Visible := False;
+Form1_DGL.logo_hexen.Visible  := False;
+Form1_DGL.logo_quake.Visible  := False;
+
+   case id of
+     1: Form1_DGL.logo_blood.visible := True;
+   3,4: Form1_DGL.logo_doom.visible := True;
+     5: Form1_DGL.logo_duke3d.Visible := True;
+     7: Form1_DGL.logo_hexen.Visible := True;
+     8: Form1_DGL.logo_quake.Visible := True;
+   end;
+
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}
    //---------------------------------------------------
