@@ -5913,7 +5913,7 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object logo_rott: TImage
-    Left = 390
+    Left = 420
     Top = 10
     Width = 269
     Height = 320
@@ -10052,7 +10052,6 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
-      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
