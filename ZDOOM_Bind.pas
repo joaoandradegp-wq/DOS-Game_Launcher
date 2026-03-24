@@ -442,13 +442,19 @@ Flags := GetGameFlags(id);
     {HEXEN}
     if id = 7 then
     begin
-    Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
-    Form8_HexenClass.ShowModal;
-    Form8_HexenClass.Free;
 
-    //Application.CreateForm(TForm2_DLC, Form2_DLC);
-    //Form2_DLC.ShowModal;
-    //Form2_DLC.Free;
+      if not Debug then
+      begin
+      Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
+      Form8_HexenClass.ShowModal;
+      Form8_HexenClass.Free;
+      end
+      else
+      begin
+      Application.CreateForm(TForm2_DLC, Form2_DLC);
+      Form2_DLC.ShowModal;
+      Form2_DLC.Free;
+      end;
 
       if Fecha_ESC then
       Exit;

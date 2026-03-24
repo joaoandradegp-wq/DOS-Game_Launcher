@@ -93,6 +93,10 @@ begin
  30: Result:='&Não';
  31: Result:='&Cancelar';
  32: Result:='Esse é o arquivo do próprio jogo, selecione apenas MODS.';
+ 33: Result:='AGILIDADE';
+ 34: Result:='ARMADURA';
+ 35: Result:='MAGIA';
+ 36: Result:='FORÇA';
  end;
 
 end
@@ -174,6 +178,10 @@ begin
  30: Result:='&No';
  31: Result:='&Cancel';
  32: Result:='This is a game file. Please select MOD files only.';
+ 33: Result:='SPEED';
+ 34: Result:='ARMOR';
+ 35: Result:='MAGIC';
+ 36: Result:='STRENGTH';
  end;
 
 end;
