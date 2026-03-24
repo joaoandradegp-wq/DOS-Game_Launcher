@@ -22,6 +22,8 @@ var
 
 implementation
 
+uses Unit1;
+
 {$R *.dfm}
 
 procedure TForm8_HexenClass.FormClose(Sender: TObject;
