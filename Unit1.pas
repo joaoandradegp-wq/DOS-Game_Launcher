@@ -1115,15 +1115,17 @@ end;
 procedure TForm1_DGL.RxQuakeServerOn(Sender: TObject);
 begin
 img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
-RxOpcoes.Enabled:=Not(RxQuakeServer.StateOn);
+RxOpcoes.Enabled    :=Not(RxQuakeServer.StateOn);
 Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
+combo_color.Visible :=Not(RxQuakeServer.StateOn);
 end;
 
 procedure TForm1_DGL.RxQuakeServerOff(Sender: TObject);
 begin
 img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
-RxOpcoes.Enabled:=Not(RxQuakeServer.StateOn);
+RxOpcoes.Enabled    :=Not(RxQuakeServer.StateOn);
 Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
+combo_color.Visible :=Not(RxQuakeServer.StateOn);
 end;
 
 procedure TForm1_DGL.combo_doomChange(Sender: TObject);

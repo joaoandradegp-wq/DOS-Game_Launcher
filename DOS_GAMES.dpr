@@ -16,7 +16,8 @@ uses
   NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas',
   ZDOOM_Bind in 'ZDOOM_Bind.pas',
   DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas',
-  QUAKE_Bind in 'QUAKE_Bind.pas';
+  QUAKE_Bind in 'QUAKE_Bind.pas',
+  HEXEN_Class in 'HEXEN_Class.pas' {Form8_HexenClass};
 
 {$R *.res}
 

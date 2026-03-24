@@ -18,6 +18,7 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure PACK00Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -29,7 +30,7 @@ var
 
 implementation
 
-uses Unit1, Language, Funcoes, ZDOOM_Bind, DOSBOX_Bind_FPS;
+uses Unit1, Language, Funcoes, ZDOOM_Bind, DOSBOX_Bind_FPS, HEXEN_Class;
 
 {$R *.dfm}
 
@@ -137,6 +138,13 @@ begin
   Fecha_ESC:=True;
   end;
   
+end;
+
+procedure TForm2_DLC.FormDblClick(Sender: TObject);
+begin
+Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
+Form8_HexenClass.ShowModal;
+Form8_HexenClass.Free;
 end;
 
 end.
