@@ -32,6 +32,10 @@ uses Unit1, DLC;
 
 {$R *.dfm}
 
+      Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
+      Form8_HexenClass.ShowModal;
+      Form8_HexenClass.Free;
+
 procedure TForm8_HexenClass.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -52,17 +56,20 @@ end;
 
 procedure TForm8_HexenClass.S01Click(Sender: TObject);
 begin
-Form2_DLC.PACK00.Click;
+EPI_Global_DLC:=1;
+Close;
 end;
 
 procedure TForm8_HexenClass.S02Click(Sender: TObject);
 begin
-Form2_DLC.PACK01.Click;
+EPI_Global_DLC:=2;
+Close;
 end;
 
 procedure TForm8_HexenClass.S03Click(Sender: TObject);
 begin
-Form2_DLC.PACK02.Click;
+EPI_Global_DLC:=3;
+Close;
 end;
 
 end.
