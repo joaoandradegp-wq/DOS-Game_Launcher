@@ -1,6 +1,6 @@
 object Form8_HexenClass: TForm8_HexenClass
-  Left = 851
-  Top = 284
+  Left = 914
+  Top = 175
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone
@@ -19,7 +19,7 @@ object Form8_HexenClass: TForm8_HexenClass
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
-  object Image1: TImage
+  object Select: TImage
     Left = 0
     Top = 0
     Width = 420
@@ -14730,5 +14730,26 @@ object Form8_HexenClass: TForm8_HexenClass
       14FF161010FF1B1517FF161012FF0E080AFF0E0A0BFF130E10FF100A0AFF0B06
       06FF0F0708FF160C0CFF150C0CFF0E0808FF0D0808FF0C0607FF0F0707FF1107
       07FF0B0406FF}
+  end
+  object S01: TImage
+    Left = 0
+    Top = 0
+    Width = 137
+    Height = 280
+    OnClick = S01Click
+  end
+  object S02: TImage
+    Left = 136
+    Top = 0
+    Width = 137
+    Height = 280
+    OnClick = S02Click
+  end
+  object S03: TImage
+    Left = 280
+    Top = 0
+    Width = 137
+    Height = 280
+    OnClick = S03Click
   end
 end

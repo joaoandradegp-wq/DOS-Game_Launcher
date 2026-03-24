@@ -18,7 +18,6 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure PACK00Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure FormDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,6 +46,11 @@ begin
       PACK02.Enabled:=SIGIL_DLC_Exists(2);
       end;
    7: begin
+      //----------------------------------------------------------
+      Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
+      Form8_HexenClass.ShowModal;
+      Form8_HexenClass.Free;
+      //----------------------------------------------------------
       Form2_DLC.Caption:=Lang_DGL(7);
       PACK00.Caption:=Lang_DGL(2);
       PACK01.Caption:=Lang_DGL(3);
@@ -138,13 +142,6 @@ begin
   Fecha_ESC:=True;
   end;
   
-end;
-
-procedure TForm2_DLC.FormDblClick(Sender: TObject);
-begin
-Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
-Form8_HexenClass.ShowModal;
-Form8_HexenClass.Free;
 end;
 
 end.

@@ -18,7 +18,6 @@ object Form2_DLC: TForm2_DLC
   Scaled = False
   OnActivate = FormActivate
   OnClose = FormClose
-  OnDblClick = FormDblClick
   OnKeyPress = FormKeyPress
   PixelsPerInch = 96
   TextHeight = 13
