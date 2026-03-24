@@ -1202,19 +1202,19 @@ Form1_DGL.gif_dos.Visible:=False;
  Form1_DGL.check_servidor.Enabled:=True;
  Form1_DGL.check_cliente.Enabled :=True;
 
-//--------------------------------------
-Form1_DGL.logo_blood.Visible := False;
-Form1_DGL.logo_doom.Visible  := False;
-Form1_DGL.logo_duke3d.Visible:= False;
-Form1_DGL.logo_hexen.Visible := False;
-Form1_DGL.logo_quake.Visible := False;
-Form1_DGL.logo_rott.Visible  := False;
-Form1_DGL.logo_heretic.Visible:= False;
-Form1_DGL.logo_warcraft.Visible:= False;
-Form1_DGL.logo_wolf3d.Visible:= False;
+//-----------------------------------------
+Form1_DGL.logo_blood.visible      := False;
 Form1_DGL.logo_constructor.Visible:= False;
+Form1_DGL.logo_doom.visible       := False;
+Form1_DGL.logo_duke3d.Visible     := False;
+Form1_DGL.logo_heretic.Visible    := False;
+Form1_DGL.logo_hexen.Visible      := False;
+Form1_DGL.logo_quake.Visible      := False;
+Form1_DGL.logo_rott.Visible       := False;
 Form1_DGL.logo_shadow.Visible     := False;
-//--------------------------------------
+Form1_DGL.logo_warcraft.Visible   := False;
+Form1_DGL.logo_wolf3d.Visible     := False;
+//-----------------------------------------
 
    case id of
      1: Form1_DGL.logo_blood.visible      := True;

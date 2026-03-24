@@ -2,7 +2,7 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language;
+uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language, Hexen_Class;
 
 //--------------------------------------------------
 {USADO EM CONFIGUREZDOOM}
@@ -442,9 +442,13 @@ Flags := GetGameFlags(id);
     {HEXEN}
     if id = 7 then
     begin
-    Application.CreateForm(TForm2_DLC, Form2_DLC);
-    Form2_DLC.ShowModal;
-    Form2_DLC.Free;
+    Application.CreateForm(TForm8_HexenClass, Form8_HexenClass);
+    Form8_HexenClass.ShowModal;
+    Form8_HexenClass.Free;
+
+    //Application.CreateForm(TForm2_DLC, Form2_DLC);
+    //Form2_DLC.ShowModal;
+    //Form2_DLC.Free;
 
       if Fecha_ESC then
       Exit;
