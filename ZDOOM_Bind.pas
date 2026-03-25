@@ -2,7 +2,7 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language, Hexen_Class;
+uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language, HEXEN_Class;
 
 //--------------------------------------------------
 {USADO EM CONFIGUREZDOOM}
@@ -163,9 +163,9 @@ end;
 function GetPlayerSection(id: Integer): String;
 begin
   case id of
-    3,4,12,13: Result := 'Doom.Player';
-    6:         Result := 'Heretic.Player';
-    7:         Result := 'Hexen.Player';
+    3,4,12: Result := 'Doom.Player';
+    6:      Result := 'Heretic.Player';
+    7:      Result := 'Hexen.Player';
   else
   Result := 'Doom.Player';
   end;
@@ -175,9 +175,9 @@ end;
 function GetCVarSection(id: Integer): String;
 begin
   case id of
-    3,4,12,13: Result := 'Doom.ConsoleVariables';
-    6:         Result := 'Heretic.ConsoleVariables';
-    7:         Result := 'Hexen.ConsoleVariables';
+    3,4,12: Result := 'Doom.ConsoleVariables';
+    6:      Result := 'Heretic.ConsoleVariables';
+    7:      Result := 'Hexen.ConsoleVariables';
   else
   Result := 'Doom.ConsoleVariables';
   end;
@@ -427,9 +427,9 @@ begin
 Flags := GetGameFlags(id);
 
   case id of
-  3,4,12,13: Section := 'Doom.Bindings';
-          6: Section := 'Heretic.Bindings';
-          7: Section := 'Hexen.Bindings';
+  3,4,12: Section := 'Doom.Bindings';
+       6: Section := 'Heretic.Bindings';
+       7: Section := 'Hexen.Bindings';
   else
   Section := 'Doom.Bindings';
   end;
@@ -461,6 +461,25 @@ Flags := GetGameFlags(id);
 
       if Flags.UsaClasse then
       ApplyHexenClass(Ini, EPI_Global_DLC);
+    end;
+
+    {WOLFENSTEIN 3D}
+    if id = 12 then
+    begin
+    Application.CreateForm(TForm2_DLC, Form2_DLC);
+    Form2_DLC.ShowModal;
+    Form2_DLC.Free;
+
+      {SPEAR OF DESTINY}
+      if (EPI_Global_DLC = 2) then
+      begin
+      IWADFile  :='SoD.pk7';
+      ConfigFile:=ExtractFilePath(ConfigFile)+'SoD.ini';
+      end;
+
+      if Fecha_ESC then
+      Exit;
+
     end;
 
   ApplyDoomSkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
@@ -552,11 +571,13 @@ Parametros := '';
                     ' -port ' + Trim(Opt.Port);
   end;
 
-  {WOLF3D}
+
+  {WOLFENSTEIN 3D}
   if IsIWAD(Opt.IWad) then
   BaseParams := '-iwad "' + Opt.IWad + '"'
   else
   BaseParams := '-file "' + Opt.IWad + '"';
+
 
   {DOOM - SIGIL}
   if (id = 3) and (BlockIWAD(Game_EXE_Global,True) = False) then
@@ -565,8 +586,8 @@ Parametros := '';
   if Debug then
   MessageBox(0, PChar(' '+BaseParams +
                              ' ' + Opt.SkinParams +
-                             ' ' + Opt.ModParams +
-                    ' -config "' + Opt.ConfigFile + '"' + Parametros), PChar(Lang_DGL(13)), MB_OK);
+                             ' ' + Opt.ModParams + #13+
+                    ' -config "' + Opt.ConfigFile + '"' +#13+ Parametros), PChar(Lang_DGL(13)), MB_OK);
 
 {EXECUTA}
 ShellExecute(0, 'open', PChar(Opt.Executable), PChar(BaseParams +

@@ -67,6 +67,14 @@ begin
       PACK01.Enabled:=SW_DLC_Exists(1);
       PACK02.Enabled:=SW_DLC_Exists(2);
       end;
+  12: begin
+      Form2_DLC.Caption:=Array_Games[id][2];
+      PACK00.Caption:='WOLFENSTEIN 3D';
+      PACK01.Caption:='SPEAR OF DESTINY';
+      PACK02.Caption:='';
+      PACK01.Enabled:=FileExists(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'SoD.pk7');
+      PACK02.Visible:=not PACK01.Enabled;
+      end;
   end;
 
 end;
@@ -75,12 +83,12 @@ procedure TForm2_DLC.PACK00Click(Sender: TObject);
 begin
 
   case id of
-     3: Game_EXE_Global:=Array_Games[id][5];
-     8: begin
-        EPI_Global_DLC:=1;
-        Nome_DLC_Global:='Quake';
-        end;
-  7,10: EPI_Global_DLC:=1;
+      3: Game_EXE_Global:=Array_Games[id][5];
+      8: begin
+         EPI_Global_DLC:=1;
+         Nome_DLC_Global:='Quake';
+         end;
+7,10,12: EPI_Global_DLC:=1;
   end;
 
 Close;
@@ -90,15 +98,22 @@ procedure TForm2_DLC.PACK01Click(Sender: TObject);
 begin
 
   case id of
-   3: Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1];
-   8: begin
-      EPI_Global_DLC:=2;
-      Nome_DLC_Global:='Scourge of Armagon';
-      Config_Game_Global:=Caminho_Global+'hipnotic\config.cfg';
-      VarParametro_Global:=VarParametro_Global+' -game hipnotic -hipnotic';
-      Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08A.png');
-      end;
-7,10: EPI_Global_DLC:=2; {WANTON DESTRUCTION}
+      3: Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1];
+      8: begin
+         EPI_Global_DLC:=2;
+         Nome_DLC_Global:='Scourge of Armagon';
+         Config_Game_Global:=Caminho_Global+'hipnotic\config.cfg';
+         VarParametro_Global:=VarParametro_Global+' -game hipnotic -hipnotic';
+         Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08A.png');
+         end;
+7,10,12: begin
+         EPI_Global_DLC:=2; {HEXEN(CLASSE) + WANTON DESTRUCTION + SPEAR OF DESTINY}
+           if id = 12 then
+           begin
+           Nome_DLC_Global:='Spear of Destiny';
+           Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\12A.png');
+           end;
+         end;
   end;
 
 Close;
@@ -116,7 +131,7 @@ begin
       VarParametro_Global:=VarParametro_Global+' -rogue';
       Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08B.png');
       end;
-7,10: EPI_Global_DLC:=3; {TWIN DRAGON}
+7,10: EPI_Global_DLC:=3; {HEXEN(CLASSE) + TWIN DRAGON}
   end;
 
 Close;

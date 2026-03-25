@@ -212,7 +212,7 @@ DGL_BLOG_Global:String;
 
 const
 
-Array_Games: Array[1..13] of Campos =
+Array_Games: Array[1..12] of Campos =
 (  {1}  {2}                                      {3}                {4}              {5}              {6}                   {7}      {8}
   ('01','Blood - One Unit Whole Blood'          ,'DOS\BLOOD\'      ,'commit.exe'    ,'cryptic.exe'   ,'BLOOD.cfg'          ,'DOSBOX','213' ),
   ('02','Constructor'                           ,'DOS\CONSTRUCTOR\','game.exe'      ,'game.exe'      ,'SETTINGS\SYSTEM.ini','DOSBOX','213' ),
@@ -225,8 +225,7 @@ Array_Games: Array[1..13] of Campos =
   ('09','Rise of the Triad - Dark War'          ,'DOS\ROTT\'       ,'setup.exe'     ,'rott.exe'      ,'setup.rot'          ,'DOSBOX','213' ),
   ('10','Shadow Warrior'                        ,'DOS\SW\'         ,'commit.exe'    ,'sw.exe'        ,'SW.cfg'             ,'DOSBOX','213' ),
   ('11','Warcraft II - Beyond the Dark Portal'  ,'DOS\WAR2\'       ,'war2.exe'      ,'war2.exe'      ,'war2.ini'           ,'DOSBOX','213' ),
-  ('12','Wolfenstein 3D'                        ,'DOS\WOLF3D\'     ,'Wolf3D.pk7'    ,'Wolf3D.pk7'    ,'Wolf3D.ini'         ,'ZDOOM' ,'5029'),
-  ('13','Wolfenstein 3D - Spear of Destiny'     ,'DOS\WOLF3D\'     ,'SoD.pk7'       ,'SoD.pk7'       ,'SoD.ini'            ,'ZDOOM' ,'5029')
+  ('12','Wolfenstein 3D'                        ,'DOS\WOLF3D\'     ,'Wolf3D.pk7'    ,'Wolf3D.pk7'    ,'Wolf3D.ini'         ,'ZDOOM' ,'5029')
 );
 
 {PADRÃO MOUSE - BLOOD E DUKE NUKEM}
@@ -829,8 +828,8 @@ case id of
    2,9,11:
    DOSBOX_Bind_NEWS(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text);
 
-   {DOOM - DOOM II - HERETIC - HEXEN - WOLFENSTEIN 3D - SPEAR OF DESTINY}
-   3,4,6,7,12,13:
+   {DOOM - DOOM II - HERETIC - HEXEN - WOLFENSTEIN 3D}
+   3,4,6,7,12:
    begin
    Map_Global:='';
    ConfigureZDoom(

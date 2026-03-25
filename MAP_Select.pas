@@ -69,11 +69,11 @@ Array_Episodios: Array[1..62] of Array[1..3] of String =
   ('12','5','Trail of the Madman'           ),
   ('12','6','Confrontation'                 ),
   {SPEAR OF DESTINY}
-  ('13','1','Tunnels'            ),
-  ('13','2','Dungeons'           ),
-  ('13','3','Castle'             ),
-  ('13','4','Ramparts'           ),
-  ('13','5','The Death Dimension'),
+  ('12','7','Tunnels'            ),
+  ('12','8','Dungeons'           ),
+  ('12','9','Castle'             ),
+  ('12','10','Ramparts'           ),
+  ('12','11','The Death Dimension'),
   {QUAKE}
   ('8','1','Welcome to Quake'        ),
   ('8','2','Dimension of the Doomed' ),
@@ -402,32 +402,32 @@ Array_Capitulos: Array[1..425] of Array[1..4] of String =
   //--------------------------------------------------------
   {SPEAR OF DESTINY}
   //--------------------------------------------------------
-  ('13','1','Floor 1'               ,'SOD01'),
-  ('13','1','Floor 2'               ,'SOD02'),
-  ('13','1','Floor 3'               ,'SOD03'),
-  ('13','1','Floor 4'               ,'SOD04'),
-  ('13','1','Floor (Secret Level)'  ,'SOD19'),
-  ('13','1','Floor 5 - Trans Grosse','SOD05'),
+  ('12','7','Floor 1'               ,'SOD01'),
+  ('12','7','Floor 2'               ,'SOD02'),
+  ('12','7','Floor 3'               ,'SOD03'),
+  ('12','7','Floor 4'               ,'SOD04'),
+  ('12','7','Floor (Secret Level)'  ,'SOD19'),
+  ('12','7','Floor 5 - Trans Grosse','SOD05'),
   //--------------------------------------------------------
-  ('13','2','Floor 6'                    ,'SOD06'),
-  ('13','2','Floor 7'                    ,'SOD07'),
-  ('13','2','Floor 8'                    ,'SOD08'),
-  ('13','2','Floor 9'                    ,'SOD09'),
-  ('13','2','Floor 10 - Barnacle Wilhelm','SOD10'),
+  ('12','8','Floor 6'                    ,'SOD06'),
+  ('12','8','Floor 7'                    ,'SOD07'),
+  ('12','8','Floor 8'                    ,'SOD08'),
+  ('12','8','Floor 9'                    ,'SOD09'),
+  ('12','8','Floor 10 - Barnacle Wilhelm','SOD10'),
   //--------------------------------------------------------
-  ('13','3','Floor 11'             ,'SOD11'),
-  ('13','3','Floor 12'             ,'SOD12'),
-  ('13','3','Floor (Secret Level)' ,'SOD20'),
-  ('13','3','Floor 13'             ,'SOD13'),
-  ('13','3','Floor 14'             ,'SOD14'),
-  ('13','3','Floor 15 - Ubermutant','SOD15'),
+  ('12','9','Floor 11'             ,'SOD11'),
+  ('12','9','Floor 12'             ,'SOD12'),
+  ('12','9','Floor (Secret Level)' ,'SOD20'),
+  ('12','9','Floor 13'             ,'SOD13'),
+  ('12','9','Floor 14'             ,'SOD14'),
+  ('12','9','Floor 15 - Ubermutant','SOD15'),
   //--------------------------------------------------------
-  ('13','4','Floor 16'               ,'SOD16'),
-  ('13','4','Floor 17 - Death Knight','SOD17'),
+  ('12','10','Floor 16'               ,'SOD16'),
+  ('12','10','Floor 17 - Death Knight','SOD17'),
   //--------------------------------------------------------
-  ('13','5','Angel of Death','SOD18'),       
+  ('12','11','Angel of Death','SOD18'),
   //--------------------------------------------------------
-  {BLOOD}                                    
+  {BLOOD}
   //--------------------------------------------------------
   ('1','1','Cradle to Grave'                ,''),
   ('1','1','Wrong Side of the Tracks'       ,''),
@@ -644,6 +644,10 @@ begin
 EPI:=ListBox_Episodio.ItemIndex;
 CAP:=ListBox_Capitulo.ItemIndex;
 
+{WOLFENSTEIN 3D - SPEAR OF DESTINY}
+if (id = 12) and (EPI_Global_DLC = 2) then
+Inc(EPI, 6);
+
   for i:=1 to High(Array_Capitulos) do
   begin
     if (id = StrToInt(Array_Capitulos[i][1])) and (EPI+1 = StrToInt(Array_Capitulos[i][2])) then
@@ -684,15 +688,13 @@ CAP:=ListBox_Capitulo.ItemIndex;
   end;
 
  {WOLFENSTEIN 3D}
- if (id = 12) then
+ if (id = 12) and (EPI_Global_DLC = 1) then
  begin
-
    {LEVEL SECRETO - FLOOR 10}
    if (CAP = 9) then
    Map_Global:='E'+IntToStr(EPI+1)+'L0'
    else
    Map_Global:='E'+IntToStr(EPI+1)+'L'+IntToStr(CAP+1);
-
  end;
 
  {BLOOD}
@@ -724,26 +726,53 @@ Fecha_ESC:=False;
  begin
    if (StrToInt(Array_Episodios[i][1]) = id) then
    begin
-     if (id = 8) then
+     if (id = 8) or (id = 12) then
      begin
        case EPI_Global_DLC of
            1: begin
-              ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-                if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
-                Break;
-                if (i = 39) and (Form1_DGL.check_servidor.Checked) then
-                Break;
+
+                {QUAKE}
+                if (id = 8) then
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+                  if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
+                  Break;
+                  if (i = 39) and (Form1_DGL.check_servidor.Checked) then
+                  Break;
+                end
+                {WOLFENSTEIN 3D}
+                else
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+                  if (i = 27) then
+                  Break;
+                end;
+
               end;
            2: begin
-              ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
-                if (i = 36) then
-                Break;
+
+                {QUAKE}
+                if (id = 8) then
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
+                  if (i = 36) then
+                  Break;
+                end                           
+                {WOLFENSTEIN 3D}
+                else
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i+6][3]);
+                  if (i = 26) then
+                  Break;
+                end;
+                
               end;
            3: begin
               ListBox_Episodio.Items.Add(Array_Episodios[i+11][3]);
                 if (i = 35) then
                 Break;
               end;
+              
        end;
      end
      else
@@ -820,22 +849,35 @@ btn_aplicar.Enabled:=False;
  //-------------------------------------------------------------------------------------------------------------------------
  {CAPÍTULOS}
  //-------------------------------------------------------------------------------------------------------------------------
- if (id <> 12) then
+ if (id = 12) then
  begin
-   for i:=1 to Length(Array_Capitulos) do
+   {WOLFENSTEIN 3D}
+   if EPI_Global_DLC = 1 then
    begin
-     if (StrToInt(Array_Capitulos[i][1]) = id) and (Episodio_Numero(Episodio_Nome) = (StrToInt(Array_Capitulos[i][2]))) then
-     ListBox_Capitulo.Items.Add(Array_Capitulos[i][3]);
+     for i:=1 to 10 do
+     begin
+       if i = 10 then
+       ListBox_Capitulo.Items.Add('Floor '+IntToStr(i)+' (Secret Level)')
+       else
+       ListBox_Capitulo.Items.Add('Floor '+IntToStr(i));
+     end;
+   end;
+   {SPEAR OF DESTINY}
+   if EPI_Global_DLC = 2 then
+   begin
+     for i:=1 to High(Array_Capitulos) do
+     begin
+       if (StrToInt(Array_Capitulos[i][1]) = id) and (Episodio_Numero(Episodio_Nome) = (StrToInt(Array_Capitulos[i][2]))) then
+       ListBox_Capitulo.Items.Add(Array_Capitulos[i][3]);
+     end;
    end;
  end
  else
  begin
-   for i:=1 to 10 do
+   for i:=1 to High(Array_Capitulos) do
    begin
-     if i = 10 then
-     ListBox_Capitulo.Items.Add('Floor '+IntToStr(i)+' (Secret Level)')
-     else
-     ListBox_Capitulo.Items.Add('Floor '+IntToStr(i));
+     if (StrToInt(Array_Capitulos[i][1]) = id) and (Episodio_Numero(Episodio_Nome) = (StrToInt(Array_Capitulos[i][2]))) then
+     ListBox_Capitulo.Items.Add(Array_Capitulos[i][3]);
    end;
  end;
  //-------------------------------------------------------------------------------------------------------------------------

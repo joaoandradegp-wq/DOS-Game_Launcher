@@ -1441,6 +1441,7 @@ Form1_DGL.logo_wolf3d.Visible     := False;
                          Form1_DGL.RxControle.StateOn:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          end;
+
                          if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                          Form1_DGL.RxControle.StateOn:=False;
