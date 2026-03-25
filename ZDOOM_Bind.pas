@@ -69,6 +69,9 @@ const
 CFG_vid_defwidth = 800;
 CFG_vid_defheight = 600;
 
+var
+Spear_EXE,Spear_Config:String;
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
@@ -426,6 +429,13 @@ Section: String;
 begin
 Flags := GetGameFlags(id);
 
+//--------------------------------------------------
+{WOLFENSTEIN 3D - SPEAR OF DESTINY}
+//--------------------------------------------------
+Spear_EXE:='SoD.pk7';
+Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
+//--------------------------------------------------
+
   case id of
   3,4,12: Section := 'Doom.Bindings';
        6: Section := 'Heretic.Bindings';
@@ -473,8 +483,8 @@ Flags := GetGameFlags(id);
       {SPEAR OF DESTINY}
       if (EPI_Global_DLC = 2) then
       begin
-      IWADFile  :='SoD.pk7';
-      ConfigFile:=ExtractFilePath(ConfigFile)+'SoD.ini';
+      IWADFile  :=Spear_EXE;
+      ConfigFile:=Spear_Config;
       end;
 
       if Fecha_ESC then
@@ -492,10 +502,10 @@ Flags := GetGameFlags(id);
 //-----------------------------------------------------
 // PREPARA EXECUÇÃO
 //-----------------------------------------------------
-Opt.ConfigFile    := ConfigFile;
-Opt.IWad          := IWADFile;
-Opt.WorkingDir    := ExtractFilePath(ConfigFile);
-Opt.Executable    := ZDoom_EXE_Global;
+Opt.ConfigFile := ConfigFile;
+Opt.IWad       := IWADFile;
+Opt.WorkingDir := ExtractFilePath(ConfigFile);
+Opt.Executable := ZDoom_EXE_Global;
 
   {DOOM II - SKIN PHOBOS}
   if Form1_DGL.combo_doom.ItemIndex = 1 then
@@ -578,10 +588,11 @@ Parametros := '';
   else
   BaseParams := '-file "' + Opt.IWad + '"';
 
-
+  
   {DOOM - SIGIL}
   if (id = 3) and (BlockIWAD(Game_EXE_Global,True) = False) then
   BaseParams := BaseParams + ' -file ' +Game_EXE_Global;
+
 
   if Debug then
   MessageBox(0, PChar(' '+BaseParams +

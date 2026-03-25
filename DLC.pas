@@ -19,6 +19,7 @@ type
     procedure PACK00Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
+  IMG_QUAKE_DLC1, IMG_QUAKE_DLC2, IMG_WOLF3D_DLC:String;
     { Private declarations }
   public
     { Public declarations }
@@ -35,6 +36,9 @@ uses Unit1, Language, Funcoes, ZDOOM_Bind, DOSBOX_Bind_FPS, HEXEN_Class;
 
 procedure TForm2_DLC.FormActivate(Sender: TObject);
 begin
+IMG_QUAKE_DLC1 := ExtractFilePath(Application.ExeName)+'CONFIG\png\08A.png';
+IMG_QUAKE_DLC2 := ExtractFilePath(Application.ExeName)+'CONFIG\png\08B.png';
+IMG_WOLF3D_DLC := ExtractFilePath(Application.ExeName)+'CONFIG\png\12A.png';
 
   case id of
    3: begin
@@ -74,6 +78,7 @@ begin
       PACK02.Caption:='';
       PACK01.Enabled:=FileExists(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'SoD.pk7');
       PACK02.Visible:=not PACK01.Enabled;
+      Form2_DLC.Height:=105;
       end;
   end;
 
@@ -104,14 +109,16 @@ begin
          Nome_DLC_Global:='Scourge of Armagon';
          Config_Game_Global:=Caminho_Global+'hipnotic\config.cfg';
          VarParametro_Global:=VarParametro_Global+' -game hipnotic -hipnotic';
-         Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08A.png');
+           if FileExists (IMG_QUAKE_DLC1) then
+           Form1_DGL.img_game.Picture.LoadFromFile(IMG_QUAKE_DLC1);
          end;
 7,10,12: begin
          EPI_Global_DLC:=2; {HEXEN(CLASSE) + WANTON DESTRUCTION + SPEAR OF DESTINY}
            if id = 12 then
            begin
            Nome_DLC_Global:='Spear of Destiny';
-           Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\12A.png');
+             if FileExists(IMG_WOLF3D_DLC) then
+             Form1_DGL.img_game.Picture.LoadFromFile(IMG_WOLF3D_DLC);
            end;
          end;
   end;
@@ -129,7 +136,8 @@ begin
       Nome_DLC_Global:='Dissolution of Eternity';
       Config_Game_Global:=Caminho_Global+'rogue\config.cfg';
       VarParametro_Global:=VarParametro_Global+' -rogue';
-      Form1_DGL.img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08B.png');
+        if FileExists (IMG_QUAKE_DLC2) then
+        Form1_DGL.img_game.Picture.LoadFromFile(IMG_QUAKE_DLC2);
       end;
 7,10: EPI_Global_DLC:=3; {HEXEN(CLASSE) + TWIN DRAGON}
   end;
