@@ -883,6 +883,18 @@ btn_aplicar.Enabled:=False;
  //-------------------------------------------------------------------------------------------------------------------------
 
  //--------------------------------------------------------------------------
+ {SHADOW WARRIOR}
+ //--------------------------------------------------------------------------
+ if (id = 10) then
+ begin
+   case ListBox_Episodio.ItemIndex of
+   0,1: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
+     2: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10A.png');
+     3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10B.png');
+   end;
+ end;
+
+ //--------------------------------------------------------------------------
  {DOOM - SIGIL}
  //--------------------------------------------------------------------------
  if (id = 3) then
@@ -894,7 +906,7 @@ btn_aplicar.Enabled:=False;
    4: begin
       Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03A.png');
 
-        if SIGIL_DLC_Exists(1) = True then
+        if SIGIL_DLC_Exists(1) then
         Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1]
         else
         ListBox_Capitulo.Enabled:=False;
@@ -903,7 +915,7 @@ btn_aplicar.Enabled:=False;
    5: begin
       Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03B.png');
 
-        if SIGIL_DLC_Exists(2) = True then
+        if SIGIL_DLC_Exists(2) then
         Game_EXE_Global:=Array_SIGIL_DLC_Name[2]+Array_SIGIL_DLC_Name[3]
         else
         ListBox_Capitulo.Enabled:=False;
