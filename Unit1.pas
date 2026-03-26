@@ -4,12 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, RXCtrls, StdCtrls, Mask, ToolEdit, ComCtrls, RXSwitch,
-  pngextra, IdBaseComponent, IdComponent, IdIPWatch, ExtCtrls, abfControls,
-  ImgList, pngimage, ShellAPI, RxGIF, AppEvnts, abfAppProps, Animate,
-  GIFCtrl, IdRawBase, IdRawClient, IdIcmpClient, ScktComp, IdUDPBase,
-  IdUDPClient, OleCtrls, SHDocVw, Buttons, abfComponents, RxCombos,
-  RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils;
+  Dialogs, Menus, RXCtrls, StdCtrls, ToolEdit, ComCtrls, RXSwitch,
+  pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
+  abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
+  RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, sSkinManager,
+  sGroupBox, sRadioButton, sPanel, sAlphaListBox, sCheckListBox, sCheckBox;
 
 type
 //------------------------------------
@@ -53,32 +52,22 @@ MouseAnalogX,MouseAnalogY:Integer;
 
 type
   TForm1_DGL = class(TForm)
-    check_servidor: TRadioButton;
-    check_cliente: TRadioButton;
     MainMenu1: TMainMenu;
     Menu_Arquivo: TMenuItem;
     Menu_Sair: TMenuItem;
     RxCheckListBox1: TRxCheckListBox;
     StatusBar1: TStatusBar;
-    GroupIP: TGroupBox;
-    ip_local: TEdit;
-    ip_internet: TEdit;
     Lista_Imagens: TImageList;
     Panel_Status: TPanel;
     IMG_STATUS: TImage;
-    Label1: TLabel;
-    Label2: TLabel;
     Panel_Icones: TPanel;
     img_game: TabfImage;
-    check_single: TRadioButton;
     Menu_Debug: TMenuItem;
     linha02: TBevel;
     linha01: TBevel;
     abfImage1: TabfImage;
     gif_dos: TRxGIFAnimator;
     Menu_Sobre: TMenuItem;
-    ip_porta: TEdit;
-    Label3: TLabel;
     Timer_MonitoraAPP: TTimer;
     loading_panel: TPanel;
     img_ing: TImage;
@@ -102,14 +91,6 @@ type
     Label_Opcoes: TLabel;
     btn_start: TSpeedButton;
     SkinData_Buttons: TSkinData;
-    Panel_Player: TPanel;
-    combo_color: TComboBox;
-    cont_seta: TUpDown;
-    cont_player: TEdit;
-    player_name: TEdit;
-    Label_Name: TLabel;
-    Refresh_Internet: TSpeedButton;
-    Refresh_Lan: TSpeedButton;
     RxDM: TRxSwitch;
     Label_DM: TLabel;
     img_por: TImage;
@@ -132,13 +113,29 @@ type
     logo_wolf3d: TImage;
     logo_constructor: TImage;
     logo_shadow: TImage;
+    sSkinManager1: TsSkinManager;
+    check_single: TsRadioButton;
+    check_servidor: TsRadioButton;
+    check_cliente: TsRadioButton;
+    Panel_Player: TsPanel;
+    combo_color: TComboBox;
+    cont_player: TEdit;
+    cont_seta: TUpDown;
+    player_name: TEdit;
+    Label_Name: TLabel;
+    GroupIP: TsGroupBox;
+    ip_local: TEdit;
+    Label2: TLabel;
+    Label1: TLabel;
+    ip_internet: TEdit;
+    ip_porta: TEdit;
+    Label3: TLabel;
+    Refresh_Internet: TSpeedButton;
+    Refresh_Lan: TSpeedButton;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure check_servidorClick(Sender: TObject);
-    procedure check_clienteClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure RxCheckListBox1StateChange(Sender: TObject; Index: Integer);
-    procedure check_singleClick(Sender: TObject);
     procedure Menu_DebugClick(Sender: TObject);
     procedure ip_localKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -192,6 +189,9 @@ type
     procedure RxQuakeServerOn(Sender: TObject);
     procedure RxQuakeServerOff(Sender: TObject);
     procedure combo_doomChange(Sender: TObject);
+    procedure check_singleClick(Sender: TObject);
+    procedure check_servidorClick(Sender: TObject);
+    procedure check_clienteClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -373,27 +373,6 @@ end;
 procedure TForm1_DGL.Menu_SairClick(Sender: TObject);
 begin
 Close;
-end;
-
-procedure TForm1_DGL.check_singleClick(Sender: TObject);
-begin
-//------------------------------------------------------
-Funcao_Config_Opcoes;
-//------------------------------------------------------
-end;
-
-procedure TForm1_DGL.check_servidorClick(Sender: TObject);
-begin
-//------------------------------------------------------
-Funcao_Config_Opcoes;
-//------------------------------------------------------
-end;
-
-procedure TForm1_DGL.check_clienteClick(Sender: TObject);
-begin
-//------------------------------------------------------
-Funcao_Config_Opcoes;
-//------------------------------------------------------
 end;
 
 procedure TForm1_DGL.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -1145,6 +1124,27 @@ begin
 end;
 
 
+
+procedure TForm1_DGL.check_singleClick(Sender: TObject);
+begin
+//------------------------------------------------------
+Funcao_Config_Opcoes;
+//------------------------------------------------------
+end;
+
+procedure TForm1_DGL.check_servidorClick(Sender: TObject);
+begin
+//------------------------------------------------------
+Funcao_Config_Opcoes;
+//------------------------------------------------------
+end;
+
+procedure TForm1_DGL.check_clienteClick(Sender: TObject);
+begin
+//------------------------------------------------------
+Funcao_Config_Opcoes;
+//------------------------------------------------------
+end;
 
 end.
 

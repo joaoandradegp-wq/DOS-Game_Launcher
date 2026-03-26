@@ -3,9 +3,9 @@ unit Funcoes;
 interface
 
 uses
-  IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, PsAPI, ShellApi,
+  IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, ShellApi,
   Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
-  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Splash, Mouse_Sense, Language;
+  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language;
 
 //----------------------------------------------------------------------
 {NO_DOSBOX_Bind e DOSBOX_Bind_FPS}

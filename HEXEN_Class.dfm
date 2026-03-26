@@ -1,6 +1,6 @@
 object Form8_HexenClass: TForm8_HexenClass
-  Left = 791
-  Top = 213
+  Left = 372
+  Top = 247
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone

@@ -2,7 +2,8 @@ unit ZDOOM_Bind;
 
 interface
 
-uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI, Language, HEXEN_Class;
+uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI,
+     Language, HEXEN_Class;
 
 //--------------------------------------------------
 {USADO EM CONFIGUREZDOOM}

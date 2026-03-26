@@ -1586,13 +1586,13 @@ object Form5_Splash: TForm5_Splash
       B80EDCFB51450228DC4655B00E68A28A4D01FFD9}
   end
   object rx_loading: TRxGIFAnimator
-    Left = 273
+    Left = 275
     Top = 217
     Width = 100
     Height = 9
     AsyncDrawing = True
     Animate = True
-    FrameIndex = 11
+    FrameIndex = 3
     Image.Data = {
       8904000047494638396164000900A20400CE3131CE6363CE9C9CCECECEFFFFFF
       FFFFFF000000FFFFFF21FF0B4E45545343415045322E30030100000021F90405
@@ -1634,7 +1634,7 @@ object Form5_Splash: TForm5_Splash
     Stretch = True
   end
   object RxLabel1: TRxLabel
-    Left = 161
+    Left = 165
     Top = 254
     Width = 324
     Height = 17
