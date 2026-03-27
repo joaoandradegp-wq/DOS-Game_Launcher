@@ -14,6 +14,7 @@ type
     RxLabel1: TRxLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,6 +44,11 @@ rx_loading.Visible:=False;
 
 ShellExecute(0,'open','check_update.exe',pchar(DGL_VERSAO_Global),nil,SW_HIDE);
 
+end;
+
+procedure TForm5_Splash.FormActivate(Sender: TObject);
+begin
+rx_loading.Visible:=True; //Estava aparecendo antes do Splash, por isso seta aqui agora.
 end;
 
 end.

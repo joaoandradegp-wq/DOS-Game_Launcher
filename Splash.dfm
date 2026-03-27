@@ -15,6 +15,7 @@ object Form5_Splash: TForm5_Splash
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   PixelsPerInch = 96
@@ -1592,7 +1593,7 @@ object Form5_Splash: TForm5_Splash
     Height = 9
     AsyncDrawing = True
     Animate = True
-    FrameIndex = 3
+    FrameIndex = 5
     Image.Data = {
       8904000047494638396164000900A20400CE3131CE6363CE9C9CCECECEFFFFFF
       FFFFFF000000FFFFFF21FF0B4E45545343415045322E30030100000021F90405
@@ -1632,6 +1633,7 @@ object Form5_Splash: TForm5_Splash
       1300090000032438BA4BF2100E422B99C25631F5759ED36958C885A5777AA9B6
       92A03A5AADC5318C134509003B}
     Stretch = True
+    Visible = False
   end
   object RxLabel1: TRxLabel
     Left = 165

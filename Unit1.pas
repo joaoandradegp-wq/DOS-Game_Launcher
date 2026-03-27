@@ -8,7 +8,9 @@ uses
   pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
   abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
   RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, sSkinManager,
-  sGroupBox, sRadioButton, sPanel, sAlphaListBox, sCheckListBox, sCheckBox;
+  sGroupBox, sRadioButton, sPanel, sAlphaListBox, sCheckListBox, sCheckBox,
+  sEdit, sUpDown, sComboBox, sSpeedButton, sBitBtn, sButton, acPNG,
+  sTrackBar;
 
 type
 //------------------------------------
@@ -89,7 +91,6 @@ type
     LoadingMod: TOpenDialog;
     RxOpcoes: TRxSwitch;
     Label_Opcoes: TLabel;
-    btn_start: TSpeedButton;
     SkinData_Buttons: TSkinData;
     RxDM: TRxSwitch;
     Label_DM: TLabel;
@@ -101,7 +102,6 @@ type
     popup_commit: TMenuItem;
     RxQuakeServer: TRxSwitch;
     Label_QuakeServer: TLabel;
-    combo_doom: TComboBox;
     logo_doom: TImage;
     logo_quake: TImage;
     logo_blood: TImage;
@@ -118,43 +118,34 @@ type
     check_servidor: TsRadioButton;
     check_cliente: TsRadioButton;
     Panel_Player: TsPanel;
-    combo_color: TComboBox;
-    cont_player: TEdit;
-    cont_seta: TUpDown;
-    player_name: TEdit;
     Label_Name: TLabel;
     GroupIP: TsGroupBox;
-    ip_local: TEdit;
     Label2: TLabel;
     Label1: TLabel;
-    ip_internet: TEdit;
-    ip_porta: TEdit;
     Label3: TLabel;
-    Refresh_Internet: TSpeedButton;
+    player_name: TsEdit;
+    cont_player: TsEdit;
+    cont_seta: TsUpDown;
+    combo_color: TsComboBox;
+    combo_doom: TsComboBox;
+    ip_local: TsEdit;
+    ip_internet: TsEdit;
+    ip_porta: TsEdit;
     Refresh_Lan: TSpeedButton;
+    Refresh_Internet: TSpeedButton;
+    btn_start: TsBitBtn;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure RxCheckListBox1StateChange(Sender: TObject; Index: Integer);
     procedure Menu_DebugClick(Sender: TObject);
-    procedure ip_localKeyDown(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure Menu_SobreClick(Sender: TObject);
     procedure RxCheckListBox1Click(Sender: TObject);
     procedure RxCheckListBox1DblClick(Sender: TObject);
-    procedure ip_portaKeyPress(Sender: TObject; var Key: Char);
-    procedure ip_portaChange(Sender: TObject);
     procedure Timer_MonitoraAPPTimer(Sender: TObject);
     procedure FormDblClick(Sender: TObject);
     procedure Menu_FirewallClick(Sender: TObject);
-    procedure ip_localKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
-    procedure ip_localKeyPress(Sender: TObject; var Key: Char);
-    procedure combo_colorDrawItem(Control: TWinControl; Index: Integer;
-      Rect: TRect; State: TOwnerDrawState);
     procedure Menu_SiteClick(Sender: TObject);
-    procedure ip_portaKeyUp(Sender: TObject; var Key: Word;
-      Shift: TShiftState);
     procedure RxControleEnter(Sender: TObject);
     procedure RxBrutalEnter(Sender: TObject);
     procedure PNGButton1Click(Sender: TObject);
@@ -168,10 +159,6 @@ type
     procedure RxCheckListBox1Exit(Sender: TObject);
     procedure RxOpcoesOn(Sender: TObject);
     procedure RxOpcoesEnter(Sender: TObject);
-    procedure btn_startClick(Sender: TObject);
-    procedure cont_playerEnter(Sender: TObject);
-    procedure Refresh_LanClick(Sender: TObject);
-    procedure Refresh_InternetClick(Sender: TObject);
     procedure RxDMEnter(Sender: TObject);
     procedure RxSenseEnter(Sender: TObject);
     procedure RxDMOff(Sender: TObject);
@@ -184,14 +171,30 @@ type
     procedure popup_saClick(Sender: TObject);
     procedure popup_deClick(Sender: TObject);
     procedure popup_commitClick(Sender: TObject);
-    procedure player_nameChange(Sender: TObject);
     procedure RxQuakeServerEnter(Sender: TObject);
     procedure RxQuakeServerOn(Sender: TObject);
     procedure RxQuakeServerOff(Sender: TObject);
-    procedure combo_doomChange(Sender: TObject);
     procedure check_singleClick(Sender: TObject);
     procedure check_servidorClick(Sender: TObject);
     procedure check_clienteClick(Sender: TObject);
+    procedure player_nameChange(Sender: TObject);
+    procedure cont_playerEnter(Sender: TObject);
+    procedure combo_colorDrawItem(Control: TWinControl; Index: Integer;
+      Rect: TRect; State: TOwnerDrawState);
+    procedure combo_doomChange(Sender: TObject);
+    procedure combo_colorChange(Sender: TObject);
+    procedure ip_localKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ip_localKeyPress(Sender: TObject; var Key: Char);
+    procedure ip_localKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure ip_portaChange(Sender: TObject);
+    procedure ip_portaKeyPress(Sender: TObject; var Key: Char);
+    procedure ip_portaKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure Refresh_LanClick(Sender: TObject);
+    procedure Refresh_InternetClick(Sender: TObject);
+    procedure btn_startClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -388,6 +391,7 @@ end;
 procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
+abfImage1.Visible:=False;
 //------------------------------
 id:=RxCheckListBox1.ItemIndex+1;
 //------------------------------
@@ -476,18 +480,6 @@ end;
 
 end;
 
-procedure TForm1_DGL.ip_localKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-
-  if (check_cliente.Checked = True) then
-  begin
-    if Key = VK_RETURN then
-    Refresh_Lan.OnClick(Sender);
-  end;
-
-end;
-
 procedure TForm1_DGL.Menu_SobreClick(Sender: TObject);
 begin
 Application.CreateForm(TForm7_About, Form7_About);
@@ -505,34 +497,6 @@ begin
 
   if (check_single.Checked = True) and (btn_start.Enabled = True) and (Menu_Debug.Checked = False) then
   btn_startClick(Sender);
-
-end;
-
-procedure TForm1_DGL.ip_portaKeyPress(Sender: TObject; var Key: Char);
-begin
-  //--------------------------------
-  if not (key in ['0'..'9',#8]) then
-  key:=#0;
-  //--------------------------------
-end;
-
-procedure TForm1_DGL.ip_portaChange(Sender: TObject);
-begin
-
- if (Length(Trim(ip_porta.Text)) = 0) and (ip_porta.Focused = True)
- or (Trim(ip_porta.Text) = '0') then
- begin
-   {QUANDO O FOCO ESTIVER NO CAMPO}
-   if ActiveControl = ip_porta then
-   begin
-   //--------------------------------
-   {PORTAS DE REDE DEFAULT}
-   //--------------------------------
-   ip_porta.Text:=Array_Games[id][8];
-   ip_porta.SelectAll;
-   //--------------------------------
-   end;
- end;
 
 end;
 
@@ -592,85 +556,9 @@ begin
 
 end;
 
-procedure TForm1_DGL.ip_localKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-
-  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
-  begin
-    //--------------------------------
-    {DEBUG MODE}
-    //--------------------------------
-    if menu_debug.Checked = False then
-    begin
-    StatusBar1.Panels[1].Text:='';
-    IMG_STATUS.Picture:=Nil;
-    end;
-    //--------------------------------
-  btn_start.Enabled:=False;
-
-    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_local.Text,1,1) = '0') then
-    Refresh_Lan.Enabled:=False
-    else
-    Refresh_Lan.Enabled:=True;
-  end;
-
-end;
-
-procedure TForm1_DGL.ip_localKeyPress(Sender: TObject; var Key: Char);
-begin
- //----------------------------------
- if (key in [#32]) then
- key:=#0;
- //----------------------------------
-end;
-
-procedure TForm1_DGL.combo_colorDrawItem(Control: TWinControl; Index: Integer;
-  Rect: TRect; State: TOwnerDrawState);
-begin
- //----------------------------------
- {ZDOOM - CORES DO COMBOBOX}
- //----------------------------------
- with Control as TComboBox,Canvas do
- begin
- Brush.Color:=StrToInt(Items[Index]);
- FillRect(Rect);
- InflateRect(Rect,-2,-2);
- Brush.Color:=StrToInt(Items[Index]);
- FillRect(Rect);
- end;
- //----------------------------------
-end;
-
 procedure TForm1_DGL.Menu_SiteClick(Sender: TObject);
 begin
 ShellExecute(Handle,'open','http://phobosfreeware.blogspot.com','','',1);
-end;
-
-procedure TForm1_DGL.ip_portaKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-
-  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
-  begin
-    //--------------------------------
-    {DEBUG MODE}
-    //--------------------------------
-    if menu_debug.Checked = False then
-    begin
-    StatusBar1.Panels[1].Text:='';
-    IMG_STATUS.Picture:=Nil;
-    end;
-    //--------------------------------
-    
-  btn_start.Enabled:=False;
-
-    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
-    Refresh_Lan.Enabled:=False
-    else
-    Refresh_Lan.Enabled:=True;
-  end;
-
 end;
 
 procedure TForm1_DGL.PNGButton1Click(Sender: TObject);
@@ -766,162 +654,6 @@ Form3_NameFun.Free;
 end;
 
 procedure TForm1_DGL.RxOpcoesEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.btn_startClick(Sender: TObject);
-begin
-Config_Game_Global:=Caminho_Global+Array_Games[id][6];
-VarParametro_Global:='';
-Fecha_ESC:=False;
-
-  if (player_name.Enabled = True) and (Length(Trim(player_name.Text)) = 0) then
-  begin
-  MessageBox(Application.Handle,pchar(Lang_DGL(1)),pchar(Application.Title),MB_ICONWARNING+MB_OK);
-  player_name.SetFocus;
-  Exit;
-  end;
-
-  //---------------------------------
-  {SINGLE PLAYER OU MULTIPLAYER}
-  //---------------------------------
-  if check_single.Checked = True then
-  Game_EXE_Global:=Array_Games[id][5]
-  else
-  Game_EXE_Global:=Array_Games[id][4];
-  //---------------------------------
-
-{ARQUIVO DE CONFIGURA플O DE CADA JOGO}
-case id of
-
-   {BLOOD - DUKE NUKEM - SHADOW WARRIOR} 
-   1,5,10:
-   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
-
-   {QUAKE}
-   8:
-   QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
-
-   {CONSTRUCTOR - RISE OF THE TRIAD - WARCRAFT II}
-   2,9,11:
-   DOSBOX_Bind_NEWS(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text);
-
-   {DOOM - DOOM II - HERETIC - HEXEN - WOLFENSTEIN 3D}
-   3,4,6,7,12:
-   begin
-   Map_Global:='';
-   ConfigureZDoom(
-     id,
-     RxControle.StateOn,
-     menu_debug.Checked,
-     player_name.Text,
-     Config_Game_Global,
-     Array_Games[id][4],
-
-     GetZDoomMode(check_single.Checked,check_servidor.Checked),
-     Map_Global,
-     StrToIntDef(cont_player.Text,2),
-     ip_porta.Text,
-     ip_local.Text,
-
-     combo_doom.ItemIndex,
-     combo_color.ItemIndex,
-     Screen.Width,
-     Screen.Height,
-
-     ResolveDebugPlayersUI,
-     SelectMapUI);
-   end;
-
-end;
-
-  //--------------------------------------------------------
-  // CLIENTE - CONTAGEM PRA INICIAR
-  //--------------------------------------------------------
-  if check_cliente.Checked and (not menu_debug.Checked) then
-  Contagem_Iniciar;
-  //--------------------------------------------------------
-
-  //---------------
-  if Fecha_ESC then
-  Exit;
-  //---------------
-
-//-------------------------------
-// FINALIZA플O DO START
-//-------------------------------
-Config_Tela(False);
-//-------------------------------
-btn_start.Caption := Lang_DGL(5);
-img_game.Visible:=False;
-gif_dos.Visible:=True;
-Timer_MonitoraAPP.Enabled:=True;
-//-------------------------------
-end;
-
-procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);
-begin
- //------------------------------------------
- {CASO ESTEJA SELECIONADO O CAMPO "SERVIDOR"}
- //------------------------------------------
- if check_servidor.Checked then
- ip_local.Text:=GetInternalIP;
- //------------------------------------------
- {CASO ESTEJA SELECIONADO O CAMPO "CLIENTE"}
- //------------------------------------------
- if check_cliente.Checked then
- begin
-
-   if VerificaTCP_UDP(Trim(ip_local.Text),StrToInt(ip_porta.Text),300) then
-   begin
-   MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' ONLINE!'),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
-
-   //-----------------------------------------------------------------------------
-   Arquivo_INI.WriteString('DOS',  'IP_CLIENT',Trim(ip_local.Text));
-   Arquivo_INI.WriteString('DOS','PORT_CLIENT_'+Array_Games[id][7],ip_porta.Text);
-   //-----------------------------------------------------------------------------
-
-     //--------------------------------
-     {DEBUG MODE}
-     //--------------------------------
-     if menu_debug.Checked = False then
-     begin
-     StatusBar1.Panels[1].Text:='Online - '+Lang_DGL(12)+' '+ip_porta.Text;
-     Form1_DGL.IMG_STATUS.Picture:=Nil;
-     Lista_Imagens.GetBitmap(1,IMG_STATUS.Picture.Bitmap);
-     end;
-     //--------------------------------
-   btn_start.Enabled:=True;
-   end
-   else
-   begin
-   MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' OFFLINE!'),pchar(Application.Title),MB_ICONERROR+MB_OK);
-     //--------------------------------
-     {DEBUG MODE}
-     //--------------------------------
-     if menu_debug.Checked = False then
-     begin
-     StatusBar1.Panels[1].Text:='Offline - '+Lang_DGL(12)+' '+ip_porta.Text;
-     Form1_DGL.IMG_STATUS.Picture:=Nil;
-     Lista_Imagens.GetBitmap(0,IMG_STATUS.Picture.Bitmap);
-     end;
-     //--------------------------------
-   btn_start.Enabled:=False;
-   end;
-
-end;
-//------------------------------------------
-end;
-
-procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
-begin
-//-----------------------------------
-ip_internet.Text:=GetExternalIP;
-//-----------------------------------
-end;
-
-procedure TForm1_DGL.cont_playerEnter(Sender: TObject);
 begin
 ActiveControl:=Nil;
 end;
@@ -1079,17 +811,6 @@ Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'COMMIT.da
 WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
 end;
 
-procedure TForm1_DGL.player_nameChange(Sender: TObject);
-begin
-
- if Length(player_name.Text) = 0 then
- begin
- player_name.Text:=UsuarioLogado;
- player_name.SelectAll;
- end;
-
-end;
-
 procedure TForm1_DGL.RxQuakeServerOn(Sender: TObject);
 begin
 img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
@@ -1105,25 +826,6 @@ RxOpcoes.Enabled    :=Not(RxQuakeServer.StateOn);
 Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
 combo_color.Visible :=Not(RxQuakeServer.StateOn);
 end;
-
-procedure TForm1_DGL.combo_doomChange(Sender: TObject);
-begin
-  {SKIN - DOOM e DOOM II}
-  case combo_doom.ItemIndex of
-  0: begin
-     combo_color.Enabled:=True;
-     combo_color.ItemIndex:=0;
-     combo_color.Items.Delete(8);
-     end;
-  1: begin
-     combo_color.Enabled:=False;
-     combo_color.Items.Add(IntToStr($000167E5));
-     combo_color.ItemIndex:=8;
-     end;
-  end;
-end;
-
-
 
 procedure TForm1_DGL.check_singleClick(Sender: TObject);
 begin
@@ -1144,6 +846,318 @@ begin
 //------------------------------------------------------
 Funcao_Config_Opcoes;
 //------------------------------------------------------
+end;
+
+procedure TForm1_DGL.player_nameChange(Sender: TObject);
+begin
+
+ if Length(player_name.Text) = 0 then
+ begin
+ player_name.Text:=UsuarioLogado;
+ player_name.SelectAll;
+ end;
+
+end;
+
+procedure TForm1_DGL.cont_playerEnter(Sender: TObject);
+begin
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.combo_colorDrawItem(Control: TWinControl;
+  Index: Integer; Rect: TRect; State: TOwnerDrawState);
+begin
+  //----------------------------------
+  {ZDOOM - CORES DO COMBOBOX}
+  //----------------------------------
+  with Control as TsComboBox, Canvas do
+  begin
+    if (Index >= 0) and (Index < Items.Count) then
+    begin
+      try
+      Brush.Color := StrToInt(Items[Index]);
+      except
+      Brush.Color := clBlack;
+      end;
+    end
+  else
+  Brush.Color := clBlack;
+  FillRect(Rect);
+  InflateRect(Rect, -2, -2);
+  FillRect(Rect);
+  end;
+  //----------------------------------
+end;
+
+procedure TForm1_DGL.combo_doomChange(Sender: TObject);
+begin
+  {SKIN - DOOM e DOOM II}
+  case combo_doom.ItemIndex of
+  0: begin
+     combo_color.Enabled:=True;
+     combo_color.ItemIndex:=0;
+     combo_color.Items.Delete(8);
+     end;
+  1: begin
+     combo_color.Enabled:=False;
+     combo_color.Items.Add(IntToStr($000167E5));
+     combo_color.ItemIndex:=8;
+     end;
+  end;
+RxCheckListBox1.SetFocus;  
+end;
+
+procedure TForm1_DGL.combo_colorChange(Sender: TObject);
+begin
+RxCheckListBox1.SetFocus;
+end;
+
+procedure TForm1_DGL.ip_localKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if (check_cliente.Checked = True) then
+  begin
+    if Key = VK_RETURN then
+    Refresh_Lan.OnClick(Sender);
+  end;
+end;
+
+procedure TForm1_DGL.ip_localKeyPress(Sender: TObject; var Key: Char);
+begin
+ //----------------------------------
+ if (key in [#32]) then
+ key:=#0;
+ //----------------------------------
+end;
+
+procedure TForm1_DGL.ip_localKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
+  begin
+    //--------------------------------
+    {DEBUG MODE}
+    //--------------------------------
+    if menu_debug.Checked = False then
+    begin
+    StatusBar1.Panels[1].Text:='';
+    IMG_STATUS.Picture:=Nil;
+    end;
+    //--------------------------------
+  btn_start.Enabled:=False;
+
+    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_local.Text,1,1) = '0') then
+    Refresh_Lan.Enabled:=False
+    else
+    Refresh_Lan.Enabled:=True;
+  end;
+
+end;
+
+procedure TForm1_DGL.ip_portaChange(Sender: TObject);
+begin
+
+ if (Length(Trim(ip_porta.Text)) = 0) and (ip_porta.Focused = True)
+ or (Trim(ip_porta.Text) = '0') then
+ begin
+   {QUANDO O FOCO ESTIVER NO CAMPO}
+   if ActiveControl = ip_porta then
+   begin
+   //--------------------------------
+   {PORTAS DE REDE DEFAULT}
+   //--------------------------------
+   ip_porta.Text:=Array_Games[id][8];
+   ip_porta.SelectAll;
+   //--------------------------------
+   end;
+ end;
+ 
+end;
+
+procedure TForm1_DGL.ip_portaKeyPress(Sender: TObject; var Key: Char);
+begin
+  //--------------------------------
+  if not (key in ['0'..'9',#8]) then
+  key:=#0;
+  //--------------------------------
+end;
+
+procedure TForm1_DGL.ip_portaKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+  if (check_cliente.Checked = True) and (Key <> VK_RETURN) then
+  begin
+    //--------------------------------
+    {DEBUG MODE}
+    //--------------------------------
+    if menu_debug.Checked = False then
+    begin
+    StatusBar1.Panels[1].Text:='';
+    IMG_STATUS.Picture:=Nil;
+    end;
+    //--------------------------------
+    
+  btn_start.Enabled:=False;
+
+    if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
+    Refresh_Lan.Enabled:=False
+    else
+    Refresh_Lan.Enabled:=True;
+  end;
+
+end;
+
+procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);
+begin
+ //------------------------------------------
+ {CASO ESTEJA SELECIONADO O CAMPO "SERVIDOR"}
+ //------------------------------------------
+ if check_servidor.Checked then
+ ip_local.Text:=GetInternalIP;
+ //------------------------------------------
+ {CASO ESTEJA SELECIONADO O CAMPO "CLIENTE"}
+ //------------------------------------------
+ if check_cliente.Checked then
+ begin
+
+   if VerificaTCP_UDP(Trim(ip_local.Text),StrToInt(ip_porta.Text),300) then
+   begin
+   MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' ONLINE!'),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
+
+   //-----------------------------------------------------------------------------
+   Arquivo_INI.WriteString('DOS',  'IP_CLIENT',Trim(ip_local.Text));
+   Arquivo_INI.WriteString('DOS','PORT_CLIENT_'+Array_Games[id][7],ip_porta.Text);
+   //-----------------------------------------------------------------------------
+
+     //--------------------------------
+     {DEBUG MODE}
+     //--------------------------------
+     if menu_debug.Checked = False then
+     begin
+     StatusBar1.Panels[1].Text:='Online - '+Lang_DGL(12)+' '+ip_porta.Text;
+     Form1_DGL.IMG_STATUS.Picture:=Nil;
+     Lista_Imagens.GetBitmap(1,IMG_STATUS.Picture.Bitmap);
+     end;
+     //--------------------------------
+   btn_start.Enabled:=True;
+   end
+   else
+   begin
+   MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' OFFLINE!'),pchar(Application.Title),MB_ICONERROR+MB_OK);
+     //--------------------------------
+     {DEBUG MODE}
+     //--------------------------------
+     if menu_debug.Checked = False then
+     begin
+     StatusBar1.Panels[1].Text:='Offline - '+Lang_DGL(12)+' '+ip_porta.Text;
+     Form1_DGL.IMG_STATUS.Picture:=Nil;
+     Lista_Imagens.GetBitmap(0,IMG_STATUS.Picture.Bitmap);
+     end;
+     //--------------------------------
+   btn_start.Enabled:=False;
+   end;
+
+end;
+//------------------------------------------
+end;
+
+procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
+begin
+//-----------------------------------
+ip_internet.Text:=GetExternalIP;
+//-----------------------------------
+end;
+
+procedure TForm1_DGL.btn_startClick(Sender: TObject);
+begin
+Config_Game_Global:=Caminho_Global+Array_Games[id][6];
+VarParametro_Global:='';
+Fecha_ESC:=False;
+
+  if (player_name.Enabled = True) and (Length(Trim(player_name.Text)) = 0) then
+  begin
+  MessageBox(Application.Handle,pchar(Lang_DGL(1)),pchar(Application.Title),MB_ICONWARNING+MB_OK);
+  player_name.SetFocus;
+  Exit;
+  end;
+
+  //---------------------------------
+  {SINGLE PLAYER OU MULTIPLAYER}
+  //---------------------------------
+  if check_single.Checked = True then
+  Game_EXE_Global:=Array_Games[id][5]
+  else
+  Game_EXE_Global:=Array_Games[id][4];
+  //---------------------------------
+
+{ARQUIVO DE CONFIGURA플O DE CADA JOGO}
+case id of
+
+   {BLOOD - DUKE NUKEM - SHADOW WARRIOR} 
+   1,5,10:
+   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+
+   {QUAKE}
+   8:
+   QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
+
+   {CONSTRUCTOR - RISE OF THE TRIAD - WARCRAFT II}
+   2,9,11:
+   DOSBOX_Bind_NEWS(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text);
+
+   {DOOM - DOOM II - HERETIC - HEXEN - WOLFENSTEIN 3D}
+   3,4,6,7,12:
+   begin
+   Map_Global:='';
+   ConfigureZDoom(
+     id,
+     RxControle.StateOn,
+     menu_debug.Checked,
+     player_name.Text,
+     Config_Game_Global,
+     Array_Games[id][4],
+
+     GetZDoomMode(check_single.Checked,check_servidor.Checked),
+     Map_Global,
+     StrToIntDef(cont_player.Text,2),
+     ip_porta.Text,
+     ip_local.Text,
+
+     combo_doom.ItemIndex,
+     combo_color.ItemIndex,
+     Screen.Width,
+     Screen.Height,
+
+     ResolveDebugPlayersUI,
+     SelectMapUI);
+   end;
+
+end;
+
+  //--------------------------------------------------------
+  // CLIENTE - CONTAGEM PRA INICIAR
+  //--------------------------------------------------------
+  if check_cliente.Checked and (not menu_debug.Checked) then
+  Contagem_Iniciar;
+  //--------------------------------------------------------
+
+  //---------------
+  if Fecha_ESC then
+  Exit;
+  //---------------
+
+//-------------------------------
+// FINALIZA플O DO START
+//-------------------------------
+Config_Tela(False);
+//-------------------------------
+btn_start.Caption := Lang_DGL(5);
+img_game.Visible:=False;
+gif_dos.Visible:=True;
+Timer_MonitoraAPP.Enabled:=True;
+//-------------------------------
 end;
 
 end.

@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, GraphicEx, ExtCtrls, pngimage, StdCtrls;
+  Dialogs, GraphicEx, ExtCtrls, pngimage, StdCtrls, acPNG;
 
 type
   TForm8_HexenClass = class(TForm)

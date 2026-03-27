@@ -52,7 +52,7 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 
 implementation
 
-uses DOSBOX_Bind_FPS, Quake_Bind;
+uses DOSBOX_Bind_FPS, Quake_Bind, sSkinProps;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -1146,6 +1146,7 @@ Form1_DGL.gif_dos.Visible:=False;
 
  if (Game_Existe = False) then
  begin
+ Form1_DGL.abfImage1.Visible:=True;
  //----------------------------------------
  Form1_DGL.label_name.Enabled :=False;
  Form1_DGL.player_name.Enabled:=False;
@@ -1227,17 +1228,15 @@ Form1_DGL.logo_wolf3d.Visible     := False;
      9: Form1_DGL.logo_rott.Visible       := True;
     10: Form1_DGL.logo_shadow.Visible     := True;
     11: Form1_DGL.logo_warcraft.Visible   := True;
- 12,13: Form1_DGL.logo_wolf3d.Visible     := True;
+    12: Form1_DGL.logo_wolf3d.Visible     := True;
    end;
 
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}
    //---------------------------------------------------
    case id of
-   {BLOOD + DOOM + DOOM 2 + DUKE NUKEM 3D + HERETIC + HEXEN + SHADOW WARRIOR}
-   {WOLFENSTEIN 3D + SPEAR OF DESTINY}
-   1,3,4,5,6,7,10,
-            12,13: begin
+   {BLOOD + DOOM + DOOM 2 + DUKE NUKEM 3D + HERETIC + HEXEN + SHADOW WARRIOR + WOLFENSTEIN 3D}
+1,3,4,5,6,7,10,12: begin
                    //-------------------------------------
                    {MOUSE - HABILITAR}
                    //-------------------------------------
@@ -1246,11 +1245,10 @@ Form1_DGL.logo_wolf3d.Visible     := False;
                    //-------------------------------------
 
                      //------------------------------------------------------------------------------------------------------------------
-                     {DOOM + DOOM II + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY - COPIA O ARQUIVO .INI ORIGINAL}
+                     {DOOM + DOOM II + HERETIC + HEXEN + WOLFENSTEIN 3D - COPIA O ARQUIVO .INI ORIGINAL}
                      //------------------------------------------------------------------------------------------------------------------
                      case id of
-                     3,4,6,7,12,13:
-                                   begin
+                       3,4,6,7,12: begin
                                      if not FileExists(Caminho_Global+Array_Games[id][6]) then
                                      CopyFile(pchar(Pasta_INI_Global+Array_Games[id][6]),pchar(Caminho_Global+Array_Games[id][6]),False);
                                    end;
@@ -1419,7 +1417,7 @@ Form1_DGL.logo_wolf3d.Visible     := False;
 
                        end
                        //-------------------------------------------------------------------
-                       {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
+                       {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D}
                        //-------------------------------------------------------------------
                        else
                        begin
@@ -1514,8 +1512,8 @@ Form1_DGL.logo_wolf3d.Visible     := False;
      {HABILITA O MODO DE SELEÇÃO DE CORES/SKIN DE PERSONAGEM}
      //---------------------------------------------------------
      case id of
-     3,4,6,7, {DOOM - DOOM 2 - HERETIC - HEXEN}
-     8,12,13: {QUAKE - WOLFENSTEIN 3D - SPEAR OF DESTINY}
+       3,4,6, {DOOM - DOOM 2 - HERETIC - HEXEN}
+      7,8,12: {QUAKE - WOLFENSTEIN 3D}
      begin
      Form1_DGL.combo_color.Visible:=True;
      Lista_Cores(id);
@@ -1541,7 +1539,7 @@ Form1_DGL.logo_wolf3d.Visible     := False;
      case id of
      1,5,9,10, {BLOOD - DUKE NUKEM 3D - RISE OF THE TRIAD - SHADOW WARRIOR}
      3,4,6,7,  {DOOM - DOOM 2 - HERETIC - HEXEN}
-     12,13:    {WOLFENSTEIN 3D - SPEAR OF DESTINY}
+       12:     {WOLFENSTEIN 3D}
      begin
      Form1_DGL.label_name.Enabled :=True;
      Form1_DGL.player_name.Enabled:=True;
