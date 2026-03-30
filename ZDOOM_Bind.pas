@@ -493,7 +493,9 @@ Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
 
     end;
 
-  ApplyDoomSkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
+    {DOOM II - SKIN PHOBOS}
+    if (id = 4) and not(Form1_DGL.check_single.Enabled) then
+    ApplyDoomSkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
 
   Ini.UpdateFile;
   finally
@@ -596,10 +598,10 @@ Parametros := '';
 
 
   if Debug then
-  MessageBox(0, PChar(' '+BaseParams +
-                             ' ' + Opt.SkinParams +
-                             ' ' + Opt.ModParams + #13+
-                    ' -config "' + Opt.ConfigFile + '"' +#13+ Parametros), PChar(Lang_DGL(13)), MB_OK);
+  MessageBox(Application.Handle, PChar(' '+ BaseParams +
+                                      ' ' + Opt.SkinParams +
+                                      ' ' + Opt.ModParams + #13+
+                             ' -config "' + Opt.ConfigFile + '"' +#13+ Parametros), PChar(Lang_DGL(23)),MB_ICONINFORMATION + MB_OK);
 
 {EXECUTA}
 ShellExecute(0, 'open', PChar(Opt.Executable), PChar(BaseParams +
