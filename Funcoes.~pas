@@ -52,7 +52,7 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 
 implementation
 
-uses DOSBOX_Bind_FPS, Quake_Bind;
+uses DOSBOX_Bind_FPS, Quake_Bind, sSkinProps;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------

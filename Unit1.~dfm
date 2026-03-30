@@ -13912,10 +13912,9 @@ object Form1_DGL: TForm1_DGL
     Left = 8
     Top = 24
     Width = 209
-    Height = 21
+    Height = 22
     AutoSize = True
     BevelOuter = bvNone
-    ParentColor = True
     TabOrder = 17
     object Label_Name: TLabel
       Left = 0
@@ -13936,7 +13935,7 @@ object Form1_DGL: TForm1_DGL
       Left = 40
       Top = 0
       Width = 121
-      Height = 21
+      Height = 22
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
@@ -13951,7 +13950,7 @@ object Form1_DGL: TForm1_DGL
       Left = 168
       Top = 0
       Width = 25
-      Height = 21
+      Height = 22
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
