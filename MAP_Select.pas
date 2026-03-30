@@ -888,11 +888,13 @@ btn_aplicar.Enabled:=False;
  if (id = 10) then
  begin
    case ListBox_Episodio.ItemIndex of
-   0,1: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
      2: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10A.png');
      3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10B.png');
+   else
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
    end;
  end;
+ //--------------------------------------------------------------------------
 
  //--------------------------------------------------------------------------
  {DOOM - SIGIL}
@@ -902,7 +904,6 @@ btn_aplicar.Enabled:=False;
  ListBox_Capitulo.Enabled:=True;
 
    case ListBox_Episodio.ItemIndex of
-   0,1,2,3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03.png');
    4: begin
       Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03A.png');
 
@@ -921,8 +922,36 @@ btn_aplicar.Enabled:=False;
         ListBox_Capitulo.Enabled:=False;
 
       end;
+   else
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03.png');
    end;
+ end;
+ //--------------------------------------------------------------------------
 
+ //--------------------------------------------------------------------------
+ {BLOOD}
+ //--------------------------------------------------------------------------
+ if (id = 1) then
+ begin
+   case ListBox_Episodio.ItemIndex of
+     4: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01A.png');
+     5: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01B.png');
+   else
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01.png');
+   end;
+ end;
+ //--------------------------------------------------------------------------
+
+ //--------------------------------------------------------------------------
+ {DUKE NUKEM 3D}
+ //--------------------------------------------------------------------------
+ if (id = 5) then
+ begin
+   case ListBox_Episodio.ItemIndex of
+     3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\05A.png');
+   else
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\05.png');
+   end;
  end;
  //--------------------------------------------------------------------------
 
@@ -943,7 +972,31 @@ Form4_Select:=Nil;
 end;
 
 procedure TForm4_Select.ListBox_CapituloClick(Sender: TObject);
+var
+Caminho_EXE:String;
 begin
+Caminho_EXE:=ExtractFilePath(Application.ExeName);
+
+ //--------------------------------------------------------------------------
+ {SHADOW WARRIOR}
+ //--------------------------------------------------------------------------
+ if (id = 10) then
+ begin
+
+   case ListBox_Episodio.ItemIndex of
+     4: begin
+          case ListBox_Capitulo.ItemIndex of
+           6,7,8,9: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10A.png');
+          10,11,12: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10B.png');
+          else
+          Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
+          end;
+        end;
+   end;
+   
+ end;
+ //--------------------------------------------------------------------------
+
 btn_aplicar.Enabled:=True;
 end;
 

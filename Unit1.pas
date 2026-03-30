@@ -102,7 +102,6 @@ type
     logo_doom: TImage;
     logo_quake: TImage;
     logo_blood: TImage;
-    logo_hexen: TImage;
     logo_duke3d: TImage;
     logo_rott: TImage;
     logo_heretic: TImage;
@@ -131,6 +130,7 @@ type
     Label_Name: TLabel;
     btn_start: TButton;
     Refresh_Lan: TSpeedButton;
+    logo_hexen: TabfImage;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
