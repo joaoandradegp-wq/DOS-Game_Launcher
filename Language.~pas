@@ -35,7 +35,7 @@ begin
      Form1_DGL.Label_Name.Caption:='NOME:';
      Form1_DGL.img_por.Visible:=True;
      //-----------------------------------------------------
-     Form1_DGL.GroupIP.Caption:=' Rede Local ';
+     Form1_DGL.GroupIP.Caption:='Rede Local';
      Form1_DGL.Label3.Caption:='PORTA:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='SENSIBILIDADE';
@@ -120,7 +120,7 @@ begin
      Form1_DGL.Label_Name.Caption:='NAME:';
      Form1_DGL.img_ing.Visible:=True;
      //-----------------------------------------------------
-     Form1_DGL.GroupIP.Caption:=' Local Network ';
+     Form1_DGL.GroupIP.Caption:='Local Network';
      Form1_DGL.Label3.Caption:='PORT:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='MOUSE SENSITIVITY';

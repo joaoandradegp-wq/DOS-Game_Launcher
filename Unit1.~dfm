@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 397
-  Top = 137
+  Left = 679
+  Top = 133
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -12770,6 +12770,7 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
+      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -13912,9 +13913,10 @@ object Form1_DGL: TForm1_DGL
     Left = 8
     Top = 24
     Width = 209
-    Height = 22
+    Height = 21
     AutoSize = True
     BevelOuter = bvNone
+    ParentColor = True
     TabOrder = 17
     object Label_Name: TLabel
       Left = 0
@@ -13967,7 +13969,7 @@ object Form1_DGL: TForm1_DGL
       Left = 193
       Top = 0
       Width = 16
-      Height = 21
+      Height = 22
       Associate = cont_player
       Enabled = False
       Min = 2

@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 397
-  Top = 137
+  Left = 679
+  Top = 133
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -12770,6 +12770,7 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
+      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -13912,7 +13913,7 @@ object Form1_DGL: TForm1_DGL
     Left = 8
     Top = 24
     Width = 209
-    Height = 21
+    Height = 22
     AutoSize = True
     BevelOuter = bvNone
     ParentColor = True
@@ -13933,10 +13934,10 @@ object Form1_DGL: TForm1_DGL
       Transparent = True
     end
     object player_name: TEdit
-      Left = 40
+      Left = 41
       Top = 0
       Width = 121
-      Height = 21
+      Height = 22
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
@@ -13951,7 +13952,7 @@ object Form1_DGL: TForm1_DGL
       Left = 168
       Top = 0
       Width = 25
-      Height = 21
+      Height = 22
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
@@ -13968,7 +13969,7 @@ object Form1_DGL: TForm1_DGL
       Left = 193
       Top = 0
       Width = 16
-      Height = 21
+      Height = 22
       Associate = cont_player
       Enabled = False
       Min = 2
