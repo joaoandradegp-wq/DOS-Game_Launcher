@@ -1070,7 +1070,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       end;
 
       {MULTIPLAYER + DEBUG}
-      if (not check_single) and menu_debug then
+      if (not check_single) and (menu_debug) then
       begin
         {BLOOD - CRYPTIC PASSAGE - SETUP}
         if FileExists(CaminhoJogo+'cryptic.exe') then
@@ -1088,23 +1088,31 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
           0,1: L.Add('@COPY sw.dat sw.exe');
             2: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
             3: begin
-               Game_EXE_Global:=SW_DLC_Archive(2);
+
+                 if menu_debug then
+                 Game_EXE_Global:='setup.exe'
+                 else
+                 Game_EXE_Global:=SW_DLC_Archive(2);
+
                  if SW_DLC_Archive(2) = 'sw.exe' then
                  L.Add('cd dragon');
+                 
                end;
-            {DEBUG - EPISÓDIO DEATHMATCH SINGLE PLAYER}
+            {DEBUG - EPISÓDIO DEATHMATCH - FUNCIONA APENAS EM SINGLE PLAYER}
             4: begin
-
+                 //--------------------------------------------------
                  case CAP_Global_DLC of
                    0..5: L.Add('@COPY sw.dat sw.exe');
                    6..9: L.Add('@COPY '+SW_DLC_Archive(1)+' sw.exe');
                  10..12: begin
                          Game_EXE_Global:=SW_DLC_Archive(2);
+
                            if (SW_DLC_Archive(2) = 'sw.exe') then
                            L.Add('cd dragon');
+
                          end;
                  end;
-
+                 //--------------------------------------------------
                end;
         end;
 
@@ -1123,9 +1131,9 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
     Break;
     end;
 
-    {SINGLE PLAYER + DEBUG}
-    if check_single and menu_debug then
-    MessageBox(Application.Handle,pchar(Game_EXE_Global+#13+Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
+    {DEBUG}
+    if menu_debug then
+    MessageBox(Application.Handle,pchar(CaminhoJogo+#13+Game_EXE_Global+#13+Parametros),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
 
 
 L.SaveToFile(Arq_DosBox);

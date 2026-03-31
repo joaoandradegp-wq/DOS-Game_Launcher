@@ -1133,14 +1133,12 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
 Form1_DGL.gif_dos.Visible:=False;
 //-------------------------------------------------------------------------
+Form1_DGL.img_game.Picture:=Nil;
 
  if FileExists(Caminho_Imagem) then
  Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem)
  else
- begin
- Form1_DGL.img_game.Picture:=Nil;
  Form1_DGL.gif_dos.Visible:=True;
- end;
 
 //----------------------------------------------------------------
 

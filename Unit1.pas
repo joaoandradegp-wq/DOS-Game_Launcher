@@ -112,7 +112,6 @@ type
     combo_doom: TabfComboBox;
     GroupIP: TGroupBox;
     ip_local: TabfEdit;
-    Refresh_Internet: TSpeedButton;
     ip_internet: TabfEdit;
     Label1: TLabel;
     Label2: TLabel;
@@ -129,8 +128,9 @@ type
     cont_seta: TUpDown;
     Label_Name: TLabel;
     btn_start: TButton;
-    Refresh_Lan: TSpeedButton;
     logo_hexen: TabfImage;
+    Refresh_Internet: TBitBtn;
+    Refresh_Lan: TBitBtn;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -171,7 +171,6 @@ type
     procedure RxQuakeServerEnter(Sender: TObject);
     procedure RxQuakeServerOn(Sender: TObject);
     procedure RxQuakeServerOff(Sender: TObject);
-    procedure Refresh_InternetClick(Sender: TObject);
     procedure abfIntegerEdit1Enter(Sender: TObject);
     procedure combo_colorDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -191,7 +190,8 @@ type
     procedure RadioButton3Click(Sender: TObject);
     procedure player_nameChange(Sender: TObject);
     procedure btn_startClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure Refresh_LanClick(Sender: TObject);
+    procedure Refresh_InternetClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -824,13 +824,6 @@ Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
 combo_color.Visible :=Not(RxQuakeServer.StateOn);
 end;
 
-procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
-begin
-//-----------------------------------
-ip_internet.Text:=GetExternalIP;
-//-----------------------------------
-end;
-
 procedure TForm1_DGL.abfIntegerEdit1Enter(Sender: TObject);
 begin
 ActiveControl:=Nil;
@@ -1104,8 +1097,9 @@ Timer_MonitoraAPP.Enabled:=True;
 //-------------------------------
 end;
 
-procedure TForm1_DGL.SpeedButton1Click(Sender: TObject);
+procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);
 begin
+//-----------------------------------------------------------------------------
 
  //------------------------------------------
  {CASO ESTEJA SELECIONADO O CAMPO "SERVIDOR"}
@@ -1156,6 +1150,15 @@ begin
    end;
 
 end;
+//-----------------------------------------------------------------------------
+
+end;
+
+procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
+begin
+//-----------------------------------
+ip_internet.Text:=GetExternalIP;
+//-----------------------------------
 end;
 
 end.
