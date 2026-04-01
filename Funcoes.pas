@@ -652,30 +652,30 @@ CoolStuff_Global:='';
             begin
             //----------------------------------------
             Form1_DGL.RxBrutal.Top    :=232;
-            Form1_DGL.Label_Brutal.Top:=237;
+            Form1_DGL.Label_Brutal.Top:=233;
             Form1_DGL.RxBrutal.StateOn:=False;
             //----------------------------------------
-            Form1_DGL.RxBrutal.Visible        :=True;
-            Form1_DGL.Label_Brutal.Visible    :=True;
-            Form1_DGL.RxDM.Visible            :=False;
-            Form1_DGL.Label_DM.Visible        :=False;
+            Form1_DGL.RxBrutal.Visible    :=True;
+            Form1_DGL.Label_Brutal.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=False;
+            Form1_DGL.Label_DM.Visible    :=False;
             //----------------------------------------
             end;
             {SERVIDOR}
             if (Tipo = 1) then
             begin
             //---------------------------------------
-            Form1_DGL.RxBrutal.Top:=232;
-            Form1_DGL.Label_Brutal.Top:=237;
+            Form1_DGL.RxBrutal.Top    :=232;
+            Form1_DGL.Label_Brutal.Top:=233;
             Form1_DGL.RxBrutal.StateOn:=False;
-            Form1_DGL.RxDM.Top:=256;
-            Form1_DGL.Label_DM.Top:=261;
-            Form1_DGL.RxDM.StateOn:=False;
+            Form1_DGL.RxDM.Top        :=256;
+            Form1_DGL.Label_DM.Top    :=257;
+            Form1_DGL.RxDM.StateOn    :=False;
             //---------------------------------------
-            Form1_DGL.RxBrutal.Visible        :=True;
-            Form1_DGL.Label_Brutal.Visible    :=True;
-            Form1_DGL.RxDM.Visible            :=True;
-            Form1_DGL.Label_DM.Visible        :=True;
+            Form1_DGL.RxBrutal.Visible    :=True;
+            Form1_DGL.Label_Brutal.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=True;
+            Form1_DGL.Label_DM.Visible    :=True;
             //---------------------------------------
             end;
           end;
@@ -683,27 +683,27 @@ CoolStuff_Global:='';
        8: begin
           CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
 
-          Form1_DGL.RxBrutal.Visible         :=False;
-          Form1_DGL.Label_Brutal.Visible     :=False;
+          Form1_DGL.RxBrutal.Visible    :=False;
+          Form1_DGL.Label_Brutal.Visible:=False;
 
             {SERVIDOR E CLIENTE}
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-----------------------------------------
-            Form1_DGL.RxOpcoes.StateOn:=False;
-            Form1_DGL.RxOpcoes.Top:=208;
-            Form1_DGL.Label_Opcoes.Top:=213;
-            Form1_DGL.RxDM.StateOn:=False;
-            Form1_DGL.RxDM.Top:=232;
-            Form1_DGL.Label_DM.Top:=237;
+            Form1_DGL.RxOpcoes.StateOn     :=False;
+            Form1_DGL.RxOpcoes.Top         :=208;
+            Form1_DGL.Label_Opcoes.Top     :=209;
+            Form1_DGL.RxDM.StateOn         :=False;
+            Form1_DGL.RxDM.Top             :=232;
+            Form1_DGL.Label_DM.Top         :=233;
             Form1_DGL.RxQuakeServer.StateOn:=False;
-            Form1_DGL.RxQuakeServer.Top:=256;
-            Form1_DGL.Label_QuakeServer.Top:=261;
+            Form1_DGL.RxQuakeServer.Top    :=256;
+            Form1_DGL.Label_QuakeServer.Top:=257;
             //-------------------------------------------
-            Form1_DGL.RxOpcoes.Visible     :=True;
-            Form1_DGL.Label_Opcoes.Visible :=True;
-            Form1_DGL.RxDM.Visible         :=DirectoryExists(Caminho_Global+'qw\');
-            Form1_DGL.Label_DM.Visible     :=DirectoryExists(Caminho_Global+'qw\');
+            Form1_DGL.RxOpcoes.Visible    :=True;
+            Form1_DGL.Label_Opcoes.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=DirectoryExists(Caminho_Global+'qw\');
+            Form1_DGL.Label_DM.Visible    :=DirectoryExists(Caminho_Global+'qw\');
               if (Tipo = 2) then
               begin
               Form1_DGL.RxQuakeServer.Visible    :=False;
@@ -751,12 +751,12 @@ CoolStuff_Global:='';
             if (Tipo = 1) then
             begin
             //----------------------------------------
-            Form1_DGL.RxDM.Top:=232;
-            Form1_DGL.Label_DM.Top:=237;
+            Form1_DGL.RxDM.Top    :=232;
+            Form1_DGL.Label_DM.Top:=233;
             Form1_DGL.RxDM.StateOn:=False;
             //----------------------------------------
-            Form1_DGL.RxDM.Visible            :=True;
-            Form1_DGL.Label_DM.Visible        :=True;
+            Form1_DGL.RxDM.Visible    :=True;
+            Form1_DGL.Label_DM.Visible:=True;
             //----------------------------------------
             end;
           end;

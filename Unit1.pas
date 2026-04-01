@@ -131,6 +131,7 @@ type
     logo_hexen: TabfImage;
     Refresh_Internet: TBitBtn;
     Refresh_Lan: TBitBtn;
+    Panel2: TPanel;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
