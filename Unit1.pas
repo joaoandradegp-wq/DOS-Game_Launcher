@@ -8,7 +8,7 @@ uses
   pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
   abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
   RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, abfEdits,
-  GraphicEx, acPNG;
+  GraphicEx;
 
 type
 //------------------------------------
