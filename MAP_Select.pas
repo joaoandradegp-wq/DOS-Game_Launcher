@@ -676,7 +676,7 @@ Inc(EPI, 6);
   Game_EXE_Global:=Array_Games[3][5];
 
   {DOOM II - CONSERTA BUG - EXTRA EQUIPMENT IN CO-OP MULTIPLAYER}
-  if (id = 4) and (Form1_DGL.RxDM.StateOn = False) then
+  if (id = 4) and (Form1_DGL.RxDM.Down = False) then
   Map_Global:=Map_Global+' +dmflags 2097152';
 
   {SHADOW WARRIOR - DIFERENCIA AS DLC´s}
@@ -735,7 +735,7 @@ Fecha_ESC:=False;
                 if (id = 8) then
                 begin
                 ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-                  if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.StateOn = False)) then
+                  if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.Down = False)) then
                   Break;
                   if (i = 39) and (Form1_DGL.check_servidor.Checked) then
                   Break;
@@ -963,7 +963,7 @@ Logo_Original:String;
 begin
 Logo_Original:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'+ExtractNamePath(Array_Games[id][1])+'.png';
 
-  if (Form1_DGL.RxQuakeServer.StateOn = False) then
+  if (Form1_DGL.RxQuakeServer.Down = False) then
   Form1_DGL.img_game.Picture.LoadFromFile(Logo_Original);
 
 Nome_DLC_Global:='';

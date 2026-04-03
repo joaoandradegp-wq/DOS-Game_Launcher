@@ -77,19 +77,14 @@ type
     Menu_Opcoes: TMenuItem;
     Menu_Ajuda: TMenuItem;
     N1: TMenuItem;
-    RxControle: TRxSwitch;
-    RxSense: TRxSwitch;
     Label_Controle: TLabel;
     Label_Sense: TLabel;
     PopupMenu1: TPopupMenu;
     popup_pasta: TMenuItem;
     config_menu: TMenuItem;
     Label_Brutal: TLabel;
-    RxBrutal: TRxSwitch;
     LoadingMod: TOpenDialog;
-    RxOpcoes: TRxSwitch;
     Label_Opcoes: TLabel;
-    RxDM: TRxSwitch;
     Label_DM: TLabel;
     img_por: TImage;
     popup_qw: TMenuItem;
@@ -97,7 +92,6 @@ type
     popup_de: TMenuItem;
     menu_linha: TMenuItem;
     popup_commit: TMenuItem;
-    RxQuakeServer: TRxSwitch;
     Label_QuakeServer: TLabel;
     logo_doom: TImage;
     logo_quake: TImage;
@@ -131,6 +125,12 @@ type
     logo_hexen: TabfImage;
     Refresh_Internet: TBitBtn;
     Refresh_Lan: TBitBtn;
+    RxControle: TSpeedButton;
+    RxSense: TSpeedButton;
+    RxBrutal: TSpeedButton;
+    RxOpcoes: TSpeedButton;
+    RxDM: TSpeedButton;
+    RxQuakeServer: TSpeedButton;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -143,34 +143,17 @@ type
     procedure FormDblClick(Sender: TObject);
     procedure Menu_FirewallClick(Sender: TObject);
     procedure Menu_SiteClick(Sender: TObject);
-    procedure RxControleEnter(Sender: TObject);
-    procedure RxBrutalEnter(Sender: TObject);
     procedure PNGButton1Click(Sender: TObject);
-    procedure RxControleOn(Sender: TObject);
-    procedure RxControleOff(Sender: TObject);
-    procedure RxBrutalOn(Sender: TObject);
-    procedure RxBrutalOff(Sender: TObject);
-    procedure RxSenseOn(Sender: TObject);
     procedure popup_pastaClick(Sender: TObject);
     procedure config_menuClick(Sender: TObject);
     procedure RxCheckListBox1Exit(Sender: TObject);
-    procedure RxOpcoesOn(Sender: TObject);
-    procedure RxOpcoesEnter(Sender: TObject);
-    procedure RxDMEnter(Sender: TObject);
-    procedure RxSenseEnter(Sender: TObject);
-    procedure RxDMOff(Sender: TObject);
-    procedure RxDMOn(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure RxOpcoesOff(Sender: TObject);
     procedure RxCheckListBox1MouseDown(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure popup_qwClick(Sender: TObject);
     procedure popup_saClick(Sender: TObject);
     procedure popup_deClick(Sender: TObject);
     procedure popup_commitClick(Sender: TObject);
-    procedure RxQuakeServerEnter(Sender: TObject);
-    procedure RxQuakeServerOn(Sender: TObject);
-    procedure RxQuakeServerOff(Sender: TObject);
     procedure abfIntegerEdit1Enter(Sender: TObject);
     procedure combo_colorDrawItem(Control: TWinControl; Index: Integer;
       Rect: TRect; State: TOwnerDrawState);
@@ -192,6 +175,12 @@ type
     procedure btn_startClick(Sender: TObject);
     procedure Refresh_LanClick(Sender: TObject);
     procedure Refresh_InternetClick(Sender: TObject);
+    procedure RxControleClick(Sender: TObject);
+    procedure RxSenseClick(Sender: TObject);
+    procedure RxBrutalClick(Sender: TObject);
+    procedure RxOpcoesClick(Sender: TObject);
+    procedure RxDMClick(Sender: TObject);
+    procedure RxQuakeServerClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -565,61 +554,6 @@ Form6_Mouse.ShowModal;
 Form6_Mouse.Free;
 end;
 
-procedure TForm1_DGL.RxControleOn(Sender: TObject);
-begin
- {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
- if (id = 1) or (id = 5) or (id = 10) then
- begin
- RxSense.Visible:=True;
- Label_Sense.Visible:=True;
- end;
-Label_Controle.Caption:='MOUSE';
-end;
-
-procedure TForm1_DGL.RxBrutalOn(Sender: TObject);
-var
-Nome: string;
-begin
-Nome:=LowerCase(ExtractFileName(LoadingMod.FileName));
-
-LoadingMod.FileName:='';
-LoadingMod.InitialDir:=Caminho_Global;
-
- if LoadingMod.Execute then
- DoomMod_Global:=LoadingMod.FileName;
-
- if BlockIWAD(LoadingMod.FileName,True) or BlockIWAD(LoadingMod.FileName,False) then
- begin
- LoadingMod.FileName:='';
- RxBrutal.StateOn:=False;
- MessageBox(Application.Handle,PChar(Lang_DGL(32)),PChar(Application.Title),MB_ICONERROR+MB_OK);
- RxBrutal.StateOn:=True;
- end;
-
- if Length(DoomMod_Global) = 0 then
- RxBrutal.StateOn:=False;
-
-end;
-
-procedure TForm1_DGL.RxControleOff(Sender: TObject);
-begin
-RxSense.Visible:=False;
-Label_Sense.Visible:=False;
-Label_Controle.Caption:=Lang_DGL(18);
-end;
-
-procedure TForm1_DGL.RxBrutalOff(Sender: TObject);
-begin
-DoomMod_Global:='';
-end;
-
-procedure TForm1_DGL.RxSenseOn(Sender: TObject);
-begin
-Application.CreateForm(TForm6_Mouse, Form6_Mouse);
-Form6_Mouse.ShowModal;
-Form6_Mouse.Free;
-end;
-
 procedure TForm1_DGL.popup_pastaClick(Sender: TObject);
 begin
 ShellExecute(Application.Handle,'open',pchar(Caminho_Global),nil,nil,SW_SHOWNORMAL);
@@ -643,84 +577,9 @@ begin
 RxCheckListBox1.PopupMenu:=Nil;
 end;
 
-procedure TForm1_DGL.RxOpcoesOn(Sender: TObject);
-begin
-Application.CreateForm(TForm3_NameFun, Form3_NameFun);
-Form3_NameFun.ShowModal;
-Form3_NameFun.Free;
-end;
-
-procedure TForm1_DGL.RxOpcoesEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.RxControleEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.RxSenseEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.RxBrutalEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.RxDMEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
-
-procedure TForm1_DGL.RxQuakeServerEnter(Sender: TObject);
-begin
-ActiveControl:=Nil;
-end;
- 
-procedure TForm1_DGL.RxDMOff(Sender: TObject);
-begin
-Label_DM.Caption:=Lang_DGL(21);
-
- if (Array_Games[id][7] = 'ZDOOM') then
- DoomDM_Global:='';
-
- if (id = 8) then
- begin
- Form1_DGL.RxQuakeServer.StateOn    :=False;
- Form1_DGL.RxQuakeServer.Visible    :=False;
- Form1_DGL.Label_QuakeServer.Visible:=False;
- end;
-
-end;
-
-procedure TForm1_DGL.RxDMOn(Sender: TObject);
-begin
-Label_DM.Caption:='DEATHMATCH';
-
- if (Array_Games[id][7] = 'ZDOOM') then
- DoomDM_Global:=' -deathmatch -nomonsters ';
-
- if (id = 8) and (check_cliente.Checked = False) then
- begin
- Form1_DGL.RxQuakeServer.Visible    :=True;
- Form1_DGL.Label_QuakeServer.Visible:=True;
- end;
-
-end;
-
 procedure TForm1_DGL.FormCreate(Sender: TObject);
 begin
 Lang_DGL(0);
-end;
-
-procedure TForm1_DGL.RxOpcoesOff(Sender: TObject);
-begin
-Form1_DGL.label_name.Enabled:=True;
-Form1_DGL.player_name.Enabled:=True;
-CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
 end;
 
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;
@@ -806,22 +665,6 @@ Caminho_Conf:String;
 begin
 Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'COMMIT.dat';
 WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
-end;
-
-procedure TForm1_DGL.RxQuakeServerOn(Sender: TObject);
-begin
-img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
-RxOpcoes.Enabled    :=Not(RxQuakeServer.StateOn);
-Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
-combo_color.Visible :=Not(RxQuakeServer.StateOn);
-end;
-
-procedure TForm1_DGL.RxQuakeServerOff(Sender: TObject);
-begin
-img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
-RxOpcoes.Enabled    :=Not(RxQuakeServer.StateOn);
-Label_Opcoes.Enabled:=Not(RxQuakeServer.StateOn);
-combo_color.Visible :=Not(RxQuakeServer.StateOn);
 end;
 
 procedure TForm1_DGL.abfIntegerEdit1Enter(Sender: TObject);
@@ -1034,11 +877,11 @@ case id of
 
    {BLOOD - DUKE NUKEM - SHADOW WARRIOR} 
    1,5,10:
-   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.StateOn,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.Down,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
 
    {QUAKE}
    8:
-   QUAKE_Bind_Spasm(id,RxDM.StateOn,RxQuakeServer.StateOn);
+   QUAKE_Bind_Spasm(id,RxDM.Down,RxQuakeServer.Down);
 
    {CONSTRUCTOR - RISE OF THE TRIAD - WARCRAFT II}
    2,9,11:
@@ -1050,7 +893,7 @@ case id of
    Map_Global:='';
    ConfigureZDoom(
      id,
-     RxControle.StateOn,
+     RxControle.Down,
      menu_debug.Checked,
      player_name.Text,
      Config_Game_Global,
@@ -1159,6 +1002,144 @@ begin
 //-----------------------------------
 ip_internet.Text:=GetExternalIP;
 //-----------------------------------
+end;
+
+procedure TForm1_DGL.RxControleClick(Sender: TObject);
+begin
+  if RxControle.Down then
+  begin
+    {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
+    if (id = 1) or (id = 5) or (id = 10) then
+    begin
+    RxSense.Visible:=True;
+    Label_Sense.Visible:=True;
+    end;
+  Label_Controle.Caption:='MOUSE';
+  end
+  else
+  begin
+  RxSense.Visible:=False;
+  Label_Sense.Visible:=False;
+  Label_Controle.Caption:=Lang_DGL(18);
+  end;
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.RxSenseClick(Sender: TObject);
+begin
+  if RxSense.Down then
+  begin
+  Application.CreateForm(TForm6_Mouse, Form6_Mouse);
+  Form6_Mouse.ShowModal;
+  Form6_Mouse.Free;
+  end;
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.RxBrutalClick(Sender: TObject);
+var
+Nome:String;
+begin
+  if RxBrutal.Down then
+  begin
+  Nome:=LowerCase(ExtractFileName(LoadingMod.FileName));
+  LoadingMod.FileName:='';
+  LoadingMod.InitialDir:=Caminho_Global;
+
+    if LoadingMod.Execute then
+    DoomMod_Global:=LoadingMod.FileName;
+         
+    if BlockIWAD(LoadingMod.FileName,True) or BlockIWAD(LoadingMod.FileName,False) then
+    begin
+    LoadingMod.FileName:='';
+    RxBrutal.Down:=False;
+    MessageBox(Application.Handle,PChar(Lang_DGL(32)),PChar(Application.Title),MB_ICONERROR+MB_OK);
+    RxBrutal.Down:=True;
+    end;
+
+    if Length(DoomMod_Global) = 0 then
+    RxBrutal.Down:=False;
+  end
+  else
+  DoomMod_Global:='';
+
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.RxOpcoesClick(Sender: TObject);
+begin
+  if RxOpcoes.Down then
+  begin
+  Application.CreateForm(TForm3_NameFun, Form3_NameFun);
+  Form3_NameFun.ShowModal;
+  Form3_NameFun.Free;
+  end
+  else
+  begin
+  Form1_DGL.label_name.Enabled:=True;
+  Form1_DGL.player_name.Enabled:=True;
+  CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
+  end;
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.RxDMClick(Sender: TObject);
+begin
+  if RxDM.Down then
+  begin
+  Label_DM.Caption:='DEATHMATCH';
+
+    if (Array_Games[id][7] = 'ZDOOM') then
+    DoomDM_Global:=' -deathmatch -nomonsters ';
+
+    if (id = 8) and (check_cliente.Checked = False) then
+    begin
+    Form1_DGL.RxQuakeServer.Visible    :=True;
+    Form1_DGL.Label_QuakeServer.Visible:=True;
+    end;
+    
+  end
+  else
+  begin
+  Label_DM.Caption:=Lang_DGL(21);
+
+    if (Array_Games[id][7] = 'ZDOOM') then
+    DoomDM_Global:='';
+
+    if (id = 8) then
+    begin
+    Form1_DGL.RxQuakeServer.Down:=False; 
+    //--------------------------------------------
+    img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
+    RxOpcoes.Enabled    :=not RxDM.Down;
+    Label_Opcoes.Enabled:=not RxDM.Down;
+    combo_color.Visible :=not RxDM.Down;
+    //--------------------------------------------
+    Form1_DGL.RxQuakeServer.Visible    :=False;
+    Form1_DGL.Label_QuakeServer.Visible:=False;
+    end;
+    
+  end;
+ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.RxQuakeServerClick(Sender: TObject);
+begin
+  if RxQuakeServer.Down then
+  begin
+  img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
+  RxOpcoes.Enabled    :=Not(RxQuakeServer.Down);
+  Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);
+  combo_color.Visible :=Not(RxQuakeServer.Down);
+  end
+  else
+  begin
+  img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
+  RxOpcoes.Enabled    :=Not(RxQuakeServer.Down);
+  Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);
+  combo_color.Visible :=Not(RxQuakeServer.Down);
+  end;
+ActiveControl:=Nil;
 end;
 
 end.

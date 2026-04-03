@@ -522,7 +522,7 @@ Opt.ExtraDMParams := DoomDM_Global;
 //-----------------------------------------------------
 
   {SELEÇÃO DE MAPA}
-  if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') and (Form1_DGL.RxBrutal.StateOn = False) then
+  if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') and (Form1_DGL.RxBrutal.Down = False) then
   begin
     if Assigned(SelectMap) then
     Map := SelectMap;
@@ -532,7 +532,7 @@ Opt.ExtraDMParams := DoomDM_Global;
   end;
 
   {DOOM II - MOD DE FASE PARA COMEÇAR NA PRIMEIRA}
-  if (id = 4) and (Form1_DGL.RxBrutal.StateOn) then
+  if (id = 4) and (Form1_DGL.RxBrutal.Down) then
   Map := 'MAP01';
 
   {DEBUG MODE - SIMULAR MULTIPLAYER}

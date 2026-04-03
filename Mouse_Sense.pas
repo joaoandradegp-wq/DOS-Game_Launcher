@@ -83,7 +83,7 @@ end;
 procedure TForm6_Mouse.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 Form1_DGL.RxCheckListBox1.SetFocus;
-Form1_DGL.RxSense.StateOn:=False;
+Form1_DGL.RxSense.Down:=False;
 Form6_Mouse.Release;
 Form6_Mouse:=Nil;
 end;

@@ -113,7 +113,7 @@ end;
 procedure TForm3_NameFun.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 if CoolStuff_Global = '+name '+Trim(Form1_DGL.player_name.Text) then
-Form1_DGL.RxOpcoes.StateOn:=False;
+Form1_DGL.RxOpcoes.Down:=False;
 
 Form3_NameFun.Release;
 Form3_NameFun:=Nil;
@@ -144,7 +144,7 @@ RxFolderMonitor1.Active:=True;
 Listar_Arquivos(ListBox_Nome,Caminho_Nome,'scr');
 Caminho_Skin:=Caminho_Nome+'skins\';
 
-  if Form1_DGL.RxDM.StateOn = True then
+  if Form1_DGL.RxDM.Down = True then
   begin
   RxFolderMonitor2.FolderName:=Caminho_Skin;
   RxFolderMonitor2.Active:=True;
@@ -158,13 +158,13 @@ Caminho_Skin:=Caminho_Nome+'skins\';
   else
   Mensagem_SemNome.Visible:=False;
 
-  if (ListBox_Skin.Items.Count = 0) and (Form1_DGL.RxDM.StateOn = False) then
+  if (ListBox_Skin.Items.Count = 0) and (Form1_DGL.RxDM.Down = False) then
   Mensagem_SemSkin.Visible:=True
   else
   Mensagem_SemSkin.Visible:=False;
   //----------------------------------
 
-  if (ListBox_Skin.Items.Count = 1) and (Form1_DGL.RxDM.StateOn = True) and (ListBox_Skin.Items[0] = 'base') then
+  if (ListBox_Skin.Items.Count = 1) and (Form1_DGL.RxDM.Down = True) and (ListBox_Skin.Items[0] = 'base') then
   btn_skins.Enabled:=True;;
 
   //------------------------------------------------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ Caminho_Skin:=Caminho_Nome+'skins\';
   MessageBox(Application.Handle,pchar(CaminhoQW),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
   //------------------------------------------------------------------------------------------------------------------------
 
-  if Form1_DGL.RxDM.StateOn = True then
+  if Form1_DGL.RxDM.Down = True then
   begin
   ArquivoQW:=TStringList.Create;
   ArquivoQW.LoadFromFile(CaminhoQW);

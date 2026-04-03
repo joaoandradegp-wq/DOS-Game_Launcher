@@ -192,7 +192,7 @@ begin
     Form1_DGL.check_single.Checked,
     Form1_DGL.check_servidor.Checked,
     Form1_DGL.check_cliente.Checked,
-    Form1_DGL.RxOpcoes.StateOn,
+    Form1_DGL.RxOpcoes.Down,
     Form1_DGL.player_name.Text,
     CoolStuff_Global,
     Form1_DGL.combo_color.ItemIndex,
