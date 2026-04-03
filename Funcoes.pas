@@ -653,7 +653,7 @@ CoolStuff_Global:='';
             //----------------------------------------
             Form1_DGL.RxBrutal.Top    :=232;
             Form1_DGL.Label_Brutal.Top:=233;
-            Form1_DGL.RxBrutal.StateOn:=False;
+            Form1_DGL.RxBrutal.Down:=False;
             //----------------------------------------
             Form1_DGL.RxBrutal.Visible    :=True;
             Form1_DGL.Label_Brutal.Visible:=True;
@@ -667,10 +667,10 @@ CoolStuff_Global:='';
             //---------------------------------------
             Form1_DGL.RxBrutal.Top    :=232;
             Form1_DGL.Label_Brutal.Top:=233;
-            Form1_DGL.RxBrutal.StateOn:=False;
+            Form1_DGL.RxBrutal.Down   :=False;
             Form1_DGL.RxDM.Top        :=256;
             Form1_DGL.Label_DM.Top    :=257;
-            Form1_DGL.RxDM.StateOn    :=False;
+            Form1_DGL.RxDM.Down       :=False;
             //---------------------------------------
             Form1_DGL.RxBrutal.Visible    :=True;
             Form1_DGL.Label_Brutal.Visible:=True;
@@ -690,13 +690,13 @@ CoolStuff_Global:='';
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-----------------------------------------
-            Form1_DGL.RxOpcoes.StateOn     :=False;
+            Form1_DGL.RxOpcoes.Down        :=False;
             Form1_DGL.RxOpcoes.Top         :=208;
             Form1_DGL.Label_Opcoes.Top     :=209;
-            Form1_DGL.RxDM.StateOn         :=False;
+            Form1_DGL.RxDM.Down            :=False;
             Form1_DGL.RxDM.Top             :=232;
             Form1_DGL.Label_DM.Top         :=233;
-            Form1_DGL.RxQuakeServer.StateOn:=False;
+            Form1_DGL.RxQuakeServer.Down   :=False;
             Form1_DGL.RxQuakeServer.Top    :=256;
             Form1_DGL.Label_QuakeServer.Top:=257;
             //-------------------------------------------
@@ -753,7 +753,7 @@ CoolStuff_Global:='';
             //----------------------------------------
             Form1_DGL.RxDM.Top    :=232;
             Form1_DGL.Label_DM.Top:=233;
-            Form1_DGL.RxDM.StateOn:=False;
+            Form1_DGL.RxDM.Down   :=False;
             //----------------------------------------
             Form1_DGL.RxDM.Visible    :=True;
             Form1_DGL.Label_DM.Visible:=True;
@@ -1354,8 +1354,8 @@ Form1_DGL.logo_wolf3d.Visible     := False;
                        end;
                        //-------------------------------------
 
-                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.StateOn;
-                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.StateOn;
+                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.Down;
+                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.Down;
                      end
                      else
                      begin
@@ -1400,14 +1400,14 @@ Form1_DGL.logo_wolf3d.Visible     := False;
 
                          if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=True;
+                         Form1_DGL.RxControle.Down:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          Form1_DGL.RxSense.Visible:=True;
                          Form1_DGL.Label_Sense.Visible:=True;
                          end
                          else
                          begin
-                         Form1_DGL.RxControle.StateOn:=False;
+                         Form1_DGL.RxControle.Down:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
                          Form1_DGL.RxSense.Visible:=False;
                          Form1_DGL.Label_Sense.Visible:=False;
@@ -1434,13 +1434,13 @@ Form1_DGL.logo_wolf3d.Visible     := False;
 
                          if Pos('use_mouse=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=True;
+                         Form1_DGL.RxControle.Down:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          end;
 
                          if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=False;
+                         Form1_DGL.RxControle.Down:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
                          end;
 
