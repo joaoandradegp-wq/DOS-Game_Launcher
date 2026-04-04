@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 635
-  Top = 92
+  Left = 717
+  Top = 127
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -9601,7 +9601,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_Controle: TLabel
     Left = 520
-    Top = 212
+    Top = 213
     Width = 41
     Height = 12
     Caption = 'TECLADO'
@@ -9616,7 +9616,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_Sense: TLabel
     Left = 520
-    Top = 233
+    Top = 237
     Width = 87
     Height = 12
     Caption = 'MOUSE SENSITIVITY'
@@ -9631,7 +9631,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_Brutal: TLabel
     Left = 520
-    Top = 257
+    Top = 261
     Width = 28
     Height = 12
     Caption = 'MODS'
@@ -9646,7 +9646,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_Opcoes: TLabel
     Left = 520
-    Top = 282
+    Top = 285
     Width = 36
     Height = 12
     Caption = 'OP'#199#213'ES'
@@ -9661,7 +9661,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_DM: TLabel
     Left = 520
-    Top = 305
+    Top = 309
     Width = 61
     Height = 12
     Caption = 'DEATHMATCH'
@@ -9676,7 +9676,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Label_QuakeServer: TLabel
     Left = 520
-    Top = 329
+    Top = 333
     Width = 85
     Height = 12
     Caption = 'DEDICATED SERVER'
@@ -9691,9 +9691,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxControle: TSpeedButton
     Left = 480
-    Top = 208
+    Top = 212
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 1
     Flat = True
@@ -9702,9 +9702,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxSense: TSpeedButton
     Left = 480
-    Top = 232
+    Top = 236
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 2
     Flat = True
@@ -9713,9 +9713,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxBrutal: TSpeedButton
     Left = 480
-    Top = 256
+    Top = 260
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 3
     Flat = True
@@ -9724,9 +9724,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxOpcoes: TSpeedButton
     Left = 480
-    Top = 280
+    Top = 284
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 4
     Flat = True
@@ -9735,9 +9735,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxDM: TSpeedButton
     Left = 480
-    Top = 304
+    Top = 308
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 5
     Flat = True
@@ -9746,9 +9746,9 @@ object Form1_DGL: TForm1_DGL
   end
   object RxQuakeServer: TSpeedButton
     Left = 480
-    Top = 328
+    Top = 332
     Width = 35
-    Height = 20
+    Height = 15
     AllowAllUp = True
     GroupIndex = 6
     Flat = True
@@ -9841,7 +9841,6 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
-      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000

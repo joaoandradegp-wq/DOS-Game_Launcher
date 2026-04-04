@@ -569,7 +569,7 @@ CoolStuff_Global:='';
      Form1_DGL.player_name.Enabled:=True;
      Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
      //---------------------------------------------------------
-       if (Form1_DGL.player_name.Enabled = True) then            {Verificar AQUI}
+       if (Form1_DGL.player_name.Enabled = True) then            
        Form1_DGL.player_name.SetFocus
        else
        Form1_DGL.RxCheckListBox1.SetFocus;
@@ -617,13 +617,13 @@ CoolStuff_Global:='';
      Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],'');
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
-     if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
-     Form1_DGL.ip_porta.Text:=Array_Games[id][8];
-     //-----------------------------------------------
-     if Length(Form1_DGL.ip_local.Text) = 0 then
-     Form1_DGL.Refresh_Lan.Enabled:=False
-     else
-     Form1_DGL.Refresh_Lan.Enabled:=True;
+       if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
+       Form1_DGL.ip_porta.Text:=Array_Games[id][8];
+       //-----------------------------------------------
+       if Length(Form1_DGL.ip_local.Text) = 0 then
+       Form1_DGL.Refresh_Lan.Enabled:=False
+       else
+       Form1_DGL.Refresh_Lan.Enabled:=True;
      //-----------------------------------------------
      Form1_DGL.Refresh_Internet.Enabled:=False;
      //-----------------------------------------------
@@ -642,19 +642,22 @@ CoolStuff_Global:='';
   case id of
      {DOOM + DOOM II}
      3,4: begin
-          Form1_DGL.RxOpcoes.Visible     :=False;
-          Form1_DGL.Label_Opcoes.Visible :=False;
+          //----------------------------
+          Form1_DGL.RxBrutal.Glyph:=Nil;
+          //----------------------------
+          Form1_DGL.RxOpcoes.Visible    :=False;
+          Form1_DGL.Label_Opcoes.Visible:=False;
           Form1_DGL.RxQuakeServer.Visible    :=False;
           Form1_DGL.Label_QuakeServer.Visible:=False;
 
             {SINGLE PLAYER E CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
-            //----------------------------------------
-            Form1_DGL.RxBrutal.Top    :=232;
-            Form1_DGL.Label_Brutal.Top:=233;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
             Form1_DGL.RxBrutal.Down:=False;
-            //----------------------------------------
+            //------------------------------------------------------
             Form1_DGL.RxBrutal.Visible    :=True;
             Form1_DGL.Label_Brutal.Visible:=True;
             Form1_DGL.RxDM.Visible        :=False;
@@ -664,14 +667,14 @@ CoolStuff_Global:='';
             {SERVIDOR}
             if (Tipo = 1) then
             begin
-            //---------------------------------------
-            Form1_DGL.RxBrutal.Top    :=232;
-            Form1_DGL.Label_Brutal.Top:=233;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
             Form1_DGL.RxBrutal.Down   :=False;
-            Form1_DGL.RxDM.Top        :=256;
-            Form1_DGL.Label_DM.Top    :=257;
+            Form1_DGL.RxDM.Top        :=Form1_DGL.RxBrutal.Top+24;
+            Form1_DGL.Label_DM.Top    :=Form1_DGL.RxDM.Top+1;
             Form1_DGL.RxDM.Down       :=False;
-            //---------------------------------------
+            //------------------------------------------------------
             Form1_DGL.RxBrutal.Visible    :=True;
             Form1_DGL.Label_Brutal.Visible:=True;
             Form1_DGL.RxDM.Visible        :=True;
@@ -689,17 +692,17 @@ CoolStuff_Global:='';
             {SERVIDOR E CLIENTE}
             if (Tipo = 1) or (Tipo = 2) then
             begin
-            //-----------------------------------------
+            //-------------------------------------------------------------
             Form1_DGL.RxOpcoes.Down        :=False;
-            Form1_DGL.RxOpcoes.Top         :=208;
-            Form1_DGL.Label_Opcoes.Top     :=209;
+            Form1_DGL.RxOpcoes.Top         :=Form1_DGL.RxControle.Top;
+            Form1_DGL.Label_Opcoes.Top     :=Form1_DGL.RxOpcoes.Top+1;
             Form1_DGL.RxDM.Down            :=False;
-            Form1_DGL.RxDM.Top             :=232;
-            Form1_DGL.Label_DM.Top         :=233;
+            Form1_DGL.RxDM.Top             :=Form1_DGL.RxOpcoes.Top+24;
+            Form1_DGL.Label_DM.Top         :=Form1_DGL.RxDM.Top+1;
             Form1_DGL.RxQuakeServer.Down   :=False;
-            Form1_DGL.RxQuakeServer.Top    :=256;
-            Form1_DGL.Label_QuakeServer.Top:=257;
-            //-------------------------------------------
+            Form1_DGL.RxQuakeServer.Top    :=Form1_DGL.RxDM.Top+24;;
+            Form1_DGL.Label_QuakeServer.Top:=Form1_DGL.RxQuakeServer.Top+1;
+            //-------------------------------------------------------------
             Form1_DGL.RxOpcoes.Visible    :=True;
             Form1_DGL.Label_Opcoes.Visible:=True;
             Form1_DGL.RxDM.Visible        :=DirectoryExists(Caminho_Global+'qw\');
@@ -750,11 +753,11 @@ CoolStuff_Global:='';
             {SERVIDOR}
             if (Tipo = 1) then
             begin
-            //----------------------------------------
-            Form1_DGL.RxDM.Top    :=232;
-            Form1_DGL.Label_DM.Top:=233;
+            //--------------------------------------------------
+            Form1_DGL.RxDM.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_DM.Top:=Form1_DGL.RxDM.Top+1;
             Form1_DGL.RxDM.Down   :=False;
-            //----------------------------------------
+            //--------------------------------------------------
             Form1_DGL.RxDM.Visible    :=True;
             Form1_DGL.Label_DM.Visible:=True;
             //----------------------------------------
@@ -1381,6 +1384,17 @@ Form1_DGL.logo_wolf3d.Visible     := False;
                          //----------------------------------------------------------------------------
                          {PADRÃO DA SENSIBILIDADE DO MOUSE - 01/02}
                          //----------------------------------------------------------------------------
+                         if (id = 10) then
+                         begin
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(SW_MouseAnalogX));
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY));
+                         end
+                         else
+                         begin
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(ID_MouseAnalogX));
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY));
+                         end;
+                         {
                          if Pos('MouseAnalogScale0 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                            if (id = 10) then
@@ -1396,6 +1410,7 @@ Form1_DGL.logo_wolf3d.Visible     := False;
                            else
                            Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY);
                          end;
+                         }
                          //----------------------------------------------------------------------------
 
                          if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then

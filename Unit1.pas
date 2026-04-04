@@ -1054,14 +1054,19 @@ begin
     LoadingMod.FileName:='';
     RxBrutal.Down:=False;
     MessageBox(Application.Handle,PChar(Lang_DGL(32)),PChar(Application.Title),MB_ICONERROR+MB_OK);
-    RxBrutal.Down:=True;
-    end;
+    end
+    else
+    Lista_Imagens.GetBitmap(5,RxBrutal.Glyph.Create);
 
     if Length(DoomMod_Global) = 0 then
     RxBrutal.Down:=False;
+    
   end
   else
+  begin
   DoomMod_Global:='';
+  RxBrutal.Glyph:=Nil;
+  end;
 
 ActiveControl:=Nil;
 end;
@@ -1080,6 +1085,7 @@ begin
   Form1_DGL.player_name.Enabled:=True;
   CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
   end;
+
 ActiveControl:=Nil;
 end;
 
@@ -1120,6 +1126,7 @@ begin
     end;
 
   end;
+
 ActiveControl:=Nil;
 end;
 
@@ -1139,6 +1146,7 @@ begin
   Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);
   combo_color.Visible :=Not(RxQuakeServer.Down);
   end;
+  
 ActiveControl:=Nil;
 end;
 
