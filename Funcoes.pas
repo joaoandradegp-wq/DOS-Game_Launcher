@@ -5,8 +5,13 @@ interface
 uses
   IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, ShellApi,
   Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
-  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language;
+  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons;
 
+//----------------------------------------------------------------------
+procedure MostrarLogo(ID: Integer);
+//----------------------------------------------------------------------
+procedure ResetarBotoes;
+procedure ResetarBotoesInterno;
 //----------------------------------------------------------------------
 {NO_DOSBOX_Bind e DOSBOX_Bind_FPS}
 //----------------------------------------------------------------------
@@ -28,7 +33,7 @@ function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
 function  GetLanguageWin:String;
-procedure Firewall(Pasta,Executavel:String);
+procedure FirewallBatch;
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
 function  AppAberto(const NomeExe: string): Boolean;
@@ -54,6 +59,136 @@ implementation
 
 uses DOSBOX_Bind_FPS, Quake_Bind;
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure MostrarLogo(ID: Integer);
+var
+i: Integer;
+begin
+SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+
+  try
+    for i := 0 to Form1_DGL.ControlCount - 1 do
+    begin
+      if Pos('logo_', Form1_DGL.Controls[i].Name) = 1 then
+      Form1_DGL.Controls[i].Visible := False;
+    end;
+
+    case ID of
+      1: Form1_DGL.logo_blood.Visible      := True;
+      2: Form1_DGL.logo_constructor.Visible:= True;
+    3,4: Form1_DGL.logo_doom.Visible       := True;
+      5: Form1_DGL.logo_duke3d.Visible     := True;
+      6: Form1_DGL.logo_heretic.Visible    := True;
+      7: Form1_DGL.logo_hexen.Visible      := True;
+      8: Form1_DGL.logo_quake.Visible      := True;
+      9: Form1_DGL.logo_rott.Visible       := True;
+     10: Form1_DGL.logo_shadow.Visible     := True;
+     11: Form1_DGL.logo_warcraft.Visible   := True;
+     12: Form1_DGL.logo_wolf3d.Visible     := True;
+    end;
+
+  finally
+  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
+  Form1_DGL.Invalidate;
+  end;
+  
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ResetarBotoes;
+begin
+SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+  try
+  ResetarBotoesInterno;
+  finally
+  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
+  Form1_DGL.Invalidate;
+  end;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ResetarBotoesInterno;
+var
+i: Integer;
+Botoes: array[0..5] of TSpeedButton;
+Labels: array[0..5] of TLabel;
+begin
+Form1_DGL.img_game.Picture:=Nil;
+
+Botoes[0] := Form1_DGL.RxControle;
+Botoes[1] := Form1_DGL.RxSense;
+Botoes[2] := Form1_DGL.RxBrutal;
+Botoes[3] := Form1_DGL.RxOpcoes;
+Botoes[4] := Form1_DGL.RxDM;
+Botoes[5] := Form1_DGL.RxQuakeServer;
+
+Labels[0] := Form1_DGL.Label_Controle;
+Labels[1] := Form1_DGL.Label_Sense;
+Labels[2] := Form1_DGL.Label_Brutal;
+Labels[3] := Form1_DGL.Label_Opcoes;
+Labels[4] := Form1_DGL.Label_DM;
+Labels[5] := Form1_DGL.Label_QuakeServer;
+
+  for i := Low(Botoes) to High(Botoes) do
+  begin
+    if Assigned(Botoes[i]) then
+    begin
+      with Botoes[i] do
+      begin
+        if Down then
+        Down := False;
+        //-----------------
+        if not Enabled then
+        Enabled := True;
+        //-----------------
+        if Visible then
+        Visible := False;
+      end;
+    end;
+  end;
+
+  for i := Low(Labels) to High(Labels) do
+  begin
+    if Assigned(Labels[i]) then
+    begin
+      with Labels[i] do
+      begin
+        if not Enabled then
+        Enabled := True;
+        //-----------------
+        if Visible then
+        Visible := False;
+      end;
+    end;
+  end;
+  {COOPERATIVO/DEATHMATCH}
+  Form1_DGL.Label_DM.Caption:=Lang_DGL(21);
+
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure FirewallBatch;
+const
+APP01='CONFIG\bin\DOSBox.exe';
+APP02='CONFIG\bin\zdoom\zdoom.exe';
+APP03='DOS\QUAKE\qwcl.exe';
+APP04='DOS\QUAKE\qwsv.exe';
+APP05='DOS\QUAKE\quakespasm.exe';
+var
+cmd,BasePath: String;
+begin
+BasePath:=ExtractFilePath(Application.ExeName);
+
+cmd :=
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP01)+'" dir=in action=allow program="' + BasePath + APP01 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP02)+'" dir=in action=allow program="' + BasePath + APP02 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP03)+'" dir=in action=allow program="' + BasePath + APP03 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP04)+'" dir=in action=allow program="' + BasePath + APP04 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP05)+'" dir=in action=allow program="' + BasePath + APP05 + '" enable=yes';
+
+ShellExecute(0, 'runas', 'cmd.exe', PChar('/c ' + Cmd), nil, SW_HIDE);
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
@@ -349,38 +484,6 @@ FillChar(Dados,SizeOf(Dados), 0);
   fFlags:=FOF_ALLOWUNDO;
   end;
 SHFileOperation(dados);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function Windows64:Boolean;
-type
-TIsWow64Process = function(AHandle:THandle; var AIsWow64: BOOL): BOOL; stdcall;
-var
-vKernel32Handle:DWORD;
-vIsWow64Process:TIsWow64Process;
-vIsWow64:BOOL;
-begin
-Result:=False;
-vKernel32Handle:=LoadLibrary('kernel32.dll');
-
-if (vKernel32Handle = 0) then
-Exit;
-
-  try
-  @vIsWow64Process := GetProcAddress(vKernel32Handle,'IsWow64Process');
-
-    if not Assigned(vIsWow64Process) then
-    Exit;
-
-  vIsWow64 := False;
-
-    if (vIsWow64Process(GetCurrentProcess,vIsWow64)) then
-    Result := vIsWow64;
-
-  finally
-  FreeLibrary(vKernel32Handle);
-  end;
-
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1020,25 +1123,6 @@ end;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Firewall(Pasta,Executavel:String);
-var
-aux:Integer;
-Mensagem:String;
-begin
-{O 'runas' FAZ COM QUE SEJA EXECUTADO EM MODO ADMIN}
-aux:=ShellExecute(Application.Handle,'runas','netsh.exe',PChar('firewall add allowedprogram "'+ExtractFilePath(Application.ExeName)+Pasta+Executavel+'" '+ChangeFileExt(Executavel,EmptyStr)+' ENABLE'),nil,SW_HIDE);
-
- case aux of
-   SE_ERR_ACCESSDENIED,ERROR_FILE_NOT_FOUND,SE_ERR_ASSOCINCOMPLETE:
-   begin
-   Mensagem:=Lang_DGL(16);
-   MessageBox(Application.Handle,pchar(Mensagem),pchar(Application.Title),MB_ICONERROR+MB_OK);
-   end;
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function Config_Tela(On_Off:Boolean):Boolean;
 begin
 
@@ -1136,14 +1220,10 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
 Form1_DGL.gif_dos.Visible:=False;
 //-------------------------------------------------------------------------
-Form1_DGL.img_game.Picture:=Nil;
 
- if FileExists(Caminho_Imagem) then
- Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem)
- else
- Form1_DGL.gif_dos.Visible:=True;
-
-//----------------------------------------------------------------
+//------------
+ResetarBotoes;
+//------------
 
  if (Game_Existe = False) then
  begin
@@ -1204,32 +1284,19 @@ Form1_DGL.img_game.Picture:=Nil;
  Form1_DGL.check_servidor.Enabled:=True;
  Form1_DGL.check_cliente.Enabled :=True;
 
-//-----------------------------------------
-Form1_DGL.logo_blood.visible      := False;
-Form1_DGL.logo_constructor.Visible:= False;
-Form1_DGL.logo_doom.visible       := False;
-Form1_DGL.logo_duke3d.Visible     := False;
-Form1_DGL.logo_heretic.Visible    := False;
-Form1_DGL.logo_hexen.Visible      := False;
-Form1_DGL.logo_quake.Visible      := False;
-Form1_DGL.logo_rott.Visible       := False;
-Form1_DGL.logo_shadow.Visible     := False;
-Form1_DGL.logo_warcraft.Visible   := False;
-Form1_DGL.logo_wolf3d.Visible     := False;
-//-----------------------------------------
+ //--------------
+ MostrarLogo(id);
+ //--------------
 
-   case id of
-     1: Form1_DGL.logo_blood.visible      := True;
-     2: Form1_DGL.logo_constructor.Visible:= True;
-   3,4: Form1_DGL.logo_doom.visible       := True;
-     5: Form1_DGL.logo_duke3d.Visible     := True;
-     6: Form1_DGL.logo_heretic.Visible    := True;
-     7: Form1_DGL.logo_hexen.Visible      := True;
-     8: Form1_DGL.logo_quake.Visible      := True;
-     9: Form1_DGL.logo_rott.Visible       := True;
-    10: Form1_DGL.logo_shadow.Visible     := True;
-    11: Form1_DGL.logo_warcraft.Visible   := True;
-    12: Form1_DGL.logo_wolf3d.Visible     := True;
+   if FileExists(Caminho_Imagem) then
+   begin
+   Form1_DGL.gif_dos.Visible := False;
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
+   end
+   else
+   begin
+   Form1_DGL.img_game.Picture:= nil;
+   Form1_DGL.gif_dos.Visible := True;
    end;
 
    //---------------------------------------------------

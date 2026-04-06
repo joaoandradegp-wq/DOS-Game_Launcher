@@ -344,13 +344,7 @@ Wav.FileName:=ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav';
  if not FileExists(ExtractFilePath(Application.ExeName)+'dos.ini') then
  begin
  player_name.Text:=UsuarioLogado;
- //----------------------------------------
- Firewall('CONFIG\bin\','DOSBox.exe');
- Firewall('CONFIG\bin\zdoom\','zdoom.exe');
- Firewall('DOS\QUAKE\','qwcl.exe');
- Firewall('DOS\QUAKE\','qwsv.exe');
- Firewall('DOS\QUAKE\','quakespasm.exe');
- //----------------------------------------
+ FirewallBatch;
  end
  else
  player_name.Text:=Arquivo_INI.ReadString('DOS','PLAYER_NAME','');
@@ -531,11 +525,14 @@ procedure TForm1_DGL.Menu_FirewallClick(Sender: TObject);
 begin
 
   try
+  {
   Firewall('CONFIG\bin\','DOSBox.exe');
   Firewall('CONFIG\bin\zdoom\','zdoom.exe');
   Firewall('DOS\QUAKE\','qwcl.exe');
   Firewall('DOS\QUAKE\','qwsv.exe');
   Firewall('DOS\QUAKE\','quakespasm.exe');
+  }
+  FirewallBatch;
   finally
   MessageBox(Application.Handle,pchar(Language.Lang_DGL(17)),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
   end;
@@ -580,6 +577,7 @@ end;
 procedure TForm1_DGL.FormCreate(Sender: TObject);
 begin
 Lang_DGL(0);
+Form1_DGL.DoubleBuffered := True;
 end;
 
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;

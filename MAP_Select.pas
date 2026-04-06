@@ -3,8 +3,8 @@ unit MAP_Select;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, StdCtrls, WinSkinData, StrUtils, pngimage, ExtCtrls;
+  Messages, SysUtils, Forms, Dialogs, Buttons,
+  StdCtrls, WinSkinData, StrUtils, ExtCtrls, Classes, Controls;
 
 type
   TForm4_Select = class(TForm)

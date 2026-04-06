@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 717
-  Top = 127
+  Left = 349
+  Top = 141
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -9825,7 +9825,7 @@ object Form1_DGL: TForm1_DGL
     ParentCtl3D = False
     TabOrder = 1
     object img_game: TabfImage
-      Left = 9
+      Left = 8
       Top = 4
       Width = 128
       Height = 128
@@ -9836,11 +9836,12 @@ object Form1_DGL: TForm1_DGL
       ImageListAsIcon = False
     end
     object gif_dos: TRxGIFAnimator
-      Left = 5
+      Left = 6
       Top = 8
       Width = 40
       Height = 15
       Animate = True
+      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -10927,7 +10928,7 @@ object Form1_DGL: TForm1_DGL
   object SkinData1: TSkinData
     Active = True
     DisableTag = 99
-    SkinControls = [xcCombo, xcEdit, xcButton, xcBitBtn, xcSpeedButton, xcGroupBox]
+    SkinControls = [xcEdit, xcButton, xcBitBtn, xcSpeedButton, xcGroupBox]
     Skin3rd.Strings = (
       'TTBDock=Panel'
       'TTBToolbar=Panel'
