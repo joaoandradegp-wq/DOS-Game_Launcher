@@ -486,8 +486,8 @@ Timer_MonitoraAPP.Interval:=1000;
 
 if (id = 8) then
 begin
-  if AppAberto('qwsv.exe') and not AppAberto('qwcl.exe') then
-    Fecha_EXE(Caminho_Global + 'qwsv.exe');
+  if AppAberto('qwsv.exe') and (not AppAberto('qwcl.exe')) and (not RxQuakeServer.Down) then
+  Fecha_EXE(Caminho_Global + 'qwsv.exe');
 end;
 
   if not (AppAberto(Array_Games[id][7]+'.exe') or
@@ -1132,6 +1132,7 @@ procedure TForm1_DGL.RxQuakeServerClick(Sender: TObject);
 begin
   if RxQuakeServer.Down then
   begin
+  EPI_Global_DLC:=1; 
   img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
   RxOpcoes.Enabled    :=Not(RxQuakeServer.Down);
   Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);

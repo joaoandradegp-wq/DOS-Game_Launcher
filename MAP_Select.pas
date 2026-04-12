@@ -741,12 +741,12 @@ Fecha_ESC:=False;
                   Break;
                 end
                 {WOLFENSTEIN 3D}
-                else
-                begin
+              else
+              begin
                 ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
                   if (i = 27) then
                   Break;
-                end;
+              end;
 
               end;
            2: begin
@@ -757,7 +757,7 @@ Fecha_ESC:=False;
                 ListBox_Episodio.Items.Add(Array_Episodios[i+7][3]);
                   if (i = 36) then
                   Break;
-                end                           
+                end
                 {WOLFENSTEIN 3D}
                 else
                 begin

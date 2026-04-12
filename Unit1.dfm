@@ -1,5 +1,5 @@
 object Form1_DGL: TForm1_DGL
-  Left = 349
+  Left = 373
   Top = 141
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle

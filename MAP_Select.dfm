@@ -1,5 +1,5 @@
 object Form4_Select: TForm4_Select
-  Left = 808
+  Left = 862
   Top = 156
   BorderIcons = []
   BorderStyle = bsSingle
