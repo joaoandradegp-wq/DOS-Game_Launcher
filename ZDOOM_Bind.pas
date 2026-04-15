@@ -168,8 +168,8 @@ function GetPlayerSection(id: Integer): String;
 begin
   case id of
     3,4,12: Result := 'Doom.Player';
-    6:      Result := 'Heretic.Player';
-    7:      Result := 'Hexen.Player';
+         6: Result := 'Heretic.Player';
+         7: Result := 'Hexen.Player';
   else
   Result := 'Doom.Player';
   end;
@@ -180,8 +180,8 @@ function GetCVarSection(id: Integer): String;
 begin
   case id of
     3,4,12: Result := 'Doom.ConsoleVariables';
-    6:      Result := 'Heretic.ConsoleVariables';
-    7:      Result := 'Hexen.ConsoleVariables';
+         6: Result := 'Heretic.ConsoleVariables';
+         7: Result := 'Hexen.ConsoleVariables';
   else
   Result := 'Doom.ConsoleVariables';
   end;
@@ -203,21 +203,21 @@ FillChar(Result, SizeOf(Result), 0);
 
     6: {HERETIC}
     begin
-    Result.TemFreelook := True;
+    Result.TemFreelook      := True;
     Result.UsaMapBackground := True;
     Result.UsaMapColorset   := True;
-    Result.UsaMapLabel := True;
+    Result.UsaMapLabel      := True;
     end;
 
     7: {HEXEN}
     begin
-    Result.TemFreelook := True;
-    Result.TemCrouch   := True;
-    Result.TemJump     := True;
-    Result.UsaClasse   := True;
+    Result.TemFreelook      := True;
+    Result.TemCrouch        := True;
+    Result.TemJump          := True;
+    Result.UsaClasse        := True;
     Result.UsaMapBackground := True;
     Result.UsaMapColorset   := True;
-    Result.UsaMapTime  := True;
+    Result.UsaMapTime       := True;
     end;
 
   end;
@@ -445,6 +445,13 @@ Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
   Section := 'Doom.Bindings';
   end;
 
+  {SPEAR OF DESTINY}
+  if (EPI_Global_DLC = 2) then
+  begin
+  IWADFile  :=Spear_EXE;
+  ConfigFile:=Spear_Config;
+  end;
+
   Ini := TMemIniFile.Create(ConfigFile);
   try
   ApplyGlobalSettings(Ini, id, Flags, MouseAtivo, Debug, IWADFile, PlayerName, ScreenWidth, ScreenHeight);
@@ -480,13 +487,6 @@ Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
     Application.CreateForm(TForm2_DLC, Form2_DLC);
     Form2_DLC.ShowModal;
     Form2_DLC.Free;
-
-      {SPEAR OF DESTINY}
-      if (EPI_Global_DLC = 2) then
-      begin
-      IWADFile  :=Spear_EXE;
-      ConfigFile:=Spear_Config;
-      end;
 
       if Fecha_ESC then
       Exit;
