@@ -1055,15 +1055,18 @@ begin
     MessageBox(Application.Handle,PChar(Lang_DGL(32)),PChar(Application.Title),MB_ICONERROR+MB_OK);
     end
     else
-    Lista_Imagens.GetBitmap(5,RxBrutal.Glyph.Create);
+    begin
+      if Length(LoadingMod.FileName) > 0 then
+      Lista_Imagens.GetBitmap(5,RxBrutal.Glyph.Create)
+      else
+      RxBrutal.Down:=False;
+    end;
 
-    if Length(DoomMod_Global) = 0 then
-    RxBrutal.Down:=False;
-    
   end
   else
   begin
   DoomMod_Global:='';
+  LoadingMod.FileName:='';
   RxBrutal.Glyph:=Nil;
   end;
 
