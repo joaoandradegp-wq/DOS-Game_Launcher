@@ -870,6 +870,7 @@ Fecha_ESC:=False;
   Game_EXE_Global:=Array_Games[id][4];
   //---------------------------------
 
+
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
 

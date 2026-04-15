@@ -70,9 +70,6 @@ const
 CFG_vid_defwidth = 800;
 CFG_vid_defheight = 600;
 
-var
-Spear_EXE,Spear_Config:String;
-
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
@@ -387,7 +384,7 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure ApplyDoomSkin(Ini: TMemIniFile; id: Integer; SinglePlayer: Boolean; SkinIndex, ColorIndex: Integer);
+procedure ApplySkin(Ini: TMemIniFile; id: Integer; SinglePlayer: Boolean; SkinIndex, ColorIndex: Integer);
 var
 PlayerSection: String;
 begin
@@ -396,18 +393,24 @@ PlayerSection := GetPlayerSection(id);
   if SinglePlayer then
   Exit;
 
-  case SkinIndex of
-    0: begin
-       Ini.WriteString (PlayerSection, 'skin', 'base');
-       Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
-       end;
+  {DOOM II - SKIN PHOBOS}
+  if (id = 4) then
+  begin
+    case SkinIndex of
+      0: begin
+         Ini.WriteString (PlayerSection, 'skin', 'base');
+         Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
+         end;
 
-    1: begin
-       Ini.WriteString(PlayerSection, 'skin', 'Phobos');
-       Ini.WriteString(PlayerSection, 'colorset', '-1');
-       Ini.WriteString(PlayerSection, 'color', 'ff 50 00');
-       end;
-  end;
+      1: begin
+         Ini.WriteString(PlayerSection, 'skin', 'Phobos');
+         Ini.WriteString(PlayerSection, 'colorset', '-1');
+         Ini.WriteString(PlayerSection, 'color', 'ff 50 00');
+         end;
+    end;
+  end
+  else
+  Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
 
 end;
 //------------------------------------------------------------------------------
@@ -430,12 +433,6 @@ Section: String;
 begin
 Flags := GetGameFlags(id);
 
-//--------------------------------------------------
-{WOLFENSTEIN 3D - SPEAR OF DESTINY}
-//--------------------------------------------------
-Spear_EXE:='SoD.pk7';
-Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
-//--------------------------------------------------
 
   case id of
   3,4,12: Section := 'Doom.Bindings';
@@ -445,14 +442,31 @@ Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
   Section := 'Doom.Bindings';
   end;
 
-  {SPEAR OF DESTINY}
-  if (EPI_Global_DLC = 2) then
+  {WOLFENSTEIN 3D}
+  if id = 12 then
   begin
-  IWADFile  :=Spear_EXE;
-  ConfigFile:=Spear_Config;
+  Application.CreateForm(TForm2_DLC, Form2_DLC);
+  Form2_DLC.ShowModal;
+  Form2_DLC.Free;
+
+    if Fecha_ESC then
+    Exit;  
+
+    //----------------------------------------
+    {SPEAR OF DESTINY}
+    //----------------------------------------
+    if (id = 12) and (EPI_Global_DLC = 2) then
+    begin
+    IWADFile  :='SoD.pk7';
+    ConfigFile:=Caminho_Global+'SoD.ini';
+    end;
+    //----------------------------------------
+
   end;
 
-  Ini := TMemIniFile.Create(ConfigFile);
+{AQUI CARREGA O ARQUIVO .INI NA MEMÓRIA}
+Ini := TMemIniFile.Create(ConfigFile);
+
   try
   ApplyGlobalSettings(Ini, id, Flags, MouseAtivo, Debug, IWADFile, PlayerName, ScreenWidth, ScreenHeight);
   ApplyBindings(Ini, Section, Flags, MouseAtivo);
@@ -479,23 +493,11 @@ Spear_Config:=ExtractFilePath(ConfigFile)+'SoD.ini';
 
       if Flags.UsaClasse then
       ApplyHexenClass(Ini, EPI_Global_DLC);
+      
     end;
 
-    {WOLFENSTEIN 3D}
-    if id = 12 then
-    begin
-    Application.CreateForm(TForm2_DLC, Form2_DLC);
-    Form2_DLC.ShowModal;
-    Form2_DLC.Free;
-
-      if Fecha_ESC then
-      Exit;
-
-    end;
-
-    {DOOM II - SKIN PHOBOS}
-    if (id = 4) and not(Form1_DGL.check_single.Enabled) then
-    ApplyDoomSkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
+    {CASO NÃO SEJA SINGLE PLAYER}
+    ApplySkin(Ini,id,Mode = zmSinglePlayer,DoomSkinIndex,DoomColorIndex);
 
   Ini.UpdateFile;
   finally
