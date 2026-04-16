@@ -875,42 +875,26 @@ Fecha_ESC:=False;
 case id of
 
    {BLOOD - DUKE NUKEM - SHADOW WARRIOR} 
-   1,5,10:
-   DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.Down,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
+   1,5,10: DOSBOX_Bind_FPS_Games(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,RxControle.Down,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text,Mouse_Global);
 
    {QUAKE}
-   8:
-   QUAKE_Bind_Spasm(id,RxDM.Down,RxQuakeServer.Down);
+   8: QUAKE_Bind_Spasm(id,RxDM.Down,RxQuakeServer.Down);
 
    {CONSTRUCTOR - RISE OF THE TRIAD - WARCRAFT II}
-   2,9,11:
-   DOSBOX_Bind_NEWS(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text);
+   2,9,11: DOSBOX_Bind_NEWS(Handle,DosBox_EXE_Global,Caminho_Global,Game_EXE_Global,menu_debug.Checked,check_single.Checked,check_servidor.Checked,check_cliente.Checked,ip_porta.Text,ip_local.Text,cont_player.Text,player_name.Text);
 
    {DOOM - DOOM II - HERETIC - HEXEN - WOLFENSTEIN 3D}
    3,4,6,7,12:
    begin
    Map_Global:='';
-   ConfigureZDoom(
-     id,
-     RxControle.Down,
-     menu_debug.Checked,
-     player_name.Text,
-     Config_Game_Global,
-     Array_Games[id][4],
-
-     GetZDoomMode(check_single.Checked,check_servidor.Checked),
-     Map_Global,
-     StrToIntDef(cont_player.Text,2),
-     ip_porta.Text,
-     ip_local.Text,
-
-     combo_doom.ItemIndex,
-     combo_color.ItemIndex,
-     Screen.Width,
-     Screen.Height,
-
-     ResolveDebugPlayersUI,
-     SelectMapUI);
+   ConfigureZDoom( id,RxControle.Down,menu_debug.Checked,player_name.Text,
+                   Config_Game_Global,Array_Games[id][4],
+                   GetZDoomMode(check_single.Checked,check_servidor.Checked),
+                   Map_Global,StrToIntDef(cont_player.Text,2),
+                   ip_porta.Text, ip_local.Text,
+                   combo_doom.ItemIndex,combo_color.ItemIndex,Screen.Width,Screen.Height,
+                   ResolveDebugPlayersUI,SelectMapUI
+                 );
    end;
 
 end;

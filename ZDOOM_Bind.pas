@@ -47,6 +47,7 @@ type
 
 //---------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------
+function GetPlayerSection(id: Integer): String;
 function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
 function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function GetZDoomMode(IsSingle, IsServer: Boolean): TZDoomMode;
@@ -70,6 +71,30 @@ const
 CFG_vid_defwidth = 800;
 CFG_vid_defheight = 600;
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure SyncWolfColors(id: Integer; ColorIndex: Integer);
+var
+IniWolf, IniSoD: TMemIniFile;
+Section: String;
+begin
+Section := GetPlayerSection(id);
+
+IniWolf := TMemIniFile.Create(Caminho_Global + 'Wolf3D.ini');
+IniSoD  := TMemIniFile.Create(Caminho_Global + 'SoD.ini');
+
+  try
+  IniWolf.WriteInteger(Section, 'colorset', ColorIndex);
+  IniSoD.WriteInteger(Section, 'colorset', ColorIndex);
+
+  IniWolf.UpdateFile;
+  IniSoD.UpdateFile;
+  finally
+  IniWolf.Free;
+  IniSoD.Free;
+  end;
+
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function BlockIWAD(const Arquivo: string; Chave:Boolean): Boolean;
@@ -389,7 +414,7 @@ var
 PlayerSection: String;
 begin
 PlayerSection := GetPlayerSection(id);
-           
+
   if SinglePlayer then
   Exit;
 
@@ -412,6 +437,10 @@ PlayerSection := GetPlayerSection(id);
   else
   Ini.WriteInteger(PlayerSection, 'colorset', ColorIndex);
 
+  {WOLFENSTEIN 3D + SPEAR OF DESTINY - ESCREVE NOS DOIS .ini}
+  if id in [12] then
+  SyncWolfColors(id, ColorIndex);
+    
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
