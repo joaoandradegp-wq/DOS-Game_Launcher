@@ -24,10 +24,6 @@ Compression=lzma
 SolidCompression=yes
 ChangesAssociations=yes
 
-[Registry]
-Root: HKCR; Subkey: "DOS Game Launcher\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\bin\launcher_icon.ico,0"
-Root: HKCR; Subkey: "DOS Game Launcher\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\launcher.exe"" ""%1"""
-
 [Languages]
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
@@ -41,11 +37,11 @@ Source: "C:\JMBA Softwares\DOS Game Launcher\*"; DestDir: "{app}"; Flags: ignore
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\DOS Game Launcher 2.0"; Filename: "{app}\check_update.exe"; IconFilename: "{app}\bin\launcher_icon.ico"
+Name: "{group}\DOS Game Launcher 2.0"; Filename: "{app}\launcher.exe"; IconFilename: "{app}\bin\launcher_icon.ico"
 Name: "{group}\Desinstalar"; Filename: "{uninstallexe}"; IconFilename: "{app}\bin\check_icon.ico"
-Name: "{commondesktop}\DOS Game Launcher 2.0"; Filename: "{app}\check_update.exe"; Tasks: desktopicon; IconFilename: "{app}\bin\launcher_icon.ico"
-Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\DOS Game Launcher 2.0"; Filename: "{app}\check_update.exe"; Tasks: quicklaunchicon; IconFilename: "{app}\bin\launcher_icon.ico"
+Name: "{commondesktop}\DOS Game Launcher 2.0"; Filename: "{app}\launcher.exe"; Tasks: desktopicon; IconFilename: "{app}\bin\launcher_icon.ico"
+Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\DOS Game Launcher 2.0"; Filename: "{app}\launcher.exe"; Tasks: quicklaunchicon; IconFilename: "{app}\bin\launcher_icon.ico"
 
 [Run]
-Filename: "{app}\check_update.exe"; Description: "{cm:LaunchProgram,DOS Game Launcher}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\launcher.exe"; Description: "{cm:LaunchProgram,DOS Game Launcher}"; Flags: nowait postinstall skipifsilent
 

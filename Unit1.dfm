@@ -9841,7 +9841,6 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
-      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000
@@ -10929,6 +10928,7 @@ object Form1_DGL: TForm1_DGL
     Active = True
     DisableTag = 99
     SkinControls = [xcEdit, xcButton, xcBitBtn, xcSpeedButton, xcGroupBox]
+    Options = [xoPreview, xoToolbarBK, xoCaptionButtonHint]
     Skin3rd.Strings = (
       'TTBDock=Panel'
       'TTBToolbar=Panel'
@@ -11016,8 +11016,9 @@ object Form1_DGL: TForm1_DGL
       'TOVCDBNUMERICFIELD=Edit')
     SkinStore = '(Good)'
     SkinFormtype = sfOnlyThisForm
-    Version = '2.66.8.07'
+    Version = '5.50.10.11'
     MenuUpdate = True
+    MenuMerge = False
     Left = 488
     SkinStream = {
       C7A2000055460500D676B19863591C18037DBD5B8563007F8FAFE7E3EB03B8FD

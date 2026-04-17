@@ -1,5 +1,4 @@
 import requests
-import base64
 import json
 import os
 import sys
@@ -14,16 +13,7 @@ def get_current_version():
         return sys.argv[1]
     return "0.0"
 
-API_URL = (
-    "https://api.github.com/repos/"
-    "joaoandradegp-wq/DOS-Game_Launcher/"
-    "contents/update.json"
-)
-
-HEADERS = {
-    "User-Agent": "SRT-Adjuster-Updater/1.9",
-    "Accept": "application/vnd.github.v3+json"
-}
+API_URL = "https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/main/update.json"
 
 TEMP_DIR = "temp"
 
@@ -45,12 +35,13 @@ def ask_update(version):
 # ================= UPDATE CHECK =================
 
 def check_update(current_version):
-    r = requests.get(API_URL, headers=HEADERS, timeout=10)
+    r = requests.get(API_URL, timeout=10)
     r.raise_for_status()
 
-    data = r.json()
-    content_json = base64.b64decode(data["content"]).decode("utf-8")
-    update_info = json.loads(content_json)
+    update_info = r.json()
+
+    if "version" not in update_info or "url" not in update_info:
+        raise Exception("update.json inválido")
 
     latest_version = update_info["version"].strip()
     download_url = update_info["url"]
@@ -87,29 +78,32 @@ if __name__ == "__main__":
 
         has_update, latest_version, url = check_update(CURRENT_VERSION)
 
-        launcher_path = os.path.join(BASE_DIR, "launcher.exe")
-
-        # ✅ SEM UPDATE → abre launcher
+        # ================= SEM UPDATE =================
         if not has_update:
-            subprocess.Popen(launcher_path, creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
 
-        # ✅ TEM UPDATE MAS USUÁRIO NEGOU → abre launcher
+        # ================= USUÁRIO NÃO QUER =================
         if not ask_update(latest_version):
-            subprocess.Popen(launcher_path, creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
 
-        # 🔥 FECHAR O JOGO ANTES DE ATUALIZAR
+        # ================= ATUALIZAÇÃO =================
+
+        # Fecha o jogo antes de atualizar
         kill_process("DOS_GAMES.exe")
 
-        os.makedirs(TEMP_DIR, exist_ok=True)
+        temp_path = os.path.join(BASE_DIR, TEMP_DIR)
+        os.makedirs(temp_path, exist_ok=True)
 
         installer_name = f"DGL_Setup{latest_version}.exe"
-        installer_path = os.path.join(BASE_DIR, TEMP_DIR, installer_name)
+        installer_path = os.path.join(temp_path, installer_name)
 
         msgbox("Baixando atualização...\nAguarde.")
 
         download(url, installer_path)
+
+        if not os.path.exists(installer_path):
+            msgbox("Falha ao baixar atualização.", "Erro", 16)
+            sys.exit(1)
 
         subprocess.Popen(
             installer_path,
