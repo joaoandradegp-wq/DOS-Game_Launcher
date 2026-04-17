@@ -42,6 +42,7 @@ begin
 if Form1_DGL <> nil then
 rx_loading.Visible:=False;
 
+if FileExists('check_update.exe') then
 ShellExecute(0,'open','check_update.exe',pchar(DGL_VERSAO_Global),nil,SW_HIDE);
 
 end;

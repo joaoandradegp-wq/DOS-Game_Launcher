@@ -27,22 +27,19 @@ HEADERS = {
 
 TEMP_DIR = "temp"
 
+BASE_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
+
 # ================= UX =================
 
 def msgbox(text, title="DOS Game Launcher", icon=64):
-    ctypes.windll.user32.MessageBoxW(
-        None,
-        text,
-        title,
-        icon
-    )
+    ctypes.windll.user32.MessageBoxW(None, text, title, icon)
 
 def ask_update(version):
     return ctypes.windll.user32.MessageBoxW(
         None,
         f"Nova versão {version} disponível.\n\nDeseja atualizar agora?",
         "Atualização disponível",
-        4 | 64  # YES / NO + INFO
+        4 | 64
     ) == 6
 
 # ================= UPDATE CHECK =================
@@ -55,10 +52,10 @@ def check_update(current_version):
     content_json = base64.b64decode(data["content"]).decode("utf-8")
     update_info = json.loads(content_json)
 
-    latest_version = update_info["version"]
+    latest_version = update_info["version"].strip()
     download_url = update_info["url"]
 
-    if Version(latest_version) > Version(current_version):
+    if Version(latest_version) > Version(current_version.strip()):
         return True, latest_version, download_url
 
     return False, current_version, None
@@ -73,6 +70,15 @@ def download(url, dest):
                 if chunk:
                     f.write(chunk)
 
+# ================= PROCESS CONTROL =================
+
+def kill_process(process_name):
+    subprocess.call(
+        ["taskkill", "/f", "/im", process_name],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+
 # ================= MAIN =================
 
 if __name__ == "__main__":
@@ -81,20 +87,25 @@ if __name__ == "__main__":
 
         has_update, latest_version, url = check_update(CURRENT_VERSION)
 
-        launcher_path = os.path.join(os.getcwd(), "launcher.exe")
+        launcher_path = os.path.join(BASE_DIR, "launcher.exe")
 
+        # ✅ SEM UPDATE → abre launcher
         if not has_update:
-            subprocess.Popen(launcher_path,creationflags=subprocess.DETACHED_PROCESS)
+            subprocess.Popen(launcher_path, creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
 
+        # ✅ TEM UPDATE MAS USUÁRIO NEGOU → abre launcher
         if not ask_update(latest_version):
-            subprocess.Popen(launcher_path,creationflags=subprocess.DETACHED_PROCESS)
+            subprocess.Popen(launcher_path, creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
+
+        # 🔥 FECHAR O JOGO ANTES DE ATUALIZAR
+        kill_process("DOS_GAMES.exe")
 
         os.makedirs(TEMP_DIR, exist_ok=True)
 
         installer_name = f"DGL_Setup{latest_version}.exe"
-        installer_path = os.path.join(TEMP_DIR, installer_name)
+        installer_path = os.path.join(BASE_DIR, TEMP_DIR, installer_name)
 
         msgbox("Baixando atualização...\nAguarde.")
 
@@ -103,7 +114,7 @@ if __name__ == "__main__":
         subprocess.Popen(
             installer_path,
             creationflags=subprocess.DETACHED_PROCESS
-        ) 
+        )
 
         sys.exit(0)
 
