@@ -81,10 +81,14 @@ if __name__ == "__main__":
 
         has_update, latest_version, url = check_update(CURRENT_VERSION)
 
+        launcher_path = os.path.join(os.getcwd(), "launcher.exe")
+
         if not has_update:
+            subprocess.Popen(launcher_path,creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
 
         if not ask_update(latest_version):
+            subprocess.Popen(launcher_path,creationflags=subprocess.DETACHED_PROCESS)
             sys.exit(0)
 
         os.makedirs(TEMP_DIR, exist_ok=True)
