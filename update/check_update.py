@@ -97,13 +97,12 @@ if __name__ == "__main__":
         download(url, installer_path)
 
         subprocess.Popen(
-            [installer_path],
-            shell=True,
+            installer_path,
             creationflags=subprocess.DETACHED_PROCESS
-        )
+        ) 
 
         sys.exit(0)
 
     except Exception as e:
-        # msgbox(str(e), "Erro na atualização", 16)
+        msgbox(f"Erro ao verificar atualização:\n{str(e)}", "Erro", 16)
         sys.exit(1)
