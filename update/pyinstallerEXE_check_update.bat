@@ -4,4 +4,5 @@ check_update.py ^
 --noconsole ^
 --name check_update ^
 --icon=check_icon.ico ^
---clean
+--clean ^
+--noupx

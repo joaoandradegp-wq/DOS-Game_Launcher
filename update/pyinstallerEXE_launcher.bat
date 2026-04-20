@@ -1,1 +1,8 @@
-"C:\Users\Phobos\AppData\Local\Programs\Python\Python313\python.exe" -m PyInstaller launcher.py --onefile --noconsole --icon=launcher_icon.ico --hidden-import=requests --hidden-import=urllib3 --hidden-import=certifi --hidden-import=charset_normalizer --hidden-import=idna
+python -m PyInstaller ^
+launcher.py ^
+--onedir ^
+--noconsole ^
+--name launcher ^
+--icon=launcher_icon.ico ^
+--clean ^
+--noupx
