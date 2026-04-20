@@ -20,8 +20,10 @@ DisableProgramGroupPage=yes
 OutputDir=C:\Users\Phobos\Desktop
 OutputBaseFilename=DGL_Setup2.0
 SetupIconFile=C:\JMBA Softwares\DOS Game Launcher\bin\launcher_icon.ico
-Compression=lzma
-SolidCompression=yes
+; Microsoft sugere abaixo para não cair no Windows Defender
+Compression=zip
+SolidCompression=no
+;
 ChangesAssociations=yes
 
 [Languages]
