@@ -10,8 +10,16 @@ from packaging.version import Version
 
 def get_current_version():
     if len(sys.argv) > 1:
-        return sys.argv[1]
-    return "0.0"
+        version = sys.argv[1].strip()
+
+        # valida formato de versão
+        try:
+            Version(version)
+            return version
+        except:
+            sys.exit(0)
+
+    sys.exit(0)
 
 API_URL = "https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/main/update.json"
 
