@@ -115,7 +115,7 @@ type
     check_single: TRadioButton;
     check_servidor: TRadioButton;
     check_cliente: TRadioButton;
-    SkinData1: TSkinData;
+    SkinData_Buttons: TSkinData;
     Panel1: TPanel;
     player_name: TEdit;
     cont_player: TabfIntegerEdit;
