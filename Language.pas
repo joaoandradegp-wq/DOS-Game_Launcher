@@ -8,7 +8,7 @@ function Lang_DGL(id:Integer):String;
 
 implementation
 
-uses Funcoes, Unit1, Unit4, Unit3, About;
+uses Funcoes, Unit1, MAP_Select, QUAKE_NameFun, About;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -35,10 +35,11 @@ begin
      Form1_DGL.Label_Name.Caption:='NOME:';
      Form1_DGL.img_por.Visible:=True;
      //-----------------------------------------------------
-     Form1_DGL.GroupIP.Caption:='Rede Local';
+     Form1_DGL.GroupIP.Caption:=' Rede Local ';
      Form1_DGL.Label3.Caption:='PORTA:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='SENSIBILIDADE';
+     Form1_DGL.Label_DM.Caption:='COOPERATIVO';
      Form1_DGL.Label_Opcoes.Caption:='OPÇÕES';
      Form1_DGL.Label_QuakeServer.Caption:='SERVIDOR DEDICADO';
      Form1_DGL.check_single.Caption:='JOGAR';
@@ -63,21 +64,21 @@ begin
      end;
  11: Result:='Servidor';
  12: Result:='Porta';
- //13: Result:='Uma nova atualização está disponível!'+#13#13+'Atualizar agora?';
+ 13: Result:='Depuração';
  14: Result:='INICIAR';
  15: Result:='SERVIDOR';
  16: Result:='Execute como Administrador para incluir as plataformas DosBox e ZDoom no Firewall do Windows.';
  17: Result:='Os serviços DGL foram incluídos no Firewall do Windows!';
  18: Result:='TECLADO';
  19: begin
-     Form3_QuakeWorld.Caption:='Opções';
-     Form3_QuakeWorld.Mensagem_SemNome.Caption:=' Nomes Personalizados';
-     Form3_QuakeWorld.Mensagem_SemSkin.Caption:=' Disponível apenas em Deathmatch';
-     Form3_QuakeWorld.Label1.Caption:='PRÉ-VISUALIZAÇÃO:';
-     Form3_QuakeWorld.btn_aplicar.Caption:='APLICAR';
+     Form3_NameFun.Caption:='Opções';
+     Form3_NameFun.Mensagem_SemNome.Caption:=' Nomes Personalizados';
+     Form3_NameFun.Mensagem_SemSkin.Caption:=' Disponível apenas em Deathmatch';
+     Form3_NameFun.Label1.Caption:='PRÉ-VISUALIZAÇÃO:';
+     Form3_NameFun.btn_aplicar.Caption:='APLICAR';
      end;
  20: Result:='Sobre o';
- //21: Result:='O DOS GAME LAUNCHER já está em execução!';
+ 21: Result:='COOPERATIVO';
  22: Result:='Gostaria de simular uma sessão Multiplayer?';
  23: Result:='MODO DE DEPURAÇÃO';
  24: Result:='DOS Game Launcher é um projeto pessoal criado para jogar com alguns amigos, igual fazíamos na década de 90.'+#13+#10+#13+#10+
@@ -91,6 +92,11 @@ begin
  29: Result:='&Sim';
  30: Result:='&Não';
  31: Result:='&Cancelar';
+ 32: Result:='Esse é o arquivo do próprio jogo, selecione apenas MODS.';
+ 33: Result:='AGILIDADE';
+ 34: Result:='ARMADURA';
+ 35: Result:='MAGIA';
+ 36: Result:='FORÇA';
  end;
 
 end
@@ -114,10 +120,11 @@ begin
      Form1_DGL.Label_Name.Caption:='NAME:';
      Form1_DGL.img_ing.Visible:=True;
      //-----------------------------------------------------
-     Form1_DGL.GroupIP.Caption:='Local Network';
+     Form1_DGL.GroupIP.Caption:=' Local Network ';
      Form1_DGL.Label3.Caption:='PORT:';
      //-----------------------------------------------------
      Form1_DGL.Label_Sense.Caption:='MOUSE SENSITIVITY';
+     Form1_DGL.Label_DM.Caption:='COOPERATIVE';
      Form1_DGL.Label_Opcoes.Caption:='OPTIONS';
      Form1_DGL.Label_QuakeServer.Caption:='DEDICATED SERVER';
      Form1_DGL.check_single.Caption:='SINGLE PLAYER';
@@ -142,21 +149,21 @@ begin
      end;
  11: Result:='Server';
  12: Result:='Port';
- //13: Result:='A new update is now available!'+#13#13+'Update now?';
+ 13: Result:='Debug';
  14: Result:='START';
  15: Result:='SERVER ADDRESS';
  16: Result:='Execute as Administrador to include DGL Services at Windows Firewall.';
  17: Result:='The DGL Services was included at Windows Firewall!';
  18: Result:='KEYBOARD';
  19: begin
-     Form3_QuakeWorld.Caption:='Options';
-     Form3_QuakeWorld.Mensagem_SemNome.Caption:=' NameFun List';
-     Form3_QuakeWorld.Mensagem_SemSkin.Caption:=' Available only in DeathMatch';
-     Form3_QuakeWorld.Label1.Caption:='PREVIEW:';
-     Form3_QuakeWorld.btn_aplicar.Caption:='APPLY';
+     Form3_NameFun.Caption:='Options';
+     Form3_NameFun.Mensagem_SemNome.Caption:=' NameFun List';
+     Form3_NameFun.Mensagem_SemSkin.Caption:=' Available only in DeathMatch';
+     Form3_NameFun.Label1.Caption:='PREVIEW:';
+     Form3_NameFun.btn_aplicar.Caption:='APPLY';
      end;
  20: Result:='About';
- //21: Result:='DOS GAME LAUNCHER is already running!';
+ 21: Result:='COOPERATIVE';
  22: Result:='Would you like to simulate a Multiplayer session?';
  23: Result:='DEBUG MODE';
  24: Result:='DOS Game Launcher is a personal project i´ve maded to play with some friends like in the 90´s.'+#13+#10+#13+#10+
@@ -170,6 +177,11 @@ begin
  29: Result:='&Yes';
  30: Result:='&No';
  31: Result:='&Cancel';
+ 32: Result:='This is a game file. Please select MOD files only.';
+ 33: Result:='SPEED';
+ 34: Result:='ARMOR';
+ 35: Result:='MAGIC';
+ 36: Result:='STRENGTH';
  end;
 
 end;

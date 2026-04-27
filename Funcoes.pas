@@ -3,60 +3,382 @@ unit Funcoes;
 interface
 
 uses
-IdHTTP,GraphicEx,SysUtils,Forms,Classes,Windows,PsAPI,
-ShellApi,Graphics,StdCtrls,Dialogs,WinSock,TlHelp32;
+  IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, ShellApi,
+  Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
+  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons;
 
-procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
+//----------------------------------------------------------------------
+procedure MostrarLogo(ID: Integer);
+//----------------------------------------------------------------------
+procedure ResetarBotoes;
+procedure ResetarBotoesInterno;
+//----------------------------------------------------------------------
+{NO_DOSBOX_Bind e DOSBOX_Bind_FPS}
+//----------------------------------------------------------------------
+procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
+procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
+//----------------------------------------------------------------------
+{NO_DOSBOX_Bind}
+//----------------------------------------------------------------------
+function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
+procedure SendKey(Key: Word);
+procedure SendChar(C: Char);
+//----------------------------------------------------------------------
 function GetInternalIP: String;
 function GetExternalIP: String;
+function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
 //----------------------------------------------------------------------
-//----------------------------------------------------------------------
-type
-TStringArray = Array of String;
-function  SplitString(Expression:String; Delimiter:String):TStringArray;
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
+procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
 function  GetLanguageWin:String;
-//function  ZeroEsquerda(Numero:Integer):String;
-procedure Firewall(Pasta,Executavel:String);
-procedure Copia_Pasta(Origem,Destino:String);
-procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
+procedure FirewallBatch;
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
-function  AppAberto(Nome:String):Boolean;
+function  AppAberto(const NomeExe: string): Boolean;
+//----------------------------------------------------------------------
 function  ExtractNamePath(path: String):String;
 function  ExtractName(const Filename:String):String;
+function  ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
+procedure Copia_Pasta(Origem,Destino:String);
 //----------------------------------------------------------------------
-//----------------------------------------------------------------------
-procedure Tela_Cheia;
 procedure Contagem_Iniciar;
 procedure Seleciona_Fases;
 procedure Funcao_Config_Opcoes;
-function  SIGIL_DLC_Exists(DLC:Integer):Boolean;
 function  Episodio_Numero(Episodio:String):Integer;
-function  SW_DLC_Archive(DLC:Integer):String;
-function  SW_DLC_Exists(DLC:Integer):Boolean;
 function  Listar_Arquivos(Lista:TListBox;Caminho,Extensao:String):String;
-procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
 procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
-procedure Setup_Teclas(Game:Integer);
 procedure Modo_Game(Tipo:Integer);
 procedure Lista_Cores(Game:Integer);
-function  Quake_Color(Cor:Integer):Integer;
 function  Config_Tela(On_Off:Boolean):Boolean;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 
 implementation
 
-uses IniFiles, Unit1, Unit3, Unit4, Unit5, Unit6, Language;
+uses DOSBOX_Bind_FPS, Quake_Bind;
 
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure MostrarLogo(ID: Integer);
 var
-Arquivo_INI:TIniFile;
+i: Integer;
+begin
+SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
 
+  try
+    for i := 0 to Form1_DGL.ControlCount - 1 do
+    begin
+      if Pos('logo_', Form1_DGL.Controls[i].Name) = 1 then
+      Form1_DGL.Controls[i].Visible := False;
+    end;
+
+    case ID of
+      1: Form1_DGL.logo_blood.Visible      := True;
+      2: Form1_DGL.logo_constructor.Visible:= True;
+    3,4: Form1_DGL.logo_doom.Visible       := True;
+      5: Form1_DGL.logo_duke3d.Visible     := True;
+      6: Form1_DGL.logo_heretic.Visible    := True;
+      7: Form1_DGL.logo_hexen.Visible      := True;
+      8: Form1_DGL.logo_quake.Visible      := True;
+      9: Form1_DGL.logo_rott.Visible       := True;
+     10: Form1_DGL.logo_shadow.Visible     := True;
+     11: Form1_DGL.logo_warcraft.Visible   := True;
+     12: Form1_DGL.logo_wolf3d.Visible     := True;
+    end;
+
+  finally
+  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
+  Form1_DGL.Invalidate;
+  end;
+  
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ResetarBotoes;
+begin
+SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+  try
+  ResetarBotoesInterno;
+  finally
+  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
+  Form1_DGL.Invalidate;
+  end;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ResetarBotoesInterno;
+var
+i: Integer;
+Botoes: array[0..5] of TSpeedButton;
+Labels: array[0..5] of TLabel;
+begin
+Form1_DGL.img_game.Picture:=Nil;
+
+Botoes[0] := Form1_DGL.RxControle;
+Botoes[1] := Form1_DGL.RxSense;
+Botoes[2] := Form1_DGL.RxBrutal;
+Botoes[3] := Form1_DGL.RxOpcoes;
+Botoes[4] := Form1_DGL.RxDM;
+Botoes[5] := Form1_DGL.RxQuakeServer;
+
+Labels[0] := Form1_DGL.Label_Controle;
+Labels[1] := Form1_DGL.Label_Sense;
+Labels[2] := Form1_DGL.Label_Brutal;
+Labels[3] := Form1_DGL.Label_Opcoes;
+Labels[4] := Form1_DGL.Label_DM;
+Labels[5] := Form1_DGL.Label_QuakeServer;
+
+  for i := Low(Botoes) to High(Botoes) do
+  begin
+    if Assigned(Botoes[i]) then
+    begin
+      with Botoes[i] do
+      begin
+        if Down then
+        Down := False;
+        //-----------------
+        if not Enabled then
+        Enabled := True;
+        //-----------------
+        if Visible then
+        Visible := False;
+      end;
+    end;
+  end;
+
+  for i := Low(Labels) to High(Labels) do
+  begin
+    if Assigned(Labels[i]) then
+    begin
+      with Labels[i] do
+      begin
+        if not Enabled then
+        Enabled := True;
+        //-----------------
+        if Visible then
+        Visible := False;
+      end;
+    end;
+  end;
+  {COOPERATIVO/DEATHMATCH}
+  Form1_DGL.Label_DM.Caption:=Lang_DGL(21);
+
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure FirewallBatch;
+const
+APP01='CONFIG\bin\DOSBox.exe';
+APP02='CONFIG\bin\zdoom\zdoom.exe';
+APP03='DOS\QUAKE\qwcl.exe';
+APP04='DOS\QUAKE\qwsv.exe';
+APP05='DOS\QUAKE\quakespasm.exe';
+var
+cmd,BasePath: String;
+begin
+BasePath:=ExtractFilePath(Application.ExeName);
+
+cmd :=
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP01)+'" dir=in action=allow program="' + BasePath + APP01 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP02)+'" dir=in action=allow program="' + BasePath + APP02 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP03)+'" dir=in action=allow program="' + BasePath + APP03 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP04)+'" dir=in action=allow program="' + BasePath + APP04 + '" enable=yes && ' +
+    'netsh advfirewall firewall add rule name="DGL_'+ExtractFileName(APP05)+'" dir=in action=allow program="' + BasePath + APP05 + '" enable=yes';
+
+ShellExecute(0, 'runas', 'cmd.exe', PChar('/c ' + Cmd), nil, SW_HIDE);
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure RunDOSBox(HandleApp: HWND; DosBox_EXE_Global, Arq_DosBox: string);
+begin
+ShellExecute(HandleApp,'open',PChar(DosBox_EXE_Global),PChar('-conf '+ExtractFileName(Arq_DosBox)),PChar(ExtractFilePath(Arq_DosBox)),SW_NORMAL);
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure ReplaceLinePrefix(L: TStringList; const Prefix, NewValue: string);
+var i: Integer;
+begin
+  for i := 0 to L.Count-1 do
+    if Pos(Prefix, L[i]) = 1 then
+    L[i] := NewValue;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure SendKey(Key: Word);
+var
+Input: TInput;
+begin
+ZeroMemory(@Input, SizeOf(Input));
+Input.Itype := INPUT_KEYBOARD;
+Input.ki.wVk := Key;
+SendInput(1, Input, SizeOf(Input));
+
+Sleep(30);
+
+ZeroMemory(@Input, SizeOf(Input));
+Input.Itype := INPUT_KEYBOARD;
+Input.ki.wVk := Key;
+Input.ki.dwFlags := KEYEVENTF_KEYUP;
+SendInput(1, Input, SizeOf(Input));
+
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure SendChar(C: Char);
+begin
+SendKey(Ord(UpCase(C)));
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function WaitForWindowLike(const WindowText: string; Timeout: Integer): HWND;
+var
+Start: DWORD;
+h: HWND;
+Title: array[0..255] of Char;
+begin
+Start := GetTickCount;
+Result := 0;
+
+  repeat
+  h := GetWindow(GetDesktopWindow, GW_CHILD);
+
+    while h <> 0 do
+    begin
+    GetWindowText(h, Title, 255);
+
+      if Pos(LowerCase(WindowText), LowerCase(Title)) > 0 then
+      begin
+      Result := h;
+      Exit;
+      end;
+
+    h := GetWindow(h, GW_HWNDNEXT);
+    end;
+
+  Sleep(50);
+  until GetTickCount - Start > DWORD(Timeout);
+
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function ExtrairNumeroEntreAspas(const Linha: string; out Numero: Integer): Boolean;
+var
+P1, P2: Integer;
+S: string;
+begin
+Result := False;
+P1 := Pos('"', Linha);
+
+  if P1 = 0 then
+  Exit;
+
+P2 := Pos('"', Copy(Linha, P1 + 1, MaxInt));
+
+  if P2 = 0 then
+  Exit;
+
+S := Copy(Linha, P1 + 1, P2 - 1);
+Result := TryStrToInt(S, Numero);
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function PingIP(const Host: string; TimeoutMS: Integer = 500): Boolean;
+var
+  ICMP: TIdICMPClient;
+begin
+  Result := False;
+  ICMP := TIdICMPClient.Create(nil);
+  try
+    ICMP.Host := Host;
+    ICMP.ReceiveTimeout := TimeoutMS;
+    try
+      ICMP.Ping;
+      Result := ICMP.ReplyStatus.BytesReceived > 0;
+    except
+      Result := False;
+    end;
+  finally
+    ICMP.Free;
+  end;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+var
+  WSAData: TWSAData;
+  Sock: TSocket;
+  Addr: TSockAddrIn;
+  HostEnt: PHostEnt;
+  Mode: u_long;
+  FDSet: TFDSet;
+  TimeVal: TTimeVal;
+  OptVal, OptLen: Integer;
+  Buf: array[0..0] of Char;
+begin
+  Result := False;
+
+  { 1 - HOST EXISTE? }
+  if not PingIP(Host, TimeoutMS) then
+    Exit;
+
+  if WSAStartup($0202, WSAData) <> 0 then Exit;
+  try
+    HostEnt := gethostbyname(PAnsiChar(AnsiString(Host)));
+    if HostEnt = nil then Exit;
+
+    Addr.sin_family := AF_INET;
+    Addr.sin_port := htons(Porta);
+    Addr.sin_addr.S_addr := PInAddr(HostEnt^.h_addr_list^)^.S_addr;
+
+    { 2 - TESTE TCP }
+    Sock := socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if Sock <> INVALID_SOCKET then
+    begin
+      try
+        Mode := 1;
+        ioctlsocket(Sock, FIONBIO, Mode);
+        connect(Sock, Addr, SizeOf(Addr));
+
+        FD_ZERO(FDSet);
+        FD_SET(Sock, FDSet);
+
+        TimeVal.tv_sec := TimeoutMS div 1000;
+        TimeVal.tv_usec := (TimeoutMS mod 1000) * 1000;
+
+        if select(0, nil, @FDSet, nil, @TimeVal) > 0 then
+        begin
+          OptLen := SizeOf(OptVal);
+          getsockopt(Sock, SOL_SOCKET, SO_ERROR, @OptVal, OptLen);
+          if OptVal = 0 then
+          begin
+            Result := True;
+            Exit;
+          end;
+        end;
+      finally
+        closesocket(Sock);
+      end;
+    end;
+
+    { 3 - ENVIO UDP }
+    Sock := socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if Sock <> INVALID_SOCKET then
+    begin
+      try
+        Buf[0] := #0;
+        if sendto(Sock, Buf, 1, 0, Addr, SizeOf(Addr)) <> SOCKET_ERROR then
+          Result := True;
+      finally
+        closesocket(Sock);
+      end;
+    end;
+
+  finally
+    WSACleanup;
+  end;
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
@@ -111,37 +433,6 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function SIGIL_DLC_Exists(DLC:Integer):Boolean;
-var
-Var_Pesquisa:TSearchRec;
-begin
-
- case DLC of
- 1: begin
-      if FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[0]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_SHREDS.wad',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[1]:=' -file '+Var_Pesquisa.Name;
-      end;
-    end;
- 2: begin
-      if FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[2]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_II_MP3_V*.WAD',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[3]:=' -file '+Var_Pesquisa.Name;
-      end;
- end
- else
- Result:=False;
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function ProcessExists(exeFileName: String):Boolean;
 var
   ContinueLoop: BOOL;
@@ -180,54 +471,6 @@ begin
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function SW_DLC_Archive(DLC:Integer):String;
-begin
-
-  case DLC of
-  1: begin
-       {GOG}
-       if FileExists(Caminho_Global+'Wanton.dat') then
-       Result:='Wanton.dat';
-       {ORIGINAL}
-       if FileExists(Caminho_Global+'wt.dat') then
-       Result:='wt.dat';
-     end;
-  2: begin
-       {GOG}
-       if FileExists(Caminho_Global+'\dragon\sw.exe') then
-       Result:='sw.exe';
-       {ORIGINAL}
-       if FileExists(Caminho_Global+'sw_td.exe') then
-       Result:='sw_td.exe';
-     end;
-  end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function SW_DLC_Exists(DLC:Integer):Boolean;
-begin
-
-  case DLC of
-  1: begin
-       {1.GOG - 2.ORIGINAL}
-       if (FileExists(Caminho_Global+'Wanton.dat')) or (FileExists(Caminho_Global+'wt.dat')) then
-       Result:=True
-       else
-       Result:=False;
-     end;
-  2: begin
-       {1.GOG - 2.ORIGINAL}
-       if (DirectoryExists(Caminho_Global+'dragon\')) or (FileExists(Caminho_Global+'sw_td.exe')) then
-       Result:=True
-       else
-       Result:=False;
-     end;
-  end;
-  
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure Copia_Pasta(Origem,Destino:String);
 var
 dados:TSHFileOpStruct;
@@ -241,169 +484,6 @@ FillChar(Dados,SizeOf(Dados), 0);
   fFlags:=FOF_ALLOWUNDO;
   end;
 SHFileOperation(dados);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure Blood_Levels(num_episodio,num_capitulo,qtde_capitulos:Integer);
-var
-arq_entrada,arq_saida: TStringList;
-i,j,k,cont:Integer;
-begin
-cont:=0;
-k:=0;
-arq_entrada:=TStringList.Create;
-arq_entrada.LoadFromFile(Caminho_Global+'blood.ini');
-
-arq_saida:=TStringList.Create;
-arq_saida.Add(arq_entrada.Strings[47]);
-arq_saida.Add('');
-arq_saida.Add('[Episode1]');
-arq_saida.Add('Title   = '+Form4_Select.ListBox_Capitulo.Items[Form4_Select.ListBox_Capitulo.ItemIndex]);
-
-  //----------------------------------------------------------------------------
-  {LISTA OS CAPÍTULOS - RESUMO}
-  //----------------------------------------------------------------------------
-  for i:=num_capitulo to qtde_capitulos do
-  begin
-  Inc(cont);
-
-    case num_episodio of
- 1..4: begin {BLOOD - LEVEL 1 ATÉ 4}
-         if i = 5 then
-         begin
-           case num_episodio of
-           1,3: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M8');
-           2,4: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9');
-           end;
-         end
-         else
-         begin
-            case i of
-            6..9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
-            else
-            arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
-            end;
-         end;
-       end;
-    5: begin {CRYPTIC PASSAGE - LEVEL 5}
-         if i = 7 then
-         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cpsl')
-         else
-         begin
-           case i of
-           8..10: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i-1));
-           else
-           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'cp0'+IntToStr(i));
-           end;
-         end;
-       end;
-    6: begin {PLASMA PAK - EPISODE 6}
-         if i = 7 then
-         arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M9')
-         else
-         begin
-           case i of
-           8,9: arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i-1));
-           else
-           arq_saida.Add('Map'+IntToStr(cont)+'    = '+'E'+IntToStr(num_episodio)+'M'+IntToStr(i));
-           end;
-         end;
-       end;
-    7: begin {BLOODBATH - EPISODE 7}
-         case num_capitulo of
-           1..8: arq_saida.Add('Map1    = '+'bb'   +IntToStr(num_capitulo));   //Blood
-          9..11: arq_saida.Add('Map1    = '+'DM'   +IntToStr(num_capitulo-8)); //Plasma Pak
-         12..15: arq_saida.Add('Map1    = '+'cpbb0'+IntToStr(num_capitulo-11));//Cryptic Passage
-         end;
-       Break;
-       end;
-    end;
-
-  end;
-  //----------------------------------------------------------------------------
-
-  //----------------------------------------------------------------------------
-  {LISTA OS CAPÍTULOS - DETALHADO}
-  //----------------------------------------------------------------------------
-  for i:=160 to arq_entrada.Count-1 do
-  begin
-    {CRYPTIC BLOODBATH}
-    if (num_episodio = 7) then
-    begin
-      case num_capitulo of
-      12,13,14,15: begin
-                     if Pos(';Episode 8',arq_entrada.Strings[i]) = 1 then
-                     Break;
-                   end;
-      else
-      begin
-        if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
-        Break;
-      end;
-      end;
-    end
-    else
-    begin
-      if Pos(';Episode '+IntToStr(num_episodio),arq_entrada.Strings[i]) = 1 then
-      Break;
-    end;
-  end;
-  //----------------------------------------------------------------------------
-
-  arq_saida.Add('');
-  arq_saida.Add(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;');
-
-  //-----------------------------------------------------
-  {LISTA ATÉ ENCONTRAR A PALAVRA ";EPISODE"}
-  //-----------------------------------------------------
-  for j:=i to arq_entrada.Count-1 do
-  begin
-
-    if (copy(arq_entrada.Strings[j],1,8)=';Episode') then
-    Inc(k);
-
-    if k = 2 then
-    Break
-    else
-    arq_saida.Add(arq_entrada.Strings[j]);
-
-  end;
-  //-----------------------------------------------------
-
-arq_saida.SaveToFile(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'phobos.ini');
-FreeAndNil(arq_entrada);
-FreeAndNil(arq_saida);
-end;
-//------------------------------------------------------------------------------
-function Windows64:Boolean;
-type
-TIsWow64Process = function(AHandle:THandle; var AIsWow64: BOOL): BOOL; stdcall;
-var
-vKernel32Handle:DWORD;
-vIsWow64Process:TIsWow64Process;
-vIsWow64:BOOL;
-begin
-Result:=False;
-vKernel32Handle:=LoadLibrary('kernel32.dll');
-
-if (vKernel32Handle = 0) then
-Exit;
-
-  try
-  @vIsWow64Process := GetProcAddress(vKernel32Handle,'IsWow64Process');
-
-    if not Assigned(vIsWow64Process) then
-    Exit;
-
-  vIsWow64 := False;
-
-    if (vIsWow64Process(GetCurrentProcess,vIsWow64)) then
-    Result := vIsWow64;
-
-  finally
-  FreeLibrary(vKernel32Handle);
-  end;
-
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -450,15 +530,6 @@ Result:=LowerCase(Copy(String(Language),0,3));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Tela_Cheia;
-begin
-keybd_event(VK_MENU,  0,0,0);
-keybd_event(VK_RETURN,0,0,0);
-keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-keybd_event(VK_MENU,  0,KEYEVENTF_KEYUP,0);
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
 var
 DOSBox,CLauncher:TRect;
@@ -490,12 +561,12 @@ begin
 GraphicClass := FileFormatList.GraphicFromContent(FileName);
 
  if GraphicClass = nil then
- Form3_QuakeWorld.Image1.Picture.LoadFromFile(FileName)
+ Form3_NameFun.Image1.Picture.LoadFromFile(FileName)
  else
  begin
  Graphic:=GraphicClass.Create;
  Graphic.LoadFromFile(FileName);
- Form3_QuakeWorld.Image1.Picture.Graphic:=Graphic;
+ Form3_NameFun.Image1.Picture.Graphic:=Graphic;
  end;
 
 end;
@@ -509,18 +580,6 @@ Janela:=FindWindow(nil,pchar(Executavel));
  if Janela > 0 then
  SendMessage(Janela,$0010,0,0);
 end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-{function ZeroEsquerda(Numero:Integer):String;
-begin
-
- case Numero of
- 1,2,3,4,5,6,7,8,9: Result:='0'+IntToStr(Numero);
- else
- Result:=IntToStr(Numero);
- end;
-
-end;    }
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure Seleciona_Fases;
@@ -571,13 +630,11 @@ end;
 procedure Modo_Game(Tipo:Integer);
 var
 Caminho_INI:String;
+Arquivo_INI:TIniFile;
 begin
-//------------------------------------------------------------------------------
 Caminho_INI:=ExtractFilePath(Application.ExeName)+'dos.ini';
 Form1_DGL.Refresh_Lan.Glyph:=Nil;
-//------------------------------------------------------------------------------
 CoolStuff_Global:='';
-//------------------------------------------------------------------------------
 
  case Tipo of
   {SINGLE PLAYER}
@@ -615,7 +672,7 @@ CoolStuff_Global:='';
      Form1_DGL.player_name.Enabled:=True;
      Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
      //---------------------------------------------------------
-       if (Form1_DGL.player_name.Enabled = True) then            {Verificar AQUI}
+       if (Form1_DGL.player_name.Enabled = True) then            
        Form1_DGL.player_name.SetFocus
        else
        Form1_DGL.RxCheckListBox1.SetFocus;
@@ -663,13 +720,13 @@ CoolStuff_Global:='';
      Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],'');
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
-     if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
-     Form1_DGL.ip_porta.Text:=Array_Games[id][8];
-     //-----------------------------------------------
-     if Length(Form1_DGL.ip_local.Text) = 0 then
-     Form1_DGL.Refresh_Lan.Enabled:=False
-     else
-     Form1_DGL.Refresh_Lan.Enabled:=True;
+       if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
+       Form1_DGL.ip_porta.Text:=Array_Games[id][8];
+       //-----------------------------------------------
+       if Length(Form1_DGL.ip_local.Text) = 0 then
+       Form1_DGL.Refresh_Lan.Enabled:=False
+       else
+       Form1_DGL.Refresh_Lan.Enabled:=True;
      //-----------------------------------------------
      Form1_DGL.Refresh_Internet.Enabled:=False;
      //-----------------------------------------------
@@ -688,40 +745,43 @@ CoolStuff_Global:='';
   case id of
      {DOOM + DOOM II}
      3,4: begin
-          Form1_DGL.RxOpcoes.Visible     :=False;
-          Form1_DGL.Label_Opcoes.Visible :=False;
+          //----------------------------
+          Form1_DGL.RxBrutal.Glyph:=Nil;
+          //----------------------------
+          Form1_DGL.RxOpcoes.Visible    :=False;
+          Form1_DGL.Label_Opcoes.Visible:=False;
           Form1_DGL.RxQuakeServer.Visible    :=False;
           Form1_DGL.Label_QuakeServer.Visible:=False;
 
             {SINGLE PLAYER E CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
-            //----------------------------------------
-            Form1_DGL.RxBrutal.Top    :=232;
-            Form1_DGL.Label_Brutal.Top:=237;
-            Form1_DGL.RxBrutal.StateOn:=False;
-            //----------------------------------------
-            Form1_DGL.RxBrutal.Visible        :=True;
-            Form1_DGL.Label_Brutal.Visible    :=True;
-            Form1_DGL.RxDM.Visible            :=False;
-            Form1_DGL.Label_DM.Visible        :=False;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
+            Form1_DGL.RxBrutal.Down:=False;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Visible    :=True;
+            Form1_DGL.Label_Brutal.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=False;
+            Form1_DGL.Label_DM.Visible    :=False;
             //----------------------------------------
             end;
             {SERVIDOR}
             if (Tipo = 1) then
             begin
-            //---------------------------------------
-            Form1_DGL.RxBrutal.Top:=232;
-            Form1_DGL.Label_Brutal.Top:=237;
-            Form1_DGL.RxBrutal.StateOn:=False;
-            Form1_DGL.RxDM.Top:=256;
-            Form1_DGL.Label_DM.Top:=261;
-            Form1_DGL.RxDM.StateOn:=False;
-            //---------------------------------------
-            Form1_DGL.RxBrutal.Visible        :=True;
-            Form1_DGL.Label_Brutal.Visible    :=True;
-            Form1_DGL.RxDM.Visible            :=True;
-            Form1_DGL.Label_DM.Visible        :=True;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
+            Form1_DGL.RxBrutal.Down   :=False;
+            Form1_DGL.RxDM.Top        :=Form1_DGL.RxBrutal.Top+24;
+            Form1_DGL.Label_DM.Top    :=Form1_DGL.RxDM.Top+1;
+            Form1_DGL.RxDM.Down       :=False;
+            //------------------------------------------------------
+            Form1_DGL.RxBrutal.Visible    :=True;
+            Form1_DGL.Label_Brutal.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=True;
+            Form1_DGL.Label_DM.Visible    :=True;
             //---------------------------------------
             end;
           end;
@@ -729,27 +789,27 @@ CoolStuff_Global:='';
        8: begin
           CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
 
-          Form1_DGL.RxBrutal.Visible         :=False;
-          Form1_DGL.Label_Brutal.Visible     :=False;
+          Form1_DGL.RxBrutal.Visible    :=False;
+          Form1_DGL.Label_Brutal.Visible:=False;
 
             {SERVIDOR E CLIENTE}
             if (Tipo = 1) or (Tipo = 2) then
             begin
-            //-----------------------------------------
-            Form1_DGL.RxOpcoes.StateOn:=False;
-            Form1_DGL.RxOpcoes.Top:=208;
-            Form1_DGL.Label_Opcoes.Top:=213;
-            Form1_DGL.RxDM.StateOn:=False;
-            Form1_DGL.RxDM.Top:=232;
-            Form1_DGL.Label_DM.Top:=237;
-            Form1_DGL.RxQuakeServer.StateOn:=False;
-            Form1_DGL.RxQuakeServer.Top:=256;
-            Form1_DGL.Label_QuakeServer.Top:=261;
-            //-------------------------------------------
-            Form1_DGL.RxOpcoes.Visible     :=True;
-            Form1_DGL.Label_Opcoes.Visible :=True;
-            Form1_DGL.RxDM.Visible         :=DirectoryExists(Caminho_Global+'qw\');
-            Form1_DGL.Label_DM.Visible     :=DirectoryExists(Caminho_Global+'qw\');
+            //-------------------------------------------------------------
+            Form1_DGL.RxOpcoes.Down        :=False;
+            Form1_DGL.RxOpcoes.Top         :=Form1_DGL.RxControle.Top;
+            Form1_DGL.Label_Opcoes.Top     :=Form1_DGL.RxOpcoes.Top+1;
+            Form1_DGL.RxDM.Down            :=False;
+            Form1_DGL.RxDM.Top             :=Form1_DGL.RxOpcoes.Top+24;
+            Form1_DGL.Label_DM.Top         :=Form1_DGL.RxDM.Top+1;
+            Form1_DGL.RxQuakeServer.Down   :=False;
+            Form1_DGL.RxQuakeServer.Top    :=Form1_DGL.RxDM.Top+24;;
+            Form1_DGL.Label_QuakeServer.Top:=Form1_DGL.RxQuakeServer.Top+1;
+            //-------------------------------------------------------------
+            Form1_DGL.RxOpcoes.Visible    :=True;
+            Form1_DGL.Label_Opcoes.Visible:=True;
+            Form1_DGL.RxDM.Visible        :=DirectoryExists(Caminho_Global+'qw\');
+            Form1_DGL.Label_DM.Visible    :=DirectoryExists(Caminho_Global+'qw\');
               if (Tipo = 2) then
               begin
               Form1_DGL.RxQuakeServer.Visible    :=False;
@@ -796,13 +856,13 @@ CoolStuff_Global:='';
             {SERVIDOR}
             if (Tipo = 1) then
             begin
-            //----------------------------------------
-            Form1_DGL.RxDM.Top:=232;
-            Form1_DGL.Label_DM.Top:=237;
-            Form1_DGL.RxDM.StateOn:=False;
-            //----------------------------------------
-            Form1_DGL.RxDM.Visible            :=True;
-            Form1_DGL.Label_DM.Visible        :=True;
+            //--------------------------------------------------
+            Form1_DGL.RxDM.Top    :=Form1_DGL.RxControle.Top+24;
+            Form1_DGL.Label_DM.Top:=Form1_DGL.RxDM.Top+1;
+            Form1_DGL.RxDM.Down   :=False;
+            //--------------------------------------------------
+            Form1_DGL.RxDM.Visible    :=True;
+            Form1_DGL.Label_DM.Visible:=True;
             //----------------------------------------
             end;
           end;
@@ -829,17 +889,16 @@ end;
 procedure Lista_Cores(Game:Integer);
 var
 Config_Game,Nome_Game:String;
-i:Integer;
+i, ValorInt:Integer;
 Config_Fisico:TStringList;
+Arquivo_INI:TIniFile;
 begin
 
-//------------------------------------------------------------------------------------------
 if (Game = 8) then
 Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+'id1\'+Array_Games[Game][6]
 else
 Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+Array_Games[Game][6];
 Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
-//------------------------------------------------------------------------------------------
 
  if (Game = 3) or (Game = 4) then
  begin
@@ -945,7 +1004,8 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
      begin
        if Pos('_cl_color ',Config_Fisico[i]) = 1 then
        begin
-       Form1_DGL.combo_color.ItemIndex:=Quake_Color(StrToInt(Copy(SplitString(Config_Fisico[i],'"')[1],1,Pos('.',SplitString(Config_Fisico[i],'"')[1])-1)));
+         if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
+         Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
        Break;
        end;
      end;
@@ -1013,54 +1073,6 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function Quake_Color(Cor:Integer):Integer;
-begin
-
- case Cor of
-   0: Result:=0;
-  17: Result:=1;
-  34: Result:=2;
-  51: Result:=3;
-  68: Result:=4;
-  85: Result:=5;
- 102: Result:=6;
- 119: Result:=7;
- 136: Result:=8;
- 153: Result:=9;
- 170: Result:=10;
- 187: Result:=11;
- 204: Result:=12;
- 221: Result:=13;
- else
- Result:=0
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function SplitString(Expression:String; Delimiter:String):TStringArray;
-var
-Res:TStringArray;
-ResCount:DWORD;
-dLength:DWORD;
-StartIndex:DWORD;
-sTemp:String;
-begin
-dLength:=Length(Expression);
-StartIndex:=1;
-ResCount:=0;
-  repeat
-    sTemp:=Copy(Expression,StartIndex,Pos(Delimiter,Copy(Expression,StartIndex,Length(Expression)))-1);
-    SetLength(Res,Length(Res)+1);
-    SetLength(Res[ResCount],Length(sTemp));
-    Res[ResCount]:=sTemp;
-    StartIndex:=StartIndex+Length(sTemp)+Length(Delimiter);
-    ResCount:=ResCount+1;
-  until StartIndex > dLength;
-  Result:=Res;
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 procedure Deleta_Lixo(Pasta_Game,Single_EXE,Multi_EXE:String);
 var
 Pasta_App:String;
@@ -1111,101 +1123,6 @@ end;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Setup_Teclas(Game:Integer);
-begin
- //-------------------------------------------------------------
- //MODO MULTIPLAYER - SELEÇÃO AUTOMATICA DE SETUPS
- //-------------------------------------------------------------
-
- {RISE OF THE TRIAD}
- if (Game = 9) then
- begin
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- Sleep(300);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(300);
-   {SERVIDOR}
-   if (Form1_DGL.check_servidor.Checked = True) then
-   begin
-   keybd_event(VK_DOWN,0,0,0);
-   keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   Sleep(300);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
-   {CLIENTE}
-   if (Form1_DGL.check_cliente.Checked = True) then
-   begin
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
- end;
-
- {WARCRAFT II}
- if (Game = 11) then
- begin
- Sleep(200);
- keybd_event(ORD('M'),0,0,0);
- keybd_event(ORD('M'),0,KEYEVENTF_KEYUP,0);
- Sleep(200);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(200);
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- keybd_event(VK_DOWN,0,0,0);
- keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
- keybd_event(VK_RETURN,0,0,0);
- keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
- Sleep(200);
-   {SERVIDOR}
-   if (Form1_DGL.check_servidor.Checked = True) then
-   begin
-   keybd_event(ORD('C'),0,0,0);
-   keybd_event(ORD('C'),0,KEYEVENTF_KEYUP,0);
-   end;
-   {CLIENTE}
-   if (Form1_DGL.check_cliente.Checked = True) then
-   begin
-   keybd_event(VK_DOWN,0,0,0);
-   keybd_event(VK_DOWN,0,KEYEVENTF_KEYUP,0);
-   Sleep(200);
-   keybd_event(VK_RETURN,0,0,0);
-   keybd_event(VK_RETURN,0,KEYEVENTF_KEYUP,0);
-   end;
- end;
- //-------------------------------------------------------------
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-procedure Firewall(Pasta,Executavel:String);
-var
-aux:Integer;
-Mensagem:String;
-begin
-{O 'runas' FAZ COM QUE SEJA EXECUTADO EM MODO ADMIN}
-aux:=ShellExecute(Application.Handle,'runas','netsh.exe',PChar('firewall add allowedprogram "'+ExtractFilePath(Application.ExeName)+Pasta+Executavel+'" '+ChangeFileExt(Executavel,EmptyStr)+' ENABLE'),nil,SW_HIDE);
-
- case aux of
-   SE_ERR_ACCESSDENIED,ERROR_FILE_NOT_FOUND,SE_ERR_ASSOCINCOMPLETE:
-   begin
-   Mensagem:=Lang_DGL(16);
-   MessageBox(Application.Handle,pchar(Mensagem),pchar(Application.Title),MB_ICONERROR+MB_OK);
-   end;
- end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function Config_Tela(On_Off:Boolean):Boolean;
 begin
 
@@ -1241,37 +1158,35 @@ Result:=On_Off;
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-function AppAberto(Nome:String):Boolean;
-var rId:array[0..999] of DWord; i,NumProc,NumMod:DWord;
-    HProc,HMod:THandle; sNome:String;
-    Tamanho, Count:Integer;
-    sNomeTratado:String;
+function AppAberto(const NomeExe: string): Boolean;
+var
+Snap: THandle;
+ProcEntry: TProcessEntry32;
 begin
-  result:=False;
-  SetLength(sNome, 256);
-  EnumProcesses(@rId[0], 4000, NumProc);
+Result := False;
+Snap := CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
-  for i := 0 to NumProc div 4 do
-  begin
-    HProc := OpenProcess(Process_Query_Information or Process_VM_Read, FALSE, rId[i]);
-    if HProc = 0 then
-      Continue;
-    EnumProcessModules(HProc, @HMod, 4, NumMod);
-    GetModuleBaseName(HProc, HMod, @sNome[1], 256);
-    sNomeTratado := trim(sNome);
-    Tamanho:=Length(SnomeTratado);
-     Count:=1;
-     While Count <= Tamanho do
-       begin
-         if SnomeTratado[Count]= '' Then
-           Break;
-        count:=Count+1;
-       end;
-     sNomeTratado:=Copy(SnomeTratado,1,Count-1);
-    if AnsiUpperCase(sNomeTratado)=AnsiUpperCase(Nome) Then
-      Result:=True;
-    CloseHandle(HProc);
+  if Snap = INVALID_HANDLE_VALUE then
+  Exit;
+
+  try
+  ProcEntry.dwSize := SizeOf(TProcessEntry32);
+
+    if Process32First(Snap, ProcEntry) then
+    repeat
+      // ProcEntry.szExeFile é PChar ANSI no Delphi 7
+      if AnsiSameText(string(ProcEntry.szExeFile), NomeExe) then
+      begin
+      Result := True;
+      Break;
+      end;
+
+    until not Process32Next(Snap, ProcEntry);
+
+  finally
+    CloseHandle(Snap);
   end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1280,6 +1195,7 @@ var
 pathAjustado:String;
 begin
 pathAjustado:=path;
+
  if FileExists(pathAjustado) then
  pathAjustado:=ExtractFileDir(pathAjustado);
 
@@ -1294,7 +1210,6 @@ Game_Existe:Boolean;
 Arquivo_DOSBOX_Fisico:TStringList;
 i:Integer;
 Arquivo_Blood_Default,Arquivo_Blood_Atual: File of Byte;
-Arquivo_Quake_Default,Arquivo_Quake_Atual: File of Byte;
 begin
 //-------------------------------------------------------------------------
 Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
@@ -1306,18 +1221,13 @@ Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
 Form1_DGL.gif_dos.Visible:=False;
 //-------------------------------------------------------------------------
 
- if FileExists(Caminho_Imagem) then
- Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem)
- else
- begin
- Form1_DGL.img_game.Picture:=Nil;
- Form1_DGL.gif_dos.Visible:=True;
- end;
-
-//----------------------------------------------------------------
+//------------
+ResetarBotoes;
+//------------
 
  if (Game_Existe = False) then
  begin
+ Form1_DGL.abfImage1.Visible:=True;
  //----------------------------------------
  Form1_DGL.label_name.Enabled :=False;
  Form1_DGL.player_name.Enabled:=False;
@@ -1374,14 +1284,27 @@ Form1_DGL.gif_dos.Visible:=False;
  Form1_DGL.check_servidor.Enabled:=True;
  Form1_DGL.check_cliente.Enabled :=True;
 
+ //--------------
+ MostrarLogo(id);
+ //--------------
+
+   if FileExists(Caminho_Imagem) then
+   begin
+   Form1_DGL.gif_dos.Visible := False;
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
+   end
+   else
+   begin
+   Form1_DGL.img_game.Picture:= nil;
+   Form1_DGL.gif_dos.Visible := True;
+   end;
+
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}
    //---------------------------------------------------
    case id of
-   {BLOOD + DOOM + DOOM 2 + DUKE NUKEM 3D + HERETIC + HEXEN + SHADOW WARRIOR}
-   {WOLFENSTEIN 3D + SPEAR OF DESTINY}
-   1,3,4,5,6,7,10,
-            12,13: begin
+   {BLOOD + DOOM + DOOM 2 + DUKE NUKEM 3D + HERETIC + HEXEN + SHADOW WARRIOR + WOLFENSTEIN 3D}
+1,3,4,5,6,7,10,12: begin
                    //-------------------------------------
                    {MOUSE - HABILITAR}
                    //-------------------------------------
@@ -1390,11 +1313,10 @@ Form1_DGL.gif_dos.Visible:=False;
                    //-------------------------------------
 
                      //------------------------------------------------------------------------------------------------------------------
-                     {DOOM + DOOM II + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY - COPIA O ARQUIVO .INI ORIGINAL}
+                     {DOOM + DOOM II + HERETIC + HEXEN + WOLFENSTEIN 3D - COPIA O ARQUIVO .INI ORIGINAL}
                      //------------------------------------------------------------------------------------------------------------------
                      case id of
-                     3,4,6,7,12,13:
-                                   begin
+                       3,4,6,7,12: begin
                                      if not FileExists(Caminho_Global+Array_Games[id][6]) then
                                      CopyFile(pchar(Pasta_INI_Global+Array_Games[id][6]),pchar(Caminho_Global+Array_Games[id][6]),False);
                                    end;
@@ -1502,8 +1424,8 @@ Form1_DGL.gif_dos.Visible:=False;
                        end;
                        //-------------------------------------
 
-                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.StateOn;
-                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.StateOn;
+                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.Down;
+                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.Down;
                      end
                      else
                      begin
@@ -1529,6 +1451,17 @@ Form1_DGL.gif_dos.Visible:=False;
                          //----------------------------------------------------------------------------
                          {PADRÃO DA SENSIBILIDADE DO MOUSE - 01/02}
                          //----------------------------------------------------------------------------
+                         if (id = 10) then
+                         begin
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(SW_MouseAnalogX));
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY));
+                         end
+                         else
+                         begin
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(ID_MouseAnalogX));
+                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY));
+                         end;
+                         {
                          if Pos('MouseAnalogScale0 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
                            if (id = 10) then
@@ -1544,18 +1477,19 @@ Form1_DGL.gif_dos.Visible:=False;
                            else
                            Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY);
                          end;
+                         }
                          //----------------------------------------------------------------------------
 
                          if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=True;
+                         Form1_DGL.RxControle.Down:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          Form1_DGL.RxSense.Visible:=True;
                          Form1_DGL.Label_Sense.Visible:=True;
                          end
                          else
                          begin
-                         Form1_DGL.RxControle.StateOn:=False;
+                         Form1_DGL.RxControle.Down:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
                          Form1_DGL.RxSense.Visible:=False;
                          Form1_DGL.Label_Sense.Visible:=False;
@@ -1563,7 +1497,7 @@ Form1_DGL.gif_dos.Visible:=False;
 
                        end
                        //-------------------------------------------------------------------
-                       {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
+                       {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D}
                        //-------------------------------------------------------------------
                        else
                        begin
@@ -1582,12 +1516,13 @@ Form1_DGL.gif_dos.Visible:=False;
 
                          if Pos('use_mouse=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=True;
+                         Form1_DGL.RxControle.Down:=True;
                          Form1_DGL.Label_Controle.Caption:='MOUSE';
                          end;
+
                          if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
                          begin
-                         Form1_DGL.RxControle.StateOn:=False;
+                         Form1_DGL.RxControle.Down:=False;
                          Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
                          end;
 
@@ -1615,39 +1550,8 @@ Form1_DGL.gif_dos.Visible:=False;
       Form1_DGL.RxSense.Visible       :=False;
       Form1_DGL.Label_Sense.Visible   :=False;
 
-        //----------------------------------------------------------------------------------------------------------------
-        {ARQUIVOS DO GLQUAKE.EXE}
-        //----------------------------------------------------------------------------------------------------------------
-        if not FileExists(Caminho_Global+'Glquake.exe') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\Glquake.exe') ,pchar(Caminho_Global+'Glquake.exe') ,False);
-        if not FileExists(Caminho_Global+'glide2x.dll') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\glide2x.dll') ,pchar(Caminho_Global+'glide2x.dll') ,False);
-        if not FileExists(Caminho_Global+'opengl32.dll') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\opengl32.dll'),pchar(Caminho_Global+'opengl32.dll'),False);
-        if not FileExists(Caminho_Global+'Winquake.exe') then
-        CopyFile(pchar(Pasta_INI_Global+'quake\Winquake.exe'),pchar(Caminho_Global+'Winquake.exe'),False);
-        //----------------------------------------------------------------------------------------------------------------
-
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
-
-        if FileExists(Pasta_INI_Global+'quake\quake.exe') then
-        begin
-        //-------------------------------------------------------------------
-        AssignFile(Arquivo_Quake_Default,Pasta_INI_Global+'quake\quake.exe'); //PASTA CONFIG
-        AssignFile(Arquivo_Quake_Atual  ,Caminho_Global  +'quake.exe');       //PASTA DO JOGO
-        Reset(Arquivo_Quake_Default);
-        Reset(Arquivo_Quake_Atual);
-        //-------------------------------------------------------------------
-
-          if FileSize(Arquivo_Quake_Default) > FileSize(Arquivo_Quake_Atual) then
-          CopyFile(pchar(Pasta_INI_Global+'quake\quake.exe'),pchar(Caminho_Global+'quake.exe'),False);
-
-        //-------------------------------
-        CloseFile(Arquivo_Quake_Default); //PASTA CONFIG
-        CloseFile(Arquivo_Quake_Atual);   //PASTA DO JOGO
-        //-------------------------------
-        end;
 
         Try
           if not DirectoryExists(Caminho_Global+'id1\skins\') then
@@ -1688,14 +1592,14 @@ Form1_DGL.gif_dos.Visible:=False;
      {HABILITA O MODO DE SELEÇÃO DE CORES/SKIN DE PERSONAGEM}
      //---------------------------------------------------------
      case id of
-     3,4,6,7, {DOOM - DOOM 2 - HERETIC - HEXEN}
-     8,12,13: {QUAKE - WOLFENSTEIN 3D - SPEAR OF DESTINY}
+       3,4,6, {DOOM - DOOM 2 - HERETIC - HEXEN}
+      7,8,12: {QUAKE - WOLFENSTEIN 3D}
      begin
      Form1_DGL.combo_color.Visible:=True;
      Lista_Cores(id);
      end;
      else
-     Form1_DGL.combo_color.Visible:=False;
+     Form1_DGL.combo_color.Visible :=False;
      Form1_DGL.RxOpcoes.Visible    :=False;
      Form1_DGL.Label_Opcoes.Visible:=False;
      Form1_DGL.RxDM.Visible        :=False;
@@ -1715,7 +1619,7 @@ Form1_DGL.gif_dos.Visible:=False;
      case id of
      1,5,9,10, {BLOOD - DUKE NUKEM 3D - RISE OF THE TRIAD - SHADOW WARRIOR}
      3,4,6,7,  {DOOM - DOOM 2 - HERETIC - HEXEN}
-     12,13:    {WOLFENSTEIN 3D - SPEAR OF DESTINY}
+       12:     {WOLFENSTEIN 3D}
      begin
      Form1_DGL.label_name.Enabled :=True;
      Form1_DGL.player_name.Enabled:=True;
