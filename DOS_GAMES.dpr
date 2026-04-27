@@ -55,8 +55,8 @@ begin
     Form5_Splash.Free;
   end;
 
- //if ParamStr(1) <> 'phobos' then
- //Halt;
+ if ParamStr(1) <> 'phobos' then
+ Halt;
 
  if ParamStr(2) = 'usa' then
  Language_Global:=1  //INGLÊS
