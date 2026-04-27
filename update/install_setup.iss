@@ -26,6 +26,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 [Files]
 Source: "*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Excludes: "dos.ini,*.lnk,*.iss,*.bat,DOS\CONSTRUCTOR\SAVEGAME\*,*.zds,*.scr"
+Excludes: "DOS\BLOOD\,DOS\CONSTRUCTOR\,DOS\DOOM\,DOS\DOOM2\,DOS\DUKE3D\,DOS\HERETIC\,DOS\HEXEN\,DOS\QUAKE\,DOS\ROTT\,DOS\SW\,DOS\WAR2\,DOS\WOLF3D\"
 
 [Icons]
 Name: "{group}\DOS Game Launcher"; Filename: "{app}\launcher.exe"; IconFilename: "{app}\bin\launcher_icon.ico"
