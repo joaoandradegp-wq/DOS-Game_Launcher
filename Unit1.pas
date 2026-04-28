@@ -26,7 +26,7 @@ IP_Externo_Global,IP_Interno_Global:String;
 Caminho_Global,Pasta_INI_Global,DosBox_EXE_Global,ZDoom_EXE_Global:String;
 DoomSkin_Global,DoomMod_Global,DoomDM_Global,Game_EXE_Global:String;
 EPI_Global_DLC,CAP_Global_DLC,Language_Global:Integer;
-Config_Game_Global,VarParametro_Global:String;
+Config_Game_Global,VarParametro_Global,LogoAtual_Global:String;
 
 Array_SIGIL_DLC_Name: Array [0..4] of String;
 //Array_SIGIL_DLC_Name[0] - WAD SIGIL

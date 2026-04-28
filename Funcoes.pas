@@ -1228,6 +1228,20 @@ ResetarBotoes;
  if (Game_Existe = False) then
  begin
  Form1_DGL.abfImage1.Visible:=True;
+ Form1_DGL.img_game.Picture:=nil;
+ Form1_DGL.gif_dos.Visible:=True;
+ //----------------------------------------
+ Form1_DGL.logo_blood.Visible      :=False;
+ Form1_DGL.logo_constructor.Visible:=False;
+ Form1_DGL.logo_doom.Visible       :=False;
+ Form1_DGL.logo_duke3d.Visible     :=False;
+ Form1_DGL.logo_heretic.Visible    :=False;
+ Form1_DGL.logo_hexen.Visible      :=False;
+ Form1_DGL.logo_quake.Visible      :=False;
+ Form1_DGL.logo_rott.Visible       :=False;
+ Form1_DGL.logo_shadow.Visible     :=False;
+ Form1_DGL.logo_warcraft.Visible   :=False;
+ Form1_DGL.logo_wolf3d.Visible     :=False;
  //----------------------------------------
  Form1_DGL.label_name.Enabled :=False;
  Form1_DGL.player_name.Enabled:=False;
@@ -1317,7 +1331,7 @@ ResetarBotoes;
                      //------------------------------------------------------------------------------------------------------------------
                      case id of
                        3,4,6,7,12: begin
-                                     if not FileExists(Caminho_Global+Array_Games[id][6]) then
+                                     if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global+Array_Games[id][6])) then
                                      CopyFile(pchar(Pasta_INI_Global+Array_Games[id][6]),pchar(Caminho_Global+Array_Games[id][6]),False);
                                    end;
                      end;

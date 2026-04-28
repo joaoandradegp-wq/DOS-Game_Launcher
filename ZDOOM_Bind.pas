@@ -148,29 +148,31 @@ function SIGIL_DLC_Exists(DLC:Integer):Boolean;
 var
 Var_Pesquisa:TSearchRec;
 begin
+Result:=False;
 
- case DLC of
- 1: begin
-      if FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[0]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_SHREDS.wad',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[1]:=' -file '+Var_Pesquisa.Name;
-      end;
-    end;
- 2: begin
-      if FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0 then
-      begin
-      Result:=True;
-      Array_SIGIL_DLC_Name[2]:=Var_Pesquisa.Name;
-        if FindFirst(Caminho_Global+'SIGIL_II_MP3_V*.WAD',faAnyFile,Var_Pesquisa) = 0 then
-        Array_SIGIL_DLC_Name[3]:=' -file '+Var_Pesquisa.Name;
-      end;
- end
- else
- Result:=False;
- end;
+  case DLC of
+    1: begin
+         if FindFirst(Caminho_Global+'SIGIL_v*.wad',faAnyFile,Var_Pesquisa) = 0 then
+         begin
+         Result := True;
+         Array_SIGIL_DLC_Name[0]:=Var_Pesquisa.Name;
+
+           if FindFirst(Caminho_Global+'SIGIL_SHREDS.wad',faAnyFile,Var_Pesquisa) = 0 then
+           Array_SIGIL_DLC_Name[1]:=' -file '+Var_Pesquisa.Name;
+         end;
+       end;
+
+    2: begin
+         if FindFirst(Caminho_Global+'SIGIL_II_V*.wad',faAnyFile,Var_Pesquisa) = 0 then
+         begin
+         Result := True;
+         Array_SIGIL_DLC_Name[2]:=Var_Pesquisa.Name;
+
+           if FindFirst(Caminho_Global+'SIGIL_II_MP3_V*.WAD',faAnyFile,Var_Pesquisa) = 0 then
+           Array_SIGIL_DLC_Name[3]:=' -file '+Var_Pesquisa.Name;
+         end;
+       end;
+  end;
 
 end;
 //------------------------------------------------------------------------------

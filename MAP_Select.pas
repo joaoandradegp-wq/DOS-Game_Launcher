@@ -625,6 +625,15 @@ uses Unit1, Funcoes, Language, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 {$R *.dfm}
 
+procedure LoadImageIfNeeded(const Caminho: string);
+begin
+  if LogoAtual_Global <> Caminho then
+  begin
+  Form1_DGL.img_game.Picture.LoadFromFile(Caminho);
+  LogoAtual_Global:=Caminho;
+  end;
+end;
+
 procedure TForm4_Select.FormCreate(Sender: TObject);
 begin
 Lang_DGL(10);
@@ -839,6 +848,7 @@ procedure TForm4_Select.ListBox_EpisodioClick(Sender: TObject);
 var
 i:Integer;
 Caminho_EXE,Episodio_Nome:String;
+SIGIL_State:Boolean;
 begin
 Caminho_EXE:=ExtractFilePath(Application.ExeName);
 Episodio_Nome:=ListBox_Episodio.Items[(ListBox_Episodio.ItemIndex)];
@@ -888,10 +898,10 @@ btn_aplicar.Enabled:=False;
  if (id = 10) then
  begin
    case ListBox_Episodio.ItemIndex of
-     2: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10A.png');
-     3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10B.png');
+     2: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10A.png');
+     3: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10B.png');
    else
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
+   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10.png');
    end;
  end;
  //--------------------------------------------------------------------------
@@ -901,30 +911,33 @@ btn_aplicar.Enabled:=False;
  //--------------------------------------------------------------------------
  if (id = 3) then
  begin
- ListBox_Capitulo.Enabled:=True;
+ SIGIL_State:=False;
 
    case ListBox_Episodio.ItemIndex of
    4: begin
-      Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03A.png');
+      LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03A.png');
+      SIGIL_State:=SIGIL_DLC_Exists(1);
 
-        if SIGIL_DLC_Exists(1) then
-        Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1]
-        else
-        ListBox_Capitulo.Enabled:=False;
+        if SIGIL_State then
+        Game_EXE_Global:=Array_SIGIL_DLC_Name[0]+Array_SIGIL_DLC_Name[1];
 
       end;
    5: begin
-      Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03B.png');
+      LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03B.png');
+      SIGIL_State:=SIGIL_DLC_Exists(2);
 
-        if SIGIL_DLC_Exists(2) then
-        Game_EXE_Global:=Array_SIGIL_DLC_Name[2]+Array_SIGIL_DLC_Name[3]
-        else
-        ListBox_Capitulo.Enabled:=False;
+        if SIGIL_State then
+        Game_EXE_Global:=Array_SIGIL_DLC_Name[2]+Array_SIGIL_DLC_Name[3];
 
       end;
    else
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\03.png');
+   begin
+   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03.png');
+   SIGIL_State:=True;
    end;
+   end;
+
+ ListBox_Capitulo.Enabled:=SIGIL_State;
  end;
  //--------------------------------------------------------------------------
 
@@ -934,10 +947,10 @@ btn_aplicar.Enabled:=False;
  if (id = 1) then
  begin
    case ListBox_Episodio.ItemIndex of
-     4: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01A.png');
-     5: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01B.png');
+     4: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01A.png');
+     5: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01B.png');
    else
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\01.png');
+   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01.png');
    end;
  end;
  //--------------------------------------------------------------------------
@@ -948,9 +961,9 @@ btn_aplicar.Enabled:=False;
  if (id = 5) then
  begin
    case ListBox_Episodio.ItemIndex of
-     3: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\05A.png');
+     3: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\05A.png');
    else
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\05.png');
+   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\05.png');
    end;
  end;
  //--------------------------------------------------------------------------
