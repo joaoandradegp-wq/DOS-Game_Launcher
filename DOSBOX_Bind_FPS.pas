@@ -96,18 +96,18 @@ begin
   case DLC of
   1: begin
        {GOG}
-       if FileExists(Caminho_Global+'Wanton.dat') then
+       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'Wanton.dat') then
        Result:='Wanton.dat';
        {ORIGINAL}
-       if FileExists(Caminho_Global+'wt.dat') then
+       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'wt.dat') then
        Result:='wt.dat';
      end;
   2: begin
        {GOG}
-       if FileExists(Caminho_Global+'\dragon\sw.exe') then
+       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'\dragon\sw.exe') then
        Result:='sw.exe';
        {ORIGINAL}
-       if FileExists(Caminho_Global+'sw_td.exe') then
+       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'sw_td.exe') then
        Result:='sw_td.exe';
      end;
   end;
@@ -121,14 +121,14 @@ begin
   case DLC of
   1: begin
        {1.GOG - 2.ORIGINAL}
-       if (FileExists(Caminho_Global+'Wanton.dat')) or (FileExists(Caminho_Global+'wt.dat')) then
+       if (FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'Wanton.dat')) or (FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'wt.dat')) then
        Result:=True
        else
        Result:=False;
      end;
   2: begin
        {1.GOG - 2.ORIGINAL}
-       if (DirectoryExists(Caminho_Global+'dragon\')) or (FileExists(Caminho_Global+'sw_td.exe')) then
+       if (DirectoryExists(IncludeTrailingPathDelimiter(Caminho_Global)+'dragon\')) or (FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'sw_td.exe')) then
        Result:=True
        else
        Result:=False;
@@ -146,7 +146,7 @@ begin
 cont:=0;
 k:=0;
 arq_entrada:=TStringList.Create;
-arq_entrada.LoadFromFile(Caminho_Global+'blood.ini');
+arq_entrada.LoadFromFile(IncludeTrailingPathDelimiter(Caminho_Global)+'blood.ini');
 
 arq_saida:=TStringList.Create;
 arq_saida.Add(arq_entrada.Strings[47]);
@@ -278,7 +278,7 @@ var
 CFG: TStringList;
 Arq: string;
 begin
-Arq := CaminhoJogo + 'blood.cfg';
+Arq := IncludeTrailingPathDelimiter(CaminhoJogo) + 'blood.cfg';
 CFG := TStringList.Create;
 CFG.LoadFromFile(Arq);
 
@@ -493,7 +493,7 @@ var
 CFG: TStringList;
 Arq: string;
 begin
-Arq := CaminhoJogo + 'duke3d.cfg';
+Arq := IncludeTrailingPathDelimiter(CaminhoJogo) + 'duke3d.cfg';
 CFG := TStringList.Create;
 CFG.LoadFromFile(Arq);
 
@@ -712,7 +712,7 @@ CFG: TStringList;
 Arq,LevelNum: string;
 begin
 
-Arq := CaminhoJogo + 'sw.cfg';
+Arq := IncludeTrailingPathDelimiter(CaminhoJogo) + 'sw.cfg';
 
 CFG := TStringList.Create;
 CFG.LoadFromFile(Arq);
@@ -917,7 +917,7 @@ var
 L: TStringList;
 begin
 L := TStringList.Create;
-L.LoadFromFile(CaminhoJogo+'commit.dat');
+L.LoadFromFile(IncludeTrailingPathDelimiter(CaminhoJogo)+'commit.dat');
 
   if L[24] = '; - GAMECONNECTION - 4' then
   L.Delete(24);
@@ -935,7 +935,7 @@ var
 L: TStringList;
 begin
 L := TStringList.Create;
-L.LoadFromFile(CaminhoJogo+'commit.dat');
+L.LoadFromFile(IncludeTrailingPathDelimiter(CaminhoJogo)+'commit.dat');
 
   if L[24] = '; - GAMECONNECTION - 4' then
   L.Delete(24);
@@ -952,7 +952,7 @@ var
 L: TStringList;
 begin
 L := TStringList.Create;
-L.LoadFromFile(CaminhoJogo+'commit.dat');
+L.LoadFromFile(IncludeTrailingPathDelimiter(CaminhoJogo)+'commit.dat');
 
 L[26] := 'NUMPLAYERS = '+NumPlayers;
 
@@ -984,9 +984,9 @@ var
 L: TStringList;
 i: Integer;
 begin
-Arq_DosBox := CaminhoJogo + LowerCase(ChangeFileExt(Game_EXE_Global,'')) + '_dosbox.conf';
+Arq_DosBox := IncludeTrailingPathDelimiter(CaminhoJogo) + LowerCase(ChangeFileExt(Game_EXE_Global,'')) + '_dosbox.conf';
 
-CopyFile(PChar(ExtractFilePath(DosBox_EXE_Global)+'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
+CopyFile(PChar(IncludeTrailingPathDelimiter(ExtractFilePath(DosBox_EXE_Global))+'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
 
 L := TStringList.Create;
 L.LoadFromFile(Arq_DosBox);
@@ -1041,7 +1041,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       if not menu_debug then
       L.Add('@ECHO OFF');
 
-      if DirectoryExists(ExtractFilePath(CaminhoJogo)) then
+      if DirectoryExists(IncludeTrailingPathDelimiter(ExtractFilePath(CaminhoJogo))) then
       L.Add('mount c "'+IncludeTrailingPathDelimiter(CaminhoJogo)+'"')
       else
       MessageBox(Application.Handle,PChar(Lang_DGL(8)+':'+#13#13+ExtractFilePath(Arq_DosBox)),PChar(Application.Title),MB_ICONERROR+MB_OK);
@@ -1060,11 +1060,11 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       {CD - BLOOD E SHADOW WARRIOR}
       case id of
          1: begin
-              if FileExists(CaminhoJogo+'game.ins') then
+              if FileExists(IncludeTrailingPathDelimiter(CaminhoJogo)+'game.ins') then
               L.Add('imgmount D game.ins -t iso');
             end;
         10: begin
-              if FileExists(CaminhoJogo+'GAME.DAT') then
+              if FileExists(IncludeTrailingPathDelimiter(CaminhoJogo)+'GAME.DAT') then
               L.Add('imgmount d "..\GAME.DAT" -t iso');
             end;
       end;
@@ -1073,7 +1073,7 @@ ReplaceLinePrefix(L,'prebuffer=','prebuffer=20');
       if (not check_single) and (menu_debug) then
       begin
         {BLOOD - CRYPTIC PASSAGE - SETUP}
-        if FileExists(CaminhoJogo+'cryptic.exe') then
+        if FileExists(IncludeTrailingPathDelimiter(CaminhoJogo)+'cryptic.exe') then
         Game_EXE_Global:='cpmulti.exe'
         else
         {DUKE NUKEM 3D - SHADOW WARRIOR}
