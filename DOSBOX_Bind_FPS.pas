@@ -104,7 +104,7 @@ begin
      end;
   2: begin
        {GOG}
-       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'\dragon\sw.exe') then
+       if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'dragon\sw.exe') then
        Result:='sw.exe';
        {ORIGINAL}
        if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'sw_td.exe') then
