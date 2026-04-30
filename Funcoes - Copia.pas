@@ -1206,8 +1206,9 @@ end;
 procedure Funcao_Config_Opcoes;
 var
 Nome_Game,Caminho_Imagem,Config_Game:String;
-Game_Existe:Boolean;
+Game_Existe,ZDOOM_Mouse:Boolean;
 Arquivo_DOSBOX_Fisico:TStringList;
+ZDOOM_INI: TMemIniFile;
 i:Integer;
 Arquivo_Blood_Default,Arquivo_Blood_Atual: File of Byte;
 begin
@@ -1228,6 +1229,7 @@ ResetarBotoes;
  if (Game_Existe = False) then
  begin
  Form1_DGL.abfImage1.Visible:=True;
+ //----------------------------------------
  Form1_DGL.img_game.Picture:=nil;
  Form1_DGL.gif_dos.Visible:=True;
  //----------------------------------------
@@ -1361,19 +1363,19 @@ ResetarBotoes;
                      Mouse_Global:=0;
                      //------------------------
 
-                       if not FileExists(Caminho_Global+'BMOUSE.EXE') then
+                       if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'BMOUSE.EXE') then
                        CopyFile(pchar(Pasta_INI_Global+'data\BMOUSE.EXE'),pchar(Caminho_Global+'BMOUSE.EXE'),False);
 
-                       if not FileExists(Caminho_Global+'nolfblim.com') then
+                       if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'nolfblim.com') then
                        CopyFile(pchar(Pasta_INI_Global+'data\nolfblim.com'),pchar(Caminho_Global+'nolfblim.com'),False);
 
                        {SHADOW WARRIOR - TWIN DRAGON - VERSÃO GOG}
                        if (id = 10) and (SW_DLC_Exists(2) = True) and (SW_DLC_Archive(2) = 'sw.exe') then
                        begin
-                         if not FileExists(Caminho_Global+'dragon\BMOUSE.EXE') then
+                         if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'dragon\BMOUSE.EXE') then
                          CopyFile(pchar(Pasta_INI_Global+'data\BMOUSE.EXE'),pchar(Caminho_Global+'dragon\BMOUSE.EXE'),False);
 
-                         if not FileExists(Caminho_Global+'dragon\nolfblim.com') then
+                         if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'dragon\nolfblim.com') then
                          CopyFile(pchar(Pasta_INI_Global+'data\nolfblim.com'),pchar(Caminho_Global+'dragon\nolfblim.com'),False);
                        end;
 
@@ -1383,13 +1385,13 @@ ResetarBotoes;
                        if (id = 1) then
                        begin
 
-                         if FileExists(Caminho_Global+'cryptic.exe') and (not FileExists(Caminho_Global+'CPMULTI.EXE')) then
+                         if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'cryptic.exe') and (not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'CPMULTI.EXE')) then
                          CopyFile(pchar(Pasta_INI_Global+'data\CPMULTI.EXE'),pchar(Caminho_Global+'CPMULTI.EXE'),False);
 
-                         if not FileExists(Caminho_Global+'blood.ini') then
+                         if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'blood.ini') then
                          begin
 
-                           if FileExists(Caminho_Global+'cryptic.exe') then
+                           if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'cryptic.exe') then
                            CopyFile(pchar(Pasta_INI_Global+'cryptic.ini'),pchar(Caminho_Global+'blood.ini'),False)
                            else
                            CopyFile(pchar(Pasta_INI_Global+'blood.ini'  ),pchar(Caminho_Global+'blood.ini'),False);
@@ -1398,7 +1400,7 @@ ResetarBotoes;
                          else
                          begin
 
-                           if FileExists(Caminho_Global+'cryptic.exe') then
+                           if FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+'cryptic.exe') then
                            begin
                            //---------------------------------------------------------------
                            AssignFile(Arquivo_Blood_Default,Pasta_INI_Global+'cryptic.ini'); //PASTA CONFIG
@@ -1452,109 +1454,101 @@ ResetarBotoes;
                    Config_Game:=Caminho_Global+Array_Games[id][6];
                    //---------------------------------------------
 
-                   Arquivo_DOSBOX_Fisico:=TStringList.Create;
-                   Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game);
-
-                     for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
+                     {INÍCIO - IF 'ZDOOM'}
+                     if Array_Games[id][7] = 'ZDOOM' then
                      begin
-                       //---------------------------------------------------------------------
-                       {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
-                       //---------------------------------------------------------------------
-                       if (id = 1) or (id = 5) or (id = 10) then
-                       begin
-                         //----------------------------------------------------------------------------
-                         {PADRÃO DA SENSIBILIDADE DO MOUSE - 01/02}
-                         //----------------------------------------------------------------------------
-                         if (id = 10) then
-                         begin
-                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(SW_MouseAnalogX));
-                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY));
-                         end
-                         else
-                         begin
-                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(ID_MouseAnalogX));
-                         ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY));
-                         end;
-                         {
-                         if Pos('MouseAnalogScale0 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         begin
-                           if (id = 10) then
-                           Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale0 = '+IntToStr(SW_MouseAnalogX)
-                           else
-                           Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale0 = '+IntToStr(ID_MouseAnalogX);
-                         end;
+                     ZDOOM_INI:=TMemIniFile.Create(Caminho_Global + Array_Games[id][6]);
 
-                         if Pos('MouseAnalogScale1 = ',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         begin
-                           if (id = 10) then
-                           Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY)
-                           else
-                           Arquivo_DOSBOX_Fisico[i]:='MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY);
-                         end;
-                         }
-                         //----------------------------------------------------------------------------
-
-                         if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         begin
-                         Form1_DGL.RxControle.Down:=True;
-                         Form1_DGL.Label_Controle.Caption:='MOUSE';
-                         Form1_DGL.RxSense.Visible:=True;
-                         Form1_DGL.Label_Sense.Visible:=True;
-                         end
-                         else
-                         begin
-                         Form1_DGL.RxControle.Down:=False;
-                         Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                         Form1_DGL.RxSense.Visible:=False;
-                         Form1_DGL.Label_Sense.Visible:=False;
-                         end;
-
-                       end
-                       //-------------------------------------------------------------------
-                       {DOOM + DOOM 2 + HERETIC + HEXEN + WOLFENSTEIN 3D}
-                       //-------------------------------------------------------------------
-                       else
-                       begin
-
-                         if Pos('skin=base',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                       try
+                         if ZDOOM_INI.ReadString('Doom.Player', 'skin', '') = 'base' then
                          begin
                          Form1_DGL.combo_doom.ItemIndex:=0;
                          Form1_DGL.combo_color.Enabled:=True;
                          end;
 
-                         if Pos('skin=Phobos',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                         if ZDOOM_INI.ReadString('Doom.Player', 'skin', '') = 'Phobos' then
                          begin
                          Form1_DGL.combo_doom.ItemIndex:=1;
                          Form1_DGL.combo_color.Enabled:=False;
                          end;
 
-                         if Pos('use_mouse=true',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         begin
-                         Form1_DGL.RxControle.Down:=True;
-                         Form1_DGL.Label_Controle.Caption:='MOUSE';
-                         end;
+                       ZDOOM_Mouse:= SameText(ZDOOM_INI.ReadString('GlobalSettings', 'use_mouse', ''),'true');
 
-                         if Pos('use_mouse=false',Arquivo_DOSBOX_Fisico[i]) = 1 then
-                         begin
-                         Form1_DGL.RxControle.Down:=False;
-                         Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                         end;
+                       Form1_DGL.RxControle.Down:=ZDOOM_Mouse;
 
+                         if ZDOOM_Mouse then
+                         Form1_DGL.Label_Controle.Caption := 'MOUSE'
+                         else
+                         Form1_DGL.Label_Controle.Caption := Lang_DGL(18);
+
+                       finally
+                       FreeAndNil(ZDOOM_INI);
                        end;
+
+                     end
+                     {FIM - IF 'ZDOOM'}
+                     {INÍCIO - ELSE 'DOSBOX'}
+                     else if Array_Games[id][7] = 'DOSBOX' then
+                     begin
+                     Arquivo_DOSBOX_Fisico:=TStringList.Create;
+                     Arquivo_DOSBOX_Fisico.LoadFromFile(Config_Game);
+
+                       {INÍCIO - FOR}
+                       for i:=0 to Arquivo_DOSBOX_Fisico.Count-1 do
+                       begin
+                         //---------------------------------------------------------------------
+                         {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
+                         //---------------------------------------------------------------------
+                         if (id = 1) or (id = 5) or (id = 10) then
+                         begin
+                           //----------------------------------------------------------------------------
+                           {PADRÃO DA SENSIBILIDADE DO MOUSE - 01/02}
+                           //----------------------------------------------------------------------------
+                           if (id = 10) then
+                           begin
+                           ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(SW_MouseAnalogX));
+                           ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(SW_MouseAnalogY));
+                           end
+                           else
+                           begin
+                           ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale0 = ' ,'MouseAnalogScale0 = ' +IntToStr(ID_MouseAnalogX));
+                           ReplaceLinePrefix(Arquivo_DOSBOX_Fisico,'MouseAnalogScale1 = -','MouseAnalogScale1 = -'+IntToStr(ID_MouseAnalogY));
+                           end;
+                           //----------------------------------------------------------------------------
+                           if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
+                           begin
+                           Form1_DGL.RxControle.Down:=True;
+                           Form1_DGL.Label_Controle.Caption:='MOUSE';
+                           Form1_DGL.RxSense.Visible:=True;
+                           Form1_DGL.Label_Sense.Visible:=True;
+                           end
+                           else
+                           begin
+                           Form1_DGL.RxControle.Down:=False;
+                           Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
+                           Form1_DGL.RxSense.Visible:=False;
+                           Form1_DGL.Label_Sense.Visible:=False;
+                           end;
+                           //----------------------------------------------------------------------------
+                         end;
                        //--------------------------------------------------------------
+                       end;
+                       {FIM - FOR}
+
+                       //---------------------------------------------------------------------------------
+                       {PADRÃO DA SENSIBILIDADE DO MOUSE - 02/02}
+                       //---------------------------------------------------------------------------------
+                       if ((id = 1) or (id = 5) or (id = 10)) and (Form1_DGL.RxSense.Visible = False) then
+                       Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game);
+                       //---------------------------------------------------------------------------------
+
+                     Arquivo_DOSBOX_Fisico.Free;
                      end;
+                     {FIM - ELSE 'DOSBOX'}
 
-                     //---------------------------------------------------------------------------------
-                     {PADRÃO DA SENSIBILIDADE DO MOUSE - 02/02}
-                     //---------------------------------------------------------------------------------
-                     if ((id = 1) or (id = 5) or (id = 10)) and (Form1_DGL.RxSense.Visible = False) then
-                     Arquivo_DOSBOX_Fisico.SaveToFile(Config_Game);
-                     //---------------------------------------------------------------------------------
+   end;
+   {FIM - CASE}
 
-                   Arquivo_DOSBOX_Fisico.Free;
-                   end;
-
-                   //--------------------------------------------------------------
    //----------------------------------------------------------------------------------------------------------------------
    {QUAKE}
    //----------------------------------------------------------------------------------------------------------------------
@@ -1567,10 +1561,10 @@ ResetarBotoes;
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
 
-        Try
+        try
           if not DirectoryExists(Caminho_Global+'id1\skins\') then
           CreateDir(Caminho_Global+'id1\skins\');
-        Finally
+        finally
           if not FileExists(Caminho_Global+'id1\skins\base.pcx') then
           CopyFile(pchar(Pasta_INI_Global+'\quake\base.pcx'),pchar(Caminho_Global+'id1\skins\base.pcx'),False);
         end;
