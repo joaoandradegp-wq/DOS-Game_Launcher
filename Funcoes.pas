@@ -1333,7 +1333,7 @@ ResetarBotoes;
                      //------------------------------------------------------------------------------------------------------------------
                      case id of
                        3,4,6,7,12: begin
-                                     if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global+Array_Games[id][6])) then
+                                     if not FileExists(IncludeTrailingPathDelimiter(Caminho_Global)+Array_Games[id][6]) then
                                      CopyFile(pchar(Pasta_INI_Global+Array_Games[id][6]),pchar(Caminho_Global+Array_Games[id][6]),False);
                                    end;
                      end;
