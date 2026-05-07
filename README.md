@@ -207,5 +207,5 @@ Any errors found in the system can be reported via email or Instagram.
 ---
 
 <p align="center">
-Made with ❤️ for classic gaming enthusiasts
+Made with ❤️ for classic gaming enthusiasts.
 </p>
