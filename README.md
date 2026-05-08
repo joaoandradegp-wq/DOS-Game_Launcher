@@ -161,7 +161,7 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
 <li>ZDOOM 2.8.1<br>www.zdoom.org</li>
-</ul><br>
+</ul>
 
 ### 🔥 FIREWALL RULES
 
