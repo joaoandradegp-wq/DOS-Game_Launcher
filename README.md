@@ -181,9 +181,9 @@ These rules apply only to DOSBox and ZDoom platform connections.<br>
 OPTIONS >> DEBUG MODE  
 
 Any errors found in the system can be reported via email or Instagram.
-<br>
+<br><br>
 </td>
-</tr>
+</tr><br>
 </table>
 
 ---
