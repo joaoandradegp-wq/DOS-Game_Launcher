@@ -160,8 +160,8 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
-<li>ZDOOM 2.8.1<br>www.zdoom.org</li>
-</ul><br>
+<li>ZDOOM 2.8.1<br>www.zdoom.org</li><br>
+</ul>
 
 ### 🔥 FIREWALL RULES
 
@@ -181,9 +181,9 @@ These rules apply only to DOSBox and ZDoom platform connections.<br>
 OPTIONS >> DEBUG MODE  
 
 Any errors found in the system can be reported via email or Instagram.
-<br>
+<br><br>
 </td>
-</tr>
+</tr><br>
 </table>
 
 ---
@@ -207,5 +207,5 @@ Any errors found in the system can be reported via email or Instagram.
 ---
 
 <p align="center">
-Made with ❤️ for classic gaming enthusiasts
+Made with ❤️ for classic gaming enthusiasts.
 </p>
