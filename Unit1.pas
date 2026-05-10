@@ -383,34 +383,47 @@ procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
 var
 i:Integer;
 begin
-//------------------------------
+Form1_DGL.abfImage1.Visible:=True;
+//----------------------------------------
+Form1_DGL.logo_blood.Visible      :=False;
+Form1_DGL.logo_constructor.Visible:=False;
+Form1_DGL.logo_doom.Visible       :=False;
+Form1_DGL.logo_duke3d.Visible     :=False;
+Form1_DGL.logo_heretic.Visible    :=False;
+Form1_DGL.logo_hexen.Visible      :=False;
+Form1_DGL.logo_quake.Visible      :=False;
+Form1_DGL.logo_rott.Visible       :=False;
+Form1_DGL.logo_shadow.Visible     :=False;
+Form1_DGL.logo_warcraft.Visible   :=False;
+Form1_DGL.logo_wolf3d.Visible     :=False;
+//----------------------------------------
 RxCheckListBox1.Clear;
 img_game.Picture.Graphic:=Nil;
 StatusBar1.Panels[1].Text:='';
 IMG_STATUS.Picture:=Nil;
 gif_dos.Visible:=True;
-//------------------------------
+//----------------------------------------
 label_name.Enabled :=False;
 player_name.Enabled:=False;
 cont_player.Enabled:=False;
 cont_seta.Enabled  :=False;
-//------------------------------
+//----------------------------------------
 ip_local.Text      :='0.0.0.0';
 ip_local.Enabled   :=False;
 ip_internet.Text   :='0.0.0.0';
 ip_internet.Enabled:=False;
 ip_porta.Text      :='0';
 ip_porta.Enabled   :=False;
-//------------------------------
+//----------------------------------------
 check_single.Enabled    :=False;
 check_servidor.Enabled  :=False;
 check_cliente.Enabled   :=False;
 Refresh_Lan.Enabled     :=False;
 Refresh_Internet.Enabled:=False;
-//------------------------------
+//----------------------------------------
 combo_color.Visible:=False;
 combo_doom.Visible :=False;
-//-------------------------------
+//----------------------------------------
 RxControle.Visible       :=False;
 Label_Controle.Visible   :=False;
 RxSense.Visible          :=False;
@@ -423,10 +436,10 @@ RxDM.Visible             :=False;
 Label_DM.Visible         :=False;
 RxQuakeServer.Visible    :=False;
 Label_QuakeServer.Visible:=False;
-//-------------------------------
+//----------------------------------------
 btn_start.Enabled :=False;
 Panel_Icones.SetFocus;
-//-------------------------------
+//----------------------------------------
 
 //------------------------------------------------------------------------------------------------
 {DEBUG MODE}
