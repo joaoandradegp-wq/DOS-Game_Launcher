@@ -1,4 +1,4 @@
-program DOS_GAMES;
+program dos_games;
 
 uses
   Forms,
