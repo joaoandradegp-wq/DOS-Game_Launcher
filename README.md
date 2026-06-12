@@ -191,21 +191,10 @@ Any errors found in the system can be reported via email or Instagram.
 ## 📸 Preview
 
 <p align="center">
-  <img width="350" height="280" alt="image" src="https://github.com/user-attachments/assets/aa20b9d7-9a01-4a07-a277-68835b11d956" />
+  <img width="500" alt="image" src="https://github.com/user-attachments/assets/e7e039f3-15f7-4242-9525-0222eb305f1f" />
 </p>
 
 ---
-
-## 📥 Download
-
 <p align="center">
-  <a href="#">
-    <img src="https://img.shields.io/badge/Download-DOS%20Game%20Launcher-blue?style=for-the-badge">
-  </a>
-</p>
-
----
-
-<p align="center">
-Made with ❤️ for classic gaming enthusiasts.
+Made for classic gaming enthusiasts. 🕹️
 </p>
