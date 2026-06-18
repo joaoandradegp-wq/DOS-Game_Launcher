@@ -31,6 +31,7 @@ begin
      Form1_DGL.Menu_Sobre.Caption:='Sobre...';
      Form1_DGL.popup_pasta.Caption:='&Diretório';
      Form1_DGL.config_menu.Caption:='&Configuração';
+     Form1_DGL.popup_qsp.Caption:='Site Oficial QuakeSp&asm';
      //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NOME:';
      Form1_DGL.img_por.Visible:=True;
@@ -116,6 +117,7 @@ begin
      Form1_DGL.Menu_Sobre.Caption:='About...';
      Form1_DGL.popup_pasta.Caption:='&Folder';
      Form1_DGL.config_menu.Caption:='&Configuration File';
+     Form1_DGL.popup_qsp.Caption:='QuakeSp&asm Official Site';
      //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NAME:';
      Form1_DGL.img_ing.Visible:=True;

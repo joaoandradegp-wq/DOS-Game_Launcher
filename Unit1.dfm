@@ -10897,6 +10897,15 @@ object Form1_DGL: TForm1_DGL
       Caption = '-'
       Visible = False
     end
+    object popup_qsp: TMenuItem
+      Caption = 'QuakeSp&asm Official Site'
+      Visible = False
+      OnClick = popup_qspClick
+    end
+    object menu_linha2: TMenuItem
+      Caption = '-'
+      Visible = False
+    end
     object popup_qw: TMenuItem
       Caption = '&QuakeWorld'
       Visible = False

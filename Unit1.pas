@@ -131,6 +131,8 @@ type
     RxOpcoes: TSpeedButton;
     RxDM: TSpeedButton;
     RxQuakeServer: TSpeedButton;
+    popup_qsp: TMenuItem;
+    menu_linha2: TMenuItem;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -181,6 +183,7 @@ type
     procedure RxOpcoesClick(Sender: TObject);
     procedure RxDMClick(Sender: TObject);
     procedure RxQuakeServerClick(Sender: TObject);
+    procedure popup_qspClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -616,12 +619,16 @@ begin
      1,5,10: begin
              menu_linha.Visible:=True;
              popup_commit.Visible:=True;
+             popup_qsp.Visible:=False;
+             menu_linha2.Visible:=False;
              popup_qw.Visible:=False;
              popup_sa.Visible:=False;
              popup_de.Visible:=False;
              end;
      8: begin
         menu_linha.Visible:=True;
+        popup_qsp.Visible:=FileExists(Caminho_Global+'quakespasm.exe');
+        menu_linha2.Visible:=popup_qsp.Visible;
         popup_qw.Visible:=DirectoryExists(Caminho_Global+'qw\');
         popup_sa.Visible:=DirectoryExists(Caminho_Global+'hipnotic\');
         popup_de.Visible:=DirectoryExists(Caminho_Global+'rogue\');
@@ -630,6 +637,8 @@ begin
      else
      begin
      menu_linha.Visible:=False;
+     popup_qsp.Visible:=False;
+     menu_linha2.Visible:=False;
      popup_qw.Visible:=False;
      popup_sa.Visible:=False;
      popup_de.Visible:=False;
@@ -1148,6 +1157,11 @@ begin
   end;
   
 ActiveControl:=Nil;
+end;
+
+procedure TForm1_DGL.popup_qspClick(Sender: TObject);
+begin
+ShellExecute(Handle,'open','https://quakespasm.sourceforge.net/','','',1);
 end;
 
 end.
