@@ -61,7 +61,6 @@ It offers integration with the following games in their original or GOG versions
 <li>QUAKE
   <ul>
     <li>QUAKEWORLD 2.30</li>
-    <li>QUAKEWORLD SERVER (Deathmatch)</li>
     <li>SCOURGE OF ARMAGON</li>
     <li>DISSOLUTION OF ETERNITY</li>
   </ul>
