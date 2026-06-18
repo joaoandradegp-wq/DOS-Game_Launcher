@@ -135,7 +135,7 @@ DOS Game Launcher automatically applies optimized settings for each available ga
       <ul>
         <li>NOLFBLIM (VESA)</li>
         <li>SVGA_S3</li>
-        <li>QuakeSpasm (Source Port)</li>
+        <li>QUAKESPASM (Source Port)</li>
       </ul>
     </li>
     <li>W,A,S,D Keyboard Layout</li>
