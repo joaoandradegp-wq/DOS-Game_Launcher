@@ -60,7 +60,8 @@ It offers integration with the following games in their original or GOG versions
 
 <li>QUAKE
   <ul>
-    <li>QUAKEWORLD</li>
+    <li>QUAKEWORLD 2.30</li>
+    <li>QUAKEWORLD SERVER (Deathmatch)</li>
     <li>SCOURGE OF ARMAGON</li>
     <li>DISSOLUTION OF ETERNITY</li>
   </ul>
@@ -129,12 +130,12 @@ DOS Game Launcher automatically applies optimized settings for each available ga
   <ul>
     <li>Episodes and Chapters</li>
     <li>Colors/Skins and Classes</li>
-    <li>Dedicated Server (Quake)</li>
+    <li>Dedicated Server (QuakeWorld)</li>
     <li>Graphic Resolution:
       <ul>
         <li>NOLFBLIM (VESA)</li>
         <li>SVGA_S3</li>
-        <li>WINQUAKE (Source Port)</li>
+        <li>QuakeSpasm (Source Port)</li>
       </ul>
     </li>
     <li>W,A,S,D Keyboard Layout</li>
@@ -168,7 +169,7 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 
 On first launch after installation, DOS Game Launcher automatically adds a Windows Firewall exception rule to allow Server and/or Client mode.
 
-These rules apply only to DOSBox and ZDoom platform connections.<br>
+These rules apply only to DOSBox, ZDoom and Quakespasm platform connections.<br>
 <br>
 ### 🐞 DEBUG MODE
 
@@ -181,7 +182,7 @@ These rules apply only to DOSBox and ZDoom platform connections.<br>
 <b>Access:</b><br>
 OPTIONS >> DEBUG MODE  
 
-Any errors found in the system can be reported via email or Instagram.
+Any errors found in the system can be reported on GitHub Issues.
 <br><br>
 </td>
 </tr><br>
