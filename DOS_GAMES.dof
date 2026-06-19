@@ -90,7 +90,7 @@ MaxStackSize=1048576
 ImageBase=4194304
 ExeDescription=RX Library DB Component Package
 [Directories]
-OutputDir=D:\Phobos\DOSBOX
+OutputDir=C:\JMBA Softwares\DOS Game Launcher
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
@@ -134,3 +134,11 @@ OriginalFilename=DOS_GAMES.exe
 ProductName=DOS Game Launcher
 ProductVersion=1.8.0.0
 Comments=
+[Excluded Packages]
+C:\Users\joaoa\Downloads\RaizePaletteMenu70\RaizePaletteMenu70.bpl=Raize Palette Menu 3.1
+[HistoryLists\hlUnitAliases]
+Count=1
+Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
+[HistoryLists\hlOutputDirectorry]
+Count=1
+Item0=C:\JMBA Softwares\DOS Game Launcher
