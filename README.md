@@ -60,9 +60,10 @@ It offers integration with the following games in their original or GOG versions
 
 <li>QUAKE
   <ul>
+    <li>SCOURGE OF ARMAGON (Mission Pack)</li>
+    <li>DISSOLUTION OF ETERNITY (Mission Pack)</li>
     <li>QUAKEWORLD 2.30</li>
-    <li>SCOURGE OF ARMAGON</li>
-    <li>DISSOLUTION OF ETERNITY</li>
+    <li>SKINS</li>
   </ul>
 </li>
 
