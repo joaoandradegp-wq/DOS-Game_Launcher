@@ -33,10 +33,17 @@ It offers integration with the following games in their original or GOG versions
 
 <li>CONSTRUCTOR</li>
 
-<li>THE ULTIMATE DOOM / DOOM II
+<li>THE ULTIMATE DOOM
   <ul>
-    <li>SIGIL (MP3/BUCKETHEAD SUPPORTED)</li>
-    <li>SIGIL II (MP3/THORR SUPPORTED)</li>
+    <li>SIGIL + SOUNDTRACK</li>
+    - BUCKETHEAD FILES SUPPORTED
+    <li>SIGIL II + SOUNDTRACK</li>
+    - THORR FILES SUPPORTED
+  </ul>
+</li>
+
+<li>DOOM II
+  <ul>
   </ul>
 </li>
 
