@@ -22,7 +22,6 @@ It was designed to automatically configure and adapt each game to make use of ne
 >
 > - ✅ Original CD-ROM releases
 > - ✅ GOG releases
-> - ✅ Compatible game files legally obtained from other sources
 >
 > Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
 
