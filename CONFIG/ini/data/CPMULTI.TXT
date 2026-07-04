@@ -1,0 +1,19 @@
+CPMULTI.EXE
+
+This file will allow you to play multiplayer games in the regular Cryptic
+Passage single player levels. Simply make sure CPMULTI.EXE is in your Blood
+directory. Then, type CPMULTI and the command prompt, or run it from Windows.
+It will launch the Blood Setup program, from which you can then choose to
+play a multiplayer game.
+
+If you remove Cryptic Passage, and then install it again, simply make sure to
+put this file back in your Blood directory.
+
+Should you contine to have problems, feel free to contact Sunstorm.
+
+Thanks,
+Charlie Wiederhold
+wieder@sunstorm.net
+
+Sunstorm Interactive Website
+http://www.sunstorm.net

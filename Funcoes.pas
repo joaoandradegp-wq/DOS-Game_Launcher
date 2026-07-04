@@ -1567,6 +1567,10 @@ ResetarBotoes;
         finally
           if not FileExists(Caminho_Global+'id1\skins\base.pcx') then
           CopyFile(pchar(Pasta_INI_Global+'\quake\base.pcx'),pchar(Caminho_Global+'id1\skins\base.pcx'),False);
+
+          {QUAKEWORLD - COPIA ARQUIVO CONFIG PADRÃO}
+          if not FileExists(Caminho_Global+'qw\'+Array_Games[id][6]) then
+          CopyFile(pchar(Pasta_INI_Global+'\quake\'+Array_Games[id][6]),pchar(Caminho_Global+'qw\'+Array_Games[id][6]),False);
         end;
 
       end;

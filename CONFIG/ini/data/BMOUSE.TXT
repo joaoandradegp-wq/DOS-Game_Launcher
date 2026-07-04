@@ -1,0 +1,132 @@
+--------------------------------------------------------------
+bMouse - Fixed mouse driver for (some) Build Engine games v0.6
+External driver code Written by Mark Dochtermann
+Modified by SwissCM
+--------------------------------------------------------------
+
+-------
+History
+-------
+
+Here is some code that is most likely in the Blood, Duke3D,
+Shadow Warrior and Redneck Rampage Source:
+
+   if (abs(control.axes[0])>abs(control.axes[1]))
+      control.axes[1]/=3;
+   else
+      control.axes[0]/=3;
+      
+What does that do? Why, it makes mouselook shitty! It essentially stops
+both axes from being updated at the same time, giving preference to
+the axis with the most movement.
+
+Why they did this I have no idea, but it was actually incredibly simple
+to fix. Most later Build games have an option to use an external device
+for game controls. It was mainly designed in mind for use with headsets
+and more complicated game controllers, but theoretically it could be
+used with any traditional input.
+
+Luckily, right on the 3D Realms website lay a zip containg sample code.
+Maybe I could use this as a base to create a new mouse driver for Blood.
+After some messing about installing an old compiler in DOSBox I set
+about looking at the code to see if it was possible to do so using my
+pathetically inept coding skills.
+
+Turns out the code used a mouse as a sample device! Score! I quickly
+compiled the binary to test it out only to find the exact same problem.
+This got me worried, since if the same problem occurs using the external
+driver it may be an internal problem, much harder to fix. Nonetheless I
+looked into the source code.
+
+I found the offending code above. All someone needed to do all along was
+comment this code out and compile and mouselook is instantly far more
+usable!
+
+--------
+Features
+--------
+
+- Supports Redneck Rampage, Blood, Shadow Warrior and Duke Nukem 3D
+- Fixes shitty mouse filtering
+- Correctly maps all controls from default CFG file
+- Independently configurable axis sensitivity
+- Makes better sandwiches than eduke32 along with muffins
+
+--------------------------
+Changes since last release
+--------------------------
+
+- Removed debugging information
+- Removed the prompt before game launch.
+
+--------------
+How to Install
+--------------
+
+There are two ways of running bMouse...
+
+From Setup:
+1. Unzip this archive into the directory where you have installed Blood
+2. Run "SETUP.EXE"
+3. Go to Controller Setup->Choose Controller Type and select "Keyboard
+and External"
+4. Go to Setup External and change the program name to "BMOUSE.EXE"
+5. Then Save and Launch Blood through "SETUP.EXE"
+
+From a Command Prompt/Batch File:
+1. Unzip this archive into your game directory
+2. Go to your game directory via command prompt and type the following
+   (without commas):
+   
+  BMOUSE.EXE LAUNCH "GAME.EXE"
+
+  Replace GAME.EXE with the game you are using eg. BLOOD.EXE
+
+----------------
+How to Configure
+----------------
+
+You cannot configure most mouse options ingame, but you can do it in
+SETUP.EXE.
+
+For Button Mappings go to:
+Controller Setup->Setup Mouse
+NOTE: Sensitivity and inversion options in this menu do not do anything.
+
+For mouse sensitivity options go to:
+"Controller Setup->Setup Advanced Control Options->Advanced Mouse Setup"
+Here you can change the Sensitivity per Axis by going to "Mouse X Axis
+Scale" and "Mouse Y Axis Scale". Configure to your liking and ignore
+the rest of the options.
+
+The in-game Y-Axis inversion toggle works just fine, though it
+doesn't save. As a more permanent solution you can set the "Mouse Y
+Axis Scale" to negative vales for inverted look.
+
+Note that bMouse uses only the game's default CFG files for control
+mapping information.
+
+------
+Issues
+------
+
+Mouselook still isn't perfect due to engine limitations. Vertical Look
+has a rather low resolution and can feel pretty jerky in Blood and Duke3D
+and moving the mouse at slow velocity can make vertical mouselook not
+register. At higher sensitivities this is less noticable.
+
+I have only tested this using DOSBox, though I don't see why it wouldn't
+work in a non-emulated enviroment.
+
+----------------
+Future Additions
+----------------
+
+Fixing the above mentioned vertical mouselook not registrating at low
+velocities is a priority but will be difficult to fix.
+
+--------------
+Special Thanks
+--------------
+
+JonoF, Plagman, TerminX and all my other friends at #eduke32!

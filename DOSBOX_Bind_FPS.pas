@@ -986,7 +986,7 @@ i: Integer;
 begin
 Arq_DosBox := IncludeTrailingPathDelimiter(CaminhoJogo) + LowerCase(ChangeFileExt(Game_EXE_Global,'')) + '_dosbox.conf';
 
-CopyFile(PChar(IncludeTrailingPathDelimiter(ExtractFilePath(DosBox_EXE_Global))+'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
+CopyFile(PChar(IncludeTrailingPathDelimiter(ExtractFilePath(Pasta_INI_Global))+'dosbox-0.74.conf'),PChar(Arq_DosBox),False);
 
 L := TStringList.Create;
 L.LoadFromFile(Arq_DosBox);
