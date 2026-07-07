@@ -1205,7 +1205,7 @@ end;
 //------------------------------------------------------------------------------
 procedure Funcao_Config_Opcoes;
 var
-Nome_Game,Caminho_Imagem,Config_Game:String;
+Nome_Game,Caminho_Imagem,Config_Game,DoomSkin:String;
 Game_Existe,ZDOOM_Mouse:Boolean;
 Arquivo_DOSBOX_Fisico:TStringList;
 ZDOOM_INI: TMemIniFile;
@@ -1459,18 +1459,14 @@ ResetarBotoes;
                      begin
                      ZDOOM_INI:=TMemIniFile.Create(Caminho_Global + Array_Games[id][6]);
 
-                       try
-                         if ZDOOM_INI.ReadString('Doom.Player', 'skin', '') = 'base' then
-                         begin
-                         Form1_DGL.combo_doom.ItemIndex:=0;
-                         Form1_DGL.combo_color.Enabled:=True;
-                         end;
+                     DoomSkin:=ZDOOM_INI.ReadString('Doom.Player', 'skin', 'base');
+                     Form1_DGL.combo_color.Enabled:=DoomSkin <> 'Phobos';
 
-                         if ZDOOM_INI.ReadString('Doom.Player', 'skin', '') = 'Phobos' then
-                         begin
-                         Form1_DGL.combo_doom.ItemIndex:=1;
-                         Form1_DGL.combo_color.Enabled:=False;
-                         end;
+                       try
+                         if DoomSkin = 'Phobos' then
+                         Form1_DGL.combo_doom.ItemIndex:=1
+                         else
+                         Form1_DGL.combo_doom.ItemIndex:=0;
 
                        ZDOOM_Mouse:= SameText(ZDOOM_INI.ReadString('GlobalSettings', 'use_mouse', ''),'true');
 
