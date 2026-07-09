@@ -3,7 +3,7 @@ unit UIUtils;
 interface
 
 uses
-  Windows, Messages, Classes, Controls, Forms, Graphics, ExtCtrls, StdCtrls;
+  Windows, Messages, Classes, Controls, Forms, Graphics, ExtCtrls, StdCtrls, SysUtils;
 
 //==========================================
 //REDRAW
@@ -48,22 +48,11 @@ end;
 
 procedure UnlockWindow(AControl: TWinControl);
 begin
-
   if Assigned(AControl) and AControl.HandleAllocated then
   begin
-  SendMessage(AControl.Handle, WM_SETREDRAW, 1, 0);
-
-  RedrawWindow(
-      AControl.Handle,
-      nil,
-      0,
-      RDW_INVALIDATE or
-      RDW_ERASE or
-      RDW_FRAME or
-      RDW_ALLCHILDREN);
-
+    SendMessage(AControl.Handle, WM_SETREDRAW, 1, 0);
+    RedrawWindow(AControl.Handle, nil, 0, RDW_INVALIDATE);
   end;
-
 end;
 
 procedure BeginUIUpdate(AControl: TWinControl);

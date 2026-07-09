@@ -8,7 +8,7 @@ uses
   pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
   abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
   RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, abfEdits,
-  GraphicEx,UIUtils;
+  GraphicEx;
 
 type
 //------------------------------------
@@ -27,6 +27,8 @@ Caminho_Global,Pasta_INI_Global,DosBox_EXE_Global,ZDoom_EXE_Global:String;
 DoomSkin_Global,DoomMod_Global,DoomDM_Global,Game_EXE_Global:String;
 EPI_Global_DLC,CAP_Global_DLC,Language_Global:Integer;
 Config_Game_Global,VarParametro_Global,LogoAtual_Global:String;
+
+UltimoGrupoCores: Integer = -1;
 
 Array_SIGIL_DLC_Name: Array [0..4] of String;
 //Array_SIGIL_DLC_Name[0] - WAD SIGIL
@@ -231,7 +233,7 @@ SW_MouseAnalogY = 52312;
 implementation
 
 uses IniFiles, Funcoes, About, QUAKE_NameFun, MAP_Select, Mouse_Sense, Language,
-DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind;
+DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind, UIUtils;
 
 var
 Arquivo_INI:TIniFile;
@@ -374,75 +376,87 @@ end;
 procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
-abfImage1.Visible:=False;
-//------------------------------
-id:=RxCheckListBox1.ItemIndex+1;
-//------------------------------
-Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
-Funcao_Config_Opcoes;
+
+  abfImage1.Visible:=False;
+  //------------------------------
+  id:=RxCheckListBox1.ItemIndex+1;
+  //------------------------------
+  Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
+  Funcao_Config_Opcoes;
+
 end;
 
 procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
 var
 i:Integer;
 begin
-Form1_DGL.abfImage1.Visible:=True;
-//----------------------------------------
-Form1_DGL.logo_blood.Visible      :=False;
-Form1_DGL.logo_constructor.Visible:=False;
-Form1_DGL.logo_doom.Visible       :=False;
-Form1_DGL.logo_duke3d.Visible     :=False;
-Form1_DGL.logo_heretic.Visible    :=False;
-Form1_DGL.logo_hexen.Visible      :=False;
-Form1_DGL.logo_quake.Visible      :=False;
-Form1_DGL.logo_rott.Visible       :=False;
-Form1_DGL.logo_shadow.Visible     :=False;
-Form1_DGL.logo_warcraft.Visible   :=False;
-Form1_DGL.logo_wolf3d.Visible     :=False;
-//----------------------------------------
-RxCheckListBox1.Clear;
-img_game.Picture.Graphic:=Nil;
-StatusBar1.Panels[1].Text:='';
-IMG_STATUS.Picture:=Nil;
-gif_dos.Visible:=True;
-//----------------------------------------
-label_name.Enabled :=False;
-player_name.Enabled:=False;
-cont_player.Enabled:=False;
-cont_seta.Enabled  :=False;
-//----------------------------------------
-ip_local.Text      :='0.0.0.0';
-ip_local.Enabled   :=False;
-ip_internet.Text   :='0.0.0.0';
-ip_internet.Enabled:=False;
-ip_porta.Text      :='0';
-ip_porta.Enabled   :=False;
-//----------------------------------------
-check_single.Enabled    :=False;
-check_servidor.Enabled  :=False;
-check_cliente.Enabled   :=False;
-Refresh_Lan.Enabled     :=False;
-Refresh_Internet.Enabled:=False;
-//----------------------------------------
-combo_color.Visible:=False;
-combo_doom.Visible :=False;
-//----------------------------------------
-RxControle.Visible       :=False;
-Label_Controle.Visible   :=False;
-RxSense.Visible          :=False;
-Label_Sense.Visible      :=False;
-RxBrutal.Visible         :=False;
-Label_Brutal.Visible     :=False;
-RxOpcoes.Visible         :=False;
-Label_Opcoes.Visible     :=False;
-RxDM.Visible             :=False;
-Label_DM.Visible         :=False;
-RxQuakeServer.Visible    :=False;
-Label_QuakeServer.Visible:=False;
-//----------------------------------------
-btn_start.Enabled :=False;
-Panel_Icones.SetFocus;
-//----------------------------------------
+BeginUIUpdate(Self);
+Try
+//----------------------------------------------------------
+
+  Form1_DGL.abfImage1.Visible:=True;
+  //----------------------------------------
+  Form1_DGL.logo_blood.Visible      :=False;
+  Form1_DGL.logo_constructor.Visible:=False;
+  Form1_DGL.logo_doom.Visible       :=False;
+  Form1_DGL.logo_duke3d.Visible     :=False;
+  Form1_DGL.logo_heretic.Visible    :=False;
+  Form1_DGL.logo_hexen.Visible      :=False;
+  Form1_DGL.logo_quake.Visible      :=False;
+  Form1_DGL.logo_rott.Visible       :=False;
+  Form1_DGL.logo_shadow.Visible     :=False;
+  Form1_DGL.logo_warcraft.Visible   :=False;
+  Form1_DGL.logo_wolf3d.Visible     :=False;
+  //----------------------------------------
+  RxCheckListBox1.Clear;
+  img_game.Picture.Graphic:=Nil;
+  StatusBar1.Panels[1].Text:='';
+  IMG_STATUS.Picture:=Nil;
+  gif_dos.Visible:=True;
+  //----------------------------------------
+  label_name.Enabled :=False;
+  player_name.Enabled:=False;
+  cont_player.Enabled:=False;
+  cont_seta.Enabled  :=False;
+  //----------------------------------------
+  ip_local.Text      :='0.0.0.0';
+  ip_local.Enabled   :=False;
+  ip_internet.Text   :='0.0.0.0';
+  ip_internet.Enabled:=False;
+  ip_porta.Text      :='0';
+  ip_porta.Enabled   :=False;
+  //----------------------------------------
+  check_single.Enabled    :=False;
+  check_servidor.Enabled  :=False;
+  check_cliente.Enabled   :=False;
+  Refresh_Lan.Enabled     :=False;
+  Refresh_Internet.Enabled:=False;
+  //----------------------------------------
+  combo_color.Visible:=False;
+  combo_doom.Visible :=False;
+  //----------------------------------------
+  RxControle.Visible       :=False;
+  Label_Controle.Visible   :=False;
+  RxSense.Visible          :=False;
+  Label_Sense.Visible      :=False;
+  RxBrutal.Visible         :=False;
+  Label_Brutal.Visible     :=False;
+  RxOpcoes.Visible         :=False;
+  Label_Opcoes.Visible     :=False;
+  RxDM.Visible             :=False;
+  Label_DM.Visible         :=False;
+  RxQuakeServer.Visible    :=False;
+  Label_QuakeServer.Visible:=False;
+  //----------------------------------------
+  btn_start.Enabled :=False;
+  Panel_Icones.SetFocus;
+  //----------------------------------------
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 
 //------------------------------------------------------------------------------------------------
 {DEBUG MODE}
@@ -541,13 +555,6 @@ procedure TForm1_DGL.Menu_FirewallClick(Sender: TObject);
 begin
 
   try
-  {
-  Firewall('CONFIG\bin\','DOSBox.exe');
-  Firewall('CONFIG\bin\zdoom\','zdoom.exe');
-  Firewall('DOS\QUAKE\','qwcl.exe');
-  Firewall('DOS\QUAKE\','qwsv.exe');
-  Firewall('DOS\QUAKE\','quakespasm.exe');
-  }
   FirewallBatch;
   finally
   MessageBox(Application.Handle,pchar(Language.Lang_DGL(17)),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
@@ -603,6 +610,9 @@ var
 i:Integer;
 p:TPoint;
 begin
+BeginUIUpdate(Self);
+Try
+//----------------------------------------------------------
 
  if (Button = mbRight) then
  begin
@@ -654,6 +664,11 @@ begin
    //-----------------------------------------------------
  end;
 
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.popup_qwClick(Sender: TObject);
@@ -696,6 +711,7 @@ end;
 procedure TForm1_DGL.combo_colorDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
+
   //----------------------------------
   {ZDOOM - CORES DO COMBOBOX}
   //----------------------------------
@@ -716,6 +732,7 @@ begin
   FillRect(Rect);
   end;
   //----------------------------------
+
 end;
 
 procedure TForm1_DGL.combo_colorChange(Sender: TObject);
@@ -725,6 +742,7 @@ end;
 
 procedure TForm1_DGL.combo_doomChange(Sender: TObject);
 begin
+
   {SKIN - DOOM e DOOM II}
   case combo_doom.ItemIndex of
   0: begin
@@ -738,7 +756,8 @@ begin
      combo_color.ItemIndex:=8;
      end;
   end;
-RxCheckListBox1.SetFocus;  
+  
+RxCheckListBox1.SetFocus;
 end;
 
 procedure TForm1_DGL.ip_localKeyDown(Sender: TObject; var Key: Word;
@@ -934,16 +953,27 @@ end;
   Exit;
   //---------------
 
-//-------------------------------
-// FINALIZAÇÃO DO START
-//-------------------------------
-Config_Tela(False);
-//-------------------------------
-btn_start.Caption := Lang_DGL(5);
-img_game.Visible:=False;
-gif_dos.Visible:=True;
-Timer_MonitoraAPP.Enabled:=True;
-//-------------------------------
+//----------------------------------------------------------
+BeginUIUpdate(Self);
+try
+//----------------------------------------------------------
+
+  //-------------------------------
+  // FINALIZAÇÃO DO START
+  //-------------------------------
+  Config_Tela(False);
+  //-------------------------------
+  btn_start.Caption := Lang_DGL(5);
+  img_game.Visible:=False;
+  gif_dos.Visible:=True;
+  Timer_MonitoraAPP.Enabled:=True;
+  //-------------------------------
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);
@@ -1012,6 +1042,7 @@ end;
 
 procedure TForm1_DGL.RxControleClick(Sender: TObject);
 begin
+
   if RxControle.Down then
   begin
     {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
@@ -1028,6 +1059,7 @@ begin
   Label_Sense.Visible:=False;
   Label_Controle.Caption:=Lang_DGL(18);
   end;
+  
 ActiveControl:=Nil;
 end;
 
@@ -1082,6 +1114,10 @@ end;
 
 procedure TForm1_DGL.RxOpcoesClick(Sender: TObject);
 begin
+BeginUIUpdate(Self);
+Try
+//----------------------------------------------------------
+
   if RxOpcoes.Down then
   begin
   Application.CreateForm(TForm3_NameFun, Form3_NameFun);
@@ -1096,10 +1132,17 @@ begin
   end;
 
 ActiveControl:=Nil;
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.RxDMClick(Sender: TObject);
 begin
+
   if RxDM.Down then
   begin
   Label_DM.Caption:='DEATHMATCH';
@@ -1141,6 +1184,7 @@ end;
 
 procedure TForm1_DGL.RxQuakeServerClick(Sender: TObject);
 begin
+
   if RxQuakeServer.Down then
   begin
   EPI_Global_DLC:=1; 

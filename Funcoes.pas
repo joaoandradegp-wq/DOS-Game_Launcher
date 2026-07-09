@@ -57,7 +57,7 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 
 implementation
 
-uses DOSBOX_Bind_FPS, Quake_Bind;
+uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -886,190 +886,189 @@ CoolStuff_Global:='';
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Lista_Cores(Game:Integer);
+function GrupoCores(Game: Integer): Integer;
+begin
+
+  case Game of
+    3,4: Result := 1; // Doom
+      6: Result := 2; // Heretic
+      7: Result := 3; // Hexen
+      8: Result := 4; // Quake
+  12,13: Result := 5; // Wolfenstein
+  else
+  Result := 0;
+  end;
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure Lista_Cores(Game: Integer);
 var
 Config_Game,Nome_Game:String;
-i, ValorInt:Integer;
+i,ValorInt,Grupo:Integer;
 Config_Fisico:TStringList;
 Arquivo_INI:TIniFile;
 begin
+Grupo:=GrupoCores(Game);
 
-if (Game = 8) then
-Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+'id1\'+Array_Games[Game][6]
-else
-Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+Array_Games[Game][6];
-Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
+  if (Game = 8) then
+  Config_Game := ExtractFilePath(Application.ExeName) +
+                 Array_Games[Game][3] + 'id1\' + Array_Games[Game][6]
+  else
+  Config_Game := ExtractFilePath(Application.ExeName) +
+                 Array_Games[Game][3] + Array_Games[Game][6];
 
- if (Game = 3) or (Game = 4) then
- begin
- //--------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------------
- {DOOM - DOOM 2}
- //--------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+Nome_Game := UpperCase(ExtractName(Array_Games[id][5]));
+
+  if Grupo <> UltimoGrupoCores then
   begin
-  Add(IntToStr($008000));           //0 - Green
-  Add(IntToStr($808080));           //1 - Gray
-  Add(IntToStr(RGB(160, 82, 45)));  //2 - Brown
-  Add(IntToStr(RGB(171,  8,  8)));  //3 - Red
-  Add(IntToStr($D3D3D3));           //4 - Light Gray
-  Add(IntToStr(RGB(245,222,179)));  //5 - Light Brown
-  Add(IntToStr($0000FF));           //6 - Light Red
-  Add(IntToStr($FF0000));           //7 - Light Blue
-  end;
- //--------------------------------------------------
- end;
 
- if (Game = 6) then
- begin
- //--------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------------
- {HERETIC}
- //--------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+    with Form1_DGL.combo_color.Items do
+    begin
+    BeginUpdate;
+      Try
+      //--------------------------------------------------------
+      Clear;
+
+        {================ DOOM =================}
+        if (Game = 3) or (Game = 4) then
+        begin
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr($D3D3D3));
+        Add(IntToStr(RGB(245,222,179)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr($FF0000));
+        end;
+
+        {================ HERETIC ==============}
+        if Game = 6 then
+        begin
+        Add(IntToStr(RGB(85,107,47)));
+        Add(IntToStr(RGB(255,165,0)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr(RGB(0,0,179)));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($D3D3D3));
+        Add(IntToStr(RGB(245,222,179)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr(RGB(51,51,255)));
+        Add(IntToStr(RGB(205,133,63)));
+        end;
+
+        {================ HEXEN ================}
+        if Game = 7 then
+        begin
+        Add(IntToStr(RGB(0,0,179)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr(RGB(255,165,0)));
+        Add(IntToStr(RGB(85,107,47)));
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($800080));
+        end;
+
+        {================ QUAKE ================}
+        if Game = 8 then
+        begin
+        Add(IntToStr(RGB(255,255,255)));
+        Add(IntToStr(RGB(88,61,18)));
+        Add(IntToStr(RGB(139,139,203)));
+        Add(IntToStr(RGB(107,107,11)));
+        Add(IntToStr(RGB(127,0,0)));
+        Add(IntToStr(RGB(132,110,50)));
+        Add(IntToStr(RGB(158,72,51)));
+        Add(IntToStr(RGB(227,179,151)));
+        Add(IntToStr(RGB(171,139,163)));
+        Add(IntToStr(RGB(187,115,159)));
+        Add(IntToStr(RGB(219,195,187)));
+        Add(IntToStr(RGB(111,131,123)));
+        Add(IntToStr(RGB(255,243,27)));
+        Add(IntToStr(RGB(0,0,255)));
+        end;
+
+        {================ WOLF =================}
+        if (Game = 12) or (Game = 13) then
+        begin
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr($00FFFF));
+        Add(IntToStr($A0C8FF));
+        Add(IntToStr($800080));
+        Add(IntToStr($808000));
+        end;
+
+      //--------------------------------------------------------
+      Finally
+      EndUpdate;
+      end;
+      //--------------------------------------------------------
+    end;
+
+    UltimoGrupoCores := Grupo;
+
+  end;
+
+  {====================================================================}
+  { Daqui para baixo continua exatamente como estava                    }
+  {====================================================================}
+
+  if Game = 8 then
   begin
-  Add(IntToStr(RGB( 85,107, 47)));  //0 - Green
-  Add(IntToStr(RGB(255,165,  0)));  //1 - Yellow
-  Add(IntToStr(RGB(171,  8,  8)));  //2 - Red
-  Add(IntToStr(RGB(  0,  0,179)));  //3 - Blue
-  Add(IntToStr(RGB(160, 82, 45)));  //4 - Brown
-  Add(IntToStr($D3D3D3));        ;  //5 - Light Gray
-  Add(IntToStr(RGB(245,222,179)));  //6 - Light Brown
-  Add(IntToStr($0000FF));           //7 - Light Red
-  Add(IntToStr(RGB( 51, 51,255)));  //8 - Light Blue
-  Add(IntToStr(RGB(205,133, 63)));  //9 - Beige
-  end;
- //--------------------------------------------------
- end;
+    Config_Fisico := TStringList.Create;
+    try
+      Config_Fisico.LoadFromFile(Config_Game);
 
- if (Game = 7) then
- begin
- //-------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //-------------------------------------------------
- {HEXEN}
- //-------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+      for i := 0 to Config_Fisico.Count - 1 do
+      begin
+        if Pos('_cl_color "0"', Config_Fisico[i]) = 1 then
+        begin
+          Form1_DGL.combo_color.ItemIndex := 0;
+          Break;
+        end
+        else
+        if Pos('_cl_color ', Config_Fisico[i]) = 1 then
+        begin
+          if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
+            Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
+          Break;
+        end;
+      end;
+
+    finally
+      Config_Fisico.Free;
+    end;
+  end;
+
+  if (Array_Games[Game][7] = 'ZDOOM') then
   begin
-  Add(IntToStr(RGB(  0,  0,179)));  //0 - Blue
-  Add(IntToStr(RGB(171,  8,  8)));  //1 - Red
-  Add(IntToStr(RGB(255,165,  0)));  //2 - Gold
-  Add(IntToStr(RGB( 85,107, 47)));  //3 - Dull Green
-  Add(IntToStr($008000));           //4 - Green
-  Add(IntToStr($808080));           //5 - Gray
-  Add(IntToStr(RGB(160, 82, 45)));  //6 - Brown
-  Add(IntToStr($800080));           //7 - Purple
+    if (Game = 4) or (Game = 12) or (Game = 13) then
+      Nome_Game := 'Doom';
+
+    if Form1_DGL.combo_doom.ItemIndex = 0 then
+    begin
+      Arquivo_INI := TIniFile.Create(Config_Game);
+      try
+        if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
+          Form1_DGL.combo_color.ItemIndex :=
+            StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
+      finally
+        Arquivo_INI.Free;
+      end;
+    end
+    else
+    begin
+      if Form1_DGL.combo_color.Items.Count = 8 then
+        Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
+
+      Form1_DGL.combo_color.ItemIndex := 8;
+    end;
   end;
- //-------------------------------------------------
- end;
-
- if (Game = 8) then
- begin
- //---------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //---------------------------------------------------
- {QUAKE}
- //---------------------------------------------------
-  with Form1_DGL.combo_color.Items do
-  begin
-  Add(IntToStr(RGB(255,255,255)));  //0  - White
-  Add(IntToStr(RGB( 88, 61, 18)));  //1  - Brown
-  Add(IntToStr(RGB(139,139,203)));  //2  - Light Blue
-  Add(IntToStr(RGB(107,107, 11)));  //3  - Green
-  Add(IntToStr(RGB(127,  0,  0)));  //4  - Red
-  Add(IntToStr(RGB(132,110, 50)));  //5  - Orange
-  Add(IntToStr(RGB(158, 72, 51)));  //6  - Gold
-  Add(IntToStr(RGB(227,179,151)));  //7  - Peach
-  Add(IntToStr(RGB(171,139,163)));  //8  - Purple
-  Add(IntToStr(RGB(187,115,159)));  //9  - Magenta
-  Add(IntToStr(RGB(219,195,187)));  //10 - Tan
-  Add(IntToStr(RGB(111,131,123)));  //11 - Light Green
-  Add(IntToStr(RGB(255,243, 27)));  //12 - Yellow
-  Add(IntToStr(RGB(  0,  0,255)));  //13 - Blue
-  end;
- //---------------------------------------------------
- Config_Fisico:=TStringList.Create;
- Config_Fisico.LoadFromFile(Config_Game);
-
-   for i:=0 to Config_Fisico.Count-1 do
-   begin
-     if Pos('_cl_color "0"',Config_Fisico[i]) = 1 then
-     begin
-     Form1_DGL.combo_color.ItemIndex:=0;
-     Break;
-     end
-     else
-     begin
-       if Pos('_cl_color ',Config_Fisico[i]) = 1 then
-       begin
-         if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
-         Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
-       Break;
-       end;
-     end;
-   end;
-
- Config_Fisico.Free;
- //--------------------------------------------------
- end;
-
- if (Game = 12) or (Game = 13) then
- begin
- //--------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------
- {WOLFENSTEIN 3D + SPEAR OF DESTINY}
- //--------------------------------------------
-  with Form1_DGL.combo_color.Items do
-  begin
-  Add(IntToStr($008000));          //0 - Green
-  Add(IntToStr($808080));          //1 - Gray
-  Add(IntToStr(RGB(160, 82, 45))); //2 - Brown
-  Add(IntToStr($0000FF));          //3 - Red
-  Add(IntToStr($00FFFF));          //4 - Yellow
-  Add(IntToStr($A0C8FF));          //5 - Tan
-  Add(IntToStr($800080));          //6 - Purple
-  Add(IntToStr($808000));          //7 - Teal
-  end;
- //--------------------------------------------
- end;
-
- //------------------------------------------------------------------------------------------------
- {ZDOOM - PLAYER SETUP - CORES DO PLAYER}
- //------------------------------------------------------------------------------------------------
- if (Array_Games[Game][7] = 'ZDOOM') then
- begin
-  //--------------------------------------------------------
-  {DOOM 2 - WOLFENSTEIN 3D - USAM NOME DE "DOOM" NO ARQUIVO}
-  //--------------------------------------------------------
-  if (Game = 4) or (Game = 12) or (Game = 13) then
-  Nome_Game:='Doom';
-  //-----------------------------------------------------------------------------------------------
-
-   //-----------------------------------------------------------------------------------------------------
-   {DOOM - DOOM 2 - PEGA A COR DENTRO DO ARQUIVO .INI APENAS SE ESTIVER USANDO O DOOM GUY NO COMBO_DOOM}
-   //-----------------------------------------------------------------------------------------------------
-   {SKIN - DOOM}
-   if Form1_DGL.combo_doom.ItemIndex = 0 then
-   begin
-   Arquivo_INI:=TIniFile.Create(Config_Game);
-     if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
-     Form1_DGL.combo_color.ItemIndex:=StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
-   Arquivo_INI.Free;
-   end
-   {SKIN - PHOBOS}
-   else if Form1_DGL.combo_doom.ItemIndex = 1 then
-   begin
-   Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
-   Form1_DGL.combo_color.ItemIndex:=8;
-   end;
-   //-----------------------------------------------------------------------------------------------------
-
- end;
- //------------------------------------------------------------------------------------------------
-
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -1221,6 +1220,10 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
 Form1_DGL.gif_dos.Visible:=False;
 //-------------------------------------------------------------------------
+
+BeginUIUpdate(Form1_DGL);
+Try
+//----------------------------------------------------------
 
 //------------
 ResetarBotoes;
@@ -1663,6 +1666,12 @@ ResetarBotoes;
    end; //END - SINGLE PLAYER
  end; //END - Game_Existe = False
 //---------------------------------------------------
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Form1_DGL);
+end;
+//----------------------------------------------------------
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
