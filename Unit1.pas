@@ -8,7 +8,7 @@ uses
   pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
   abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
   RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, abfEdits,
-  GraphicEx;
+  GraphicEx,UIUtils;
 
 type
 //------------------------------------
@@ -593,7 +593,8 @@ end;
 procedure TForm1_DGL.FormCreate(Sender: TObject);
 begin
 Lang_DGL(0);
-Form1_DGL.DoubleBuffered := True;
+DoubleBuffered := True;
+SetDoubleBufferedRecursive(Self);
 end;
 
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;

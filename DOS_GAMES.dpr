@@ -17,7 +17,8 @@ uses
   ZDOOM_Bind in 'ZDOOM_Bind.pas',
   DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas',
   QUAKE_Bind in 'QUAKE_Bind.pas',
-  HEXEN_Class in 'HEXEN_Class.pas' {Form8_HexenClass};
+  HEXEN_Class in 'HEXEN_Class.pas' {Form8_HexenClass},
+  UIUtils in 'UIUtils.pas';
 
 {$R *.res}
 
