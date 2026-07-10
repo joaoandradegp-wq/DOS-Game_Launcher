@@ -633,108 +633,97 @@ Caminho_INI:String;
 Arquivo_INI:TIniFile;
 begin
 Caminho_INI:=ExtractFilePath(Application.ExeName)+'dos.ini';
-Form1_DGL.Refresh_Lan.Glyph:=Nil;
 CoolStuff_Global:='';
 
  case Tipo of
   {SINGLE PLAYER}
   0: begin
      Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
-     //----------------------------------------
-     Form1_DGL.label_name.Enabled      :=False;
-     Form1_DGL.player_name.Enabled     :=False;
-     Form1_DGL.cont_player.Enabled     :=False;
-     Form1_DGL.cont_seta.Enabled       :=False;
-     Form1_DGL.combo_color.Visible     :=False;
-     Form1_DGL.combo_doom.Visible      :=False;
-     //----------------------------------------
-     Form1_DGL.Label2.Caption:='LAN:';
-     Form1_DGL.ip_local.Text:='0.0.0.0';
-     Form1_DGL.ip_local.Enabled:=False;
-     Form1_DGL.ip_internet.Text:='0.0.0.0';
-     Form1_DGL.ip_internet.Enabled:=False;
-     Form1_DGL.ip_porta.Text:='0';
-     Form1_DGL.ip_porta.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.Refresh_Lan.Enabled:=False;
-     Form1_DGL.Refresh_Internet.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.Label1.Enabled:=False;
-     Form1_DGL.Label2.Enabled:=False;
-     Form1_DGL.Label3.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.btn_start.Enabled:=True;
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.label_name , False);
+     SetEnabled(Form1_DGL.player_name, False);
+     SetEnabled(Form1_DGL.cont_player, False);
+     SetEnabled(Form1_DGL.cont_seta  , False);
+     SetVisible(Form1_DGL.combo_color, False);
+     SetVisible(Form1_DGL.combo_doom , False);
+     //--------------------------------------------
+     SetCaption (Form1_DGL.Label2     , 'LAN:');
+     SetEditText(Form1_DGL.ip_local   , '0.0.0.0');
+     SetEditText(Form1_DGL.ip_internet, '0.0.0.0');
+     SetEditText(Form1_DGL.ip_porta   , '0');
+     SetEnabled (Form1_DGL.ip_local   , False);
+     SetEnabled (Form1_DGL.ip_internet, False);
+     SetEnabled (Form1_DGL.ip_porta   , False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.Refresh_Lan     , False);
+     SetEnabled(Form1_DGL.Refresh_Internet, False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.Label1, False);
+     SetEnabled(Form1_DGL.Label2, False);
+     SetEnabled(Form1_DGL.Label3, False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.btn_start, False);
      Form1_DGL.RxCheckListBox1.SetFocus;
-     //----------------------------------------
+     //--------------------------------------------
      end;
   {SERVIDOR}
   1: begin
-     Form1_DGL.player_name.Enabled:=True;
+     SetEnabled(Form1_DGL.player_name, True);
      Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
      //---------------------------------------------------------
-       if (Form1_DGL.player_name.Enabled = True) then            
-       Form1_DGL.player_name.SetFocus
-       else
-       Form1_DGL.RxCheckListBox1.SetFocus;
+     Form1_DGL.player_name.SetFocus;
      //---------------------------------------------------------
-     Form1_DGL.Label2.Caption     :='LAN:';
-     Form1_DGL.ip_local.ReadOnly  :=True;
-     Form1_DGL.ip_local.Text      :=IP_Interno_Global;
-     Form1_DGL.ip_local.Enabled   :=True;
-     Form1_DGL.ip_internet.Text   :=IP_Externo_Global;
-     Form1_DGL.ip_internet.Enabled:=True;
-     Form1_DGL.ip_porta.Enabled   :=True;
-     Form1_DGL.ip_porta.Clear;
+     SetCaption (Form1_DGL.Label2     , 'LAN:');
+     Form1_DGL.ip_local.ReadOnly:=True;
+     SetEditText(Form1_DGL.ip_local   , IP_Interno_Global);
+     SetEnabled (Form1_DGL.ip_local   , True);
+     SetEditText(Form1_DGL.ip_internet, IP_Externo_Global);
+     SetEnabled (Form1_DGL.ip_internet, True);
+     SetEnabled (Form1_DGL.ip_porta   , True);
      //------------------------------------------------------------------------------------------
      Arquivo_INI:=TIniFile.Create(Caminho_INI);
-     Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_SERVER_'+Array_Games[id][7],'');
+     SetEditText(Form1_DGL.ip_porta,Arquivo_INI.ReadString('DOS','PORT_SERVER_'+Array_Games[id][7],''));
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
      if Length(Form1_DGL.ip_porta.Text) = 0 then
-     Form1_DGL.ip_porta.Text:=Array_Games[id][8];
+     SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
      //---------------------------------------------------------
-     Form1_DGL.Refresh_Lan.Enabled:=True;
-     Form1_DGL.Refresh_Internet.Enabled:=True;
+     SetEnabled(Form1_DGL.Refresh_Lan     , True);
+     SetEnabled(Form1_DGL.Refresh_Internet, True);
      //---------------------------------------------------------
-     Form1_DGL.Label1.Enabled:=True;
-     Form1_DGL.Label2.Enabled:=True;
-     Form1_DGL.Label3.Enabled:=True;
+     SetEnabled(Form1_DGL.Label1, True);
+     SetEnabled(Form1_DGL.Label2, True);
+     SetEnabled(Form1_DGL.Label3, True);
      //---------------------------------------------------------
-     Form1_DGL.btn_start.Enabled:=True;
+     SetEnabled(Form1_DGL.btn_start, True);
      //---------------------------------------------------------
      end;
   {CLIENTE}
   2: begin
      Form1_DGL.Lista_Imagens.GetBitmap(5,Form1_DGL.Refresh_Lan.Glyph);
      //-----------------------------------------------
-     Form1_DGL.Label2.Caption     :=Lang_DGL(15)+':';
-     Form1_DGL.ip_local.ReadOnly  :=False;
-     Form1_DGL.ip_local.Enabled   :=True;
-     Form1_DGL.ip_local.Clear;
-     Form1_DGL.ip_internet.Enabled:=False;
-     Form1_DGL.ip_porta.Enabled   :=True;
-     Form1_DGL.ip_porta.Clear;
+     SetCaption(Form1_DGL.Label2     , Lang_DGL(15)+':');
+     Form1_DGL.ip_local.ReadOnly:=False;
+     SetEnabled(Form1_DGL.ip_local   , True);
+     SetEnabled(Form1_DGL.ip_internet, False);
+     SetEnabled(Form1_DGL.ip_porta   , True);
      //------------------------------------------------------------------------------------------
      Arquivo_INI:=TIniFile.Create(Caminho_INI);
-     Form1_DGL.ip_local.Text:=Arquivo_INI.ReadString('DOS',  'IP_CLIENT','');
-     Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],'');
+     SetEditText(Form1_DGL.ip_local,Arquivo_INI.ReadString('DOS',  'IP_CLIENT',''));
+     SetEditText(Form1_DGL.ip_porta,Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],''));
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
        if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
-       Form1_DGL.ip_porta.Text:=Array_Games[id][8];
-       //-----------------------------------------------
-       if Length(Form1_DGL.ip_local.Text) = 0 then
-       Form1_DGL.Refresh_Lan.Enabled:=False
-       else
-       Form1_DGL.Refresh_Lan.Enabled:=True;
+       SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
      //-----------------------------------------------
-     Form1_DGL.Refresh_Internet.Enabled:=False;
+     SetEnabled(Form1_DGL.Refresh_Lan,Trim(Form1_DGL.ip_local.Text) <> '');
+     SetEnabled(Form1_DGL.Refresh_Internet, False);
      //-----------------------------------------------
-     Form1_DGL.Label1.Enabled:=False;
-     Form1_DGL.Label2.Enabled:=True;
-     Form1_DGL.Label3.Enabled:=True;
+     SetEnabled(Form1_DGL.Label1, False);
+     SetEnabled(Form1_DGL.Label2, True);
+     SetEnabled(Form1_DGL.Label3, True);
      //-----------------------------------------------
-     Form1_DGL.btn_start.Enabled:=False;
+     SetEnabled(Form1_DGL.btn_start, False);
      //-----------------------------------------------
      Form1_DGL.ip_local.SetFocus;
      Form1_DGL.ip_local.SelectAll;
@@ -745,43 +734,32 @@ CoolStuff_Global:='';
   case id of
      {DOOM + DOOM II}
      3,4: begin
-          //----------------------------
-          Form1_DGL.RxBrutal.Glyph:=Nil;
-          //----------------------------
-          Form1_DGL.RxOpcoes.Visible    :=False;
-          Form1_DGL.Label_Opcoes.Visible:=False;
-          Form1_DGL.RxQuakeServer.Visible    :=False;
-          Form1_DGL.Label_QuakeServer.Visible:=False;
+          MostrarOpcoes(False);
+          MostrarQuakeServer(False);
 
             {SINGLE PLAYER E CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
             Form1_DGL.RxBrutal.Down:=False;
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Visible    :=True;
-            Form1_DGL.Label_Brutal.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=False;
-            Form1_DGL.Label_DM.Visible    :=False;
+            MostrarBrutal(True);
+            MostrarDM(False);
             //----------------------------------------
             end;
             {SERVIDOR}
             if (Tipo = 1) then
             begin
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
-            Form1_DGL.RxBrutal.Down   :=False;
-            Form1_DGL.RxDM.Top        :=Form1_DGL.RxBrutal.Top+24;
-            Form1_DGL.Label_DM.Top    :=Form1_DGL.RxDM.Top+1;
-            Form1_DGL.RxDM.Down       :=False;
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
+            Form1_DGL.RxBrutal.Down:=False;
+
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxBrutal.Top + 24);
+            Form1_DGL.RxDM.Down:=False;
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Visible    :=True;
-            Form1_DGL.Label_Brutal.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=True;
-            Form1_DGL.Label_DM.Visible    :=True;
+            MostrarBrutal(True);
+            MostrarDM(True);
             //---------------------------------------
             end;
           end;
@@ -789,96 +767,73 @@ CoolStuff_Global:='';
        8: begin
           CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
 
-          Form1_DGL.RxBrutal.Visible    :=False;
-          Form1_DGL.Label_Brutal.Visible:=False;
+          MostrarBrutal(False);
 
             {SERVIDOR E CLIENTE}
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-------------------------------------------------------------
             Form1_DGL.RxOpcoes.Down        :=False;
-            Form1_DGL.RxOpcoes.Top         :=Form1_DGL.RxControle.Top;
-            Form1_DGL.Label_Opcoes.Top     :=Form1_DGL.RxOpcoes.Top+1;
+            PosicionarBotao(Form1_DGL.RxOpcoes     ,Form1_DGL.Label_Opcoes
+                                                   ,Form1_DGL.RxControle.Top);
             Form1_DGL.RxDM.Down            :=False;
-            Form1_DGL.RxDM.Top             :=Form1_DGL.RxOpcoes.Top+24;
-            Form1_DGL.Label_DM.Top         :=Form1_DGL.RxDM.Top+1;
+            PosicionarBotao(Form1_DGL.RxDM         ,Form1_DGL.Label_DM
+                                                   ,Form1_DGL.RxOpcoes.Top + 24);
             Form1_DGL.RxQuakeServer.Down   :=False;
-            Form1_DGL.RxQuakeServer.Top    :=Form1_DGL.RxDM.Top+24;;
-            Form1_DGL.Label_QuakeServer.Top:=Form1_DGL.RxQuakeServer.Top+1;
+            PosicionarBotao(Form1_DGL.RxQuakeServer,Form1_DGL.Label_QuakeServer
+                                                   ,Form1_DGL.RxDM.Top + 24);
             //-------------------------------------------------------------
-            Form1_DGL.RxOpcoes.Visible    :=True;
-            Form1_DGL.Label_Opcoes.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=DirectoryExists(Caminho_Global+'qw\');
-            Form1_DGL.Label_DM.Visible    :=DirectoryExists(Caminho_Global+'qw\');
-              if (Tipo = 2) then
-              begin
-              Form1_DGL.RxQuakeServer.Visible    :=False;
-              Form1_DGL.Label_QuakeServer.Visible:=False;
-              end;
-            //-------------------------------------------
+            MostrarOpcoes(True);
+            MostrarDM(DirectoryExists(Caminho_Global+'qw\'));
+            MostrarQuakeServer(Tipo = 1);
+            //---------------------------------------------
             end
             {SINGLE PLAYER}
             else
             begin
-            //-----------------------------------------
-            Form1_DGL.RxOpcoes.Visible         :=False;
-            Form1_DGL.Label_Opcoes.Visible     :=False;
-            Form1_DGL.RxDM.Visible             :=False;
-            Form1_DGL.Label_DM.Visible         :=False;
-            Form1_DGL.RxQuakeServer.Visible    :=False;
-            Form1_DGL.Label_QuakeServer.Visible:=False;
-            Form1_DGL.RxQuakeServer.Visible    :=False;
-            Form1_DGL.Label_QuakeServer.Visible:=False;
-            //-----------------------------------------
+            //---------------------------------------------
+            MostrarOpcoes(False);
+            MostrarDM(False);
+            MostrarQuakeServer(False);
+            //---------------------------------------------
             end;
 
           end;
    {HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
    6,7,
    12,13: begin
-          Form1_DGL.RxBrutal.Visible         :=False;
-          Form1_DGL.Label_Brutal.Visible     :=False;
-          Form1_DGL.RxOpcoes.Visible         :=False;
-          Form1_DGL.Label_Opcoes.Visible     :=False;
-          Form1_DGL.RxQuakeServer.Visible    :=False;
-          Form1_DGL.Label_QuakeServer.Visible:=False;
+          MostrarBrutal(False);
+          MostrarOpcoes(False);
+          MostrarQuakeServer(False);
 
             {SINGLE PLAYER - CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
             //----------------------------------------
-            Form1_DGL.RxOpcoes.Visible    :=False;
-            Form1_DGL.Label_Opcoes.Visible:=False;
-            Form1_DGL.RxDM.Visible        :=False;
-            Form1_DGL.Label_DM.Visible    :=False;
+            MostrarOpcoes(False);
+            MostrarDM(False);
             //----------------------------------------
             end;
             {SERVIDOR}
             if (Tipo = 1) then
             begin
             //--------------------------------------------------
-            Form1_DGL.RxDM.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_DM.Top:=Form1_DGL.RxDM.Top+1;
-            Form1_DGL.RxDM.Down   :=False;
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxControle.Top + 24);
+            Form1_DGL.RxDM.Down:=False;
             //--------------------------------------------------
-            Form1_DGL.RxDM.Visible    :=True;
-            Form1_DGL.Label_DM.Visible:=True;
+            MostrarDM(True);
             //----------------------------------------
             end;
           end;
      {BLOOD + CONSTRUCTOR + DUKE NUKEM 3D + RISE OF THE TRIAD + SHADOW WARRIOR + WARCRAFT II}
      else
      begin
-     //-----------------------------------------
-     Form1_DGL.RxBrutal.Visible         :=False;
-     Form1_DGL.Label_Brutal.Visible     :=False;
-     Form1_DGL.RxOpcoes.Visible         :=False;
-     Form1_DGL.Label_Opcoes.Visible     :=False;
-     Form1_DGL.RxDM.Visible             :=False;
-     Form1_DGL.Label_DM.Visible         :=False;
-     Form1_DGL.RxQuakeServer.Visible    :=False;
-     Form1_DGL.Label_QuakeServer.Visible:=False;
-     //-----------------------------------------
+     //---------------------------------------------
+     MostrarBrutal(False);
+     MostrarOpcoes(False);
+     MostrarDM(False);
+     MostrarQuakeServer(False);
+     //---------------------------------------------
      end;
 
   end; {END - CASE id of}
