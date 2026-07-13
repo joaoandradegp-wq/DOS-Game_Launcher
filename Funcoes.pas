@@ -662,7 +662,7 @@ CoolStuff_Global:='';
      SetEnabled(Form1_DGL.Label2, False);
      SetEnabled(Form1_DGL.Label3, False);
      //--------------------------------------------
-     SetEnabled(Form1_DGL.btn_start, False);
+     SetEnabled(Form1_DGL.btn_start, True);
      Form1_DGL.RxCheckListBox1.SetFocus;
      //--------------------------------------------
      end;
@@ -746,8 +746,9 @@ CoolStuff_Global:='';
             //------------------------------------------------------
             MostrarBrutal(True);
             MostrarDM(False);
-            //----------------------------------------
+            //------------------------------------------------------
             end;
+
             {SERVIDOR}
             if (Tipo = 1) then
             begin
@@ -760,7 +761,7 @@ CoolStuff_Global:='';
             //------------------------------------------------------
             MostrarBrutal(True);
             MostrarDM(True);
-            //---------------------------------------
+            //------------------------------------------------------
             end;
           end;
        {QUAKE}
@@ -773,13 +774,13 @@ CoolStuff_Global:='';
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-------------------------------------------------------------
-            Form1_DGL.RxOpcoes.Down        :=False;
+            Form1_DGL.RxOpcoes.Down:=False;
             PosicionarBotao(Form1_DGL.RxOpcoes     ,Form1_DGL.Label_Opcoes
                                                    ,Form1_DGL.RxControle.Top);
-            Form1_DGL.RxDM.Down            :=False;
+            Form1_DGL.RxDM.Down:=False;
             PosicionarBotao(Form1_DGL.RxDM         ,Form1_DGL.Label_DM
                                                    ,Form1_DGL.RxOpcoes.Top + 24);
-            Form1_DGL.RxQuakeServer.Down   :=False;
+            Form1_DGL.RxQuakeServer.Down:=False;
             PosicionarBotao(Form1_DGL.RxQuakeServer,Form1_DGL.Label_QuakeServer
                                                    ,Form1_DGL.RxDM.Top + 24);
             //-------------------------------------------------------------
@@ -802,9 +803,11 @@ CoolStuff_Global:='';
    {HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
    6,7,
    12,13: begin
+          //---------------------------------------------
           MostrarBrutal(False);
           MostrarOpcoes(False);
           MostrarQuakeServer(False);
+          //---------------------------------------------
 
             {SINGLE PLAYER - CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
@@ -822,7 +825,7 @@ CoolStuff_Global:='';
             Form1_DGL.RxDM.Down:=False;
             //--------------------------------------------------
             MostrarDM(True);
-            //----------------------------------------
+            //--------------------------------------------------
             end;
           end;
      {BLOOD + CONSTRUCTOR + DUKE NUKEM 3D + RISE OF THE TRIAD + SHADOW WARRIOR + WARCRAFT II}
@@ -969,61 +972,62 @@ Nome_Game := UpperCase(ExtractName(Array_Games[id][5]));
 
   end;
 
-  {====================================================================}
-  { Daqui para baixo continua exatamente como estava                    }
-  {====================================================================}
-
+  {================ QUAKE ================}
   if Game = 8 then
   begin
-    Config_Fisico := TStringList.Create;
+  Config_Fisico := TStringList.Create;
     try
-      Config_Fisico.LoadFromFile(Config_Game);
+    Config_Fisico.LoadFromFile(Config_Game);
 
       for i := 0 to Config_Fisico.Count - 1 do
       begin
         if Pos('_cl_color "0"', Config_Fisico[i]) = 1 then
         begin
-          Form1_DGL.combo_color.ItemIndex := 0;
-          Break;
+        Form1_DGL.combo_color.ItemIndex := 0;
+        Break;
         end
         else
-        if Pos('_cl_color ', Config_Fisico[i]) = 1 then
         begin
-          if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
+          if Pos('_cl_color ', Config_Fisico[i]) = 1 then
+          begin
+            if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
             Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
           Break;
+          end;
         end;
       end;
 
     finally
-      Config_Fisico.Free;
+    Config_Fisico.Free;
     end;
+
   end;
 
   if (Array_Games[Game][7] = 'ZDOOM') then
   begin
     if (Game = 4) or (Game = 12) or (Game = 13) then
-      Nome_Game := 'Doom';
+    Nome_Game := 'Doom';
 
     if Form1_DGL.combo_doom.ItemIndex = 0 then
     begin
-      Arquivo_INI := TIniFile.Create(Config_Game);
+    Arquivo_INI := TIniFile.Create(Config_Game);
       try
         if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
-          Form1_DGL.combo_color.ItemIndex :=
-            StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
+        Form1_DGL.combo_color.ItemIndex :=
+          StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
       finally
-        Arquivo_INI.Free;
+      Arquivo_INI.Free;
       end;
     end
     else
     begin
       if Form1_DGL.combo_color.Items.Count = 8 then
-        Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
+      Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
 
       Form1_DGL.combo_color.ItemIndex := 8;
     end;
   end;
+
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

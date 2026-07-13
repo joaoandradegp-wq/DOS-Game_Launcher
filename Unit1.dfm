@@ -1,6 +1,6 @@
 object Form1_DGL: TForm1_DGL
-  Left = 453
-  Top = 163
+  Left = 364
+  Top = 174
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   ClientHeight = 461
@@ -9841,6 +9841,7 @@ object Form1_DGL: TForm1_DGL
       Width = 40
       Height = 15
       Animate = True
+      FrameIndex = 1
       Image.Data = {
         3D09000047494638396128000F00F70000000000000000000000000000000000
         0000000000000000000000000000000000000000000000000000000000000000

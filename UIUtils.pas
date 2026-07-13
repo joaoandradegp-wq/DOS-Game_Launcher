@@ -34,6 +34,8 @@ procedure SetEnabled(AControl: TControl; Value: Boolean);
 procedure SetCaption(ALabel: TLabel; const Value: String);
 procedure SetEditText(AEdit: TCustomEdit; const Value: String);
 
+procedure MostrarControle(Visible: Boolean);
+procedure MostrarSensibilidade(Visible: Boolean);
 procedure MostrarBrutal(Visible: Boolean);
 procedure MostrarDM(Visible: Boolean);
 procedure MostrarOpcoes(Visible: Boolean);
@@ -173,6 +175,18 @@ begin
     if AEdit.Text <> Value then
     AEdit.Text := Value;
   end;
+end;
+
+procedure MostrarControle(Visible: Boolean);
+begin
+SetVisible(Form1_DGL.RxControle, Visible);
+SetVisible(Form1_DGL.Label_Controle, Visible);
+end;
+
+procedure MostrarSensibilidade(Visible: Boolean);
+begin
+SetVisible(Form1_DGL.RxSense, Visible);
+SetVisible(Form1_DGL.Label_Sense, Visible);
 end;
 
 procedure MostrarBrutal(Visible: Boolean);

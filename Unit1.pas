@@ -394,63 +394,59 @@ BeginUIUpdate(Self);
 Try
 //----------------------------------------------------------
 
-  Form1_DGL.abfImage1.Visible:=True;
-  //----------------------------------------
-  Form1_DGL.logo_blood.Visible      :=False;
-  Form1_DGL.logo_constructor.Visible:=False;
-  Form1_DGL.logo_doom.Visible       :=False;
-  Form1_DGL.logo_duke3d.Visible     :=False;
-  Form1_DGL.logo_heretic.Visible    :=False;
-  Form1_DGL.logo_hexen.Visible      :=False;
-  Form1_DGL.logo_quake.Visible      :=False;
-  Form1_DGL.logo_rott.Visible       :=False;
-  Form1_DGL.logo_shadow.Visible     :=False;
-  Form1_DGL.logo_warcraft.Visible   :=False;
-  Form1_DGL.logo_wolf3d.Visible     :=False;
-  //----------------------------------------
+  SetVisible(abfImage1, False);
+  //----------------------------------
+  SetVisible(logo_blood      , False);
+  SetVisible(logo_constructor, False);
+  SetVisible(logo_doom       , False);
+  SetVisible(logo_duke3d     , False);
+  SetVisible(logo_heretic    , False);
+  SetVisible(logo_hexen      , False);
+  SetVisible(logo_quake      , False);
+  SetVisible(logo_rott       , False);
+  SetVisible(logo_shadow     , False);
+  SetVisible(logo_warcraft   , False);
+  SetVisible(logo_wolf3d     , False);
+  //----------------------------------
   RxCheckListBox1.Clear;
   img_game.Picture.Graphic:=Nil;
   StatusBar1.Panels[1].Text:='';
   IMG_STATUS.Picture:=Nil;
-  gif_dos.Visible:=True;
-  //----------------------------------------
-  label_name.Enabled :=False;
-  player_name.Enabled:=False;
-  cont_player.Enabled:=False;
-  cont_seta.Enabled  :=False;
-  //----------------------------------------
-  ip_local.Text      :='0.0.0.0';
-  ip_local.Enabled   :=False;
-  ip_internet.Text   :='0.0.0.0';
-  ip_internet.Enabled:=False;
-  ip_porta.Text      :='0';
-  ip_porta.Enabled   :=False;
-  //----------------------------------------
-  check_single.Enabled    :=False;
-  check_servidor.Enabled  :=False;
-  check_cliente.Enabled   :=False;
-  Refresh_Lan.Enabled     :=False;
-  Refresh_Internet.Enabled:=False;
-  //----------------------------------------
-  combo_color.Visible:=False;
-  combo_doom.Visible :=False;
-  //----------------------------------------
-  RxControle.Visible       :=False;
-  Label_Controle.Visible   :=False;
-  RxSense.Visible          :=False;
-  Label_Sense.Visible      :=False;
-  RxBrutal.Visible         :=False;
-  Label_Brutal.Visible     :=False;
-  RxOpcoes.Visible         :=False;
-  Label_Opcoes.Visible     :=False;
-  RxDM.Visible             :=False;
-  Label_DM.Visible         :=False;
-  RxQuakeServer.Visible    :=False;
-  Label_QuakeServer.Visible:=False;
-  //----------------------------------------
-  btn_start.Enabled :=False;
+  //----------------------------------
+  SetVisible(gif_dos, False);
+  //----------------------------------
+  SetEnabled(Form1_DGL.label_name , False);
+  SetEnabled(label_name , False);
+  SetEnabled(player_name, False);
+  SetEnabled(cont_player, False);
+  SetEnabled(cont_seta  , False);
+  //----------------------------------
+  SetEditText(ip_local   , '0.0.0.0');
+  SetEditText(ip_internet, '0.0.0.0');
+  SetEditText(ip_porta   , '0');
+  SetEnabled (ip_local   , False);
+  SetEnabled (ip_internet, False);
+  SetEnabled (ip_porta   , False);
+  //----------------------------------
+  SetEnabled(check_single    , False);
+  SetEnabled(check_servidor  , False);
+  SetEnabled(check_cliente   , False);
+  SetEnabled(Refresh_Lan     , False);
+  SetEnabled(Refresh_Internet, False);
+  //----------------------------------
+  SetVisible(combo_color, False);
+  SetVisible(combo_doom , False);
+  //----------------------------------
+  MostrarControle(False);
+  MostrarSensibilidade(False);
+  MostrarBrutal(False);
+  MostrarOpcoes(False);
+  MostrarDM(False);
+  MostrarQuakeServer(False);
+  //----------------------------------
+  SetEnabled(btn_start, False);
   Panel_Icones.SetFocus;
-  //----------------------------------------
+  //----------------------------------
 
 //----------------------------------------------------------
 Finally
