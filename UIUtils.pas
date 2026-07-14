@@ -42,6 +42,7 @@ procedure MostrarOpcoes(Visible: Boolean);
 procedure MostrarQuakeServer(Visible: Boolean);
 
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
+procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
 
 
 implementation
@@ -220,6 +221,12 @@ begin
 
   if Texto.Top <> (NovoTop + 1) then
   Texto.Top := NovoTop + 1;
+end;
+
+procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
+begin
+Button.Glyph.Assign(nil);
+ImageList.GetBitmap(Index, Button.Glyph);
 end;
 
 end.

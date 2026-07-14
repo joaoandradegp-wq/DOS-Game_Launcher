@@ -638,7 +638,7 @@ CoolStuff_Global:='';
  case Tipo of
   {SINGLE PLAYER}
   0: begin
-     Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 4);
      //--------------------------------------------
      SetEnabled(Form1_DGL.label_name , False);
      SetEnabled(Form1_DGL.player_name, False);
@@ -669,7 +669,7 @@ CoolStuff_Global:='';
   {SERVIDOR}
   1: begin
      SetEnabled(Form1_DGL.player_name, True);
-     Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
+     SetGlyph(Form1_DGL.Refresh_Lan  , Form1_DGL.Lista_Imagens, 4);
      //---------------------------------------------------------
      Form1_DGL.player_name.SetFocus;
      //---------------------------------------------------------
@@ -700,7 +700,7 @@ CoolStuff_Global:='';
      end;
   {CLIENTE}
   2: begin
-     Form1_DGL.Lista_Imagens.GetBitmap(5,Form1_DGL.Refresh_Lan.Glyph);
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 5);
      //-----------------------------------------------
      SetCaption(Form1_DGL.Label2     , Lang_DGL(15)+':');
      Form1_DGL.ip_local.ReadOnly:=False;
