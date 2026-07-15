@@ -786,7 +786,7 @@ CoolStuff_Global:='';
             //-------------------------------------------------------------
             MostrarOpcoes(True);
             MostrarDM(DirectoryExists(Caminho_Global+'qw\'));
-            MostrarQuakeServer(Tipo = 1);
+            MostrarQuakeServer( (Tipo = 1) and DirectoryExists(Caminho_Global + 'qw\') and Form1_DGL.RxDM.Down );
             //---------------------------------------------
             end
             {SINGLE PLAYER}
