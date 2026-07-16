@@ -1189,7 +1189,7 @@ begin
 
 UIUtils.SetEnabled(Label_Opcoes, Not(RxQuakeServer.Down));
 UIUtils.SetEnabled(RxOpcoes    , Not(RxQuakeServer.Down));
-SetVisible(combo_color         , Not(RxQuakeServer.Down));
+UIUtils.SetVisible(combo_color , Not(RxQuakeServer.Down));
   
 ActiveControl:=Nil;
 end;
