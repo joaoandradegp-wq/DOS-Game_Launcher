@@ -685,8 +685,8 @@ CoolStuff_Global:='';
      SetEditText(Form1_DGL.ip_porta,Arquivo_INI.ReadString('DOS','PORT_SERVER_'+Array_Games[id][7],''));
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
-     if Length(Form1_DGL.ip_porta.Text) = 0 then
-     SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
+       if Length(Form1_DGL.ip_porta.Text) = 0 then
+       SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
      //---------------------------------------------------------
      SetEnabled(Form1_DGL.Refresh_Lan     , True);
      SetEnabled(Form1_DGL.Refresh_Internet, True);
@@ -1264,11 +1264,15 @@ ResetarBotoes;
  //--------------
 
    if FileExists(Caminho_Imagem) then
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem)
+   begin
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
+   SetVisible(Form1_DGL.gif_dos, False);
+   end
    else
+   begin
    Form1_DGL.img_game.Picture:= nil;
-
- SetVisible(Form1_DGL.gif_dos, FileExists(Caminho_Imagem));
+   SetVisible(Form1_DGL.gif_dos, True);
+   end;
 
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}
@@ -1493,6 +1497,10 @@ ResetarBotoes;
       MostrarControle(False);
       MostrarSensibilidade(False);
 
+        {QUAKEWORLD - COPIA ARQUIVO CONFIG PADRÃO}
+        if not FileExists(Caminho_Global+'qw\'+Array_Games[id][6]) then
+        CopyFile(pchar(Pasta_INI_Global+'\quake\'+Array_Games[id][6]),pchar(Caminho_Global+'qw\'+Array_Games[id][6]),False);
+
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
 
@@ -1502,10 +1510,6 @@ ResetarBotoes;
         finally
           if not FileExists(Caminho_Global+'id1\skins\base.pcx') then
           CopyFile(pchar(Pasta_INI_Global+'\quake\base.pcx'),pchar(Caminho_Global+'id1\skins\base.pcx'),False);
-
-          {QUAKEWORLD - COPIA ARQUIVO CONFIG PADRÃO}
-          if not FileExists(Caminho_Global+'qw\'+Array_Games[id][6]) then
-          CopyFile(pchar(Pasta_INI_Global+'\quake\'+Array_Games[id][6]),pchar(Caminho_Global+'qw\'+Array_Games[id][6]),False);
         end;
 
       end;
