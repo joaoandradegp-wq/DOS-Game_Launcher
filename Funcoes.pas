@@ -1258,24 +1258,17 @@ ResetarBotoes;
    end;
    //------------------------------------------
 
- Form1_DGL.check_single.Enabled  :=True;
- Form1_DGL.check_servidor.Enabled:=True;
- Form1_DGL.check_cliente.Enabled :=True;
-
+ HabilitaTipoGame(True);
  //--------------
  MostrarLogo(id);
  //--------------
 
    if FileExists(Caminho_Imagem) then
-   begin
-   Form1_DGL.gif_dos.Visible := False;
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
-   end
+   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem)
    else
-   begin
    Form1_DGL.img_game.Picture:= nil;
-   Form1_DGL.gif_dos.Visible := True;
-   end;
+
+ SetVisible(Form1_DGL.gif_dos, FileExists(Caminho_Imagem));
 
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}
@@ -1286,8 +1279,7 @@ ResetarBotoes;
                    //-------------------------------------
                    {MOUSE - HABILITAR}
                    //-------------------------------------
-                   Form1_DGL.RxControle.Visible    :=True;
-                   Form1_DGL.Label_Controle.Visible:=True;
+                   MostrarControle(True);
                    //-------------------------------------
 
                      //------------------------------------------------------------------------------------------------------------------
@@ -1305,15 +1297,9 @@ ResetarBotoes;
                      {DOOM + DOOM II - BRUTAL DOOM}
                      //-------------------------------------
                      if (id = 3) or (id = 4) then
-                     begin
-                     Form1_DGL.RxBrutal.Visible:=True;
-                     Form1_DGL.Label_Brutal.Visible:=True;
-                     end
+                     MostrarBrutal(True)
                      else
-                     begin
-                     Form1_DGL.RxBrutal.Visible:=False;
-                     Form1_DGL.Label_Brutal.Visible:=False;
-                     end;
+                     MostrarBrutal(False);
                      //-------------------------------------
 
                      //---------------------------------------------------------------------
@@ -1402,14 +1388,10 @@ ResetarBotoes;
                        end;
                        //-------------------------------------
 
-                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.Down;
-                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.Down;
+                     MostrarSensibilidade(Form1_DGL.RxControle.Down);
                      end
                      else
-                     begin
-                     Form1_DGL.RxSense.Visible    :=False;
-                     Form1_DGL.Label_Sense.Visible:=False;
-                     end;
+                     MostrarSensibilidade(False);
                      //---------------------------------------------------------------------
 
                    //---------------------------------------------
@@ -1435,9 +1417,9 @@ ResetarBotoes;
                        Form1_DGL.RxControle.Down:=ZDOOM_Mouse;
 
                          if ZDOOM_Mouse then
-                         Form1_DGL.Label_Controle.Caption := 'MOUSE'
+                         SetCaption(Form1_DGL.Label_Controle, 'MOUSE')
                          else
-                         Form1_DGL.Label_Controle.Caption := Lang_DGL(18);
+                         SetCaption(Form1_DGL.Label_Controle, Lang_DGL(18));
 
                        finally
                        FreeAndNil(ZDOOM_INI);
@@ -1476,18 +1458,15 @@ ResetarBotoes;
                            if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
                            begin
                            Form1_DGL.RxControle.Down:=True;
-                           Form1_DGL.Label_Controle.Caption:='MOUSE';
-                           Form1_DGL.RxSense.Visible:=True;
-                           Form1_DGL.Label_Sense.Visible:=True;
+                           SetCaption(Form1_DGL.Label_Controle, 'MOUSE');
                            end
                            else
                            begin
                            Form1_DGL.RxControle.Down:=False;
-                           Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                           Form1_DGL.RxSense.Visible:=False;
-                           Form1_DGL.Label_Sense.Visible:=False;
+                           SetCaption(Form1_DGL.Label_Controle, Lang_DGL(18));
                            end;
                            //----------------------------------------------------------------------------
+                         MostrarSensibilidade(Form1_DGL.RxControle.Down);
                          end;
                        //--------------------------------------------------------------
                        end;
@@ -1511,10 +1490,8 @@ ResetarBotoes;
    {QUAKE}
    //----------------------------------------------------------------------------------------------------------------------
    8: begin
-      Form1_DGL.RxControle.Visible    :=False;
-      Form1_DGL.Label_Controle.Visible:=False;
-      Form1_DGL.RxSense.Visible       :=False;
-      Form1_DGL.Label_Sense.Visible   :=False;
+      MostrarControle(False);
+      MostrarSensibilidade(False);
 
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
@@ -1535,10 +1512,8 @@ ResetarBotoes;
    //----------------------------------------------------------------------------------------------------------------------
    else
    begin
-   Form1_DGL.RxControle.Visible    :=False;
-   Form1_DGL.Label_Controle.Visible:=False;
-   Form1_DGL.RxSense.Visible       :=False;
-   Form1_DGL.Label_Sense.Visible   :=False;
+   MostrarControle(False);
+   MostrarSensibilidade(False);
    end;
    end;
    //---------------------------------------------------
@@ -1565,22 +1540,17 @@ ResetarBotoes;
        3,4,6, {DOOM - DOOM 2 - HERETIC - HEXEN}
       7,8,12: {QUAKE - WOLFENSTEIN 3D}
      begin
-     Form1_DGL.combo_color.Visible:=True;
+     SetVisible(Form1_DGL.combo_color, True);
      Lista_Cores(id);
      end;
      else
-     Form1_DGL.combo_color.Visible :=False;
-     Form1_DGL.RxOpcoes.Visible    :=False;
-     Form1_DGL.Label_Opcoes.Visible:=False;
-     Form1_DGL.RxDM.Visible        :=False;
-     Form1_DGL.Label_DM.Visible    :=False;
+     SetVisible(Form1_DGL.combo_color, False);
+     MostrarOpcoes(False);
+     MostrarDM(False);
      end;
      //---------------------------------------------------------
      {DOOM 2 - SKINS}
-     if (id = 4) then
-     Form1_DGL.combo_doom.Visible:=True
-     else
-     Form1_DGL.combo_doom.Visible:=False;
+     SetVisible(Form1_DGL.combo_doom, (id = 4));
      //---------------------------------------------------------
 
      //---------------------------------------------------------
@@ -1591,34 +1561,28 @@ ResetarBotoes;
      3,4,6,7,  {DOOM - DOOM 2 - HERETIC - HEXEN}
        12:     {WOLFENSTEIN 3D}
      begin
-     Form1_DGL.label_name.Enabled :=True;
-     Form1_DGL.player_name.Enabled:=True;
-     Form1_DGL.cont_player.Enabled:=True;
-     Form1_DGL.cont_seta.Enabled  :=True;
+     HabilitaPlayer(True);
+
        {MÁXIMO 11 JOGADORES - RISE OF THE TRIAD}
        if (id = 9) then
        Form1_DGL.cont_seta.Max:=11
        {MÁXIMO 8 JOGADORES}
        else
        Form1_DGL.cont_seta.Max:=8;
+       
      end;
 
      2,8,11: {CONSTRUCTOR - QUAKE - WARCRAFT II}
      begin
-     Form1_DGL.label_name.Enabled :=True;
-     Form1_DGL.player_name.Enabled:=True;
+     SetEnabled(Form1_DGL.label_name , True);
+     SetEnabled(Form1_DGL.player_name, True);
+
        {MÁXIMO 4 JOGADORES - QUAKE}
        if (id = 8) and (Form1_DGL.check_servidor.Checked = True) then
-       begin
        Form1_DGL.cont_seta.Max:=4;
-       Form1_DGL.cont_player.Enabled:=True;
-       Form1_DGL.cont_seta.Enabled  :=True;
-       end
-       else
-       begin
-       Form1_DGL.cont_player.Enabled:=False;
-       Form1_DGL.cont_seta.Enabled  :=False;
-       end;
+
+     SetEnabled(Form1_DGL.cont_player, ((id = 8) and (Form1_DGL.check_servidor.Checked = True)));
+     SetEnabled(Form1_DGL.cont_seta  , ((id = 8) and (Form1_DGL.check_servidor.Checked = True)));
      end;
 
      end; //END - CASE

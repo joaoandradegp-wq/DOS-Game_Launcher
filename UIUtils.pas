@@ -41,6 +41,9 @@ procedure MostrarDM(Visible: Boolean);
 procedure MostrarOpcoes(Visible: Boolean);
 procedure MostrarQuakeServer(Visible: Boolean);
 
+procedure HabilitaPlayer(Enabled: Boolean);
+procedure HabilitaTipoGame(Enabled: Boolean);
+
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
 procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
 
@@ -212,6 +215,21 @@ procedure MostrarQuakeServer(Visible: Boolean);
 begin
 SetVisible(Form1_DGL.RxQuakeServer, Visible);
 SetVisible(Form1_DGL.Label_QuakeServer, Visible);
+end;
+
+procedure HabilitaPlayer(Enabled: Boolean);
+begin
+SetEnabled(Form1_DGL.label_name, Enabled);
+SetEnabled(Form1_DGL.player_name, Enabled);
+SetEnabled(Form1_DGL.cont_player, Enabled);
+SetEnabled(Form1_DGL.cont_seta, Enabled);
+end;
+
+procedure HabilitaTipoGame(Enabled: Boolean);
+begin
+SetEnabled(Form1_DGL.check_single, Enabled);
+SetEnabled(Form1_DGL.check_servidor, Enabled);
+SetEnabled(Form1_DGL.check_cliente, Enabled);
 end;
 
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
