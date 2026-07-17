@@ -1013,8 +1013,7 @@ Nome_Game := UpperCase(ExtractName(Array_Games[id][5]));
     Arquivo_INI := TIniFile.Create(Config_Game);
       try
         if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
-        Form1_DGL.combo_color.ItemIndex :=
-          StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
+        Form1_DGL.combo_color.ItemIndex := StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
       finally
       Arquivo_INI.Free;
       end;
@@ -1088,21 +1087,22 @@ begin
  begin
  Form1_DGL.Enabled:=False;
  //---------------------------------------------------------
- Form1_DGL.loading_panel.Visible:=True;
- Form1_DGL.img_game.Visible     :=Not AppAberto('qwsv.exe');
- Form1_DGL.gif_dos.Visible      :=    AppAberto('qwsv.exe');
- Form1_DGL.btn_start.Enabled    :=False;
+ SetVisible(Form1_DGL.loading_panel, True);
+ 
+ SetVisible(Form1_DGL.img_game , Not AppAberto('qwsv.exe'));
+ SetVisible(Form1_DGL.gif_dos  ,     AppAberto('qwsv.exe'));
+ SetEnabled(Form1_DGL.btn_start, False);
  //---------------------------------------------------------
  end
  else
  begin
  Form1_DGL.Enabled:=True;
  //-------------------------------------
- Form1_DGL.loading_panel.Visible:=False;
-
- Form1_DGL.img_game.Visible     :=True;
- Form1_DGL.gif_dos.Visible      :=False;
- Form1_DGL.btn_start.Enabled    :=True;
+ SetVisible(Form1_DGL.loading_panel, False);
+ 
+ SetVisible(Form1_DGL.img_game , True);
+ SetVisible(Form1_DGL.gif_dos  , False);
+ SetEnabled(Form1_DGL.btn_start, True);
  //-------------------------------------
    if (Form1_DGL.check_servidor.Enabled = True) and (Array_Games[id][7] = 'ZDOOM') then
    begin
@@ -1177,7 +1177,7 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
                +ExtractNamePath(Array_Games[id][1])+'.png';
 //-------------------------------------------------------------------------
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
-Form1_DGL.gif_dos.Visible:=False;
+SetVisible(Form1_DGL.gif_dos, False);
 //-------------------------------------------------------------------------
 
 BeginUIUpdate(Form1_DGL);
@@ -1193,56 +1193,36 @@ ResetarBotoes;
  Form1_DGL.abfImage1.Visible:=True;
  //----------------------------------------
  Form1_DGL.img_game.Picture:=nil;
- Form1_DGL.gif_dos.Visible:=True;
+ SetVisible(Form1_DGL.gif_dos, True);
  //----------------------------------------
- Form1_DGL.logo_blood.Visible      :=False;
- Form1_DGL.logo_constructor.Visible:=False;
- Form1_DGL.logo_doom.Visible       :=False;
- Form1_DGL.logo_duke3d.Visible     :=False;
- Form1_DGL.logo_heretic.Visible    :=False;
- Form1_DGL.logo_hexen.Visible      :=False;
- Form1_DGL.logo_quake.Visible      :=False;
- Form1_DGL.logo_rott.Visible       :=False;
- Form1_DGL.logo_shadow.Visible     :=False;
- Form1_DGL.logo_warcraft.Visible   :=False;
- Form1_DGL.logo_wolf3d.Visible     :=False;
+ DesabilitaMarcaDagua(False);
  //----------------------------------------
- Form1_DGL.label_name.Enabled :=False;
- Form1_DGL.player_name.Enabled:=False;
- Form1_DGL.cont_player.Enabled:=False;
- Form1_DGL.cont_seta.Enabled  :=False;
- Form1_DGL.combo_color.Visible:=False;
- Form1_DGL.combo_doom.Visible :=False;
+ HabilitaPlayer(False);
+ SetVisible(Form1_DGL.combo_color, False);
+ SetVisible(Form1_DGL.combo_doom , False);
  //----------------------------------------
- Form1_DGL.RxControle.Visible    :=False;
- Form1_DGL.Label_Controle.Visible:=False;
- Form1_DGL.RxSense.Visible       :=False;
- Form1_DGL.Label_Sense.Visible   :=False;
+ MostrarControle(False);
+ MostrarSensibilidade(False);
  //----------------------------------------
- Form1_DGL.RxBrutal.Visible    :=False;
- Form1_DGL.Label_Brutal.Visible:=False;
- Form1_DGL.RxOpcoes.Visible    :=False;
- Form1_DGL.Label_Opcoes.Visible:=False;
- Form1_DGL.RxDM.Visible        :=False;
- Form1_DGL.Label_DM.Visible    :=False;
+ MostrarBrutal(False);
+ MostrarOpcoes(False);
+ MostrarDM(False);
  //----------------------------------------
- Form1_DGL.ip_local.Enabled   :=False;
- Form1_DGL.ip_internet.Enabled:=False;
- Form1_DGL.ip_porta.Enabled   :=False;
- //----------------------------------------
- Form1_DGL.Refresh_Lan.Enabled     :=False;
- Form1_DGL.Refresh_Internet.Enabled:=False;
- //----------------------------------------
- Form1_DGL.check_single.Enabled  :=False;
- Form1_DGL.check_servidor.Enabled:=False;
- Form1_DGL.check_cliente.Enabled :=False;
- //--------------------------------------
- Form1_DGL.Label1.Enabled:=False;
- Form1_DGL.Label2.Enabled:=False;
- Form1_DGL.Label3.Enabled:=False;
- //---------------------------------
- Form1_DGL.btn_start.Enabled:=False;
- //---------------------------------
+ SetEnabled(Form1_DGL.ip_local   , False);
+ SetEnabled(Form1_DGL.ip_internet, False);
+ SetEnabled(Form1_DGL.ip_porta   , False);
+ //--------------------------------------------
+ SetEnabled(Form1_DGL.Refresh_Lan     , False);
+ SetEnabled(Form1_DGL.Refresh_Internet, False);
+ //--------------------------------------------
+ HabilitaTipoGame(False);
+ //-------------------------------------
+ SetEnabled(Form1_DGL.Label1, False);
+ SetEnabled(Form1_DGL.Label2, False);
+ SetEnabled(Form1_DGL.Label3, False);
+ //-------------------------------------
+ SetEnabled(Form1_DGL.btn_start, False);
+ //-------------------------------------
  end
  else
  begin

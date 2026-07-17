@@ -40,13 +40,13 @@ procedure MostrarBrutal(Visible: Boolean);
 procedure MostrarDM(Visible: Boolean);
 procedure MostrarOpcoes(Visible: Boolean);
 procedure MostrarQuakeServer(Visible: Boolean);
+procedure DesabilitaMarcaDagua(Visible: Boolean);
 
 procedure HabilitaPlayer(Enabled: Boolean);
 procedure HabilitaTipoGame(Enabled: Boolean);
 
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
 procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
-
 
 implementation
 
@@ -215,6 +215,21 @@ procedure MostrarQuakeServer(Visible: Boolean);
 begin
 SetVisible(Form1_DGL.RxQuakeServer, Visible);
 SetVisible(Form1_DGL.Label_QuakeServer, Visible);
+end;
+
+procedure DesabilitaMarcaDagua(Visible: Boolean);
+begin
+SetVisible(Form1_DGL.logo_blood      , Visible);
+SetVisible(Form1_DGL.logo_constructor, Visible);
+SetVisible(Form1_DGL.logo_doom       , Visible);
+SetVisible(Form1_DGL.logo_duke3d     , Visible);
+SetVisible(Form1_DGL.logo_heretic    , Visible);
+SetVisible(Form1_DGL.logo_hexen      , Visible);
+SetVisible(Form1_DGL.logo_quake      , Visible);
+SetVisible(Form1_DGL.logo_rott       , Visible);
+SetVisible(Form1_DGL.logo_shadow     , Visible);
+SetVisible(Form1_DGL.logo_warcraft   , Visible);
+SetVisible(Form1_DGL.logo_wolf3d     , Visible);
 end;
 
 procedure HabilitaPlayer(Enabled: Boolean);

@@ -960,8 +960,10 @@ try
   Config_Tela(False);
   //------------------------------------------
   btn_start.Caption:=Lang_DGL(5);
+
   UIUtils.SetVisible(img_game, False);
   UIUtils.SetVisible(gif_dos , True);
+
   Timer_MonitoraAPP.Enabled:=True;
   //------------------------------------------
 
@@ -1013,6 +1015,7 @@ begin
    else
    begin
    MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' OFFLINE!'),pchar(Application.Title),MB_ICONERROR+MB_OK);
+
      //--------------------------------
      {DEBUG MODE}
      //--------------------------------
@@ -1053,7 +1056,7 @@ begin
   else
   begin
   MostrarSensibilidade(False);
-  Label_Controle.Caption:=Lang_DGL(18);
+  UIUtils.SetCaption(Label_Controle, Lang_DGL(18));
   end;
   
 ActiveControl:=Nil;
