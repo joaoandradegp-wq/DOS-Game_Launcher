@@ -247,6 +247,18 @@ SetEnabled(Form1_DGL.check_servidor, Enabled);
 SetEnabled(Form1_DGL.check_cliente, Enabled);
 end;
 
+procedure HabilitaRede(Enabled: Boolean);
+begin
+SetEditText(Form1_DGL.ip_local   , '0.0.0.0');
+SetEditText(Form1_DGL.ip_internet, '0.0.0.0');
+SetEditText(Form1_DGL.ip_porta   , '0');
+SetEnabled (Form1_DGL.ip_local   , Enabled);
+SetEnabled (Form1_DGL.ip_internet, Enabled);
+SetEnabled (Form1_DGL.ip_porta   , Enabled);
+SetEnabled(Form1_DGL.Refresh_Lan     , Enabled);
+SetEnabled(Form1_DGL.Refresh_Internet, Enabled);
+end;
+
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
 begin
   if Botao.Top <> NovoTop then
@@ -260,6 +272,40 @@ procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
 begin
 Button.Glyph.Assign(nil);
 ImageList.GetBitmap(Index, Button.Glyph);
+end;
+
+procedure ResetarTelaInicial;
+begin
+DesabilitaMarcaDagua(False);
+
+HabilitaPlayer  (False);
+HabilitaRede    (False);
+HabilitaTipoGame(False);
+
+SetVisible(Form1_DGL.combo_color, False);
+SetVisible(Form1_DGL.combo_doom , False);
+
+MostrarControle(False);
+MostrarSensibilidade(False);
+MostrarBrutal(False);
+MostrarOpcoes(False);
+MostrarDM(False);
+MostrarQuakeServer(False);
+
+SetEnabled(Form1_DGL.btn_start, False);
+
+SetVisible(Form1_DGL.gif_dos  , True);
+SetVisible(Form1_DGL.abfImage1, True);
+
+Form1_DGL.check_single.Checked := True;
+
+Form1_DGL.RxCheckListBox1.Clear;
+Form1_DGL.img_game.Picture := nil;
+
+Form1_DGL.StatusBar1.Panels[1].Text := '';
+Form1_DGL.IMG_STATUS.Picture := nil;
+
+Form1_DGL.Panel_Icones.SetFocus;
 end;
 
 end.

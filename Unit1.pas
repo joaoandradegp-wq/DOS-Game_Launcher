@@ -390,68 +390,53 @@ procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
 var
 i:Integer;
 begin
-BeginUIUpdate(Self);
-Try
-//----------------------------------------------------------
-
-  UIUtils.SetVisible(abfImage1, False);
-  //------------------------------------------
-  UIUtils.SetVisible(logo_blood      , False);
-  UIUtils.SetVisible(logo_constructor, False);
-  UIUtils.SetVisible(logo_doom       , False);
-  UIUtils.SetVisible(logo_duke3d     , False);
-  UIUtils.SetVisible(logo_heretic    , False);
-  UIUtils.SetVisible(logo_hexen      , False);
-  UIUtils.SetVisible(logo_quake      , False);
-  UIUtils.SetVisible(logo_rott       , False);
-  UIUtils.SetVisible(logo_shadow     , False);
-  UIUtils.SetVisible(logo_warcraft   , False);
-  UIUtils.SetVisible(logo_wolf3d     , False);
-  //------------------------------------------
-  RxCheckListBox1.Clear;
-  img_game.Picture.Graphic:=Nil;
-  StatusBar1.Panels[1].Text:='';
-  IMG_STATUS.Picture:=Nil;
-  //------------------------------------------
-  UIUtils.SetVisible(gif_dos, False);
-  //------------------------------------------
-  UIUtils.SetEnabled(label_name , False);
-  UIUtils.SetEnabled(player_name, False);
-  UIUtils.SetEnabled(cont_player, False);
-  UIUtils.SetEnabled(cont_seta  , False);
-  //------------------------------------------
-  UIUtils.SetEditText(ip_local   , '0.0.0.0');
-  UIUtils.SetEditText(ip_internet, '0.0.0.0');
-  UIUtils.SetEditText(ip_porta   , '0');
-  UIUtils.SetEnabled (ip_local   , False);
-  UIUtils.SetEnabled (ip_internet, False);
-  UIUtils.SetEnabled (ip_porta   , False);
-  //------------------------------------------
-  UIUtils.SetEnabled(check_single    , False);
-  UIUtils.SetEnabled(check_servidor  , False);
-  UIUtils.SetEnabled(check_cliente   , False);
-  UIUtils.SetEnabled(Refresh_Lan     , False);
-  UIUtils.SetEnabled(Refresh_Internet, False);
-  //------------------------------------------
-  UIUtils.SetVisible(combo_color, False);
-  UIUtils.SetVisible(combo_doom , False);
-  //------------------------------------------
-  MostrarControle(False);
-  MostrarSensibilidade(False);
-  MostrarBrutal(False);
-  MostrarOpcoes(False);
-  MostrarDM(False);
-  MostrarQuakeServer(False);
-  //----------------------------------
-  UIUtils.SetEnabled(btn_start, False);
-  Panel_Icones.SetFocus;
-  //----------------------------------
-
-//----------------------------------------------------------
-Finally
-EndUIUpdate(Self);
-end;
-//----------------------------------------------------------
+Form1_DGL.abfImage1.Visible:=True;
+//----------------------------------------
+DesabilitaMarcaDagua(False);
+//----------------------------------------
+RxCheckListBox1.Clear;
+img_game.Picture.Graphic:=Nil;
+StatusBar1.Panels[1].Text:='';
+IMG_STATUS.Picture:=Nil;
+gif_dos.Visible:=True;
+//----------------------------------------
+label_name.Enabled :=False;
+player_name.Enabled:=False;
+cont_player.Enabled:=False;
+cont_seta.Enabled  :=False;
+//----------------------------------------
+ip_local.Text      :='0.0.0.0';
+ip_local.Enabled   :=False;
+ip_internet.Text   :='0.0.0.0';
+ip_internet.Enabled:=False;
+ip_porta.Text      :='0';
+ip_porta.Enabled   :=False;
+//----------------------------------------
+check_single.Enabled    :=False;
+check_servidor.Enabled  :=False;
+check_cliente.Enabled   :=False;
+Refresh_Lan.Enabled     :=False;
+Refresh_Internet.Enabled:=False;
+//----------------------------------------
+combo_color.Visible:=False;
+combo_doom.Visible :=False;
+//----------------------------------------
+RxControle.Visible       :=False;
+Label_Controle.Visible   :=False;
+RxSense.Visible          :=False;
+Label_Sense.Visible      :=False;
+RxBrutal.Visible         :=False;
+Label_Brutal.Visible     :=False;
+RxOpcoes.Visible         :=False;
+Label_Opcoes.Visible     :=False;
+RxDM.Visible             :=False;
+Label_DM.Visible         :=False;
+RxQuakeServer.Visible    :=False;
+Label_QuakeServer.Visible:=False;
+//----------------------------------------
+btn_start.Enabled :=False;
+Panel_Icones.SetFocus;
+//----------------------------------------
 
 //------------------------------------------------------------------------------------------------
 {DEBUG MODE}
