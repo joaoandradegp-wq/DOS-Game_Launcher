@@ -212,7 +212,17 @@ Any errors found in the system can be reported on GitHub Issues.
 ## 📸 Preview
 
 <p align="center">
-  <img width="500" alt="image" src="https://github.com/user-attachments/assets/e7e039f3-15f7-4242-9525-0222eb305f1f" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/af947d81-cf40-4dae-8cca-146e230df1d9" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/5c23250a-5b50-4aca-aaf8-de6e7fb8c746" />
+<br>
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/5af7a0b4-9206-4aa9-85a3-def380501092" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/6d5cf482-d945-42c9-ac5f-05a04604b23b" />
+<br>
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/88630226-b228-4521-9954-aa28759aff26" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/9f9a78b2-a85e-40e0-8905-3ae7beba89a7" />
+<br>
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/856a21a5-329c-4085-a52d-b1f02822b498" />
+<img width="350" alt="image" src="https://github.com/user-attachments/assets/43b33c82-5c6d-4217-8a25-ef620d7ce44b" />
 </p>
 
 ---
