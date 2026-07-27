@@ -28,6 +28,8 @@ DoomSkin_Global,DoomMod_Global,DoomDM_Global,Game_EXE_Global:String;
 EPI_Global_DLC,CAP_Global_DLC,Language_Global:Integer;
 Config_Game_Global,VarParametro_Global,LogoAtual_Global:String;
 
+UltimoGrupoCores: Integer = -1;
+
 Array_SIGIL_DLC_Name: Array [0..4] of String;
 //Array_SIGIL_DLC_Name[0] - WAD SIGIL
 //Array_SIGIL_DLC_Name[1] - MP3 SIGIL
@@ -231,7 +233,7 @@ SW_MouseAnalogY = 52312;
 implementation
 
 uses IniFiles, Funcoes, About, QUAKE_NameFun, MAP_Select, Mouse_Sense, Language,
-DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind;
+DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind, UIUtils;
 
 var
 Arquivo_INI:TIniFile;
@@ -374,12 +376,14 @@ end;
 procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
-abfImage1.Visible:=False;
-//------------------------------
-id:=RxCheckListBox1.ItemIndex+1;
-//------------------------------
-Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
-Funcao_Config_Opcoes;
+
+  abfImage1.Visible:=False;
+  //------------------------------
+  id:=RxCheckListBox1.ItemIndex+1;
+  //------------------------------
+  Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
+  Funcao_Config_Opcoes;
+
 end;
 
 procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
@@ -388,17 +392,7 @@ i:Integer;
 begin
 Form1_DGL.abfImage1.Visible:=True;
 //----------------------------------------
-Form1_DGL.logo_blood.Visible      :=False;
-Form1_DGL.logo_constructor.Visible:=False;
-Form1_DGL.logo_doom.Visible       :=False;
-Form1_DGL.logo_duke3d.Visible     :=False;
-Form1_DGL.logo_heretic.Visible    :=False;
-Form1_DGL.logo_hexen.Visible      :=False;
-Form1_DGL.logo_quake.Visible      :=False;
-Form1_DGL.logo_rott.Visible       :=False;
-Form1_DGL.logo_shadow.Visible     :=False;
-Form1_DGL.logo_warcraft.Visible   :=False;
-Form1_DGL.logo_wolf3d.Visible     :=False;
+DesabilitaMarcaDagua(False);
 //----------------------------------------
 RxCheckListBox1.Clear;
 img_game.Picture.Graphic:=Nil;
@@ -541,13 +535,6 @@ procedure TForm1_DGL.Menu_FirewallClick(Sender: TObject);
 begin
 
   try
-  {
-  Firewall('CONFIG\bin\','DOSBox.exe');
-  Firewall('CONFIG\bin\zdoom\','zdoom.exe');
-  Firewall('DOS\QUAKE\','qwcl.exe');
-  Firewall('DOS\QUAKE\','qwsv.exe');
-  Firewall('DOS\QUAKE\','quakespasm.exe');
-  }
   FirewallBatch;
   finally
   MessageBox(Application.Handle,pchar(Language.Lang_DGL(17)),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
@@ -593,7 +580,8 @@ end;
 procedure TForm1_DGL.FormCreate(Sender: TObject);
 begin
 Lang_DGL(0);
-Form1_DGL.DoubleBuffered := True;
+DoubleBuffered := True;
+SetDoubleBufferedRecursive(Self);
 end;
 
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;
@@ -602,6 +590,9 @@ var
 i:Integer;
 p:TPoint;
 begin
+BeginUIUpdate(Self);
+Try
+//----------------------------------------------------------
 
  if (Button = mbRight) then
  begin
@@ -617,32 +608,32 @@ begin
      {QUAKE}
      case id of
      1,5,10: begin
-             menu_linha.Visible:=True;
+             menu_linha.Visible  :=True;
              popup_commit.Visible:=True;
-             popup_qsp.Visible:=False;
-             menu_linha2.Visible:=False;
-             popup_qw.Visible:=False;
-             popup_sa.Visible:=False;
-             popup_de.Visible:=False;
+             popup_qsp.Visible   :=False;
+             menu_linha2.Visible :=False;
+             popup_qw.Visible    :=False;
+             popup_sa.Visible    :=False;
+             popup_de.Visible    :=False;
              end;
      8: begin
-        menu_linha.Visible:=True;
-        popup_qsp.Visible:=FileExists(Caminho_Global+'quakespasm.exe');
-        menu_linha2.Visible:=popup_qsp.Visible;
+        menu_linha.Visible  :=True;
+        popup_commit.Visible:=False;
+        popup_qsp.Visible   :=FileExists(Caminho_Global+'quakespasm.exe');
+        menu_linha2.Visible :=popup_qsp.Visible;
         popup_qw.Visible:=DirectoryExists(Caminho_Global+'qw\');
         popup_sa.Visible:=DirectoryExists(Caminho_Global+'hipnotic\');
         popup_de.Visible:=DirectoryExists(Caminho_Global+'rogue\');
-        popup_commit.Visible:=False;
         end;
      else
      begin
-     menu_linha.Visible:=False;
-     popup_qsp.Visible:=False;
-     menu_linha2.Visible:=False;
-     popup_qw.Visible:=False;
-     popup_sa.Visible:=False;
-     popup_de.Visible:=False;
+     menu_linha.Visible  :=False;
      popup_commit.Visible:=False;
+     popup_qsp.Visible   :=False;
+     menu_linha2.Visible :=False;
+     popup_qw.Visible    :=False;
+     popup_sa.Visible    :=False;
+     popup_de.Visible    :=False;
      end;
      end;
 
@@ -653,6 +644,11 @@ begin
    //-----------------------------------------------------
  end;
 
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.popup_qwClick(Sender: TObject);
@@ -695,6 +691,7 @@ end;
 procedure TForm1_DGL.combo_colorDrawItem(Control: TWinControl;
   Index: Integer; Rect: TRect; State: TOwnerDrawState);
 begin
+
   //----------------------------------
   {ZDOOM - CORES DO COMBOBOX}
   //----------------------------------
@@ -715,6 +712,7 @@ begin
   FillRect(Rect);
   end;
   //----------------------------------
+
 end;
 
 procedure TForm1_DGL.combo_colorChange(Sender: TObject);
@@ -724,20 +722,22 @@ end;
 
 procedure TForm1_DGL.combo_doomChange(Sender: TObject);
 begin
+
   {SKIN - DOOM e DOOM II}
   case combo_doom.ItemIndex of
   0: begin
-     combo_color.Enabled:=True;
+     UIUtils.SetEnabled(combo_color, True);
      combo_color.ItemIndex:=0;
      combo_color.Items.Delete(8);
      end;
   1: begin
-     combo_color.Enabled:=False;
+     UIUtils.SetEnabled(combo_color, False);
      combo_color.Items.Add(IntToStr($000167E5));
      combo_color.ItemIndex:=8;
      end;
   end;
-RxCheckListBox1.SetFocus;  
+  
+RxCheckListBox1.SetFocus;
 end;
 
 procedure TForm1_DGL.ip_localKeyDown(Sender: TObject; var Key: Word;
@@ -773,12 +773,13 @@ begin
     IMG_STATUS.Picture:=Nil;
     end;
     //--------------------------------
-  btn_start.Enabled:=False;
+
+  UIUtils.SetEnabled(btn_start, False);
 
     if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_local.Text,1,1) = '0') then
-    Refresh_Lan.Enabled:=False
+    UIUtils.SetEnabled(Refresh_Lan, False)
     else
-    Refresh_Lan.Enabled:=True;
+    UIUtils.SetEnabled(Refresh_Lan, True);
   end;
 
 end;
@@ -792,12 +793,12 @@ begin
    {QUANDO O FOCO ESTIVER NO CAMPO}
    if ActiveControl = ip_porta then
    begin
-   //--------------------------------
+   //----------------------------------------
    {PORTAS DE REDE DEFAULT}
-   //--------------------------------
-   ip_porta.Text:=Array_Games[id][8];
+   //----------------------------------------
+   SetEditText(ip_local, Array_Games[id][8]);
    ip_porta.SelectAll;
-   //--------------------------------
+   //----------------------------------------
    end;
  end;
  
@@ -827,13 +828,13 @@ begin
     IMG_STATUS.Picture:=Nil;
     end;
     //--------------------------------
-    
-  btn_start.Enabled:=False;
+
+  UIUtils.SetEnabled(btn_start, False);
 
     if (Length(Trim(ip_local.Text)) = 0) or (Copy(ip_porta.Text,1,1) = '0') then
-    Refresh_Lan.Enabled:=False
+    UIUtils.SetEnabled(Refresh_Lan, False)
     else
-    Refresh_Lan.Enabled:=True;
+    UIUtils.SetEnabled(Refresh_Lan, True);
   end;
 
 end;
@@ -864,7 +865,7 @@ begin
 
  if Length(player_name.Text) = 0 then
  begin
- player_name.Text:=UsuarioLogado;
+ UIUtils.SetEditText(player_name, UsuarioLogado);
  player_name.SelectAll;
  end;
 
@@ -933,16 +934,29 @@ end;
   Exit;
   //---------------
 
-//-------------------------------
-// FINALIZAÇÃO DO START
-//-------------------------------
-Config_Tela(False);
-//-------------------------------
-btn_start.Caption := Lang_DGL(5);
-img_game.Visible:=False;
-gif_dos.Visible:=True;
-Timer_MonitoraAPP.Enabled:=True;
-//-------------------------------
+//----------------------------------------------------------
+BeginUIUpdate(Self);
+try
+//----------------------------------------------------------
+
+  //------------------------------------------
+  // FINALIZAÇÃO DO START
+  //------------------------------------------
+  Config_Tela(False);
+  //------------------------------------------
+  btn_start.Caption:=Lang_DGL(5);
+
+  UIUtils.SetVisible(img_game, False);
+  UIUtils.SetVisible(gif_dos , True);
+
+  Timer_MonitoraAPP.Enabled:=True;
+  //------------------------------------------
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.Refresh_LanClick(Sender: TObject);
@@ -953,7 +967,8 @@ begin
  {CASO ESTEJA SELECIONADO O CAMPO "SERVIDOR"}
  //------------------------------------------
  if check_servidor.Checked then
- ip_local.Text:=GetInternalIP;
+ UIUtils.SetEditText(ip_local, GetInternalIP);
+
  //------------------------------------------
  {CASO ESTEJA SELECIONADO O CAMPO "CLIENTE"}
  //------------------------------------------
@@ -979,11 +994,13 @@ begin
      Lista_Imagens.GetBitmap(1,IMG_STATUS.Picture.Bitmap);
      end;
      //--------------------------------
-   btn_start.Enabled:=True;
+
+   UIUtils.SetEnabled(btn_start, True);
    end
    else
    begin
    MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' OFFLINE!'),pchar(Application.Title),MB_ICONERROR+MB_OK);
+
      //--------------------------------
      {DEBUG MODE}
      //--------------------------------
@@ -994,7 +1011,8 @@ begin
      Lista_Imagens.GetBitmap(0,IMG_STATUS.Picture.Bitmap);
      end;
      //--------------------------------
-   btn_start.Enabled:=False;
+     
+   UIUtils.SetEnabled(btn_start, False);
    end;
 
 end;
@@ -1004,29 +1022,28 @@ end;
 
 procedure TForm1_DGL.Refresh_InternetClick(Sender: TObject);
 begin
-//-----------------------------------
-ip_internet.Text:=GetExternalIP;
-//-----------------------------------
+//----------------------------------------------
+UIUtils.SetEditText(ip_internet, GetExternalIP);
+//----------------------------------------------
 end;
 
 procedure TForm1_DGL.RxControleClick(Sender: TObject);
 begin
+
   if RxControle.Down then
   begin
     {BLOOD + DUKE NUKEM 3D + SHADOW WARRIOR}
     if (id = 1) or (id = 5) or (id = 10) then
-    begin
-    RxSense.Visible:=True;
-    Label_Sense.Visible:=True;
-    end;
-  Label_Controle.Caption:='MOUSE';
+    MostrarSensibilidade(True);
+
+  UIUtils.SetCaption(Label_Controle, 'MOUSE');
   end
   else
   begin
-  RxSense.Visible:=False;
-  Label_Sense.Visible:=False;
-  Label_Controle.Caption:=Lang_DGL(18);
+  MostrarSensibilidade(False);
+  UIUtils.SetCaption(Label_Controle, Lang_DGL(18));
   end;
+  
 ActiveControl:=Nil;
 end;
 
@@ -1038,6 +1055,7 @@ begin
   Form6_Mouse.ShowModal;
   Form6_Mouse.Free;
   end;
+
 ActiveControl:=Nil;
 end;
 
@@ -1081,6 +1099,10 @@ end;
 
 procedure TForm1_DGL.RxOpcoesClick(Sender: TObject);
 begin
+BeginUIUpdate(Self);
+Try
+//----------------------------------------------------------
+
   if RxOpcoes.Down then
   begin
   Application.CreateForm(TForm3_NameFun, Form3_NameFun);
@@ -1089,48 +1111,52 @@ begin
   end
   else
   begin
-  Form1_DGL.label_name.Enabled:=True;
-  Form1_DGL.player_name.Enabled:=True;
-  CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
+  UIUtils.SetEnabled(label_name , True);
+  UIUtils.SetEnabled(player_name, True);
+  CoolStuff_Global:='+name '+Trim(player_name.Text);
   end;
 
 ActiveControl:=Nil;
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Self);
+end;
+//----------------------------------------------------------
 end;
 
 procedure TForm1_DGL.RxDMClick(Sender: TObject);
 begin
+
   if RxDM.Down then
   begin
-  Label_DM.Caption:='DEATHMATCH';
+  UIUtils.SetCaption(Label_DM, 'DEATHMATCH');
 
     if (Array_Games[id][7] = 'ZDOOM') then
     DoomDM_Global:=' -deathmatch -nomonsters ';
 
     if (id = 8) and (check_cliente.Checked = False) then
-    begin
-    Form1_DGL.RxQuakeServer.Visible    :=True;
-    Form1_DGL.Label_QuakeServer.Visible:=True;
-    end;
+    MostrarQuakeServer(True);
 
   end
   else
   begin
-  Label_DM.Caption:=Lang_DGL(21);
+  UIUtils.SetCaption(Label_DM, Lang_DGL(21));
 
     if (Array_Games[id][7] = 'ZDOOM') then
     DoomDM_Global:='';
 
     if (id = 8) then
     begin
-    Form1_DGL.RxQuakeServer.Down:=False;
+    RxQuakeServer.Down:=False;
+    //--------------------------------------------
+    UIUtils.SetEnabled(Label_Opcoes, True);
+    UIUtils.SetEnabled(RxOpcoes    , True);
     //--------------------------------------------
     img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
-    RxOpcoes.Enabled    :=True;
-    Label_Opcoes.Enabled:=True;
-    combo_color.Visible :=True;
+    UIUtils.SetVisible(combo_color, True);
     //--------------------------------------------
-    Form1_DGL.RxQuakeServer.Visible    :=False;
-    Form1_DGL.Label_QuakeServer.Visible:=False;
+    MostrarQuakeServer(False);
     end;
 
   end;
@@ -1140,21 +1166,18 @@ end;
 
 procedure TForm1_DGL.RxQuakeServerClick(Sender: TObject);
 begin
+
   if RxQuakeServer.Down then
   begin
   EPI_Global_DLC:=1; 
   img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
-  RxOpcoes.Enabled    :=Not(RxQuakeServer.Down);
-  Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);
-  combo_color.Visible :=Not(RxQuakeServer.Down);
   end
   else
-  begin
   img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
-  RxOpcoes.Enabled    :=Not(RxQuakeServer.Down);
-  Label_Opcoes.Enabled:=Not(RxQuakeServer.Down);
-  combo_color.Visible :=Not(RxQuakeServer.Down);
-  end;
+
+UIUtils.SetEnabled(Label_Opcoes, Not(RxQuakeServer.Down));
+UIUtils.SetEnabled(RxOpcoes    , Not(RxQuakeServer.Down));
+UIUtils.SetVisible(combo_color , Not(RxQuakeServer.Down));
   
 ActiveControl:=Nil;
 end;

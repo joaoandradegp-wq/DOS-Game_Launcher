@@ -57,7 +57,7 @@ function  Config_Tela(On_Off:Boolean):Boolean;
 
 implementation
 
-uses DOSBOX_Bind_FPS, Quake_Bind;
+uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -633,108 +633,97 @@ Caminho_INI:String;
 Arquivo_INI:TIniFile;
 begin
 Caminho_INI:=ExtractFilePath(Application.ExeName)+'dos.ini';
-Form1_DGL.Refresh_Lan.Glyph:=Nil;
 CoolStuff_Global:='';
 
  case Tipo of
   {SINGLE PLAYER}
   0: begin
-     Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
-     //----------------------------------------
-     Form1_DGL.label_name.Enabled      :=False;
-     Form1_DGL.player_name.Enabled     :=False;
-     Form1_DGL.cont_player.Enabled     :=False;
-     Form1_DGL.cont_seta.Enabled       :=False;
-     Form1_DGL.combo_color.Visible     :=False;
-     Form1_DGL.combo_doom.Visible      :=False;
-     //----------------------------------------
-     Form1_DGL.Label2.Caption:='LAN:';
-     Form1_DGL.ip_local.Text:='0.0.0.0';
-     Form1_DGL.ip_local.Enabled:=False;
-     Form1_DGL.ip_internet.Text:='0.0.0.0';
-     Form1_DGL.ip_internet.Enabled:=False;
-     Form1_DGL.ip_porta.Text:='0';
-     Form1_DGL.ip_porta.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.Refresh_Lan.Enabled:=False;
-     Form1_DGL.Refresh_Internet.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.Label1.Enabled:=False;
-     Form1_DGL.Label2.Enabled:=False;
-     Form1_DGL.Label3.Enabled:=False;
-     //----------------------------------------
-     Form1_DGL.btn_start.Enabled:=True;
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 4);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.label_name , False);
+     SetEnabled(Form1_DGL.player_name, False);
+     SetEnabled(Form1_DGL.cont_player, False);
+     SetEnabled(Form1_DGL.cont_seta  , False);
+     SetVisible(Form1_DGL.combo_color, False);
+     SetVisible(Form1_DGL.combo_doom , False);
+     //--------------------------------------------
+     SetCaption (Form1_DGL.Label2     , 'LAN:');
+     SetEditText(Form1_DGL.ip_local   , '0.0.0.0');
+     SetEditText(Form1_DGL.ip_internet, '0.0.0.0');
+     SetEditText(Form1_DGL.ip_porta   , '0');
+     SetEnabled (Form1_DGL.ip_local   , False);
+     SetEnabled (Form1_DGL.ip_internet, False);
+     SetEnabled (Form1_DGL.ip_porta   , False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.Refresh_Lan     , False);
+     SetEnabled(Form1_DGL.Refresh_Internet, False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.Label1, False);
+     SetEnabled(Form1_DGL.Label2, False);
+     SetEnabled(Form1_DGL.Label3, False);
+     //--------------------------------------------
+     SetEnabled(Form1_DGL.btn_start, True);
      Form1_DGL.RxCheckListBox1.SetFocus;
-     //----------------------------------------
+     //--------------------------------------------
      end;
   {SERVIDOR}
   1: begin
-     Form1_DGL.player_name.Enabled:=True;
-     Form1_DGL.Lista_Imagens.GetBitmap(4,Form1_DGL.Refresh_Lan.Glyph);
+     SetEnabled(Form1_DGL.player_name, True);
+     SetGlyph(Form1_DGL.Refresh_Lan  , Form1_DGL.Lista_Imagens, 4);
      //---------------------------------------------------------
-       if (Form1_DGL.player_name.Enabled = True) then            
-       Form1_DGL.player_name.SetFocus
-       else
-       Form1_DGL.RxCheckListBox1.SetFocus;
+     Form1_DGL.player_name.SetFocus;
      //---------------------------------------------------------
-     Form1_DGL.Label2.Caption     :='LAN:';
-     Form1_DGL.ip_local.ReadOnly  :=True;
-     Form1_DGL.ip_local.Text      :=IP_Interno_Global;
-     Form1_DGL.ip_local.Enabled   :=True;
-     Form1_DGL.ip_internet.Text   :=IP_Externo_Global;
-     Form1_DGL.ip_internet.Enabled:=True;
-     Form1_DGL.ip_porta.Enabled   :=True;
-     Form1_DGL.ip_porta.Clear;
+     SetCaption (Form1_DGL.Label2     , 'LAN:');
+     Form1_DGL.ip_local.ReadOnly:=True;
+     SetEditText(Form1_DGL.ip_local   , IP_Interno_Global);
+     SetEnabled (Form1_DGL.ip_local   , True);
+     SetEditText(Form1_DGL.ip_internet, IP_Externo_Global);
+     SetEnabled (Form1_DGL.ip_internet, True);
+     SetEnabled (Form1_DGL.ip_porta   , True);
      //------------------------------------------------------------------------------------------
      Arquivo_INI:=TIniFile.Create(Caminho_INI);
-     Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_SERVER_'+Array_Games[id][7],'');
+     SetEditText(Form1_DGL.ip_porta,Arquivo_INI.ReadString('DOS','PORT_SERVER_'+Array_Games[id][7],''));
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
-     if Length(Form1_DGL.ip_porta.Text) = 0 then
-     Form1_DGL.ip_porta.Text:=Array_Games[id][8];
+       if Length(Form1_DGL.ip_porta.Text) = 0 then
+       SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
      //---------------------------------------------------------
-     Form1_DGL.Refresh_Lan.Enabled:=True;
-     Form1_DGL.Refresh_Internet.Enabled:=True;
+     SetEnabled(Form1_DGL.Refresh_Lan     , True);
+     SetEnabled(Form1_DGL.Refresh_Internet, True);
      //---------------------------------------------------------
-     Form1_DGL.Label1.Enabled:=True;
-     Form1_DGL.Label2.Enabled:=True;
-     Form1_DGL.Label3.Enabled:=True;
+     SetEnabled(Form1_DGL.Label1, True);
+     SetEnabled(Form1_DGL.Label2, True);
+     SetEnabled(Form1_DGL.Label3, True);
      //---------------------------------------------------------
-     Form1_DGL.btn_start.Enabled:=True;
+     SetEnabled(Form1_DGL.btn_start, True);
      //---------------------------------------------------------
      end;
   {CLIENTE}
   2: begin
-     Form1_DGL.Lista_Imagens.GetBitmap(5,Form1_DGL.Refresh_Lan.Glyph);
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 5);
      //-----------------------------------------------
-     Form1_DGL.Label2.Caption     :=Lang_DGL(15)+':';
-     Form1_DGL.ip_local.ReadOnly  :=False;
-     Form1_DGL.ip_local.Enabled   :=True;
-     Form1_DGL.ip_local.Clear;
-     Form1_DGL.ip_internet.Enabled:=False;
-     Form1_DGL.ip_porta.Enabled   :=True;
-     Form1_DGL.ip_porta.Clear;
+     SetCaption(Form1_DGL.Label2     , Lang_DGL(15)+':');
+     Form1_DGL.ip_local.ReadOnly:=False;
+     SetEnabled(Form1_DGL.ip_local   , True);
+     SetEnabled(Form1_DGL.ip_internet, False);
+     SetEnabled(Form1_DGL.ip_porta   , True);
      //------------------------------------------------------------------------------------------
      Arquivo_INI:=TIniFile.Create(Caminho_INI);
-     Form1_DGL.ip_local.Text:=Arquivo_INI.ReadString('DOS',  'IP_CLIENT','');
-     Form1_DGL.ip_porta.Text:=Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],'');
+     SetEditText(Form1_DGL.ip_local,Arquivo_INI.ReadString('DOS',  'IP_CLIENT',''));
+     SetEditText(Form1_DGL.ip_porta,Arquivo_INI.ReadString('DOS','PORT_CLIENT_'+Array_Games[id][7],''));
      Arquivo_INI.Free;
      //------------------------------------------------------------------------------------------
        if Length(Trim(Form1_DGL.ip_porta.Text)) = 0 then
-       Form1_DGL.ip_porta.Text:=Array_Games[id][8];
-       //-----------------------------------------------
-       if Length(Form1_DGL.ip_local.Text) = 0 then
-       Form1_DGL.Refresh_Lan.Enabled:=False
-       else
-       Form1_DGL.Refresh_Lan.Enabled:=True;
+       SetEditText(Form1_DGL.ip_porta, Array_Games[id][8]);
      //-----------------------------------------------
-     Form1_DGL.Refresh_Internet.Enabled:=False;
+     SetEnabled(Form1_DGL.Refresh_Lan,Trim(Form1_DGL.ip_local.Text) <> '');
+     SetEnabled(Form1_DGL.Refresh_Internet, False);
      //-----------------------------------------------
-     Form1_DGL.Label1.Enabled:=False;
-     Form1_DGL.Label2.Enabled:=True;
-     Form1_DGL.Label3.Enabled:=True;
+     SetEnabled(Form1_DGL.Label1, False);
+     SetEnabled(Form1_DGL.Label2, True);
+     SetEnabled(Form1_DGL.Label3, True);
      //-----------------------------------------------
-     Form1_DGL.btn_start.Enabled:=False;
+     SetEnabled(Form1_DGL.btn_start, False);
      //-----------------------------------------------
      Form1_DGL.ip_local.SetFocus;
      Form1_DGL.ip_local.SelectAll;
@@ -745,140 +734,109 @@ CoolStuff_Global:='';
   case id of
      {DOOM + DOOM II}
      3,4: begin
-          //----------------------------
-          Form1_DGL.RxBrutal.Glyph:=Nil;
-          //----------------------------
-          Form1_DGL.RxOpcoes.Visible    :=False;
-          Form1_DGL.Label_Opcoes.Visible:=False;
-          Form1_DGL.RxQuakeServer.Visible    :=False;
-          Form1_DGL.Label_QuakeServer.Visible:=False;
+          MostrarOpcoes(False);
+          MostrarQuakeServer(False);
 
             {SINGLE PLAYER E CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
             Form1_DGL.RxBrutal.Down:=False;
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Visible    :=True;
-            Form1_DGL.Label_Brutal.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=False;
-            Form1_DGL.Label_DM.Visible    :=False;
-            //----------------------------------------
+            MostrarBrutal(True);
+            MostrarDM(False);
+            //------------------------------------------------------
             end;
+
             {SERVIDOR}
             if (Tipo = 1) then
             begin
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_Brutal.Top:=Form1_DGL.RxBrutal.Top+1;
-            Form1_DGL.RxBrutal.Down   :=False;
-            Form1_DGL.RxDM.Top        :=Form1_DGL.RxBrutal.Top+24;
-            Form1_DGL.Label_DM.Top    :=Form1_DGL.RxDM.Top+1;
-            Form1_DGL.RxDM.Down       :=False;
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
+            Form1_DGL.RxBrutal.Down:=False;
+
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxBrutal.Top + 24);
+            Form1_DGL.RxDM.Down:=False;
             //------------------------------------------------------
-            Form1_DGL.RxBrutal.Visible    :=True;
-            Form1_DGL.Label_Brutal.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=True;
-            Form1_DGL.Label_DM.Visible    :=True;
-            //---------------------------------------
+            MostrarBrutal(True);
+            MostrarDM(True);
+            //------------------------------------------------------
             end;
           end;
        {QUAKE}
        8: begin
           CoolStuff_Global:='+name '+Trim(Form1_DGL.player_name.Text);
 
-          Form1_DGL.RxBrutal.Visible    :=False;
-          Form1_DGL.Label_Brutal.Visible:=False;
+          MostrarBrutal(False);
 
             {SERVIDOR E CLIENTE}
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-------------------------------------------------------------
-            Form1_DGL.RxOpcoes.Down        :=False;
-            Form1_DGL.RxOpcoes.Top         :=Form1_DGL.RxControle.Top;
-            Form1_DGL.Label_Opcoes.Top     :=Form1_DGL.RxOpcoes.Top+1;
-            Form1_DGL.RxDM.Down            :=False;
-            Form1_DGL.RxDM.Top             :=Form1_DGL.RxOpcoes.Top+24;
-            Form1_DGL.Label_DM.Top         :=Form1_DGL.RxDM.Top+1;
-            Form1_DGL.RxQuakeServer.Down   :=False;
-            Form1_DGL.RxQuakeServer.Top    :=Form1_DGL.RxDM.Top+24;;
-            Form1_DGL.Label_QuakeServer.Top:=Form1_DGL.RxQuakeServer.Top+1;
+            Form1_DGL.RxOpcoes.Down:=False;
+            PosicionarBotao(Form1_DGL.RxOpcoes     ,Form1_DGL.Label_Opcoes
+                                                   ,Form1_DGL.RxControle.Top);
+            Form1_DGL.RxDM.Down:=False;
+            PosicionarBotao(Form1_DGL.RxDM         ,Form1_DGL.Label_DM
+                                                   ,Form1_DGL.RxOpcoes.Top + 24);
+            Form1_DGL.RxQuakeServer.Down:=False;
+            PosicionarBotao(Form1_DGL.RxQuakeServer,Form1_DGL.Label_QuakeServer
+                                                   ,Form1_DGL.RxDM.Top + 24);
             //-------------------------------------------------------------
-            Form1_DGL.RxOpcoes.Visible    :=True;
-            Form1_DGL.Label_Opcoes.Visible:=True;
-            Form1_DGL.RxDM.Visible        :=DirectoryExists(Caminho_Global+'qw\');
-            Form1_DGL.Label_DM.Visible    :=DirectoryExists(Caminho_Global+'qw\');
-              if (Tipo = 2) then
-              begin
-              Form1_DGL.RxQuakeServer.Visible    :=False;
-              Form1_DGL.Label_QuakeServer.Visible:=False;
-              end;
-            //-------------------------------------------
+            MostrarOpcoes(True);
+            MostrarDM(DirectoryExists(Caminho_Global+'qw\'));
+            MostrarQuakeServer( (Tipo = 1) and DirectoryExists(Caminho_Global + 'qw\') and Form1_DGL.RxDM.Down );
+            //---------------------------------------------
             end
             {SINGLE PLAYER}
             else
             begin
-            //-----------------------------------------
-            Form1_DGL.RxOpcoes.Visible         :=False;
-            Form1_DGL.Label_Opcoes.Visible     :=False;
-            Form1_DGL.RxDM.Visible             :=False;
-            Form1_DGL.Label_DM.Visible         :=False;
-            Form1_DGL.RxQuakeServer.Visible    :=False;
-            Form1_DGL.Label_QuakeServer.Visible:=False;
-            Form1_DGL.RxQuakeServer.Visible    :=False;
-            Form1_DGL.Label_QuakeServer.Visible:=False;
-            //-----------------------------------------
+            //---------------------------------------------
+            MostrarOpcoes(False);
+            MostrarDM(False);
+            MostrarQuakeServer(False);
+            //---------------------------------------------
             end;
 
           end;
    {HERETIC + HEXEN + WOLFENSTEIN 3D + SPEAR OF DESTINY}
    6,7,
    12,13: begin
-          Form1_DGL.RxBrutal.Visible         :=False;
-          Form1_DGL.Label_Brutal.Visible     :=False;
-          Form1_DGL.RxOpcoes.Visible         :=False;
-          Form1_DGL.Label_Opcoes.Visible     :=False;
-          Form1_DGL.RxQuakeServer.Visible    :=False;
-          Form1_DGL.Label_QuakeServer.Visible:=False;
+          //---------------------------------------------
+          MostrarBrutal(False);
+          MostrarOpcoes(False);
+          MostrarQuakeServer(False);
+          //---------------------------------------------
 
             {SINGLE PLAYER - CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
             begin
             //----------------------------------------
-            Form1_DGL.RxOpcoes.Visible    :=False;
-            Form1_DGL.Label_Opcoes.Visible:=False;
-            Form1_DGL.RxDM.Visible        :=False;
-            Form1_DGL.Label_DM.Visible    :=False;
+            MostrarOpcoes(False);
+            MostrarDM(False);
             //----------------------------------------
             end;
             {SERVIDOR}
             if (Tipo = 1) then
             begin
             //--------------------------------------------------
-            Form1_DGL.RxDM.Top    :=Form1_DGL.RxControle.Top+24;
-            Form1_DGL.Label_DM.Top:=Form1_DGL.RxDM.Top+1;
-            Form1_DGL.RxDM.Down   :=False;
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxControle.Top + 24);
+            Form1_DGL.RxDM.Down:=False;
             //--------------------------------------------------
-            Form1_DGL.RxDM.Visible    :=True;
-            Form1_DGL.Label_DM.Visible:=True;
-            //----------------------------------------
+            MostrarDM(True);
+            //--------------------------------------------------
             end;
           end;
      {BLOOD + CONSTRUCTOR + DUKE NUKEM 3D + RISE OF THE TRIAD + SHADOW WARRIOR + WARCRAFT II}
      else
      begin
-     //-----------------------------------------
-     Form1_DGL.RxBrutal.Visible         :=False;
-     Form1_DGL.Label_Brutal.Visible     :=False;
-     Form1_DGL.RxOpcoes.Visible         :=False;
-     Form1_DGL.Label_Opcoes.Visible     :=False;
-     Form1_DGL.RxDM.Visible             :=False;
-     Form1_DGL.Label_DM.Visible         :=False;
-     Form1_DGL.RxQuakeServer.Visible    :=False;
-     Form1_DGL.Label_QuakeServer.Visible:=False;
-     //-----------------------------------------
+     //---------------------------------------------
+     MostrarBrutal(False);
+     MostrarOpcoes(False);
+     MostrarDM(False);
+     MostrarQuakeServer(False);
+     //---------------------------------------------
      end;
 
   end; {END - CASE id of}
@@ -886,189 +844,188 @@ CoolStuff_Global:='';
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Lista_Cores(Game:Integer);
+function GrupoCores(Game: Integer): Integer;
+begin
+
+  case Game of
+    3,4: Result := 1; // Doom
+      6: Result := 2; // Heretic
+      7: Result := 3; // Hexen
+      8: Result := 4; // Quake
+  12,13: Result := 5; // Wolfenstein
+  else
+  Result := 0;
+  end;
+
+end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure Lista_Cores(Game: Integer);
 var
 Config_Game,Nome_Game:String;
-i, ValorInt:Integer;
+i,ValorInt,Grupo:Integer;
 Config_Fisico:TStringList;
 Arquivo_INI:TIniFile;
 begin
+Grupo:=GrupoCores(Game);
 
-if (Game = 8) then
-Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+'id1\'+Array_Games[Game][6]
-else
-Config_Game:=ExtractFilePath(Application.ExeName)+Array_Games[Game][3]+Array_Games[Game][6];
-Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
+  if (Game = 8) then
+  Config_Game := ExtractFilePath(Application.ExeName) +
+                 Array_Games[Game][3] + 'id1\' + Array_Games[Game][6]
+  else
+  Config_Game := ExtractFilePath(Application.ExeName) +
+                 Array_Games[Game][3] + Array_Games[Game][6];
 
- if (Game = 3) or (Game = 4) then
- begin
- //--------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------------
- {DOOM - DOOM 2}
- //--------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+Nome_Game := UpperCase(ExtractName(Array_Games[id][5]));
+
+  if Grupo <> UltimoGrupoCores then
   begin
-  Add(IntToStr($008000));           //0 - Green
-  Add(IntToStr($808080));           //1 - Gray
-  Add(IntToStr(RGB(160, 82, 45)));  //2 - Brown
-  Add(IntToStr(RGB(171,  8,  8)));  //3 - Red
-  Add(IntToStr($D3D3D3));           //4 - Light Gray
-  Add(IntToStr(RGB(245,222,179)));  //5 - Light Brown
-  Add(IntToStr($0000FF));           //6 - Light Red
-  Add(IntToStr($FF0000));           //7 - Light Blue
-  end;
- //--------------------------------------------------
- end;
 
- if (Game = 6) then
- begin
- //--------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------------
- {HERETIC}
- //--------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+    with Form1_DGL.combo_color.Items do
+    begin
+    BeginUpdate;
+      Try
+      //--------------------------------------------------------
+      Clear;
+
+        {================ DOOM =================}
+        if (Game = 3) or (Game = 4) then
+        begin
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr($D3D3D3));
+        Add(IntToStr(RGB(245,222,179)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr($FF0000));
+        end;
+
+        {================ HERETIC ==============}
+        if Game = 6 then
+        begin
+        Add(IntToStr(RGB(85,107,47)));
+        Add(IntToStr(RGB(255,165,0)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr(RGB(0,0,179)));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($D3D3D3));
+        Add(IntToStr(RGB(245,222,179)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr(RGB(51,51,255)));
+        Add(IntToStr(RGB(205,133,63)));
+        end;
+
+        {================ HEXEN ================}
+        if Game = 7 then
+        begin
+        Add(IntToStr(RGB(0,0,179)));
+        Add(IntToStr(RGB(171,8,8)));
+        Add(IntToStr(RGB(255,165,0)));
+        Add(IntToStr(RGB(85,107,47)));
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($800080));
+        end;
+
+        {================ QUAKE ================}
+        if Game = 8 then
+        begin
+        Add(IntToStr(RGB(255,255,255)));
+        Add(IntToStr(RGB(88,61,18)));
+        Add(IntToStr(RGB(139,139,203)));
+        Add(IntToStr(RGB(107,107,11)));
+        Add(IntToStr(RGB(127,0,0)));
+        Add(IntToStr(RGB(132,110,50)));
+        Add(IntToStr(RGB(158,72,51)));
+        Add(IntToStr(RGB(227,179,151)));
+        Add(IntToStr(RGB(171,139,163)));
+        Add(IntToStr(RGB(187,115,159)));
+        Add(IntToStr(RGB(219,195,187)));
+        Add(IntToStr(RGB(111,131,123)));
+        Add(IntToStr(RGB(255,243,27)));
+        Add(IntToStr(RGB(0,0,255)));
+        end;
+
+        {================ WOLF =================}
+        if (Game = 12) or (Game = 13) then
+        begin
+        Add(IntToStr($008000));
+        Add(IntToStr($808080));
+        Add(IntToStr(RGB(160,82,45)));
+        Add(IntToStr($0000FF));
+        Add(IntToStr($00FFFF));
+        Add(IntToStr($A0C8FF));
+        Add(IntToStr($800080));
+        Add(IntToStr($808000));
+        end;
+
+      //--------------------------------------------------------
+      Finally
+      EndUpdate;
+      end;
+      //--------------------------------------------------------
+    end;
+
+    UltimoGrupoCores := Grupo;
+
+  end;
+
+  {================ QUAKE ================}
+  if Game = 8 then
   begin
-  Add(IntToStr(RGB( 85,107, 47)));  //0 - Green
-  Add(IntToStr(RGB(255,165,  0)));  //1 - Yellow
-  Add(IntToStr(RGB(171,  8,  8)));  //2 - Red
-  Add(IntToStr(RGB(  0,  0,179)));  //3 - Blue
-  Add(IntToStr(RGB(160, 82, 45)));  //4 - Brown
-  Add(IntToStr($D3D3D3));        ;  //5 - Light Gray
-  Add(IntToStr(RGB(245,222,179)));  //6 - Light Brown
-  Add(IntToStr($0000FF));           //7 - Light Red
-  Add(IntToStr(RGB( 51, 51,255)));  //8 - Light Blue
-  Add(IntToStr(RGB(205,133, 63)));  //9 - Beige
-  end;
- //--------------------------------------------------
- end;
+  Config_Fisico := TStringList.Create;
+    try
+    Config_Fisico.LoadFromFile(Config_Game);
 
- if (Game = 7) then
- begin
- //-------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //-------------------------------------------------
- {HEXEN}
- //-------------------------------------------------
-  with Form1_DGL.combo_color.Items do
+      for i := 0 to Config_Fisico.Count - 1 do
+      begin
+        if Pos('_cl_color "0"', Config_Fisico[i]) = 1 then
+        begin
+        Form1_DGL.combo_color.ItemIndex := 0;
+        Break;
+        end
+        else
+        begin
+          if Pos('_cl_color ', Config_Fisico[i]) = 1 then
+          begin
+            if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
+            Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
+          Break;
+          end;
+        end;
+      end;
+
+    finally
+    Config_Fisico.Free;
+    end;
+
+  end;
+
+  if (Array_Games[Game][7] = 'ZDOOM') then
   begin
-  Add(IntToStr(RGB(  0,  0,179)));  //0 - Blue
-  Add(IntToStr(RGB(171,  8,  8)));  //1 - Red
-  Add(IntToStr(RGB(255,165,  0)));  //2 - Gold
-  Add(IntToStr(RGB( 85,107, 47)));  //3 - Dull Green
-  Add(IntToStr($008000));           //4 - Green
-  Add(IntToStr($808080));           //5 - Gray
-  Add(IntToStr(RGB(160, 82, 45)));  //6 - Brown
-  Add(IntToStr($800080));           //7 - Purple
+    if (Game = 4) or (Game = 12) or (Game = 13) then
+    Nome_Game := 'Doom';
+
+    if Form1_DGL.combo_doom.ItemIndex = 0 then
+    begin
+    Arquivo_INI := TIniFile.Create(Config_Game);
+      try
+        if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
+        Form1_DGL.combo_color.ItemIndex := StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
+      finally
+      Arquivo_INI.Free;
+      end;
+    end
+    else
+    begin
+      if Form1_DGL.combo_color.Items.Count = 8 then
+      Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
+
+      Form1_DGL.combo_color.ItemIndex := 8;
+    end;
   end;
- //-------------------------------------------------
- end;
-
- if (Game = 8) then
- begin
- //---------------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //---------------------------------------------------
- {QUAKE}
- //---------------------------------------------------
-  with Form1_DGL.combo_color.Items do
-  begin
-  Add(IntToStr(RGB(255,255,255)));  //0  - White
-  Add(IntToStr(RGB( 88, 61, 18)));  //1  - Brown
-  Add(IntToStr(RGB(139,139,203)));  //2  - Light Blue
-  Add(IntToStr(RGB(107,107, 11)));  //3  - Green
-  Add(IntToStr(RGB(127,  0,  0)));  //4  - Red
-  Add(IntToStr(RGB(132,110, 50)));  //5  - Orange
-  Add(IntToStr(RGB(158, 72, 51)));  //6  - Gold
-  Add(IntToStr(RGB(227,179,151)));  //7  - Peach
-  Add(IntToStr(RGB(171,139,163)));  //8  - Purple
-  Add(IntToStr(RGB(187,115,159)));  //9  - Magenta
-  Add(IntToStr(RGB(219,195,187)));  //10 - Tan
-  Add(IntToStr(RGB(111,131,123)));  //11 - Light Green
-  Add(IntToStr(RGB(255,243, 27)));  //12 - Yellow
-  Add(IntToStr(RGB(  0,  0,255)));  //13 - Blue
-  end;
- //---------------------------------------------------
- Config_Fisico:=TStringList.Create;
- Config_Fisico.LoadFromFile(Config_Game);
-
-   for i:=0 to Config_Fisico.Count-1 do
-   begin
-     if Pos('_cl_color "0"',Config_Fisico[i]) = 1 then
-     begin
-     Form1_DGL.combo_color.ItemIndex:=0;
-     Break;
-     end
-     else
-     begin
-       if Pos('_cl_color ',Config_Fisico[i]) = 1 then
-       begin
-         if ExtrairNumeroEntreAspas(Config_Fisico[i], ValorInt) then
-         Form1_DGL.combo_color.ItemIndex := Quake_Color(ValorInt);
-       Break;
-       end;
-     end;
-   end;
-
- Config_Fisico.Free;
- //--------------------------------------------------
- end;
-
- if (Game = 12) or (Game = 13) then
- begin
- //--------------------------------------------
- Form1_DGL.combo_color.Items.Clear;
- //--------------------------------------------
- {WOLFENSTEIN 3D + SPEAR OF DESTINY}
- //--------------------------------------------
-  with Form1_DGL.combo_color.Items do
-  begin
-  Add(IntToStr($008000));          //0 - Green
-  Add(IntToStr($808080));          //1 - Gray
-  Add(IntToStr(RGB(160, 82, 45))); //2 - Brown
-  Add(IntToStr($0000FF));          //3 - Red
-  Add(IntToStr($00FFFF));          //4 - Yellow
-  Add(IntToStr($A0C8FF));          //5 - Tan
-  Add(IntToStr($800080));          //6 - Purple
-  Add(IntToStr($808000));          //7 - Teal
-  end;
- //--------------------------------------------
- end;
-
- //------------------------------------------------------------------------------------------------
- {ZDOOM - PLAYER SETUP - CORES DO PLAYER}
- //------------------------------------------------------------------------------------------------
- if (Array_Games[Game][7] = 'ZDOOM') then
- begin
-  //--------------------------------------------------------
-  {DOOM 2 - WOLFENSTEIN 3D - USAM NOME DE "DOOM" NO ARQUIVO}
-  //--------------------------------------------------------
-  if (Game = 4) or (Game = 12) or (Game = 13) then
-  Nome_Game:='Doom';
-  //-----------------------------------------------------------------------------------------------
-
-   //-----------------------------------------------------------------------------------------------------
-   {DOOM - DOOM 2 - PEGA A COR DENTRO DO ARQUIVO .INI APENAS SE ESTIVER USANDO O DOOM GUY NO COMBO_DOOM}
-   //-----------------------------------------------------------------------------------------------------
-   {SKIN - DOOM}
-   if Form1_DGL.combo_doom.ItemIndex = 0 then
-   begin
-   Arquivo_INI:=TIniFile.Create(Config_Game);
-     if Arquivo_INI.ReadString(Nome_Game+'.Player','colorset','') <> '' then
-     Form1_DGL.combo_color.ItemIndex:=StrToInt(Arquivo_INI.ReadString(Nome_Game+'.Player','colorset',''));
-   Arquivo_INI.Free;
-   end
-   {SKIN - PHOBOS}
-   else if Form1_DGL.combo_doom.ItemIndex = 1 then
-   begin
-   Form1_DGL.combo_color.Items.Add(IntToStr($000167E5));
-   Form1_DGL.combo_color.ItemIndex:=8;
-   end;
-   //-----------------------------------------------------------------------------------------------------
-
- end;
- //------------------------------------------------------------------------------------------------
 
 end;
 //------------------------------------------------------------------------------
@@ -1130,21 +1087,22 @@ begin
  begin
  Form1_DGL.Enabled:=False;
  //---------------------------------------------------------
- Form1_DGL.loading_panel.Visible:=True;
- Form1_DGL.img_game.Visible     :=Not AppAberto('qwsv.exe');
- Form1_DGL.gif_dos.Visible      :=    AppAberto('qwsv.exe');
- Form1_DGL.btn_start.Enabled    :=False;
+ SetVisible(Form1_DGL.loading_panel, True);
+ 
+ SetVisible(Form1_DGL.img_game , Not AppAberto('qwsv.exe'));
+ SetVisible(Form1_DGL.gif_dos  ,     AppAberto('qwsv.exe'));
+ SetEnabled(Form1_DGL.btn_start, False);
  //---------------------------------------------------------
  end
  else
  begin
  Form1_DGL.Enabled:=True;
  //-------------------------------------
- Form1_DGL.loading_panel.Visible:=False;
-
- Form1_DGL.img_game.Visible     :=True;
- Form1_DGL.gif_dos.Visible      :=False;
- Form1_DGL.btn_start.Enabled    :=True;
+ SetVisible(Form1_DGL.loading_panel, False);
+ 
+ SetVisible(Form1_DGL.img_game , True);
+ SetVisible(Form1_DGL.gif_dos  , False);
+ SetEnabled(Form1_DGL.btn_start, True);
  //-------------------------------------
    if (Form1_DGL.check_servidor.Enabled = True) and (Array_Games[id][7] = 'ZDOOM') then
    begin
@@ -1219,8 +1177,12 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
                +ExtractNamePath(Array_Games[id][1])+'.png';
 //-------------------------------------------------------------------------
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
-Form1_DGL.gif_dos.Visible:=False;
+SetVisible(Form1_DGL.gif_dos, False);
 //-------------------------------------------------------------------------
+
+BeginUIUpdate(Form1_DGL);
+Try
+//----------------------------------------------------------
 
 //------------
 ResetarBotoes;
@@ -1231,56 +1193,36 @@ ResetarBotoes;
  Form1_DGL.abfImage1.Visible:=True;
  //----------------------------------------
  Form1_DGL.img_game.Picture:=nil;
- Form1_DGL.gif_dos.Visible:=True;
+ SetVisible(Form1_DGL.gif_dos, True);
  //----------------------------------------
- Form1_DGL.logo_blood.Visible      :=False;
- Form1_DGL.logo_constructor.Visible:=False;
- Form1_DGL.logo_doom.Visible       :=False;
- Form1_DGL.logo_duke3d.Visible     :=False;
- Form1_DGL.logo_heretic.Visible    :=False;
- Form1_DGL.logo_hexen.Visible      :=False;
- Form1_DGL.logo_quake.Visible      :=False;
- Form1_DGL.logo_rott.Visible       :=False;
- Form1_DGL.logo_shadow.Visible     :=False;
- Form1_DGL.logo_warcraft.Visible   :=False;
- Form1_DGL.logo_wolf3d.Visible     :=False;
+ DesabilitaMarcaDagua(False);
  //----------------------------------------
- Form1_DGL.label_name.Enabled :=False;
- Form1_DGL.player_name.Enabled:=False;
- Form1_DGL.cont_player.Enabled:=False;
- Form1_DGL.cont_seta.Enabled  :=False;
- Form1_DGL.combo_color.Visible:=False;
- Form1_DGL.combo_doom.Visible :=False;
+ HabilitaPlayer(False);
+ SetVisible(Form1_DGL.combo_color, False);
+ SetVisible(Form1_DGL.combo_doom , False);
  //----------------------------------------
- Form1_DGL.RxControle.Visible    :=False;
- Form1_DGL.Label_Controle.Visible:=False;
- Form1_DGL.RxSense.Visible       :=False;
- Form1_DGL.Label_Sense.Visible   :=False;
+ MostrarControle(False);
+ MostrarSensibilidade(False);
  //----------------------------------------
- Form1_DGL.RxBrutal.Visible    :=False;
- Form1_DGL.Label_Brutal.Visible:=False;
- Form1_DGL.RxOpcoes.Visible    :=False;
- Form1_DGL.Label_Opcoes.Visible:=False;
- Form1_DGL.RxDM.Visible        :=False;
- Form1_DGL.Label_DM.Visible    :=False;
+ MostrarBrutal(False);
+ MostrarOpcoes(False);
+ MostrarDM(False);
  //----------------------------------------
- Form1_DGL.ip_local.Enabled   :=False;
- Form1_DGL.ip_internet.Enabled:=False;
- Form1_DGL.ip_porta.Enabled   :=False;
- //----------------------------------------
- Form1_DGL.Refresh_Lan.Enabled     :=False;
- Form1_DGL.Refresh_Internet.Enabled:=False;
- //----------------------------------------
- Form1_DGL.check_single.Enabled  :=False;
- Form1_DGL.check_servidor.Enabled:=False;
- Form1_DGL.check_cliente.Enabled :=False;
- //--------------------------------------
- Form1_DGL.Label1.Enabled:=False;
- Form1_DGL.Label2.Enabled:=False;
- Form1_DGL.Label3.Enabled:=False;
- //---------------------------------
- Form1_DGL.btn_start.Enabled:=False;
- //---------------------------------
+ SetEnabled(Form1_DGL.ip_local   , False);
+ SetEnabled(Form1_DGL.ip_internet, False);
+ SetEnabled(Form1_DGL.ip_porta   , False);
+ //--------------------------------------------
+ SetEnabled(Form1_DGL.Refresh_Lan     , False);
+ SetEnabled(Form1_DGL.Refresh_Internet, False);
+ //--------------------------------------------
+ HabilitaTipoGame(False);
+ //-------------------------------------
+ SetEnabled(Form1_DGL.Label1, False);
+ SetEnabled(Form1_DGL.Label2, False);
+ SetEnabled(Form1_DGL.Label3, False);
+ //-------------------------------------
+ SetEnabled(Form1_DGL.btn_start, False);
+ //-------------------------------------
  end
  else
  begin
@@ -1296,23 +1238,20 @@ ResetarBotoes;
    end;
    //------------------------------------------
 
- Form1_DGL.check_single.Enabled  :=True;
- Form1_DGL.check_servidor.Enabled:=True;
- Form1_DGL.check_cliente.Enabled :=True;
-
+ HabilitaTipoGame(True);
  //--------------
  MostrarLogo(id);
  //--------------
 
    if FileExists(Caminho_Imagem) then
    begin
-   Form1_DGL.gif_dos.Visible := False;
    Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
+   SetVisible(Form1_DGL.gif_dos, False);
    end
    else
    begin
    Form1_DGL.img_game.Picture:= nil;
-   Form1_DGL.gif_dos.Visible := True;
+   SetVisible(Form1_DGL.gif_dos, True);
    end;
 
    //---------------------------------------------------
@@ -1324,8 +1263,7 @@ ResetarBotoes;
                    //-------------------------------------
                    {MOUSE - HABILITAR}
                    //-------------------------------------
-                   Form1_DGL.RxControle.Visible    :=True;
-                   Form1_DGL.Label_Controle.Visible:=True;
+                   MostrarControle(True);
                    //-------------------------------------
 
                      //------------------------------------------------------------------------------------------------------------------
@@ -1343,15 +1281,9 @@ ResetarBotoes;
                      {DOOM + DOOM II - BRUTAL DOOM}
                      //-------------------------------------
                      if (id = 3) or (id = 4) then
-                     begin
-                     Form1_DGL.RxBrutal.Visible:=True;
-                     Form1_DGL.Label_Brutal.Visible:=True;
-                     end
+                     MostrarBrutal(True)
                      else
-                     begin
-                     Form1_DGL.RxBrutal.Visible:=False;
-                     Form1_DGL.Label_Brutal.Visible:=False;
-                     end;
+                     MostrarBrutal(False);
                      //-------------------------------------
 
                      //---------------------------------------------------------------------
@@ -1440,14 +1372,10 @@ ResetarBotoes;
                        end;
                        //-------------------------------------
 
-                     Form1_DGL.RxSense.Visible    :=Form1_DGL.RxControle.Down;
-                     Form1_DGL.Label_Sense.Visible:=Form1_DGL.RxControle.Down;
+                     MostrarSensibilidade(Form1_DGL.RxControle.Down);
                      end
                      else
-                     begin
-                     Form1_DGL.RxSense.Visible    :=False;
-                     Form1_DGL.Label_Sense.Visible:=False;
-                     end;
+                     MostrarSensibilidade(False);
                      //---------------------------------------------------------------------
 
                    //---------------------------------------------
@@ -1473,9 +1401,9 @@ ResetarBotoes;
                        Form1_DGL.RxControle.Down:=ZDOOM_Mouse;
 
                          if ZDOOM_Mouse then
-                         Form1_DGL.Label_Controle.Caption := 'MOUSE'
+                         SetCaption(Form1_DGL.Label_Controle, 'MOUSE')
                          else
-                         Form1_DGL.Label_Controle.Caption := Lang_DGL(18);
+                         SetCaption(Form1_DGL.Label_Controle, Lang_DGL(18));
 
                        finally
                        FreeAndNil(ZDOOM_INI);
@@ -1514,18 +1442,15 @@ ResetarBotoes;
                            if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
                            begin
                            Form1_DGL.RxControle.Down:=True;
-                           Form1_DGL.Label_Controle.Caption:='MOUSE';
-                           Form1_DGL.RxSense.Visible:=True;
-                           Form1_DGL.Label_Sense.Visible:=True;
+                           SetCaption(Form1_DGL.Label_Controle, 'MOUSE');
                            end
                            else
                            begin
                            Form1_DGL.RxControle.Down:=False;
-                           Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
-                           Form1_DGL.RxSense.Visible:=False;
-                           Form1_DGL.Label_Sense.Visible:=False;
+                           SetCaption(Form1_DGL.Label_Controle, Lang_DGL(18));
                            end;
                            //----------------------------------------------------------------------------
+                         MostrarSensibilidade(Form1_DGL.RxControle.Down);
                          end;
                        //--------------------------------------------------------------
                        end;
@@ -1549,10 +1474,12 @@ ResetarBotoes;
    {QUAKE}
    //----------------------------------------------------------------------------------------------------------------------
    8: begin
-      Form1_DGL.RxControle.Visible    :=False;
-      Form1_DGL.Label_Controle.Visible:=False;
-      Form1_DGL.RxSense.Visible       :=False;
-      Form1_DGL.Label_Sense.Visible   :=False;
+      MostrarControle(False);
+      MostrarSensibilidade(False);
+
+        {QUAKEWORLD - COPIA ARQUIVO CONFIG PADRÃO}
+        if not FileExists(Caminho_Global+'qw\'+Array_Games[id][6]) then
+        CopyFile(pchar(Pasta_INI_Global+'\quake\'+Array_Games[id][6]),pchar(Caminho_Global+'qw\'+Array_Games[id][6]),False);
 
         if not FileExists(Caminho_Global+'id1\-[swt]-namefun.exe') then
         CopyFile(pchar(Pasta_INI_Global+'quake\-[swt]-namefun.exe'),pchar(Caminho_Global+'id1\-[swt]-namefun.exe'),False);
@@ -1563,20 +1490,14 @@ ResetarBotoes;
         finally
           if not FileExists(Caminho_Global+'id1\skins\base.pcx') then
           CopyFile(pchar(Pasta_INI_Global+'\quake\base.pcx'),pchar(Caminho_Global+'id1\skins\base.pcx'),False);
-
-          {QUAKEWORLD - COPIA ARQUIVO CONFIG PADRÃO}
-          if not FileExists(Caminho_Global+'qw\'+Array_Games[id][6]) then
-          CopyFile(pchar(Pasta_INI_Global+'\quake\'+Array_Games[id][6]),pchar(Caminho_Global+'qw\'+Array_Games[id][6]),False);
         end;
 
       end;
    //----------------------------------------------------------------------------------------------------------------------
    else
    begin
-   Form1_DGL.RxControle.Visible    :=False;
-   Form1_DGL.Label_Controle.Visible:=False;
-   Form1_DGL.RxSense.Visible       :=False;
-   Form1_DGL.Label_Sense.Visible   :=False;
+   MostrarControle(False);
+   MostrarSensibilidade(False);
    end;
    end;
    //---------------------------------------------------
@@ -1603,22 +1524,17 @@ ResetarBotoes;
        3,4,6, {DOOM - DOOM 2 - HERETIC - HEXEN}
       7,8,12: {QUAKE - WOLFENSTEIN 3D}
      begin
-     Form1_DGL.combo_color.Visible:=True;
+     SetVisible(Form1_DGL.combo_color, True);
      Lista_Cores(id);
      end;
      else
-     Form1_DGL.combo_color.Visible :=False;
-     Form1_DGL.RxOpcoes.Visible    :=False;
-     Form1_DGL.Label_Opcoes.Visible:=False;
-     Form1_DGL.RxDM.Visible        :=False;
-     Form1_DGL.Label_DM.Visible    :=False;
+     SetVisible(Form1_DGL.combo_color, False);
+     MostrarOpcoes(False);
+     MostrarDM(False);
      end;
      //---------------------------------------------------------
      {DOOM 2 - SKINS}
-     if (id = 4) then
-     Form1_DGL.combo_doom.Visible:=True
-     else
-     Form1_DGL.combo_doom.Visible:=False;
+     SetVisible(Form1_DGL.combo_doom, (id = 4));
      //---------------------------------------------------------
 
      //---------------------------------------------------------
@@ -1629,40 +1545,40 @@ ResetarBotoes;
      3,4,6,7,  {DOOM - DOOM 2 - HERETIC - HEXEN}
        12:     {WOLFENSTEIN 3D}
      begin
-     Form1_DGL.label_name.Enabled :=True;
-     Form1_DGL.player_name.Enabled:=True;
-     Form1_DGL.cont_player.Enabled:=True;
-     Form1_DGL.cont_seta.Enabled  :=True;
+     HabilitaPlayer(True);
+
        {MÁXIMO 11 JOGADORES - RISE OF THE TRIAD}
        if (id = 9) then
        Form1_DGL.cont_seta.Max:=11
        {MÁXIMO 8 JOGADORES}
        else
        Form1_DGL.cont_seta.Max:=8;
+       
      end;
 
      2,8,11: {CONSTRUCTOR - QUAKE - WARCRAFT II}
      begin
-     Form1_DGL.label_name.Enabled :=True;
-     Form1_DGL.player_name.Enabled:=True;
+     SetEnabled(Form1_DGL.label_name , True);
+     SetEnabled(Form1_DGL.player_name, True);
+
        {MÁXIMO 4 JOGADORES - QUAKE}
        if (id = 8) and (Form1_DGL.check_servidor.Checked = True) then
-       begin
        Form1_DGL.cont_seta.Max:=4;
-       Form1_DGL.cont_player.Enabled:=True;
-       Form1_DGL.cont_seta.Enabled  :=True;
-       end
-       else
-       begin
-       Form1_DGL.cont_player.Enabled:=False;
-       Form1_DGL.cont_seta.Enabled  :=False;
-       end;
+
+     SetEnabled(Form1_DGL.cont_player, ((id = 8) and (Form1_DGL.check_servidor.Checked = True)));
+     SetEnabled(Form1_DGL.cont_seta  , ((id = 8) and (Form1_DGL.check_servidor.Checked = True)));
      end;
 
      end; //END - CASE
    end; //END - SINGLE PLAYER
  end; //END - Game_Existe = False
 //---------------------------------------------------
+
+//----------------------------------------------------------
+Finally
+EndUIUpdate(Form1_DGL);
+end;
+//----------------------------------------------------------
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
