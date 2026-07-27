@@ -14,16 +14,16 @@ It was designed to automatically configure and adapt each game to make use of ne
 
 ---
 
-> ## 📀 Game Compatibility
->
-> **DOS Game Launcher does not include any copyrighted game files.**
->
-> The launcher is compatible with game data from:
->
-> - ✅ Original CD-ROM releases
-> - ✅ GOG releases
->
-> Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
+## 📀 Game Compatibility
+
+**DOS Game Launcher does not include any copyrighted game files.**
+
+The launcher is compatible with game data from:
+
+- ✅ Original CD-ROM releases
+- ✅ GOG releases
+
+Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
 
 ---
 
