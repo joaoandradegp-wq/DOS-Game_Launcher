@@ -23,7 +23,7 @@ The launcher is compatible with game data from:
 - ✅ Original CD-ROM releases
 - ✅ GOG releases
 
-Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
+> Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
 
 ---
 
