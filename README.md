@@ -57,6 +57,7 @@ It offers integration with the following games in their original or GOG versions
 
 <li>DOOM II
   <ul>
+    <li>MODS SUPPORTED</li>
   </ul>
 </li>
 
