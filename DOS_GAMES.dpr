@@ -36,7 +36,7 @@ DGL_RAIZ:String;
 
 begin
   Application.Initialize;
-  Application.Title := 'DOS GAME LAUNCHER 2.0';
+  Application.Title := 'DOS GAME LAUNCHER 2.1';
 
   IP_Interno_Global := GetInternalIP;
   IP_Externo_Global := GetExternalIP;

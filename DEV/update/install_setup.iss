@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{411D497D-D3E4-425E-BF92-38F938E951F0}
 AppName=DOS Game Launcher
-AppVersion=2.0
+AppVersion=2.1
 AppPublisher=JMBA Softwares
 AppPublisherURL=http://phobosfreeware.blogspot.com.br
 AppSupportURL=http://phobosfreeware.blogspot.com.br
@@ -17,8 +17,8 @@ DefaultGroupName=DOS Game Launcher
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Phobos\Desktop
-OutputBaseFilename=DGL_Setup_2.0
-SetupIconFile=D:\GitHUB\DOS-Game_Launcher\update\launcher_icon.ico
+OutputBaseFilename=DGL_Setup_2.1
+SetupIconFile=D:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
