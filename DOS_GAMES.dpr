@@ -24,7 +24,7 @@ uses
 
 const
 //----------------------------------------------------------
-DGL_VERSAO_Global = '2.0';
+DGL_VERSAO_Global = '2.1';
 DGL_VERSAO        = DGL_VERSAO_Global;
 DGL_BLOG          = 'http://phobosfreeware.blogspot.com.br';
 //----------------------------------------------------------
