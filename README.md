@@ -1,4 +1,6 @@
-<h1 align="center">💾 DOS Game Launcher</h1>
+<p align="center">
+  <img width="450" alt="DOS Game Launcher" src="https://github.com/user-attachments/assets/ed2a3292-8e02-478e-9099-de46a2fe23b4" />
+</p>
 
 <p align="center">
 DOS Game Launcher is a front-end app built on DOSBox and ZDoom to emulate MS-DOS games, providing multiplayer support and seamless execution on modern Windows systems.
