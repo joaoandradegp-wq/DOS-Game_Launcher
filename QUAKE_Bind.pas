@@ -248,6 +248,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   {SERVER}
   if Form1_DGL.check_servidor.Checked then
   begin
+  EPI_Global_DLC:=1; 
   Seleciona_Fases;
 
     if Fecha_ESC then

@@ -738,28 +738,8 @@ Fecha_ESC:=False;
      if (id = 8) or (id = 12) then
      begin
        case EPI_Global_DLC of
-           1: begin
-
-                {QUAKE}
-                if (id = 8) then
-                begin
-                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-                  if (i = 38) and ((Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.Down = False)) then
-                  Break;
-                  if (i = 39) and (Form1_DGL.check_servidor.Checked) then
-                  Break;
-                end
-                {WOLFENSTEIN 3D}
-              else
-              begin
-                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-                  if (i = 27) then
-                  Break;
-              end;
-
-              end;
            2: begin
-
+              //------------------------------------------------------
                 {QUAKE}
                 if (id = 8) then
                 begin
@@ -774,20 +754,49 @@ Fecha_ESC:=False;
                   if (i = 26) then
                   Break;
                 end;
-                
+              //------------------------------------------------------
               end;
            3: begin
+              //------------------------------------------------------
               ListBox_Episodio.Items.Add(Array_Episodios[i+11][3]);
                 if (i = 35) then
                 Break;
               end;
-              
-       end;
-     end
+              //------------------------------------------------------
+           else
+              begin
+              //------------------------------------------------------
+                {QUAKE}
+                if (id = 8) then
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+                  //------------------------------------------------------
+                  if (i = 38) then
+                  begin
+                    if (Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.Down = False) then
+                    Break;
+                  end
+                  else if (i = 39) then
+                  Break;
+                  //------------------------------------------------------
+                end
+                {WOLFENSTEIN 3D}
+                else
+                begin
+                ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
+                  if (i = 27) then
+                  Break;
+                end;
+              //------------------------------------------------------
+              end;
+       end;{case EPI_Global_DLC of}
+       
+     end{if (id = 8) or (id = 12) then}
      else
      ListBox_Episodio.Items.Add(Array_Episodios[i][3]);
-   end;
- end;
+
+   end;{if (StrToInt(Array_Episodios[i][1]) = id)}
+ end;{FOR}
  //---------------------------------------------------------------------
  
  //--------------------------------------------------------------------------------------
