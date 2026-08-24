@@ -2,8 +2,6 @@
 
 set -e
 
-chmod +x install_qwsv230.sh
-
 echo "=========================================="
 echo " QWSV 2.30 - QuakeWorld 1998"
 echo " Linux Mint / Ubuntu"
