@@ -34,7 +34,7 @@ The launcher is compatible with game data from:
 <table style="border: none; border-collapse: collapse;">
 <tr>
 <td width="50%" valign="top" style="border: none; padding: 15px;">
-
+  
 ### 🎮 SUPPORTED GAMES
 
 It offers integration with the following games in their original or GOG versions:
@@ -209,6 +209,56 @@ Any errors found in the system can be reported on GitHub Issues.
 </td>
 </tr><br>
 </table>
+
+---
+
+## 🌐 QuakeWorld 2.30 Server (Linux)
+
+The project also includes an installation script for the **original QuakeWorld 2.30 dedicated server**, released in 1998, allowing the classic server to run natively on modern Linux systems.
+
+The Linux server uses the original **QWSV 2.30 i386** binary, preserving the classic QuakeWorld server environment while providing compatibility with modern Linux distributions.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/QuakeWorld-2.30-red">
+  <img src="https://img.shields.io/badge/Server-QWSV%201998-orange">
+  <img src="https://img.shields.io/badge/Platform-Linux-blue">
+  <img src="https://img.shields.io/badge/Architecture-i386-purple">
+</p>
+
+### 🐧 Linux Installation
+
+The installation script automatically prepares the Linux environment and configures the required 32-bit compatibility libraries.
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh">
+    <img src="https://img.shields.io/badge/Download-QWSV%202.30%20Installer-blue?style=for-the-badge">
+  </a>
+</p>
+
+Run the following commands:
+
+<pre>
+<code>curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh -o install_qwsv230.sh
+chmod +x install_qwsv230.sh
+./install_qwsv230.sh</code>
+</pre>
+
+After installation, copy your legally obtained QuakeWorld server files to:
+
+<pre>
+<code>~/Deimos/QuakeServer/qw/</code>
+</pre>
+
+The server can then be started with:
+
+<pre>
+<code>cd ~/Deimos/QuakeServer
+./qwsv -port 28501</code>
+</pre>
+
+>The Linux installation is intended for **classic QuakeWorld 2.30 servers from 1998**, using the original QWSV server executable.
+
+>**The project does not include copyrighted game content, maps, mods, or other proprietary game files.**
 
 ---
 
