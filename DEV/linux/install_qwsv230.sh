@@ -9,7 +9,7 @@ echo " QWSV 2.30 - QuakeWorld 1998"
 echo " Linux Mint / Ubuntu"
 echo "=========================================="
 
-SERVER_DIR="$HOME/quake/qwsv230"
+SERVER_DIR="$HOME/Deimos/QuakeServer"
 GAME_DIR="$SERVER_DIR/qw"
 PORT="28501"
 
