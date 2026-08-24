@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER_DIR="$HOME/quake/qwsv230"
+SERVER_DIR="$HOME/Deimos/QuakeServer"
 PORT="28501"
 
 cd "$SERVER_DIR" || exit 1
