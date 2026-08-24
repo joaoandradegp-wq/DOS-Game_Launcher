@@ -283,7 +283,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
 
   {SERVER - CONNECT HOST 127.0.0.1}
   if Form1_DGL.check_servidor.Checked then
-  ClientParams := ClientParams + ' +connect 127.0.0.1'
+  ClientParams := ClientParams + ' +connect 127.0.0.1 '+ ':' + Form1_DGL.ip_porta.Text
   else
     if Trim(Form1_DGL.ip_local.Text) <> '' then
     ClientParams := ClientParams + ' +connect ' + Trim(Form1_DGL.ip_local.Text + ':' + Form1_DGL.ip_porta.Text);
