@@ -286,7 +286,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   ClientParams := ClientParams + ' +connect 127.0.0.1'
   else
     if Trim(Form1_DGL.ip_local.Text) <> '' then
-    ClientParams := ClientParams + ' +connect ' + Trim(Form1_DGL.ip_local.Text);
+    ClientParams := ClientParams + ' +connect ' + Trim(Form1_DGL.ip_local.Text + ':' + Form1_DGL.ip_porta.Text);
 
   {DEBUG - CLIENT}
   if Form1_DGL.menu_debug.Checked and (ServerDedicado = False) then

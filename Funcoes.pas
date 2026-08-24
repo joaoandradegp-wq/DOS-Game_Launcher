@@ -675,6 +675,7 @@ CoolStuff_Global:='';
      //---------------------------------------------------------
      SetCaption (Form1_DGL.Label2     , 'LAN:');
      Form1_DGL.ip_local.ReadOnly:=True;
+     Form1_DGL.ip_porta.ReadOnly:=True;
      SetEditText(Form1_DGL.ip_local   , IP_Interno_Global);
      SetEnabled (Form1_DGL.ip_local   , True);
      SetEditText(Form1_DGL.ip_internet, IP_Externo_Global);
@@ -704,6 +705,7 @@ CoolStuff_Global:='';
      //-----------------------------------------------
      SetCaption(Form1_DGL.Label2     , Lang_DGL(15)+':');
      Form1_DGL.ip_local.ReadOnly:=False;
+     Form1_DGL.ip_porta.ReadOnly:=False;
      SetEnabled(Form1_DGL.ip_local   , True);
      SetEnabled(Form1_DGL.ip_internet, False);
      SetEnabled(Form1_DGL.ip_porta   , True);
