@@ -66,11 +66,13 @@ end;
 
 procedure UnlockWindow(AControl: TWinControl);
 begin
+
   if Assigned(AControl) and AControl.HandleAllocated then
   begin
     SendMessage(AControl.Handle, WM_SETREDRAW, 1, 0);
-    RedrawWindow(AControl.Handle, nil, 0, RDW_INVALIDATE);
+    RedrawWindow(AControl.Handle, nil, 0, RDW_INVALIDATE or RDW_ERASE or RDW_ALLCHILDREN or RDW_FRAME);
   end;
+  
 end;
 
 procedure BeginUIUpdate(AControl: TWinControl);
