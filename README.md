@@ -214,9 +214,9 @@ Any errors found in the system can be reported on GitHub Issues.
 
 ## 🌐 QuakeWorld 2.30 Server (Linux)
 
-The project also includes an installation script for the **original QuakeWorld 2.30 dedicated server**, released in 1998, allowing the classic server to run natively on modern Linux systems.
+This project includes an installer for the **original QuakeWorld 2.30 dedicated server (QWSV)** released in 1998.
 
-The Linux server uses the original **QWSV 2.30 i386** binary, preserving the classic QuakeWorld server environment while providing compatibility with modern Linux distributions.
+The original **i386 Linux QWSV binary** runs on modern 64-bit Linux systems using 32-bit compatibility libraries.
 
 <p align="center">
   <img src="https://img.shields.io/badge/QuakeWorld-2.30-red">
@@ -225,9 +225,16 @@ The Linux server uses the original **QWSV 2.30 i386** binary, preserving the cla
   <img src="https://img.shields.io/badge/Architecture-i386-purple">
 </p>
 
-### 🐧 Linux Installation
+### 🐧 Installation
 
-The installation script automatically prepares the Linux environment and configures the required 32-bit compatibility libraries.
+The installer automatically:
+
+- Enables i386 architecture
+- Installs libc6:i386
+- Creates the required server directories
+- Installs QWSV 2.30
+- Includes qwprogs.dat
+- Sets executable permissions
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh">
@@ -235,30 +242,60 @@ The installation script automatically prepares the Linux environment and configu
   </a>
 </p>
 
-Run the following commands:
+Installation:
 
-<pre>
-<code>curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh -o install_qwsv230.sh
-chmod +x install_qwsv230.sh
-./install_qwsv230.sh</code>
-</pre>
+    curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh -o install_qwsv230.sh
+    chmod +x install_qwsv230.sh
+    ./install_qwsv230.sh
 
-After installation, copy your legally obtained QuakeWorld server files to:
+### 📁 Required Files
 
-<pre>
-<code>~/Deimos/QuakeServer/qw/</code>
-</pre>
+After installation, copy your legally obtained Quake game files to:
 
-The server can then be started with:
+    ~/Deimos/QuakeServer/id1/
 
-<pre>
-<code>cd ~/Deimos/QuakeServer
-./qwsv -port 28501</code>
-</pre>
+| File | Location | Status |
+|------|----------|--------|
+| pak0.pak | id1/ | Required |
+| pak1.pak | id1/ | Required |
+| qwprogs.dat | qw/ | Included |
+| server.cfg | qw/ | Optional |
 
->The Linux installation is intended for **classic QuakeWorld 2.30 servers from 1998**, using the original QWSV server executable.
+The final structure should be:
 
->**The project does not include copyrighted game content, maps, mods, or other proprietary game files.**
+    QuakeServer/
+    ├── qwsv
+    ├── id1/
+    │   ├── pak0.pak
+    │   └── pak1.pak
+    └── qw/
+        ├── qwprogs.dat
+        └── server.cfg
+
+> qwprogs.dat is already included with the QWSV Linux installation.
+
+### ▶️ Start the Server
+
+    cd ~/Deimos/QuakeServer
+    ./qwsv -port 28501
+
+**Default port:** UDP 28501
+
+### 🗺️ Classic Map Rotation
+
+The original QWSV 2.30 uses the classic deathmatch rotation:
+
+**DM1 → DM2 → DM3 → DM4 → DM5 → DM6 → DM1**
+
+Match duration can be configured with:
+
+    timelimit 15
+
+The configuration file is located at:
+
+    ~/Deimos/QuakeServer/qw/server.cfg
+
+> **The project does not include copyrighted Quake game files.**
 
 ---
 
