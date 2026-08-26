@@ -945,10 +945,6 @@ try
   Config_Tela(False);
   //------------------------------------------
   btn_start.Caption:=Lang_DGL(5);
-
-  UIUtils.SetVisible(img_game, False);
-  UIUtils.SetVisible(gif_dos , True);
-
   Timer_MonitoraAPP.Enabled:=True;
   //------------------------------------------
 

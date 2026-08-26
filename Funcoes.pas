@@ -1090,9 +1090,19 @@ begin
  Form1_DGL.Enabled:=False;
  //---------------------------------------------------------
  SetVisible(Form1_DGL.loading_panel, True);
- 
- SetVisible(Form1_DGL.img_game , Not AppAberto('qwsv.exe'));
- SetVisible(Form1_DGL.gif_dos  ,     AppAberto('qwsv.exe'));
+
+   {QUAKEWORLD SERVER DEDICADO - MANTEM O IMG_GAME VISIVEL}
+   if (id = 8) and (Form1_DGL.RxQuakeServer.Down) then
+   begin
+   UIUtils.SetVisible(Form1_DGL.img_game, True);
+   UIUtils.SetVisible(Form1_DGL.gif_dos , False);
+   end
+   else
+   begin
+   UIUtils.SetVisible(Form1_DGL.img_game, False);
+   UIUtils.SetVisible(Form1_DGL.gif_dos , True);
+   end;
+   
  SetEnabled(Form1_DGL.btn_start, False);
  //---------------------------------------------------------
  end
