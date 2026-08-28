@@ -893,6 +893,12 @@ Fecha_ESC:=False;
   Game_EXE_Global:=Array_Games[id][4];
   //---------------------------------
 
+  //--------------------------------------------------------
+  // CLIENTE - CONTAGEM PRA INICIAR
+  //--------------------------------------------------------
+  if check_cliente.Checked and (not menu_debug.Checked) then
+  Contagem_Iniciar;
+  //--------------------------------------------------------
 
 {ARQUIVO DE CONFIGURAÇÃO DE CADA JOGO}
 case id of
@@ -921,13 +927,6 @@ case id of
    end;
 
 end;
-
-  //--------------------------------------------------------
-  // CLIENTE - CONTAGEM PRA INICIAR
-  //--------------------------------------------------------
-  if check_cliente.Checked and (not menu_debug.Checked) then
-  Contagem_Iniciar;
-  //--------------------------------------------------------
 
   //---------------
   if Fecha_ESC then
