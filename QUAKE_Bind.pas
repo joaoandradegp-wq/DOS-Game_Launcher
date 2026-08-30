@@ -4,7 +4,7 @@ interface
 
 uses
   Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, Dialogs,
-  Unit1, DLC, Funcoes, Language;
+  Unit1, DLC, Funcoes, Language, UIUtils;
 
 //--------------------------------------------------
 type
@@ -208,9 +208,7 @@ end;
 procedure AplicaQuakeWorldDM(ServerDedicado: Boolean);
 var
 ArquivoCFG: TStringList;
-i: Integer;
 Config_Game_Global: string;
-Encontrou: Boolean;
 QWPath, ClientExe, ServerExe, ClientParams, ServerParams: string;
 begin
 Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.cfg';
@@ -220,17 +218,9 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   ArquivoCFG := TStringList.Create;
     try
     ArquivoCFG.LoadFromFile(Config_Game_Global);
-    Encontrou := False;
 
-      for i := 0 to ArquivoCFG.Count - 1 do
-        if Trim(LowerCase(ArquivoCFG[i])) = 'exec autoexec.cfg' then
-        begin
-        Encontrou := True;
-        Break;
-        end;
-
-        if not Encontrou then
-        ArquivoCFG.Add('exec autoexec.cfg');
+    GaranteLinha(ArquivoCFG, 'exec autoexec.cfg');
+    GaranteLinha(ArquivoCFG, '+mlook');
 
     ArquivoCFG.SaveToFile(Config_Game_Global);
     finally
@@ -248,7 +238,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
   {SERVER}
   if Form1_DGL.check_servidor.Checked then
   begin
-  EPI_Global_DLC:=1; 
+  EPI_Global_DLC:=1;
   Seleciona_Fases;
 
     if Fecha_ESC then

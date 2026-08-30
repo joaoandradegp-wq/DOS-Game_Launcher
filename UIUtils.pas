@@ -48,6 +48,8 @@ procedure HabilitaTipoGame(Enabled: Boolean);
 procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
 procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
 
+procedure GaranteLinha(Lista: TStringList; const Linha: string);
+
 implementation
 
 uses Unit1;
@@ -262,6 +264,22 @@ procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
 begin
 Button.Glyph.Assign(nil);
 ImageList.GetBitmap(Index, Button.Glyph);
+end;
+
+procedure GaranteLinha(Lista: TStringList; const Linha: string);
+var
+  j: Integer;
+  Achou: Boolean;
+begin
+  Achou := False;
+  for j := 0 to Lista.Count - 1 do
+    if Trim(LowerCase(Lista[j])) = LowerCase(Linha) then
+    begin
+      Achou := True;
+      Break;
+    end;
+  if not Achou then
+    Lista.Add(Linha);
 end;
 
 end.
