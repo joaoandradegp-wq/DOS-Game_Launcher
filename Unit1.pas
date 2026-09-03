@@ -970,7 +970,7 @@ begin
  if check_cliente.Checked then
  begin
 
-   if VerificaTCP_UDP(Trim(ip_local.Text),StrToInt(ip_porta.Text),300) then
+   if AguardandoConexao(Trim(ip_local.Text),StrToInt(ip_porta.Text),300) then
    begin
    MessageBox(Application.Handle,pchar(Lang_DGL(11)+' '+ip_local.Text+' ONLINE!'),pchar(Application.Title),MB_ICONINFORMATION+MB_OK);
 

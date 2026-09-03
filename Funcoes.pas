@@ -7,6 +7,9 @@ uses
   Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
   IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons;
 
+type
+  TEstadoPortaUDP = (epuOnline, epuFechada, epuIndefinido);
+
 //----------------------------------------------------------------------
 procedure MostrarLogo(ID: Integer);
 //----------------------------------------------------------------------
@@ -26,7 +29,11 @@ procedure SendChar(C: Char);
 //----------------------------------------------------------------------
 function GetInternalIP: String;
 function GetExternalIP: String;
-function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+//----------------------------------------------------------------------
+function VerificaUDPGenerico(const Host: string; Porta: Integer;
+  const Payload: AnsiString; TimeoutMS: Integer = 500): TEstadoPortaUDP;
+function AguardandoConexao(const Host: string; Porta: Integer;
+  TimeoutMS: Integer = 500): Boolean;
 //----------------------------------------------------------------------
 procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function  ProcessExists(exeFileName: String): Boolean;
@@ -305,79 +312,73 @@ begin
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-function VerificaTCP_UDP(const Host: string; Porta: Integer; TimeoutMS: Integer = 500): Boolean;
+function VerificaUDPGenerico(const Host: string; Porta: Integer;
+  const Payload: AnsiString; TimeoutMS: Integer = 500): TEstadoPortaUDP;
 var
   WSAData: TWSAData;
   Sock: TSocket;
-  Addr: TSockAddrIn;
+  Addr, FromAddr: TSockAddrIn;
   HostEnt: PHostEnt;
   Mode: u_long;
   FDSet: TFDSet;
   TimeVal: TTimeVal;
-  OptVal, OptLen: Integer;
-  Buf: array[0..0] of Char;
+  RecvBuf: array[0..1023] of Byte;
+  BytesRecv, FromLen: Integer;
+  SendData: AnsiString;
 begin
-  Result := False;
+  Result := epuIndefinido;
 
-  { 1 - HOST EXISTE? }
-  if not PingIP(Host, TimeoutMS) then
+  if WSAStartup($0202, WSAData) <> 0 then
     Exit;
-
-  if WSAStartup($0202, WSAData) <> 0 then Exit;
   try
     HostEnt := gethostbyname(PAnsiChar(AnsiString(Host)));
     if HostEnt = nil then Exit;
 
+    FillChar(Addr, SizeOf(Addr), 0);
     Addr.sin_family := AF_INET;
     Addr.sin_port := htons(Porta);
     Addr.sin_addr.S_addr := PInAddr(HostEnt^.h_addr_list^)^.S_addr;
 
-    { 2 - TESTE TCP }
-    Sock := socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if Sock <> INVALID_SOCKET then
-    begin
-      try
-        Mode := 1;
-        ioctlsocket(Sock, FIONBIO, Mode);
-        connect(Sock, Addr, SizeOf(Addr));
-
-        FD_ZERO(FDSet);
-        FD_SET(Sock, FDSet);
-
-        TimeVal.tv_sec := TimeoutMS div 1000;
-        TimeVal.tv_usec := (TimeoutMS mod 1000) * 1000;
-
-        if select(0, nil, @FDSet, nil, @TimeVal) > 0 then
-        begin
-          OptLen := SizeOf(OptVal);
-          getsockopt(Sock, SOL_SOCKET, SO_ERROR, @OptVal, OptLen);
-          if OptVal = 0 then
-          begin
-            Result := True;
-            Exit;
-          end;
-        end;
-      finally
-        closesocket(Sock);
-      end;
-    end;
-
-    { 3 - ENVIO UDP }
     Sock := socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if Sock <> INVALID_SOCKET then
-    begin
-      try
-        Buf[0] := #0;
-        if sendto(Sock, Buf, 1, 0, Addr, SizeOf(Addr)) <> SOCKET_ERROR then
-          Result := True;
-      finally
-        closesocket(Sock);
-      end;
-    end;
+    if Sock = INVALID_SOCKET then Exit;
+    try
+      Mode := 1;
+      ioctlsocket(Sock, FIONBIO, Mode);
 
+      if Payload = '' then
+        SendData := #0
+      else
+        SendData := Payload;
+
+      if sendto(Sock, SendData[1], Length(SendData), 0, Addr, SizeOf(Addr)) = SOCKET_ERROR then
+        Exit;
+
+      FD_ZERO(FDSet);
+      FD_SET(Sock, FDSet);
+      TimeVal.tv_sec := TimeoutMS div 1000;
+      TimeVal.tv_usec := (TimeoutMS mod 1000) * 1000;
+
+      if select(0, @FDSet, nil, nil, @TimeVal) > 0 then
+      begin
+        FromLen := SizeOf(FromAddr);
+        BytesRecv := recvfrom(Sock, RecvBuf, SizeOf(RecvBuf), 0, FromAddr, FromLen);
+        if BytesRecv > 0 then
+          Result := epuOnline
+        else if (WSAGetLastError = WSAECONNRESET) then
+          Result := epuFechada;
+      end;
+    finally
+      closesocket(Sock);
+    end;
   finally
     WSACleanup;
   end;
+end;
+
+function AguardandoConexao(const Host: string; Porta: Integer;
+  TimeoutMS: Integer = 500): Boolean;
+begin
+  Result := VerificaUDPGenerico(Host, Porta, '', TimeoutMS) <> epuFechada;
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
