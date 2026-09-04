@@ -183,8 +183,8 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
-<li>ZDOOM 2.8.1<br>www.zdoom.org</li><br>
-<li>QuakeSpasm 0.96.3<br>www.quakespasm.sourceforge.net</li><br>
+<li>ZDOOM 2.8.1<br>www.zdoom.org</li>
+<li>QuakeSpasm 0.96.3<br>www.quakespasm.sourceforge.net</li>
 <li>QuakeWorld 2.30<br>www.doomworld.com</li><br>
 </ul>
 
