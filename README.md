@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-DOS Game Launcher is a front-end app built on DOSBox and ZDoom to emulate MS-DOS games, providing multiplayer support and seamless execution on modern Windows systems.
+DOS Game Launcher is a front-end app built on DOSBox, ZDoom, QuakeSpasm and QuakeWorld to emulate MS-DOS games, providing multiplayer support and seamless execution on modern Windows systems.
 It was designed to automatically configure and adapt each game to make use of new enhancements available for MS-DOS titles without losing their original feel. The app optimizes CPU cycles, memory, and graphic resolutions for every certified game on the platform, while enabling multiplayer gameplay over LAN or the internet.
 </p>
 
@@ -85,7 +85,6 @@ It offers integration with the following games in their original or GOG versions
   <ul>
     <li>SCOURGE OF ARMAGON (Mission Pack)</li>
     <li>DISSOLUTION OF ETERNITY (Mission Pack)</li>
-    <li>QUAKEWORLD</li>
   </ul>
 </li>
 
@@ -185,6 +184,8 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
 <li>ZDOOM 2.8.1<br>www.zdoom.org</li><br>
+<li>QuakeSpasm 0.96.3<br>quakespasm.sourceforge.net</li><br>
+<li>QuakeWorld 2.30<br>www.doomworld.com</li><br>
 </ul>
 
 ### 🔥 FIREWALL RULES
