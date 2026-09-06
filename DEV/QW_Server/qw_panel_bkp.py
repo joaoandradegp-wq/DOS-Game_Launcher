@@ -178,12 +178,6 @@ STRINGS = {
                               "en": "// starting map chosen in the panel"},
     "console_save_settings_fail": {"pt_BR": "Não foi possível salvar settings do painel:",
                                     "en": "Could not save the panel settings:"},
-    "btn_standard_mode": {"pt_BR": "◱ Modo Padrão", "en": "◱ Standard Mode"},
-    "btn_light_mode": {"pt_BR": "◱ Modo Light", "en": "◱ Light Mode"},
-    "light_mode_title": {"pt_BR": "Servidor QuakeWorld", "en": "QuakeWorld Server"},
-    "err_launch_requires_launcher": {
-        "pt_BR": "Este programa deve ser iniciado pelo DOS Game Launcher.",
-        "en": "This program must be started by the DOS Game Launcher."},
 }
 
 
@@ -236,11 +230,6 @@ def build_default_settings():
         "port": "28501",
         "cfg_relative_path": os.path.join("qw", "server.cfg"),
         "last_map": "start",
-        # True só depois que o usuário salvar manualmente a aba
-        # "Configurações" — enquanto for False, a pasta/executável sempre
-        # são recalculados a partir de onde o programa está rodando agora,
-        # mesmo que o json já exista (ex: o launcher foi movido de pasta)
-        "server_dir_custom": False,
     }
 
 
@@ -396,19 +385,10 @@ def load_app_settings():
             merged = dict(defaults)
             merged.update(data)
 
-            if merged.get("server_dir_custom"):
-                # o usuário escolheu essa pasta/executável na mão (aba
-                # Configurações, botão Salvar) — respeita a escolha, a não
-                # ser que a pasta salva tenha deixado de existir
-                if not merged.get("server_dir") or not os.path.isdir(merged["server_dir"]):
-                    merged["server_dir"] = defaults["server_dir"]
-                    merged["executable"] = defaults["executable"]
-                    merged["server_dir_custom"] = False
-            else:
-                # nunca foi customizada pelo usuário: sempre usa a pasta de
-                # onde o programa está rodando agora, mesmo que o json já
-                # exista com um valor antigo (ex: launcher movido/reinstalado
-                # em outra pasta)
+            # se o diretório salvo não existe mais (por exemplo, veio de
+            # outra máquina, de um teste antigo ou ficou corrompido),
+            # volta a apontar para a pasta onde o programa está rodando
+            if not merged.get("server_dir") or not os.path.isdir(merged["server_dir"]):
                 merged["server_dir"] = defaults["server_dir"]
                 merged["executable"] = defaults["executable"]
 
@@ -638,22 +618,11 @@ def parse_rcon_status(text):
 # ----------------------------------------------------------------------
 
 class QuakePanel(tk.Tk):
-    def __init__(self, mode="full"):
+    def __init__(self):
         super().__init__()
-        # mode: "full"  -> tela padrão de sempre (parâmetro "Debug" ou nenhum)
-        #       "light" -> tela reduzida, só com a lista de jogadores,
-        #                  e inicia o servidor sozinho (parâmetro "Phobos")
-        self.mode = mode
-
-        # escondida até tudo estar montado no modo certo — evita o "flash"
-        # da tela Padrão aparecendo por uma fração de segundo antes de
-        # encolher pro modo light
-        self.withdraw()
-
         self.title("DOS GAME LAUNCHER - QuakeWorld Server 2.30")
         self.geometry("880x560")
         self.minsize(820, 520)
-        self._apply_window_icon()
 
         self.settings = load_app_settings()
         self.proc = None
@@ -663,44 +632,8 @@ class QuakePanel(tk.Tk):
 
         self._build_ui()
         self._load_cfg_into_fields()
-        self._apply_view_mode(self.mode)
         self._poll_status()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
-
-        # só agora, com o layout/tamanho já certos, a janela aparece
-        self.deiconify()
-
-        if self.mode == "light":
-            # dá um tempinho pra janela desenhar antes de disparar o
-            # servidor, senão o usuário nem vê a tela subindo
-            self.after(300, self._auto_start_server)
-
-    def _apply_window_icon(self):
-        """O --icon do PyInstaller só troca o ícone do arquivo .exe (o que
-        aparece no Explorer) — o ícone da JANELA/barra de tarefas enquanto
-        o programa roda é outra coisa, controlada aqui. Sem isso, o
-        Tkinter mostra a "peninha" padrão dele.
-
-        Procura um .ico com o mesmo nome do executável (ex: qw_panel.ico
-        do lado de qw_panel.exe) na pasta do programa. Se não achar, ou
-        se não for Windows, simplesmente ignora e segue com o padrão."""
-        if not IS_WINDOWS:
-            return
-        app_dir = get_app_dir()
-        exe_name = os.path.splitext(os.path.basename(sys.executable if getattr(sys, "frozen", False)
-                                                       else os.path.abspath(__file__)))[0]
-        candidates = [
-            os.path.join(app_dir, exe_name + ".ico"),
-            os.path.join(app_dir, "qw_panel.ico"),
-            os.path.join(app_dir, "icon.ico"),
-        ]
-        for ico_path in candidates:
-            if os.path.isfile(ico_path):
-                try:
-                    self.iconbitmap(ico_path)
-                except Exception:
-                    pass
-                return
 
     def _on_close(self):
         # rede de segurança: garante que o último mapa fica salvo mesmo se
@@ -713,7 +646,6 @@ class QuakePanel(tk.Tk):
     def _build_ui(self):
         main = ttk.Frame(self, padding=10)
         main.pack(fill="both", expand=True)
-        self.main_frame = main
 
         main.columnconfigure(0, weight=3)
         main.columnconfigure(1, weight=1)
@@ -723,7 +655,6 @@ class QuakePanel(tk.Tk):
         header = ttk.Frame(main)
         header.grid(row=0, column=0, columnspan=2, sticky="ew", pady=(0, 10))
         header.columnconfigure(1, weight=1)
-        self.header_frame = header
 
         ttk.Label(header, text="QuakeWorld Server 2.30",
                   font=("TkDefaultFont", 14, "bold")).grid(row=0, column=0, sticky="w")
@@ -737,7 +668,6 @@ class QuakePanel(tk.Tk):
         # ---- Coluna esquerda: configurações + mapa + botões ----
         left = ttk.Notebook(main)
         left.grid(row=1, column=0, sticky="nsew", padx=(0, 10))
-        self.left_notebook_frame = left
 
         cfg_tab = ttk.Frame(left, padding=10)
         admin_tab = ttk.Frame(left, padding=10)
@@ -758,7 +688,6 @@ class QuakePanel(tk.Tk):
         # botões de ação (fora das abas, sempre visíveis)
         actions = ttk.Frame(main)
         actions.grid(row=2, column=0, sticky="ew", pady=(10, 0))
-        self.actions_frame = actions
 
         self.start_btn = ttk.Button(actions, text=T("btn_start"),
                                      command=self.on_start)
@@ -771,101 +700,18 @@ class QuakePanel(tk.Tk):
         # ---- Coluna direita: jogadores online ----
         right = ttk.Labelframe(main, text=T("online_players"), padding=10)
         right.grid(row=1, column=1, rowspan=2, sticky="nsew")
-        right.rowconfigure(2, weight=1)
+        right.rowconfigure(1, weight=1)
         right.columnconfigure(0, weight=1)
-        self.right_frame = right
-
-        # indicador ONLINE/OFFLINE — mesmas cores do cabeçalho do modo
-        # Padrão, só que numa versão mais compacta (fonte e respiro
-        # menores), já que aqui ele fica sozinho em cima da lista
-        self.light_status_label = tk.Label(right, textvariable=self.status_var,
-                                            font=("TkDefaultFont", 9, "bold"),
-                                            fg="white", bg="#b03a2e", padx=8, pady=2)
-        self.light_status_label.grid(row=0, column=0, sticky="w", pady=(0, 8))
-        self.light_status_label.grid_remove()  # só é mostrado em _apply_view_mode("light")
 
         self.players_count_var = tk.StringVar(value=T("players_count", 0))
-        ttk.Label(right, textvariable=self.players_count_var).grid(row=1, column=0, sticky="w")
+        ttk.Label(right, textvariable=self.players_count_var).grid(row=0, column=0, sticky="w")
 
-        self.players_list = tk.Listbox(right, height=12, width=18)
-        self.players_list.grid(row=2, column=0, sticky="nsew", pady=(6, 6))
+        self.players_list = tk.Listbox(right, height=18)
+        self.players_list.grid(row=1, column=0, sticky="nsew", pady=(6, 6))
         self.players_list.bind("<Button-3>", self._on_player_right_click)
 
         ttk.Button(right, text=T("btn_refresh"),
-                   command=self.refresh_players).grid(row=3, column=0, sticky="ew")
-
-        # botão alternador Padrão <-> Light — sempre visível, nos dois
-        # modos, no mesmo lugar (linha 4 do painel de jogadores)
-        self.mode_toggle_btn = ttk.Button(right, text=T("btn_standard_mode"),
-                                           command=self._toggle_view_mode)
-        self.mode_toggle_btn.grid(row=4, column=0, sticky="ew", pady=(6, 0))
-
-
-    # ---------------- Modo de exibição (Padrão x Light/Phobos) ----------------
-
-    def _toggle_view_mode(self):
-        self._apply_view_mode("full" if self.mode == "light" else "light")
-
-    def _apply_view_mode(self, mode):
-        """Alterna entre a tela cheia de sempre ('full') e a versão
-        reduzida ('light') usada quando o painel é aberto com o parâmetro
-        'Phobos' pelo DOS Game Launcher — só a lista de jogadores e um
-        botão pra alternar entre os dois modos."""
-        self.mode = mode
-        light = (mode == "light")
-
-        if light:
-            self.header_frame.grid_remove()
-            self.left_notebook_frame.grid_remove()
-            self.actions_frame.grid_remove()
-
-            self.main_frame.columnconfigure(0, weight=0)
-            self.main_frame.columnconfigure(1, weight=1)
-            self.right_frame.grid_configure(row=0, column=0, columnspan=2, rowspan=1)
-
-            self.light_status_label.grid()
-            self.mode_toggle_btn.config(text=T("btn_standard_mode"))
-
-            self.title("QUAKE SERVER 2.30")
-            # o minsize herdado do modo Padrão (mais embaixo) travava a
-            # janela em 820x520 mesmo pedindo uma geometria menor — precisa
-            # ser solto ANTES de calcular/pedir o tamanho pequeno
-            self.minsize(1, 1)
-            self.resizable(True, True)
-
-            # calcula a altura certa medindo o que o conteúdo realmente
-            # precisa (bolinha de status + lista + botões); a largura é o
-            # dobro disso, senão o título "QUAKE SERVER 2.30" não cabe
-            # inteiro na barra de título
-            self.update_idletasks()
-            width = (self.main_frame.winfo_reqwidth() + 16) * 2
-            height = self.main_frame.winfo_reqheight() + 16
-            self.geometry("{}x{}".format(width, height))
-        else:
-            self.header_frame.grid()
-            self.left_notebook_frame.grid()
-            self.actions_frame.grid()
-
-            self.main_frame.columnconfigure(0, weight=3)
-            self.main_frame.columnconfigure(1, weight=1)
-            self.right_frame.grid_configure(row=1, column=1, columnspan=1, rowspan=2)
-
-            self.light_status_label.grid_remove()
-            self.mode_toggle_btn.config(text=T("btn_light_mode"))
-
-            self.resizable(True, True)
-            self.title("DOS GAME LAUNCHER - QuakeWorld Server 2.30")
-            self.geometry("880x560")
-            self.minsize(820, 520)
-
-    def _auto_start_server(self):
-        """Usado só no modo 'light' (parâmetro Phobos): sobe o servidor
-        sozinho ao abrir, sem precisar clicar em Iniciar. Se já tiver um
-        servidor rodando nessa porta, não faz nada (evita erro de porta
-        em uso ao reabrir o painel com o servidor já de pé)."""
-        if self._find_pid() is not None:
-            return
-        self.on_start()
+                   command=self.refresh_players).grid(row=2, column=0, sticky="ew")
 
     def _build_cfg_tab(self, parent):
         parent.columnconfigure(1, weight=1)
@@ -1164,10 +1010,6 @@ class QuakePanel(tk.Tk):
         self.settings["executable"] = executable
         self.settings["port"] = port
         self.settings["cfg_relative_path"] = cfg_relpath
-        # a partir daqui a pasta/executável passam a ser "customizados": o
-        # painel não vai mais sobrescrever com a pasta atual do programa
-        # em execuções futuras, respeitando o que foi salvo aqui na mão
-        self.settings["server_dir_custom"] = True
         save_app_settings(self.settings)
         self._refresh_files_status()
         messagebox.showinfo(T("panel_title"), T("info_updated"))
@@ -1506,14 +1348,12 @@ class QuakePanel(tk.Tk):
         if online:
             self.status_var.set("ONLINE")
             self.status_label.config(bg="#2e7d32")
-            self.light_status_label.config(bg="#2e7d32")
             self.start_btn.config(state="disabled")
             self.stop_btn.config(state="normal")
         else:
             files_ok = self._refresh_files_status()
             self.status_var.set("OFFLINE")
             self.status_label.config(bg="#b03a2e")
-            self.light_status_label.config(bg="#b03a2e")
             self.start_btn.config(state="normal" if files_ok else "disabled")
             self.stop_btn.config(state="disabled")
             self.players_list.delete(0, "end")
@@ -1556,36 +1396,6 @@ class QuakePanel(tk.Tk):
         self.players_count_var.set(T("players_count", len(players_info)))
 
 
-def _get_launch_param():
-    """Primeiro argumento de linha de comando, se houver (ex: 'Phobos'
-    ou 'Debug' passado pelo DOS Game Launcher ou por um atalho de
-    teste)."""
-    if len(sys.argv) > 1 and sys.argv[1].strip():
-        return sys.argv[1].strip()
-    return None
-
-
 if __name__ == "__main__":
-    launch_param = _get_launch_param()
-    param_lower = (launch_param or "").lower()
-
-    # No Windows, o .exe gerado (PyInstaller) só pode ser aberto recebendo
-    # um parâmetro conhecido — assim ele nunca abre sozinho se alguém der
-    # duplo-clique nele direto, só quando chamado pelo DOS Game Launcher
-    # (ou por um atalho de teste passando o parâmetro na mão).
-    if IS_WINDOWS and param_lower not in ("phobos", "debug"):
-        try:
-            _root = tk.Tk()
-            _root.withdraw()
-            messagebox.showerror(T("panel_title"), T("err_launch_requires_launcher"))
-            _root.destroy()
-        except Exception:
-            pass
-        sys.exit(1)
-
-    # "Phobos"  -> tela reduzida (light) + servidor sobe sozinho
-    # "Debug" ou nenhum parâmetro (fora do Windows) -> tela Padrão de sempre
-    app_mode = "light" if param_lower == "phobos" else "full"
-
-    app = QuakePanel(mode=app_mode)
+    app = QuakePanel()
     app.mainloop()

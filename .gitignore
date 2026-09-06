@@ -1,1 +1,4 @@
 *.dcu
+DEV/QW_Server/dist/qw_panel.exe
+DEV/QW_Server/qw_panel.spec
+DEV/QW_Server/build
