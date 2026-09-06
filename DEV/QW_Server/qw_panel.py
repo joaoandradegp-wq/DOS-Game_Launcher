@@ -35,6 +35,7 @@ import re
 import signal
 import socket
 import subprocess
+import sys
 import time
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
@@ -198,14 +199,34 @@ def T(key, *args):
 APP_SETTINGS_FILE = os.path.join(os.path.expanduser("~"), ".qw_panel_settings.json")
 
 
+def get_app_dir():
+    """Diretório onde o programa está rodando de fato: pasta do .exe
+    compilado (PyInstaller) ou pasta do script .py. Como o painel sempre
+    fica na raiz da instalação do Quake, este é o valor certo para
+    'Diretório do Servidor' por padrão."""
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(os.path.abspath(sys.executable))
+    return os.path.dirname(os.path.abspath(__file__))
+
+
 def default_executable_name():
     return "qwsv.exe" if IS_WINDOWS else "./qwsv"
 
 
+def find_executable_in(app_dir):
+    """Procura o qwsv (ou qwsv.exe) direto na pasta raiz do programa. Se
+    encontrar, usa esse; senão cai no nome padrão."""
+    name = "qwsv.exe" if IS_WINDOWS else "qwsv"
+    if os.path.isfile(os.path.join(app_dir, name)):
+        return name if IS_WINDOWS else "./" + name
+    return default_executable_name()
+
+
 def build_default_settings():
+    app_dir = get_app_dir()
     return {
-        "server_dir": "",
-        "executable": default_executable_name(),
+        "server_dir": app_dir,
+        "executable": find_executable_in(app_dir),
         "port": "28501",
         "cfg_relative_path": os.path.join("qw", "server.cfg"),
         "last_map": "start",
@@ -363,6 +384,14 @@ def load_app_settings():
                 data = json.load(f)
             merged = dict(defaults)
             merged.update(data)
+
+            # se o diretório salvo não existe mais (por exemplo, veio de
+            # outra máquina, de um teste antigo ou ficou corrompido),
+            # volta a apontar para a pasta onde o programa está rodando
+            if not merged.get("server_dir") or not os.path.isdir(merged["server_dir"]):
+                merged["server_dir"] = defaults["server_dir"]
+                merged["executable"] = defaults["executable"]
+
             return merged
         except Exception:
             pass
@@ -388,6 +417,17 @@ CFG_FIELDS = [
 ]
 
 
+# Comentários que o próprio painel escreve no server.cfg (em qualquer um
+# dos 2 idiomas). Precisam ser ignorados ao reler o arquivo, senão viram
+# "linhas extras do usuário" e se multiplicam a cada vez que o servidor
+# é iniciado.
+_AUTO_GENERATED_COMMENTS = {
+    entry["pt_BR"] for entry in (STRINGS["cfg_comment_extra"], STRINGS["cfg_comment_startmap"])
+} | {
+    entry["en"] for entry in (STRINGS["cfg_comment_extra"], STRINGS["cfg_comment_startmap"])
+}
+
+
 def parse_cfg(path):
     """Lê um server.cfg existente e devolve um dict com os valores
     encontrados (chave -> valor sem aspas) e a lista de linhas 'extras'
@@ -403,6 +443,8 @@ def parse_cfg(path):
             line = raw_line.rstrip("\n")
             stripped = line.strip()
             if not stripped:
+                continue
+            if stripped in _AUTO_GENERATED_COMMENTS:
                 continue
             m_info = re.match(r'^serverinfo\s+(\w+)\s+"?([^"]*)"?\s*$', stripped)
             if m_info:
