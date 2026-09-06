@@ -1,8 +1,11 @@
 <h1 align="center">🎮 QuakeWorld Server Panel</h1>
 
 <p align="center">
-QuakeWorld Server Panel is a lightweight graphical administration tool for the original QuakeWorld Server 2.30 (QWSV).
-It provides an intuitive interface to start, stop, configure and monitor a QuakeWorld server, with live player management, RCON administration, map selection, server logs and automatic status monitoring.
+  <b>A modern graphical administration panel for the original QuakeWorld Server 2.30</b>
+</p>
+
+<p align="center">
+  Start, stop, configure and monitor your QuakeWorld server through a simple graphical interface.
 </p>
 
 <p align="center">
@@ -16,9 +19,30 @@ It provides an intuitive interface to start, stop, configure and monitor a Quake
 
 ---
 
-### ⬇️ Releases
+## ✨ Overview
 
-#### 🎮 QuakeWorld Server Panel
+**QuakeWorld Server Panel** is a lightweight graphical administration tool for the original **QuakeWorld Server 2.30 (QWSV)**.
+
+It provides an intuitive interface to:
+
+* 🚀 Start and stop the server
+* ⚙️ Configure `server.cfg`
+* 👥 Monitor connected players
+* 🔐 Manage the server through RCON
+* 🗺️ Select maps
+* 📜 View server logs
+* 📡 Monitor server status
+* 🌎 Automatically detect the operating system language
+
+The panel acts as an **administration layer** on top of the original QWSV executable. It does not replace the server itself.
+
+---
+
+## ⬇️ Releases
+
+### 🎮 QuakeWorld Server Panel
+
+Run the panel with:
 
 ```bash
 python3 quake_panel.py
@@ -26,405 +50,125 @@ python3 quake_panel.py
 
 The panel is distributed as a standalone Python application and uses Python's standard library wherever possible.
 
-#### 🐧 QWSV 2.30 Linux Installer
+### 🐧 QWSV 2.30 Linux Installer
+
+The repository also provides an installer for the original 32-bit QWSV 2.30 Linux server:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS_Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh | bash
 ```
 
 > **Recommended:** Use the QWSV installer to prepare the legacy QuakeWorld 2.30 server environment on Linux.
-> The Server Panel is an administration layer and does not replace the original QWSV executable.
 
-<br>
+| Component                 | Platform        | Version |
+| ------------------------- | --------------- | ------- |
+| QuakeWorld Server Panel   | Linux / Windows | v1.0    |
+| QWSV 2.30 Linux Installer | Linux           | v1.0    |
 
-| Component                 | Platform            | Version  | Download                                                                                                                                          |
-| ------------------------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| QuakeWorld Server Panel   | **Linux / Windows** | **v1.0** | <a href="https://github.com/joaoandradegp-wq/DOS_Game_Launcher"><b>GitHub Repository</b></a>                                                      |
-| QWSV 2.30 Linux Installer | **Linux**           | **v1.0** | <a href="https://raw.githubusercontent.com/joaoandradegp-wq/DOS_Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh"><b>Click here</b></a> |
+**Project:** <a href="https://github.com/joaoandradegp-wq/DOS_Game_Launcher"><b>GitHub Repository</b></a>
+
+**Linux Installer:** <a href="https://raw.githubusercontent.com/joaoandradegp-wq/DOS_Game_Launcher/refs/heads/main/DEV/linux/install_qwsv230.sh"><b>Click here</b></a>
 
 ---
 
 ## ✨ Panel Features
 
-<table width="100%">
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>🚀 Server Control</h3>
-
-<ul>
-
-<li>Start and stop QuakeWorld Server 2.30 directly from the GUI</li>
-
-<li>Automatic server process detection</li>
-
-<li>Real-time server status monitoring</li>
-
-<li>Configurable server executable</li>
-
-<li>Configurable server directory</li>
-
-<li>Configurable UDP port</li>
-
-<li>Automatic validation of required server files</li>
-
-<li>Server settings are locked while the server is running</li>
-
-</ul>
-
-<br>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>⚙️ Server Configuration</h3>
-
-<ul>
-
-<li>Graphical <code>server.cfg</code> management</li>
-
-<li>Hostname</li>
-
-<li>Teamplay</li>
-
-<li>Maximum clients</li>
-
-<li>Maximum spectators</li>
-
-<li>Frag limit</li>
-
-<li>Time limit</li>
-
-<li>Server password</li>
-
-<li>RCON password</li>
-
-<li>Admin information</li>
-
-<li>Server URL</li>
-
-<li>Download settings</li>
-
-<li>Same level / No exit</li>
-
-</ul>
-
-<br>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>👥 Online Players</h3>
-
-<ul>
-
-<li>Live player list</li>
-
-<li>Player names</li>
-
-<li>User IDs</li>
-
-<li>IP addresses</li>
-
-<li>Frags</li>
-
-<li>Automatic player list refresh</li>
-
-<li>Context menu for player administration</li>
-
-</ul>
-
-<p><b>When RCON is available:</b></p>
-
-<ul>
-
-<li>Kick players</li>
-
-<li>Ban player IP addresses</li>
-
-</ul>
-
-<br>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>🔐 RCON Administration</h3>
-
-<ul>
-
-<li>Live RCON communication</li>
-
-<li>Server information</li>
-
-<li>Change map</li>
-
-<li>Change frag limit</li>
-
-<li>Change time limit</li>
-
-<li>Send server messages</li>
-
-<li>Kick players</li>
-
-<li>IP ban management</li>
-
-<li>Enable / disable downloads</li>
-
-</ul>
-
-<br>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>🗺️ Map Selection</h3>
-
-<ul>
-
-<li>Graphical map selector</li>
-
-<li>Original Quake episodes</li>
-
-<li>DeathMatch maps</li>
-
-<li>Scourge of Armagon maps</li>
-
-<li>Dissolution of Eternity maps</li>
-
-<li>Maps organized by episode</li>
-
-<li>Last selected map is remembered</li>
-
-</ul>
-
-<p><b>Examples:</b></p>
-
-<pre><code>e1m1
-e2m1
-e3m1
-e4m1
-dm1
-dm2
-dm3
-dm4
-dm5
-dm6</code></pre>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>📜 Server Logs</h3>
-
-<ul>
-
-<li>QWSV console output captured automatically</li>
-
-<li>Built-in read-only log viewer</li>
-
-<li>No separate terminal required to monitor the server</li>
-
-<li>Useful for troubleshooting and server monitoring</li>
-
-</ul>
-
-<p><b>Log file:</b></p>
-
-<pre><code>qw_panel.log</code></pre>
-
-<br>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>🌎 Automatic Language Detection</h3>
-
-<ul>
-
-<li>Automatic operating system language detection</li>
-
-<li>Português (Brasil) interface</li>
-
-<li>English interface</li>
-
-<li>No manual language configuration required</li>
-
-</ul>
-
-<p><b>Language detection:</b></p>
-
-<pre><code>pt_BR → Português
-Other languages → English</code></pre>
-
-<br>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>💾 Persistent Settings</h3>
-
-<ul>
-
-<li>Panel settings stored independently from <code>server.cfg</code></li>
-
-<li>Server directory saved</li>
-
-<li>Executable saved</li>
-
-<li>Port saved</li>
-
-<li>Configuration path saved</li>
-
-<li>Last selected map saved</li>
-
-</ul>
-
-<p><b>Linux:</b></p>
-
-<pre><code>~/.qw_panel_settings.json</code></pre>
-
-</td>
-
-</tr>
-
-</table>
+### 🚀 Server Control
+
+The panel provides complete basic server control directly from the GUI.
+
+* Start and stop QuakeWorld Server 2.30
+* Automatic server process detection
+* Real-time server status monitoring
+* Configurable server executable
+* Configurable server directory
+* Configurable UDP port
+* Automatic validation of required server files
+* Server settings locked while the server is running
 
 ---
 
-## 🎮 QuakeWorld Server Configuration
+### ⚙️ Server Configuration
 
-The panel works directly with the original QWSV configuration system.
+The graphical configuration interface manages the main `server.cfg` parameters.
 
-### Default Configuration
+#### Available settings
 
-```text
-hostname "K7 QuakeWorld 1998"
-deathmatch 1
-teamplay 0
-maxclients 8
-maxspectators 4
-timelimit 1
-fraglimit 0
-```
+* Hostname
+* Teamplay
+* Maximum clients
+* Maximum spectators
+* Frag limit
+* Time limit
+* Server password
+* RCON password
+* Admin information
+* Server URL
+* Download settings
+* Same level / No exit
 
 The panel writes the standard supported configuration fields while preserving additional configuration lines that are not managed directly by the GUI.
 
 ---
 
-## 🗺️ Supported Maps
+### 👥 Online Players
 
-<table width="100%">
+The panel provides a live player list containing:
 
-<tr>
+* Player names
+* User IDs
+* IP addresses
+* Frags
+* Automatic player list refresh
 
-<td width="50%" valign="top">
+A context menu is available for player administration.
 
-<h3>🏰 Original Quake</h3>
+#### When RCON is available
 
-<ul>
+* Kick players
+* Ban player IP addresses
 
-<li>Welcome to Quake</li>
+If RCON is unavailable, the panel automatically falls back to the standard UDP status query and displays the information available through that response.
 
-<li>Dimension of the Doomed</li>
+---
 
-<li>The Realm of Black Magic</li>
+### 🔐 RCON Administration
 
-<li>The Netherworld</li>
+RCON provides live server administration without restarting QWSV.
 
-<li>The Elder World</li>
+Available operations include:
 
-<li>Final Level</li>
+* Server information
+* Change map
+* Change frag limit
+* Change time limit
+* Send server messages
+* Kick players
+* IP ban management
+* Enable / disable downloads
 
-</ul>
+---
 
-</td>
+### 🗺️ Map Selection
 
-<td width="50%" valign="top">
+The panel includes a graphical map selector with maps organized by episode.
 
-<h3>💀 DeathMatch Arena</h3>
+#### Original Quake
 
-<pre><code>dm1
-dm2
-dm3
-dm4
-dm5
-dm6</code></pre>
+* Welcome to Quake
+* Dimension of the Doomed
+* The Realm of Black Magic
+* The Netherworld
+* The Elder World
+* Final Level
 
-</td>
+#### DeathMatch Arena
 
-</tr>
+#### Scourge of Armagon
 
-<tr>
+#### Dissolution of Eternity
 
-<td width="50%" valign="top">
-
-<h3>⚔️ Scourge of Armagon</h3>
-
-<pre><code>hip1m1
-hip1m2
-hip1m3
-hip1m4
-hip1m5
-hip1m6
-
-hip2m1
-hip2m2
-hip2m3
-hip2m4
-hip2m5
-hip2m6
-
-hip3m1
-hip3m2
-hip3m3
-hip3m4</code></pre>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>🔥 Dissolution of Eternity</h3>
-
-<pre><code>r1m1
-r1m2
-r1m3
-r1m4
-r1m5
-r1m6
-
-r2m1
-r2m2
-r2m3
-r2m4
-r2m5
-r2m6</code></pre>
-
-</td>
-
-</tr>
-
-</table>
+The last selected map is remembered by the panel.
 
 ---
 
@@ -432,80 +176,52 @@ r2m6</code></pre>
 
 When the server is running, the panel provides live administration through RCON.
 
-<table width="100%">
+### 🗺️ Change Map
 
-<tr>
+The panel uses the QWSV 2.30 compatible command:
 
-<td width="33%" align="center" valign="top">
+```text
+map dm2
+```
 
-<h3>🗺️ MAP</h3>
+### 💬 Send Server Message
 
-Change the current map using the QWSV 2.30 compatible command:
+```text
+say Hello!
+```
 
-<pre><code>map dm2</code></pre>
+### ⏱️ Change Limits
 
-</td>
+```text
+fraglimit
+timelimit
+```
 
-<td width="33%" align="center" valign="top">
+### 🦶 Kick Player
 
-<h3>💬 SAY</h3>
+Players can be kicked using their QWSV user ID:
 
-Send messages directly to connected players.
+```text
+kick <userid>
+```
 
-<pre><code>say Hello!</code></pre>
+### 🚫 Ban IP Address
 
-</td>
+IP bans are performed using:
 
-<td width="33%" align="center" valign="top">
+```text
+addip <ip>
+writeip
+```
 
-<h3>⏱️ LIMITS</h3>
+### 📡 Server Information
 
-Change the current:
+Server information can be managed using:
 
-<pre><code>fraglimit
-timelimit</code></pre>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td width="33%" align="center" valign="top">
-
-<h3>🦶 KICK</h3>
-
-Kick a player using the QWSV user ID.
-
-<pre><code>kick &lt;userid&gt;</code></pre>
-
-</td>
-
-<td width="33%" align="center" valign="top">
-
-<h3>🚫 BAN</h3>
-
-Ban an IP address using:
-
-<pre><code>addip &lt;ip&gt;
-writeip</code></pre>
-
-</td>
-
-<td width="33%" align="center" valign="top">
-
-<h3>📡 SERVER INFO</h3>
-
-Manage server information:
-
-<pre><code>serverinfo admin
-serverinfo url</code></pre>
-
-</td>
-
-</tr>
-
-</table>
+```text
+serverinfo admin
+serverinfo url
+```
 
 > **Important:** This panel targets the original **QWSV 2.30 command set**. Modern QuakeWorld commands are not necessarily available. For example, map changes use `map` instead of `changelevel`.
 
@@ -515,47 +231,18 @@ serverinfo url</code></pre>
 
 RCON allows the panel to perform live administrative operations without restarting the server.
 
-<table width="100%">
+### Authentication
 
-<tr>
+* RCON password configured through the panel
+* Password is sent only when performing RCON commands
+* RCON is required for advanced player administration
 
-<td width="50%" valign="top">
+### Communication
 
-<h3>🔑 Authentication</h3>
-
-<ul>
-
-<li>RCON password configured through the panel</li>
-
-<li>Password is sent only when performing RCON commands</li>
-
-<li>RCON is required for advanced player administration</li>
-
-</ul>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>📡 Communication</h3>
-
-<ul>
-
-<li>Uses the QuakeWorld out-of-band protocol</li>
-
-<li>Communicates directly with QWSV</li>
-
-<li>Supports live server commands</li>
-
-<li>No external administration service required</li>
-
-</ul>
-
-</td>
-
-</tr>
-
-</table>
+* Uses the QuakeWorld out-of-band protocol
+* Communicates directly with QWSV
+* Supports live server commands
+* No external administration service required
 
 ### RCON Command Format
 
@@ -596,7 +283,7 @@ Frags
 
 ## 📜 Server Logs
 
-QWSV output is redirected to the panel log file:
+QWSV output is redirected to:
 
 ```text
 qw_panel.log
@@ -604,23 +291,16 @@ qw_panel.log
 
 The application provides a built-in read-only log viewer.
 
-This makes it possible to monitor:
+The log can be used to monitor:
 
-<ul>
+* Server startup
+* Map changes
+* Player connections
+* Player disconnections
+* Server errors
+* QWSV console messages
 
-<li>Server startup</li>
-
-<li>Map changes</li>
-
-<li>Player connections</li>
-
-<li>Player disconnections</li>
-
-<li>Server errors</li>
-
-<li>QWSV console messages</li>
-
-</ul>
+No separate terminal is required to monitor the server.
 
 ---
 
@@ -628,51 +308,24 @@ This makes it possible to monitor:
 
 The panel continuously monitors the QWSV process.
 
-<table width="100%">
+### 🟢 Server Online
 
-<tr>
+When the server is running:
 
-<td width="50%" align="center" valign="top">
+* Settings tab is locked
+* Restart-only fields are disabled
+* Player list is active
+* RCON actions become available
+* Server status is monitored automatically
 
-<h3>🟢 Server Online</h3>
+### 🔴 Server Offline
 
-<ul>
+When the server is stopped:
 
-<li>Settings tab is locked</li>
-
-<li>Restart-only fields are disabled</li>
-
-<li>Player list is active</li>
-
-<li>RCON actions become available</li>
-
-<li>Server status is monitored automatically</li>
-
-</ul>
-
-</td>
-
-<td width="50%" align="center" valign="top">
-
-<h3>🔴 Server Offline</h3>
-
-<ul>
-
-<li>Settings tab is unlocked</li>
-
-<li>Player list is cleared</li>
-
-<li>Server files are validated</li>
-
-<li>Start button becomes available</li>
-
-</ul>
-
-</td>
-
-</tr>
-
-</table>
+* Settings tab is unlocked
+* Player list is cleared
+* Server files are validated
+* Start button becomes available
 
 The server state is periodically checked by the application.
 
@@ -682,8 +335,10 @@ The server state is periodically checked by the application.
 
 The recommended QuakeWorld installation structure is:
 
+### Linux
+
 ```text
-QuakeServer/
+QUAKE/
 │
 ├── qwsv
 │
@@ -696,10 +351,10 @@ QuakeServer/
     └── server.cfg
 ```
 
-On Windows:
+### Windows
 
 ```text
-QuakeServer/
+QUAKE/
 │
 ├── qwsv.exe
 │
@@ -712,21 +367,12 @@ QuakeServer/
     └── server.cfg
 ```
 
-The panel validates:
+Before enabling the Start operation, the panel validates:
 
-<ul>
-
-<li>Server directory</li>
-
-<li><code>id1</code> directory</li>
-
-<li>Quake <code>.pak</code> files</li>
-
-<li>QWSV executable</li>
-
-</ul>
-
-before enabling the server start operation.
+* Server directory
+* `id1` directory
+* Quake `.pak` files
+* QWSV executable
 
 ---
 
@@ -761,8 +407,9 @@ python3 quake_panel.py
 
 ### 5. Run QWSV Manually
 
+Navigate to your QuakeWorld server directory:
+
 ```bash
-cd /home/phobos/Deimos/QuakeServer
 ./qwsv -port 28501
 ```
 
@@ -792,335 +439,104 @@ as the default Windows server executable.
 
 The **Settings** tab allows the QWSV installation parameters to be changed.
 
-<table width="100%">
+### 📂 Server Directory
 
-<tr>
+Path containing the QWSV executable and `id1` directory.
 
-<td width="50%" valign="top">
+Example:
 
-<h3>📂 Server Directory</h3>
+```text
+/path/to/QuakeServer
+```
 
-Path containing the QWSV executable and <code>id1</code> directory.
+### ▶️ Executable
 
-<p><b>Example:</b></p>
+**Linux**
 
-<pre><code>/home/phobos/Deimos/QuakeServer</code></pre>
+```text
+./qwsv
+```
 
-</td>
+**Windows**
 
-<td width="50%" valign="top">
+```text
+qwsv.exe
+```
 
-<h3>▶️ Executable</h3>
+### 🌐 Server Port
 
-<p><b>Linux:</b></p>
+Default:
 
-<pre><code>./qwsv</code></pre>
+```text
+28501
+```
 
-<p><b>Windows:</b></p>
+### 📄 Configuration File
 
-<pre><code>qwsv.exe</code></pre>
+Default:
 
-</td>
-
-</tr>
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>🌐 Server Port</h3>
-
-<p><b>Default:</b></p>
-
-<pre><code>28501</code></pre>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>📄 Configuration File</h3>
-
-<p><b>Default:</b></p>
-
-<pre><code>qw/server.cfg</code></pre>
-
-</td>
-
-</tr>
-
-</table>
-
----
-
-## 📌 Default Settings
-
-<table width="100%">
-
-<tr>
-
-<td width="50%" valign="top">
-
-<h3>🖥️ Server</h3>
-
-<ul>
-
-<li><b>Executable:</b> <code>./qwsv</code></li>
-
-<li><b>Windows:</b> <code>qwsv.exe</code></li>
-
-<li><b>Port:</b> <code>28501</code></li>
-
-<li><b>Configuration:</b> <code>qw/server.cfg</code></li>
-
-<li><b>Initial map:</b> <code>start</code></li>
-
-</ul>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>🎮 Game Settings</h3>
-
-<ul>
-
-<li><b>Deathmatch:</b> 1</li>
-
-<li><b>Teamplay:</b> 0</li>
-
-<li><b>Maximum Clients:</b> 8</li>
-
-<li><b>Maximum Spectators:</b> 4</li>
-
-<li><b>Fraglimit:</b> 0</li>
-
-<li><b>Timelimit:</b> Configurable</li>
-
-</ul>
-
-</td>
-
-</tr>
-
-</table>
+```text
+qw/server.cfg
+```
 
 ---
 
 ## 🧩 Requirements
 
-<table width="100%">
+### 🐧 Linux
 
-<tr>
+* Linux Mint / Ubuntu or compatible distribution
+* Python 3
+* Python Tkinter
+* i386 compatibility libraries for QWSV 2.30
+* Original Quake game files
+* QWSV 2.30 executable
 
-<td width="50%" valign="top">
+#### Required Packages
 
-<h3>🐧 Linux</h3>
+```bash
+sudo apt install python3-tk libc6:i386
+```
 
-<ul>
+### 🪟 Windows
 
-<li>Linux Mint / Ubuntu or compatible distribution</li>
+* Windows
+* Python 3
+* Tkinter
+* Original Quake game files
+* QWSV 2.30 executable
 
-<li>Python 3</li>
+#### Run
 
-<li>Python Tkinter</li>
-
-<li>i386 compatibility libraries for QWSV 2.30</li>
-
-<li>Original Quake game files</li>
-
-<li>QWSV 2.30 executable</li>
-
-</ul>
-
-<br>
-
-<h4>Required Packages</h4>
-
-<pre><code>sudo apt install python3-tk libc6:i386</code></pre>
-
-</td>
-
-<td width="50%" valign="top">
-
-<h3>🪟 Windows</h3>
-
-<ul>
-
-<li>Windows</li>
-
-<li>Python 3</li>
-
-<li>Tkinter</li>
-
-<li>Original Quake game files</li>
-
-<li>QWSV 2.30 executable</li>
-
-</ul>
-
-<br>
-
-<h4>Run</h4>
-
-<pre><code>python quake_panel.py</code></pre>
-
-</td>
-
-</tr>
-
-</table>
+```cmd
+python quake_panel.py
+```
 
 ---
 
 ## 🛠️ Technologies
 
-<table width="100%">
-
-<tr>
-
-<td width="25%" align="center" valign="middle">
-
-<h3>🐍</h3>
-
-<b>Python</b>
-
-<br><br>
-
-Python 3.x
-
-</td>
-
-<td width="25%" align="center" valign="middle">
-
-<h3>🖼️</h3>
-
-<b>Tkinter</b>
-
-<br><br>
-
-Graphical User Interface
-
-</td>
-
-<td width="25%" align="center" valign="middle">
-
-<h3>🎮</h3>
-
-<b>QuakeWorld</b>
-
-<br><br>
-
-QWSV 2.30
-
-</td>
-
-<td width="25%" align="center" valign="middle">
-
-<h3>🌐</h3>
-
-<b>UDP / RCON</b>
-
-<br><br>
-
-Server communication
-
-</td>
-
-</tr>
-
-</table>
-
-### Main Python Components
-
-<table width="100%">
-
-<tr>
-
-<td width="50%" valign="top">
-
-<pre><code>tkinter
-subprocess
-socket
-signal
-threading</code></pre>
-
-</td>
-
-<td width="50%" valign="top">
-
-<pre><code>json
-pathlib
-platform
-re
-psutil (optional)</code></pre>
-
-</td>
-
-</tr>
-
-</table>
-
----
-
-## 📂 Project Structure
-
-```text
-DOS_Game_Launcher/
-│
-├── DEV/
-│   └── linux/
-│       └── install_qwsv230.sh
-│
-├── quake_panel.py
-│
-├── README.md
-│
-└── ...
-```
+| Technology              | Purpose                  |
+| ----------------------- | ------------------------ |
+| 🐍 Python 3.x           | Application logic        |
+| 🖼️ Tkinter             | Graphical User Interface |
+| 🎮 QuakeWorld QWSV 2.30 | Game server              |
+| 🌐 UDP / RCON           | Server communication     |
 
 ---
 
 ## 🎯 Target Use Cases
 
-<table width="100%">
+The panel is designed for:
 
-<tr>
-
-<td width="50%" valign="top">
-
-<ul>
-
-<li>🎮 Classic QuakeWorld servers</li>
-
-<li>🖥️ Home gaming servers</li>
-
-<li>🌐 LAN QuakeWorld servers</li>
-
-<li>🐧 Linux-based game servers</li>
-
-</ul>
-
-</td>
-
-<td width="50%" valign="top">
-
-<ul>
-
-<li>💾 Retro gaming projects</li>
-
-<li>🧪 QuakeWorld development and testing</li>
-
-<li>🏠 Personal dedicated servers</li>
-
-<li>🎯 Small private gaming communities</li>
-
-</ul>
-
-</td>
-
-</tr>
-
-</table>
+* 🎮 Classic QuakeWorld servers
+* 🖥️ Home gaming servers
+* 🌐 LAN QuakeWorld servers
+* 🐧 Linux-based game servers
+* 💾 Retro gaming projects
+* 🧪 QuakeWorld development and testing
+* 🏠 Personal dedicated servers
+* 🎯 Small private gaming communities
 
 ---
 
@@ -1133,7 +549,7 @@ QWSV can still be started directly from the terminal.
 ### Linux
 
 ```bash
-cd /home/phobos/Deimos/QuakeServer
+cd /QuakeServer
 ./qwsv -port 28501
 ```
 
@@ -1149,32 +565,21 @@ The Server Panel simply provides a graphical administration layer on top of the 
 
 ## ⚠️ Notes
 
-<ul>
-
-<li>The project is an administration layer for QWSV 2.30 and does not replace the original server executable.</li>
-
-<li>Quake game files are not included in this repository.</li>
-
-<li>You must provide your own legally obtained <code>pak0.pak</code> and <code>pak1.pak</code> files.</li>
-
-<li>QWSV 2.30 is legacy 32-bit software.</li>
-
-<li>Linux systems may require i386 compatibility libraries.</li>
-
-<li>The panel uses Python's standard library wherever possible.</li>
-
-<li>RCON functionality requires a valid RCON password configured on the server.</li>
-
-<li>Some modern QuakeWorld commands are not available in the original QWSV 2.30 command set.</li>
-
-</ul>
+* The project is an administration layer for QWSV 2.30 and does not replace the original server executable.
+* Quake game files are not included in this repository.
+* You must provide your own legally obtained `pak0.pak` and `pak1.pak` files.
+* QWSV 2.30 is legacy 32-bit software.
+* Linux systems may require i386 compatibility libraries.
+* The panel uses Python's standard library wherever possible.
+* RCON functionality requires a valid RCON password configured on the server.
+* Some modern QuakeWorld commands are not available in the original QWSV 2.30 command set.
 
 ---
 
 ## 📸 QuakeWorld Server Panel
 
 <p align="center">
-  <img width="500" alt="image" src="https://github.com/user-attachments/assets/bbf32666-7c9f-45bd-8ed5-0735a9363ec9" />
+  <img width="500" alt="QuakeWorld Server Panel" src="https://github.com/user-attachments/assets/bbf32666-7c9f-45bd-8ed5-0735a9363ec9" />
 </p>
 
 ---
@@ -1192,11 +597,6 @@ Users are responsible for obtaining and using the original game files legally.
 ---
 
 <p align="center">
-
 🎮 <b>QuakeWorld 2.30 · Classic Server · Modern Administration</b>
-
-</p>
-
-<p align="center">
 Made for classic QuakeWorld server enthusiasts. 🐧
 </p>
