@@ -12,7 +12,11 @@ PANEL_PY_FILE="qw_panel.py"
 INSTALL_DIR="$HOME/.local/bin"
 
 DEFAULT_FOLDER_NAME="QuakeServer"
-read -p "Folder name to create at $HOME/ [$DEFAULT_FOLDER_NAME]: " FOLDER_NAME
+if [ -r /dev/tty ]; then
+    read -p "Folder name to create at $HOME/ [$DEFAULT_FOLDER_NAME]: " FOLDER_NAME < /dev/tty
+else
+    echo "No interactive terminal detected, using default folder name: $DEFAULT_FOLDER_NAME"
+fi
 FOLDER_NAME="${FOLDER_NAME:-$DEFAULT_FOLDER_NAME}"
 
 SERVER_DIR="$HOME/$FOLDER_NAME"
