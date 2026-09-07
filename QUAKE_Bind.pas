@@ -24,7 +24,7 @@ const
   );
 
   { QUAKEWORLD }
-  QW_SERVER_EXE = 'qwsv.exe';
+  QW_SERVER_EXE = 'qw_panel.exe';
   QW_CLIENT_EXE = 'qwcl.exe';
 
   { RESOLUÇÃO - JANELA E FULLSCREEN }
