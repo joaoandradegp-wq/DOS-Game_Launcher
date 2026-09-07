@@ -7,7 +7,7 @@ set -e
 # with PyInstaller and installs the resulting binary
 # ----------------------------------------------------------------------
 
-PANEL_REPO_RAW="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/QW_Server"
+PANEL_REPO_RAW="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/qw_server"
 PANEL_PY_FILE="qw_panel.py"
 INSTALL_DIR="$HOME/.local/bin"
 
