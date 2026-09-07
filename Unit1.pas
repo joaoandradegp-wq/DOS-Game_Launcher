@@ -496,13 +496,13 @@ Timer_MonitoraAPP.Interval:=1000;
 
 if (id = 8) then
 begin
-  if AppAberto('qwsv.exe') and (not AppAberto('qwcl.exe')) and (not RxQuakeServer.Down) then
-  Fecha_EXE(Caminho_Global + 'qwsv.exe');
+  if AppAberto('qw_panel.exe') and (not AppAberto('qwcl.exe')) and (not RxQuakeServer.Down) then
+  Fecha_EXE(Caminho_Global + 'qw_panel.exe');
 end;
 
   if not (AppAberto(Array_Games[id][7]+'.exe') or
           AppAberto('qwcl.exe') or
-          AppAberto('qwsv.exe') or
+          AppAberto('qw_panel.exe') or
           AppAberto(Array_Games[id][4])) then
   begin
   Form1_DGL.ClientHeight:=461;
@@ -520,7 +520,7 @@ end;
   btn_start.Caption:=Lang_DGL(14);
   Config_Tela(True);
   Timer_MonitoraAPP.Enabled:=False;
-  Timer_MonitoraAPP.Interval:=5000;
+  Timer_MonitoraAPP.Interval:=4000;
   end;
 
 end;

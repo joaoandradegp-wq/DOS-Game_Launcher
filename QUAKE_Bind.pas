@@ -252,14 +252,20 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
 
 
   {SERVER}
+  {
   if ServerDedicado = False then
   ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
                                        PChar(ServerParams),
                                        PChar(QWPath),SW_HIDE)
+  }
+  if Form1_DGL.menu_debug.Checked then
+  ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
+                                       PChar('debug '+ServerParams),
+                                       PChar(QWPath),SW_NORMAL)
   {SERVER DEDICADO}
   else
   ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
-                                       PChar(ServerParams),
+                                       PChar('phobos '+ServerParams),
                                        PChar(QWPath),SW_NORMAL);
   end;
 

@@ -638,11 +638,14 @@ def parse_rcon_status(text):
 # ----------------------------------------------------------------------
 
 class QuakePanel(tk.Tk):
-    def __init__(self, mode="full"):
+    def __init__(self, mode="full", launch_map=None, launch_port=None):
         super().__init__()
         # mode: "full"  -> tela padrão de sempre (parâmetro "Debug" ou nenhum)
         #       "light" -> tela reduzida, só com a lista de jogadores,
         #                  e inicia o servidor sozinho (parâmetro "Phobos")
+        # launch_map/launch_port: vieram do DOS Game Launcher na linha de
+        # comando ("+map <mapa> -port <porta>") — sobrescrevem, só nesta
+        # execução, o mapa/porta que estavam salvos
         self.mode = mode
 
         # escondida até tudo estar montado no modo certo — evita o "flash"
@@ -656,6 +659,10 @@ class QuakePanel(tk.Tk):
         self._apply_window_icon()
 
         self.settings = load_app_settings()
+        if launch_map:
+            self.settings["last_map"] = launch_map
+        if launch_port:
+            self.settings["port"] = launch_port
         self.proc = None
         self.log_path = None
         self.players_info = []
@@ -703,9 +710,11 @@ class QuakePanel(tk.Tk):
                 return
 
     def _on_close(self):
-        # rede de segurança: garante que o último mapa fica salvo mesmo se
-        # o servidor for encerrado fechando a janela direto
+        # rede de segurança: garante que o último mapa fica salvo E que o
+        # qwsv.exe não fica rodando sozinho (órfão) quando a janela é
+        # fechada no X, sem passar pelo botão Parar
         self._persist_last_map()
+        self._stop_server_process(quiet=True)
         self.destroy()
 
     # ---------------- UI ----------------
@@ -1282,9 +1291,12 @@ class QuakePanel(tk.Tk):
         self.start_btn.config(state="disabled")
         self.stop_btn.config(state="normal")
 
-    def on_stop(self):
-        self._persist_last_map()
-
+    def _stop_server_process(self, quiet=False):
+        """Mata o processo do servidor, se estiver rodando (seja o que
+        este painel iniciou, seja um qwsv já rodando na porta configurada
+        antes de o painel abrir). Devolve True se havia processo pra
+        matar. `quiet=True` (usado ao fechar a janela no X) não mostra
+        nenhuma messagebox, só tenta encerrar sem interromper o fechamento."""
         pid = None
         if self.proc and self.proc.poll() is None:
             pid = self.proc.pid
@@ -1292,13 +1304,20 @@ class QuakePanel(tk.Tk):
             pid = self._find_pid()
 
         if pid is None:
-            messagebox.showinfo(T("panel_title"), T("info_no_server_running"))
-        else:
-            try:
-                os.kill(pid, signal.SIGTERM)
-            except Exception as e:
-                messagebox.showerror(T("panel_title"), T("err_stop_process", pid, e))
+            if not quiet:
+                messagebox.showinfo(T("panel_title"), T("info_no_server_running"))
+            return False
 
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except Exception as e:
+            if not quiet:
+                messagebox.showerror(T("panel_title"), T("err_stop_process", pid, e))
+        return True
+
+    def on_stop(self):
+        self._persist_last_map()
+        self._stop_server_process(quiet=False)
         self.proc = None
         self.start_btn.config(state="normal")
         self.stop_btn.config(state="disabled")
@@ -1565,6 +1584,31 @@ def _get_launch_param():
     return None
 
 
+def _get_launch_extra_args():
+    """Lê '+map <mapa>' e '-port <porta>' do restante da linha de comando
+    — é assim que o DOS Game Launcher chama o painel:
+
+        qw_panel.exe Phobos +map dm2 -port 27500
+
+    Devolve um dict com "map"/"port" (None se não vieram). Aceita os
+    tokens em qualquer ordem/posição depois do primeiro argumento."""
+    extra = {"map": None, "port": None}
+    args = sys.argv[2:]
+    i = 0
+    while i < len(args):
+        token = args[i].strip()
+        if token.lower() == "+map" and i + 1 < len(args):
+            extra["map"] = args[i + 1].strip()
+            i += 2
+            continue
+        if token.lower() == "-port" and i + 1 < len(args):
+            extra["port"] = args[i + 1].strip()
+            i += 2
+            continue
+        i += 1
+    return extra
+
+
 if __name__ == "__main__":
     launch_param = _get_launch_param()
     param_lower = (launch_param or "").lower()
@@ -1586,6 +1630,9 @@ if __name__ == "__main__":
     # "Phobos"  -> tela reduzida (light) + servidor sobe sozinho
     # "Debug" ou nenhum parâmetro (fora do Windows) -> tela Padrão de sempre
     app_mode = "light" if param_lower == "phobos" else "full"
+    launch_extra = _get_launch_extra_args()
 
-    app = QuakePanel(mode=app_mode)
+    app = QuakePanel(mode=app_mode,
+                      launch_map=launch_extra["map"],
+                      launch_port=launch_extra["port"])
     app.mainloop()
