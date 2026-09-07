@@ -11,7 +11,11 @@ PANEL_REPO_RAW="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Laun
 PANEL_PY_FILE="qw_panel.py"
 INSTALL_DIR="$HOME/.local/bin"
 
-SERVER_DIR="$HOME/Deimos/QuakeServer"
+DEFAULT_FOLDER_NAME="QuakeServer"
+read -p "Folder name to create at $HOME/ [$DEFAULT_FOLDER_NAME]: " FOLDER_NAME
+FOLDER_NAME="${FOLDER_NAME:-$DEFAULT_FOLDER_NAME}"
+
+SERVER_DIR="$HOME/$FOLDER_NAME"
 ID1_DIR="$SERVER_DIR/id1"
 QW_DIR="$SERVER_DIR/qw"
 QWSV_URL="https://dukeworld.duke4.net/telefragged/quake/quakeworld/unix/qwsv-2.30-glibc-i386-unknown-linux2.0.tar.gz"
