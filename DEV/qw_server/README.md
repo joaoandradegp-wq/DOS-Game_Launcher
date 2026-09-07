@@ -46,8 +46,7 @@ The easiest way to install the complete QuakeWorld Server Panel environment on L
 Run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/qw_server/install.sh -o install.sh
-bash install.sh
+curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/qw_server/install.sh | bash
 ```
 
 The installer automatically:
