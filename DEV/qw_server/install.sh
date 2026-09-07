@@ -11,7 +11,7 @@ PANEL_REPO_RAW="https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Laun
 PANEL_PY_FILE="qw_panel.py"
 INSTALL_DIR="$HOME/.local/bin"
 
-DEFAULT_FOLDER_NAME="QuakeServer"
+DEFAULT_FOLDER_NAME="QuakeWorld"
 if [ -r /dev/tty ]; then
     read -p "Folder name to create at $HOME/ [$DEFAULT_FOLDER_NAME]: " FOLDER_NAME < /dev/tty
 else
