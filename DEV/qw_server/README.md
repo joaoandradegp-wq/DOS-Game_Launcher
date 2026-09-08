@@ -116,24 +116,6 @@ Tkinter is included with the standard Python Windows installation.
 
 The panel was designed to work together with the **DOS Game Launcher**.
 
-It supports two execution modes:
-
-### Standard
-
-Used when launching the panel normally or with the `Debug` parameter.
-
-Provides the complete administration interface.
-
-### Phobos / Light
-
-Used by the DOS Game Launcher when launching QuakeWorld.
-
-```text
-qw_panel.exe Phobos +map dm2 -port 27500
-```
-
-In this mode the panel:
-
 * Uses a compact interface
 * Displays connected players
 * Starts the server automatically
@@ -295,24 +277,6 @@ The panel checks that the `id1` directory contains at least one `.pak` file befo
 * **PyInstaller**
 
 The Linux installer builds `qw_panel.py` as a standalone executable using PyInstaller.
-
----
-
-## 🔗 Project
-
-This component is part of:
-
-**DOS Game Launcher**
-
-```text
-https://github.com/joaoandradegp-wq/DOS-Game_Launcher
-```
-
-### Linux Installer
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/joaoandradegp-wq/DOS-Game_Launcher/refs/heads/main/DEV/qw_server/install.sh | bash
-```
 
 ---
 
