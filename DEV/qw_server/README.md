@@ -1,4 +1,4 @@
-<h1 align="center">🎮 QuakeWorld Server Panel</h1>
+<h1 align="center"><img width="32" alt="image" src="https://github.com/user-attachments/assets/051f3e0d-6c82-4089-9f54-f597b60108d3" /> QuakeWorld Server Panel</h1>
 
 <p align="center">
   <b>Graphical administration panel for QuakeWorld Server 2.30</b>
