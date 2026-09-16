@@ -283,7 +283,7 @@ The Linux installer builds `qw_panel.py` as a standalone executable using PyInst
 ## 📸 Screenshot
 
 <p align="center">
-  <img width="500" alt="QuakeWorld Server Panel" src="https://github.com/user-attachments/assets/bbf32666-7c9f-45bd-8ed5-0735a9363ec9" />
+  <img width="500" alt="image" src="https://github.com/user-attachments/assets/087ccb30-870e-48d3-a0f4-1912708c933a" />
 </p>
 
 ---
