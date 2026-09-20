@@ -5,9 +5,9 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{411D497D-D3E4-425E-BF92-38F938E951F0}
+AppId={{B9FD7A07-43C6-4AA2-85AD-91A6913A818E}
 AppName=DOS Game Launcher
-AppVersion=2.1
+AppVersion=2.2
 AppPublisher=JMBA Softwares
 AppPublisherURL=http://phobosfreeware.blogspot.com.br
 AppSupportURL=http://phobosfreeware.blogspot.com.br
@@ -17,7 +17,7 @@ DefaultGroupName=DOS Game Launcher
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Phobos\Desktop
-OutputBaseFilename=DGL_Setup_2.1
+OutputBaseFilename=DGL_Setup_2.2
 SetupIconFile=D:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
 Compression=lzma2
 SolidCompression=yes
@@ -30,7 +30,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [Files]
-Source: "C:\JMBA Softwares\DOS Game Launcher\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dos.ini,*.lnk,*.iss,*.bat,*.zds,*.scr,DOS\CONSTRUCTOR\SAVEGAME\*,DOS\BLOOD\*,DOS\CONSTRUCTOR\*,DOS\DOOM\*,DOS\DOOM2\*,DOS\DUKE3D\*,DOS\HERETIC\*,DOS\HEXEN\*,DOS\QUAKE\*,DOS\ROTT\*,DOS\SW\*,DOS\WAR2\*,DOS\WOLF3D\*"
+Source: "\\server\server\Phobos\Setup\DOS Game Launcher\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: "dos.ini,*.lnk,*.iss,*.bat,*.zds,*.scr,DOS\CONSTRUCTOR\SAVEGAME\*,DOS\BLOOD\*,DOS\CONSTRUCTOR\*,DOS\DOOM\*,DOS\DOOM2\*,DOS\DUKE3D\*,DOS\HERETIC\*,DOS\HEXEN\*,DOS\QUAKE\*,DOS\ROTT\*,DOS\SW\*,DOS\WAR2\*,DOS\WOLF3D\*"
 
 [Icons]
 Name: "{group}\DOS Game Launcher"; Filename: "{app}\launcher.exe"; IconFilename: "{app}\CONFIG\bin\launcher_icon.ico"
