@@ -283,7 +283,7 @@ The Linux installer builds `qw_panel.py` as a standalone executable using PyInst
 ## 📸 Screenshot
 
 <p align="center">
-  <img width="500" alt="image" src="https://github.com/user-attachments/assets/087ccb30-870e-48d3-a0f4-1912708c933a" />
+  <img width="700" alt="image" src="https://github.com/user-attachments/assets/7ddf9595-70f3-405a-a840-96ce00a5d076" />
 </p>
 
 ---
