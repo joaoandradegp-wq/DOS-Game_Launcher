@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="450" alt="DOS Game Launcher" src="https://github.com/user-attachments/assets/ed2a3292-8e02-478e-9099-de46a2fe23b4" />
+  <img width="450" src="https://github.com/user-attachments/assets/ed2a3292-8e02-478e-9099-de46a2fe23b4" />
 </p>
 
 <p align="center">
