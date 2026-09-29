@@ -46,6 +46,11 @@ begin
 
   VarGlobais(DGL_EXE, DGL_RAIZ, DGL_VERSAO, DGL_BLOG);
 
+  {IDIOMA: LE A ESCOLHA DO dos.ini (0 = AUTOMATICO). O PARAMETRO 'usa' FORCA INGLES SEM GRAVAR NO .INI}
+  Lang_Load;
+  if ParamStr(2) = 'usa' then
+  Language_Global:=2;
+
   Form5_Splash := TForm5_Splash.Create(nil);
   try
     Form5_Splash.Show;
@@ -57,11 +62,6 @@ begin
 
  if ParamStr(1) <> 'phobos' then
  Halt;
-
- if ParamStr(2) = 'usa' then
- Language_Global:=1  //INGLÊS
- else
- Language_Global:=0; //PT-BR
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
   Application.Run;

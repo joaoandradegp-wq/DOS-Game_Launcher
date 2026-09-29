@@ -4,18 +4,36 @@ interface
 
 uses SysUtils;
 
-function Lang_DGL(id:Integer):String;
+function  UsePortuguese:Boolean;
+function  Lang_DGL(id:Integer):String;
+procedure Lang_Load;
+procedure Lang_Save;
+procedure Lang_Apply(NewLang:Integer);
 
 implementation
 
-uses Funcoes, Unit1, MAP_Select, QUAKE_NameFun, About;
+uses Funcoes, Unit1, MAP_Select, QUAKE_NameFun, About, IniFiles, Forms;
+
+//------------------------------------------------------------------------------
+// Language_Global (declarada no Unit1):
+//   0 = Automatico (idioma do Windows) | 1 = Portugues | 2 = English
+//------------------------------------------------------------------------------
+function UsePortuguese:Boolean;
+begin
+  case Language_Global of
+    1: Result:=True;
+    2: Result:=False;
+  else
+    Result:=(GetLanguageWin = 'por');
+  end;
+end;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function Lang_DGL(id:Integer):String;
 begin
 
-if (GetLanguageWin = 'por') and (Language_Global = 0) then
+if UsePortuguese then
 begin
 
   case id of
@@ -33,7 +51,16 @@ begin
      Form1_DGL.config_menu.Caption:='&Configuração';
      Form1_DGL.popup_qsp.Caption:='Site Oficial QuakeSp&asm';
      //-----------------------------------------------------
+     Form1_DGL.Menu_Idioma.Caption:='Idioma';
+     Form1_DGL.Idioma_Auto.Caption:='Automático';
+     Form1_DGL.Idioma_Por.Caption:='Português';
+     Form1_DGL.Idioma_Eng.Caption:='English';
+     Form1_DGL.Idioma_Auto.Checked:=(Language_Global = 0);
+     Form1_DGL.Idioma_Por.Checked :=(Language_Global = 1);
+     Form1_DGL.Idioma_Eng.Checked :=(Language_Global = 2);
+     //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NOME:';
+     Form1_DGL.img_ing.Visible:=False;
      Form1_DGL.img_por.Visible:=True;
      //-----------------------------------------------------
      Form1_DGL.GroupIP.Caption:=' Rede Local ';
@@ -98,6 +125,7 @@ begin
  34: Result:='ARMADURA';
  35: Result:='MAGIA';
  36: Result:='FORÇA';
+ 37: Result:='© 2026 JMBA Softwares. Todos os direitos reservados.';
  end;
 
 end
@@ -119,7 +147,16 @@ begin
      Form1_DGL.config_menu.Caption:='&Configuration File';
      Form1_DGL.popup_qsp.Caption:='QuakeSp&asm Official Site';
      //-----------------------------------------------------
+     Form1_DGL.Menu_Idioma.Caption:='Language';
+     Form1_DGL.Idioma_Auto.Caption:='Automatic';
+     Form1_DGL.Idioma_Por.Caption:='Português';
+     Form1_DGL.Idioma_Eng.Caption:='English';
+     Form1_DGL.Idioma_Auto.Checked:=(Language_Global = 0);
+     Form1_DGL.Idioma_Por.Checked :=(Language_Global = 1);
+     Form1_DGL.Idioma_Eng.Checked :=(Language_Global = 2);
+     //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NAME:';
+     Form1_DGL.img_por.Visible:=False;
      Form1_DGL.img_ing.Visible:=True;
      //-----------------------------------------------------
      Form1_DGL.GroupIP.Caption:=' Local Network ';
@@ -184,9 +221,106 @@ begin
  34: Result:='ARMOR';
  35: Result:='MAGIC';
  36: Result:='STRENGTH';
+ 37: Result:='© 2026 JMBA Softwares. All rights reserved.';
  end;
 
 end;
+
+end;
+//------------------------------------------------------------------------------
+// Persistencia da escolha do usuario (dos.ini, secao [DOS], chave LANGUAGE)
+//------------------------------------------------------------------------------
+procedure Lang_Load;
+var
+Arquivo_INI:TIniFile;
+begin
+Arquivo_INI:=TIniFile.Create(ExtractFilePath(Application.ExeName)+'dos.ini');
+  try
+  Language_Global:=Arquivo_INI.ReadInteger('DOS','LANGUAGE',0);
+  finally
+  Arquivo_INI.Free;
+  end;
+
+  if (Language_Global < 0) or (Language_Global > 2) then
+  Language_Global:=0;
+end;
+//------------------------------------------------------------------------------
+procedure Lang_Save;
+var
+Arquivo_INI:TIniFile;
+begin
+Arquivo_INI:=TIniFile.Create(ExtractFilePath(Application.ExeName)+'dos.ini');
+  try
+  Arquivo_INI.WriteInteger('DOS','LANGUAGE',Language_Global);
+  finally
+  Arquivo_INI.Free;
+  end;
+end;
+//------------------------------------------------------------------------------
+// Troca o idioma em tempo de execucao (menu Configuracoes > Idioma).
+// Os captions que mudam durante o uso (botao INICIAR, TECLADO, COOPERATIVO,
+// LAN/SERVIDOR e a barra de status) sao guardados antes e traduzidos depois,
+// para nao voltarem ao estado inicial.
+// Os outros forms sao abertos em modo modal e pegam o idioma ao abrir.
+//------------------------------------------------------------------------------
+procedure Lang_Apply(NewLang:Integer);
+var
+sStart,sDM,sCtl,sLan,sStatus:String;
+oStart,oWait,oCtl,oLan,oPort:String;
+begin
+
+  if Form1_DGL = nil then
+  begin
+  Language_Global:=NewLang;
+  Lang_Save;
+  Exit;
+  end;
+
+//-----------------------------------------------------
+{TEXTOS DO IDIOMA ANTERIOR}
+oStart:=Lang_DGL(14);
+oWait :=Lang_DGL(5);
+oCtl  :=Lang_DGL(18);
+oLan  :=Lang_DGL(15)+':';
+oPort :=Lang_DGL(12);
+//-----------------------------------------------------
+{GUARDA OS CAPTIONS QUE MUDAM DURANTE O USO}
+sStart :=Form1_DGL.btn_start.Caption;
+sDM    :=Form1_DGL.Label_DM.Caption;
+sCtl   :=Form1_DGL.Label_Controle.Caption;
+sLan   :=Form1_DGL.Label2.Caption;
+sStatus:=Form1_DGL.StatusBar1.Panels[1].Text;
+//-----------------------------------------------------
+{TROCA O IDIOMA, GRAVA A ESCOLHA E REAPLICA NO FORM PRINCIPAL}
+Language_Global:=NewLang;
+Lang_Save;
+Lang_DGL(0);
+//-----------------------------------------------------
+{BOTAO INICIAR}
+  if sStart = oWait then
+  Form1_DGL.btn_start.Caption:=Lang_DGL(5)
+  else
+  if Pos(oStart,sStart) = 1 then
+  Form1_DGL.btn_start.Caption:=Lang_DGL(14)+Copy(sStart,Length(oStart)+1,MaxInt)
+  else
+  Form1_DGL.btn_start.Caption:=sStart;
+//-----------------------------------------------------
+{DEATHMATCH - O Lang_DGL(0) VOLTA PARA "COOPERATIVO"}
+  if sDM = 'DEATHMATCH' then
+  Form1_DGL.Label_DM.Caption:=sDM;
+//-----------------------------------------------------
+{TECLADO / MOUSE}
+  if (sCtl = oCtl) or (sCtl = 'TECLADO') then
+  Form1_DGL.Label_Controle.Caption:=Lang_DGL(18);
+//-----------------------------------------------------
+{LAN / SERVIDOR}
+  if sLan = oLan then
+  Form1_DGL.Label2.Caption:=Lang_DGL(15)+':';
+//-----------------------------------------------------
+{BARRA DE STATUS: "Online - Porta 27500"}
+  if (Pos(oPort,sStatus) > 0) then
+  Form1_DGL.StatusBar1.Panels[1].Text:=StringReplace(sStatus,oPort,Lang_DGL(12),[]);
+//-----------------------------------------------------
 
 end;
 //------------------------------------------------------------------------------

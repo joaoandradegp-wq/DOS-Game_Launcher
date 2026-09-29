@@ -26,7 +26,7 @@ var
 
 implementation
 
-uses Unit1;
+uses Unit1, Language;
 
 {$R *.dfm}
 
@@ -39,6 +39,10 @@ end;
 
 procedure TForm5_Splash.FormCreate(Sender: TObject);
 begin
+RxLabel1.Caption:=Lang_DGL(37);
+RxLabel1.Left:=(ClientWidth-RxLabel1.Width) div 2;
+rx_loading.Left:=(ClientWidth-rx_loading.Width) div 2;
+
 if Form1_DGL <> nil then
 rx_loading.Visible:=False;
 
@@ -49,7 +53,7 @@ end;
 
 procedure TForm5_Splash.FormActivate(Sender: TObject);
 begin
-rx_loading.Visible:=True; //Estava aparecendo antes do Splash, por isso seta aqui agora.
+rx_loading.Visible:=True;
 end;
 
 end.
