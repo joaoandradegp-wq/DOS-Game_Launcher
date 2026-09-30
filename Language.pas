@@ -141,7 +141,7 @@ begin
      Form1_DGL.Menu_Debug.Caption:='Debug Mode';
      Form1_DGL.Menu_Firewall.Caption:='Firewall Rules';
      Form1_DGL.Menu_Ajuda.Caption:='Help';
-     Form1_DGL.Menu_Site.Caption:='Oficial Site';
+     Form1_DGL.Menu_Site.Caption:='Official Site';
      Form1_DGL.Menu_Sobre.Caption:='About...';
      Form1_DGL.popup_pasta.Caption:='&Folder';
      Form1_DGL.config_menu.Caption:='&Configuration File';
@@ -180,7 +180,7 @@ begin
   5: Result:='STARTING...';
   6: Result:='This Expansion has no SETUP.EXE file.';
   7: Result:='Choose your Class';
-  8: Result:='Error to find directory in';
+  8: Result:='Could not find the directory';
   9: Result:='Waiting for players...';
  10: begin
      Form4_Select.label_episodio.Caption:='EPISODE:';
@@ -191,7 +191,7 @@ begin
  13: Result:='Debug';
  14: Result:='START';
  15: Result:='SERVER ADDRESS';
- 16: Result:='Execute as Administrador to include DGL Services at Windows Firewall.';
+ 16: Result:='Run as Administrator to include DGL Services in Windows Firewall.';
  17: Result:='The DGL Services was included at Windows Firewall!';
  18: Result:='KEYBOARD';
  19: begin
@@ -205,7 +205,7 @@ begin
  21: Result:='COOPERATIVE';
  22: Result:='Would you like to simulate a Multiplayer session?';
  23: Result:='DEBUG MODE';
- 24: Result:='DOS Game Launcher is a personal project i´ve maded to play with some friends like in the 90´s.'+#13+#10+#13+#10+
+ 24: Result:='DOS Game Launcher is a personal project I made to play with some friends like in the 90s.'+#13+#10+#13+#10+
              'I hope you enjoy it!'+#13+#10+#13+#10+
              'Phobos.'+#13+#10+
              'JMBA Softwares, Brazil.';
