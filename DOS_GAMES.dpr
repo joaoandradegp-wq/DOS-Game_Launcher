@@ -24,7 +24,7 @@ uses
 
 const
 //----------------------------------------------------------
-DGL_VERSAO_Global = '2.2';
+DGL_VERSAO_Global = '2.3';
 DGL_VERSAO        = DGL_VERSAO_Global;
 DGL_BLOG          = 'http://phobosfreeware.blogspot.com.br';
 //----------------------------------------------------------
@@ -36,7 +36,7 @@ DGL_RAIZ:String;
 
 begin
   Application.Initialize;
-  Application.Title := 'DOS GAME LAUNCHER 2.2';
+  Application.Title := 'DOS GAME LAUNCHER 2.3';
   IP_Interno_Global := GetInternalIP;
   IP_Externo_Global := GetExternalIP;
 
