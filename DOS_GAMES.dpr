@@ -46,10 +46,13 @@ begin
 
   VarGlobais(DGL_EXE, DGL_RAIZ, DGL_VERSAO, DGL_BLOG);
 
-  {IDIOMA: LE A ESCOLHA DO dos.ini (0 = AUTOMATICO). O PARAMETRO 'usa' FORCA INGLES SEM GRAVAR NO .INI}
+  {IDIOMA: LE A ESCOLHA DO dos.ini (0 = AUTOMATICO). O PARAMETRO 'eua' FORCA INGLES SEM GRAVAR NO .INI}
   Lang_Load;
-  if ParamStr(2) = 'usa' then
-  Language_Global:=2;
+  if ParamStr(2) = 'eua' then
+  Language_Global:=2
+  else
+   if ParamStr(2) = 'bra' then
+   Language_Global:=1;
 
   Form5_Splash := TForm5_Splash.Create(nil);
   try
