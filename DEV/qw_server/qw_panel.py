@@ -86,8 +86,21 @@ def detect_system_language():
 
     return "en"
 
+def get_forced_language():
+    """Só no Windows: procura 'eua' ou 'bra' em qualquer posição da linha
+    de comando e devolve 'en' / 'pt_BR'. Sem o parâmetro, devolve None
+    e vale a detecção automática pelo idioma do SO."""
+    if not IS_WINDOWS:
+        return None
+    for arg in sys.argv[1:]:
+        a = arg.strip().lower()
+        if a == "eua":
+            return "en"
+        if a == "bra":
+            return "pt_BR"
+    return None
 
-LANG = detect_system_language()
+LANG = get_forced_language() or detect_system_language()
 
 STRINGS = {
     "panel_title": {"pt_BR": "Painel", "en": "Panel"},
@@ -1576,11 +1589,12 @@ class QuakePanel(tk.Tk):
 
 
 def _get_launch_param():
-    """Primeiro argumento de linha de comando, se houver (ex: 'Phobos'
-    ou 'Debug' passado pelo DOS Game Launcher ou por um atalho de
-    teste)."""
-    if len(sys.argv) > 1 and sys.argv[1].strip():
-        return sys.argv[1].strip()
+    """Primeiro argumento de linha de comando que não seja o idioma
+    forçado (eua/bra), ex: 'Phobos' ou 'Debug'."""
+    for arg in sys.argv[1:]:
+        a = arg.strip()
+        if a and a.lower() not in ("eua", "bra"):
+            return a
     return None
 
 
