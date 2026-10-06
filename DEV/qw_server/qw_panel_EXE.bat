@@ -1,4 +1,4 @@
-python -m PyInstaller ^
+py -m PyInstaller ^
 qw_panel.py ^
 --onefile ^
 --noconsole ^

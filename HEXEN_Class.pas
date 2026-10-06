@@ -85,7 +85,7 @@ procedure TForm8_HexenClass.FormActivate(Sender: TObject);
 begin
 
   {PT-BR}
-  if Language_Global = 0 then
+  if UsePortuguese then
   begin
   Label1.Left:=10;
   Label2.Left:=12;

@@ -244,7 +244,7 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
     if Fecha_ESC then
     Exit;
 
-  ServerParams := '+map ' + Map_Global + ' -port ' + Form1_DGL.ip_porta.Text;
+  ServerParams := '+map ' + Map_Global + ' -port ' + Form1_DGL.ip_porta.Text + ' ' + IfThen(UsePortuguese, 'bra', 'eua');
 
   {DEBUG - SERVER}
   if (Form1_DGL.menu_debug.Checked) and (ServerDedicado = True) then

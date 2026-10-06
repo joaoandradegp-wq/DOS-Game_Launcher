@@ -24,7 +24,7 @@ uses
 
 const
 //----------------------------------------------------------
-DGL_VERSAO_Global = '2.2';
+DGL_VERSAO_Global = '2.3';
 DGL_VERSAO        = DGL_VERSAO_Global;
 DGL_BLOG          = 'http://phobosfreeware.blogspot.com.br';
 //----------------------------------------------------------
@@ -36,7 +36,7 @@ DGL_RAIZ:String;
 
 begin
   Application.Initialize;
-  Application.Title := 'DOS GAME LAUNCHER 2.2';
+  Application.Title := 'DOS GAME LAUNCHER 2.3';
   IP_Interno_Global := GetInternalIP;
   IP_Externo_Global := GetExternalIP;
 
@@ -45,6 +45,14 @@ begin
   DGL_RAIZ := ExtractFilePath(Application.ExeName);
 
   VarGlobais(DGL_EXE, DGL_RAIZ, DGL_VERSAO, DGL_BLOG);
+
+  {IDIOMA: LE A ESCOLHA DO dos.ini (0 = AUTOMATICO). O PARAMETRO 'eua' FORCA INGLES SEM GRAVAR NO .INI}
+  Lang_Load;
+  if ParamStr(2) = 'eua' then
+  Language_Global:=2
+  else
+   if ParamStr(2) = 'bra' then
+   Language_Global:=1;
 
   Form5_Splash := TForm5_Splash.Create(nil);
   try
@@ -57,11 +65,6 @@ begin
 
  if ParamStr(1) <> 'phobos' then
  Halt;
-
- if ParamStr(2) = 'usa' then
- Language_Global:=1  //INGLÊS
- else
- Language_Global:=0; //PT-BR
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
   Application.Run;

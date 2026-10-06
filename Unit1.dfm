@@ -10421,6 +10421,31 @@ object Form1_DGL: TForm1_DGL
         ShortCut = 32838
         OnClick = Menu_FirewallClick
       end
+      object Menu_Linha_Idioma: TMenuItem
+        Caption = '-'
+      end
+      object Menu_Idioma: TMenuItem
+        Caption = '&Idioma'
+        object Idioma_Auto: TMenuItem
+          Caption = 'Autom'#225'tico'
+          Checked = True
+          GroupIndex = 1
+          RadioItem = True
+          OnClick = Idioma_AutoClick
+        end
+        object Idioma_Por: TMenuItem
+          Caption = 'Portugu'#234's'
+          GroupIndex = 1
+          RadioItem = True
+          OnClick = Idioma_PorClick
+        end
+        object Idioma_Eng: TMenuItem
+          Caption = 'English'
+          GroupIndex = 1
+          RadioItem = True
+          OnClick = Idioma_EngClick
+        end
+      end
     end
     object Menu_Ajuda: TMenuItem
       Caption = '&Ajuda'

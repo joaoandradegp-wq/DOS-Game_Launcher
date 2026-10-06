@@ -54,7 +54,7 @@ end;
 procedure ConfigureConstructorCFG(Ini: TMemIniFile; const CheckSingle: Boolean; const PlayerName: string);
 begin
 
-  if Language_Global = 0 then
+  if UsePortuguese then
   Ini.WriteInteger ('', 'TextLanguage', 5)
   else
   Ini.WriteInteger ('', 'TextLanguage', 0);

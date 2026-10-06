@@ -26,6 +26,7 @@ IP_Externo_Global,IP_Interno_Global:String;
 Caminho_Global,Pasta_INI_Global,DosBox_EXE_Global,ZDoom_EXE_Global:String;
 DoomSkin_Global,DoomMod_Global,DoomDM_Global,Game_EXE_Global:String;
 EPI_Global_DLC,CAP_Global_DLC,Language_Global:Integer;
+//Language_Global: 0 = Automático (idioma do Windows) | 1 = Português | 2 = English
 Config_Game_Global,VarParametro_Global,LogoAtual_Global:String;
 
 UltimoGrupoCores: Integer = -1;
@@ -135,6 +136,11 @@ type
     RxQuakeServer: TSpeedButton;
     popup_qsp: TMenuItem;
     menu_linha2: TMenuItem;
+    Menu_Linha_Idioma: TMenuItem;
+    Menu_Idioma: TMenuItem;
+    Idioma_Auto: TMenuItem;
+    Idioma_Por: TMenuItem;
+    Idioma_Eng: TMenuItem;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -147,6 +153,9 @@ type
     procedure FormDblClick(Sender: TObject);
     procedure Menu_FirewallClick(Sender: TObject);
     procedure Menu_SiteClick(Sender: TObject);
+    procedure Idioma_AutoClick(Sender: TObject);
+    procedure Idioma_PorClick(Sender: TObject);
+    procedure Idioma_EngClick(Sender: TObject);
     procedure PNGButton1Click(Sender: TObject);
     procedure popup_pastaClick(Sender: TObject);
     procedure config_menuClick(Sender: TObject);
@@ -1180,6 +1189,21 @@ end;
 procedure TForm1_DGL.popup_qspClick(Sender: TObject);
 begin
 ShellExecute(Handle,'open','https://quakespasm.sourceforge.net/','','',1);
+end;
+
+procedure TForm1_DGL.Idioma_AutoClick(Sender: TObject);
+begin
+Lang_Apply(0);
+end;
+
+procedure TForm1_DGL.Idioma_PorClick(Sender: TObject);
+begin
+Lang_Apply(1);
+end;
+
+procedure TForm1_DGL.Idioma_EngClick(Sender: TObject);
+begin
+Lang_Apply(2);
 end;
 
 end.
