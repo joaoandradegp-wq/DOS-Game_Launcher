@@ -5,9 +5,9 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{B9FD7A07-43C6-4AA2-85AD-91A6913A818E}
+AppId={{340D73A0-1511-46CC-9213-9F5CAD9CD1CD}
 AppName=DOS Game Launcher
-AppVersion=2.2
+AppVersion=2.3
 AppPublisher=JMBA Softwares
 AppPublisherURL=http://phobosfreeware.blogspot.com.br
 AppSupportURL=http://phobosfreeware.blogspot.com.br
@@ -17,14 +17,15 @@ DefaultGroupName=DOS Game Launcher
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Phobos\Desktop
-OutputBaseFilename=DGL_Setup_2.2
-SetupIconFile=D:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
+OutputBaseFilename=DGL_Setup_2.3
+SetupIconFile=E:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
 
 [Languages]
-Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+; Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
+Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
@@ -35,7 +36,7 @@ Source: "\\server\server\Phobos\Setup\DOS Game Launcher\*"; DestDir: "{app}"; Fl
 [Icons]
 Name: "{group}\DOS Game Launcher"; Filename: "{app}\launcher.exe"; IconFilename: "{app}\CONFIG\bin\launcher_icon.ico"
 Name: "{commondesktop}\DOS Game Launcher"; Filename: "{app}\launcher.exe"; Tasks: desktopicon; IconFilename: "{app}\CONFIG\bin\launcher_icon.ico"
-Name: "{group}\Desinstalar"; Filename: "{uninstallexe}"; IconFilename: "{app}\CONFIG\bin\check_icon.ico"
+Name: "{group}\Uninstall"; Filename: "{uninstallexe}"; IconFilename: "{app}\CONFIG\bin\check_icon.ico"
 
 [Run]
 Filename: "{app}\launcher.exe"; Description: "{cm:LaunchProgram,DOS Game Launcher}"; Flags: nowait postinstall skipifsilent
