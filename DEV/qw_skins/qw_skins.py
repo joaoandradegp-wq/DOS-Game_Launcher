@@ -20,7 +20,7 @@ HEADERS = {
     "Accept": "application/vnd.github+json",
 }
 TIMEOUT = 30
-TITULO = "DOS Game Launcher"
+TITULO = "DOS GAME LAUNCHER"
 
 MB_OK = 0x00
 MB_ICONERROR = 0x10

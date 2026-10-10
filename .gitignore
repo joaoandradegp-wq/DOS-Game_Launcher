@@ -6,3 +6,5 @@ DEV/QW_Server/build
 /DEV/download_skins/build
 /DEV/download_skins/dist
 *.spec
+/DEV/qw_skins/build
+/DEV/qw_skins/dist

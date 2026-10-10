@@ -27,6 +27,7 @@ type
     SkinData_Buttons: TSkinData;
     Mensagem_SemSkin: TPanel;
     btn_skins: TSpeedButton;
+    btn_SkinDownload: TSpeedButton;
     procedure btn_aplicarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btn_folder1Click(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure FormCreate(Sender: TObject);
     procedure btn_skinsClick(Sender: TObject);
+    procedure btn_SkinDownloadClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -148,6 +150,7 @@ Caminho_Skin:=Caminho_Nome+'skins\';
   begin
   RxFolderMonitor2.FolderName:=Caminho_Skin;
   RxFolderMonitor2.Active:=True;
+  btn_SkinDownload.Enabled:=True;
   Listar_Arquivos(ListBox_Skin,Caminho_Skin,'pcx');
   end;
 //-------------------------------------------------
@@ -262,6 +265,12 @@ Lang_DGL(19);
 end;
 
 procedure TForm3_NameFun.btn_skinsClick(Sender: TObject);
+begin
+Copia_Pasta(Pasta_INI_Global+'\quake\skins\*.pcx',Caminho_Global+'id1\skins\');
+btn_skins.Enabled:=False;
+end;
+           
+procedure TForm3_NameFun.btn_SkinDownloadClick(Sender: TObject);
 var
 Params, Destino: String;
 begin
@@ -273,7 +282,9 @@ ShellExecute(Handle, 'open',
                PChar(IncludeTrailingPathDelimiter(Caminho_Global) + 'qw_skins.exe'),
                PChar(Params),
                PChar(Caminho_Global),SW_SHOWNORMAL);
-             
+
 end;
 
 end.
+
+
