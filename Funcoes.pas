@@ -72,7 +72,7 @@ procedure MostrarLogo(ID: Integer);
 var
 i: Integer;
 begin
-SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+BeginUIUpdate(Form1_DGL);
 
   try
     for i := 0 to Form1_DGL.ControlCount - 1 do
@@ -96,8 +96,7 @@ SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
     end;
 
   finally
-  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
-  Form1_DGL.Invalidate;
+  EndUIUpdate(Form1_DGL);
   end;
   
 end;
@@ -105,12 +104,11 @@ end;
 //----------------------------------------------------------------------
 procedure ResetarBotoes;
 begin
-SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+BeginUIUpdate(Form1_DGL);
   try
   ResetarBotoesInterno;
   finally
-  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
-  Form1_DGL.Invalidate;
+  EndUIUpdate(Form1_DGL);
   end;
 end;
 //----------------------------------------------------------------------
@@ -1190,12 +1188,12 @@ Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
                +ExtractNamePath(Array_Games[id][1])+'.png';
 //-------------------------------------------------------------------------
 Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
-SetVisible(Form1_DGL.gif_dos, False);
 //-------------------------------------------------------------------------
 
 BeginUIUpdate(Form1_DGL);
 Try
 //----------------------------------------------------------
+SetVisible(Form1_DGL.gif_dos, False);
 
 //------------
 ResetarBotoes;

@@ -386,12 +386,17 @@ procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
 
+BeginUIUpdate(Self); //LOCK EXTERNO - TODA A TROCA DE JOGO FICA EM UM UNICO REPAINT
+  try
   abfImage1.Visible:=False;
   //------------------------------
   id:=RxCheckListBox1.ItemIndex+1;
   //------------------------------
   Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
   Funcao_Config_Opcoes;
+  finally
+  EndUIUpdate(Self);
+  end;
 
 end;
 
