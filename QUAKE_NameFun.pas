@@ -263,17 +263,17 @@ end;
 
 procedure TForm3_NameFun.btn_skinsClick(Sender: TObject);
 var
-  Params, Destino: string;
+Params, Destino: String;
 begin
-  Destino := Caminho_Global + 'id1\skins\';
-  Params  := '"' + ExcludeTrailingPathDelimiter(Destino) + '" ' +
-             IfThen(UsePortuguese, 'bra', 'eua');
+Destino := Caminho_Global + 'id1\skins\';
+Params  := '"' + ExcludeTrailingPathDelimiter(Destino) + '" ' +
+                 IfThen(UsePortuguese, 'bra', 'eua');
 
-  ShellExecute(Handle, 'open',
-               PChar(ExtractFilePath(Application.ExeName) + 'download_skins.exe'),
+ShellExecute(Handle, 'open',
+               PChar(IncludeTrailingPathDelimiter(Caminho_Global) + 'qw_skins.exe'),
                PChar(Params),
-               PChar(ExtractFilePath(Application.ExeName)),
-               SW_SHOWNORMAL);
+               PChar(Caminho_Global),SW_SHOWNORMAL);
+             
 end;
 
 end.
