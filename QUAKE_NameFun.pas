@@ -53,7 +53,7 @@ var
 
 implementation
 
-uses Unit1, Funcoes, Language;
+uses Unit1, Funcoes, Language, StrUtils;
 
 {$R *.dfm}
 
@@ -262,9 +262,18 @@ Lang_DGL(19);
 end;
 
 procedure TForm3_NameFun.btn_skinsClick(Sender: TObject);
+var
+  Params, Destino: string;
 begin
-Copia_Pasta(Pasta_INI_Global+'\quake\skins\*.pcx',Caminho_Global+'id1\skins\');
-btn_skins.Enabled:=False;
+  Destino := Caminho_Global + 'id1\skins\';
+  Params  := '"' + ExcludeTrailingPathDelimiter(Destino) + '" ' +
+             IfThen(UsePortuguese, 'bra', 'eua');
+
+  ShellExecute(Handle, 'open',
+               PChar(ExtractFilePath(Application.ExeName) + 'download_skins.exe'),
+               PChar(Params),
+               PChar(ExtractFilePath(Application.ExeName)),
+               SW_SHOWNORMAL);
 end;
 
 end.
