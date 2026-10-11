@@ -3,3 +3,8 @@ DEV/QW_Server/dist/qw_panel.exe
 DEV/QW_Server/qw_panel.spec
 DEV/QW_Server/build
 *.rar
+/DEV/download_skins/build
+/DEV/download_skins/dist
+*.spec
+/DEV/qw_skins/build
+/DEV/qw_skins/dist
