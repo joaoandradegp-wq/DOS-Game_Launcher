@@ -16,7 +16,7 @@ It was designed to automatically configure and adapt each game to make use of ne
 
 ---
 
-## 📀 Game Compatibility
+### 📀 Game Compatibility
 
 **DOS Game Launcher does not include any copyrighted game files.**
 
@@ -29,15 +29,13 @@ The launcher is compatible with game data from:
 
 ---
 
-## ✨ Features
+### ✨ Features
 
 <table>
-  
 <tr>
-  
 <td width="50%" valign="top"">
   
-<h3>🎮 Supported Games</h3>
+#### 🎮 Supported Games
 
 It offers integration with the following games in their original or GOG versions:
 
@@ -120,7 +118,7 @@ It offers integration with the following games in their original or GOG versions
 
 <td width="50%" valign="top">
 
-<h3>🌐 Multiplayer</h3>
+#### 🌐 Multiplayer
 
 <ul>
 <li><b>SERVER:</b><br>
@@ -138,7 +136,7 @@ Choose your in-game name, select the number of players, and then enter the IP ad
 <tr>
 <td width="50%" valign="top">
 
-<h3>⚙️ Configurations</h3>
+#### ⚙️ Configurations
 
 DOS Game Launcher automatically applies optimized settings for each available game.
 
@@ -181,7 +179,7 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 
 <td width="50%" valign="top">
 
-<h3>🧩 Supported Platforms</h3>
+#### 🧩 Supported Platforms
 
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
@@ -190,13 +188,13 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 <li>QuakeWorld 2.30<br>www.doomworld.com</li><br>
 </ul>
 
-<h3>🔥 Firewall Rules</h3>
+#### 🔥 Firewall Rules
 
 On first launch after installation, DOS Game Launcher automatically adds a Windows Firewall exception rule to allow Server and/or Client mode.
 
 These rules apply only to DOSBox, ZDoom and Quakespasm platform connections.<br>
 <br>
-<h3>🐞 Debug Mode</h3>
+#### 🐞 Debug Mode
 
 <ul>
 <li>Displays parameters sent to platforms</li>
@@ -215,7 +213,7 @@ Any errors found in the system can be reported on GitHub Issues.
 
 ---
 
-## 📸 Preview
+### 📸 Preview
 
 <p align="center">
 <img width="350" alt="image" src="https://github.com/user-attachments/assets/af947d81-cf40-4dae-8cca-146e230df1d9" />
