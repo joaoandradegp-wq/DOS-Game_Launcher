@@ -29,7 +29,7 @@ The launcher is compatible with game data from:
 
 ---
 
-### ✨ Features
+## ✨ Features
 
 <table style="border: none; border-collapse: collapse;">
 <tr>
@@ -213,7 +213,7 @@ Any errors found in the system can be reported on GitHub Issues.
 
 ---
 
-### 📸 Preview
+## 📸 Preview
 
 <p align="center">
 <img width="350" alt="image" src="https://github.com/user-attachments/assets/af947d81-cf40-4dae-8cca-146e230df1d9" />
