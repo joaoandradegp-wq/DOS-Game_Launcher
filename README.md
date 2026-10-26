@@ -31,11 +31,11 @@ The launcher is compatible with game data from:
 
 ### ✨ Features
 
-<table>
+<table style="border: none; border-collapse: collapse;">
 <tr>
-<td width="50%" valign="top"">
+<td width="50%" valign="top">
   
-#### 🎮 Supported Games
+#### 🎮 SUPPORTED GAMES
 
 It offers integration with the following games in their original or GOG versions:
 
@@ -118,7 +118,7 @@ It offers integration with the following games in their original or GOG versions
 
 <td width="50%" valign="top">
 
-#### 🌐 Multiplayer
+#### 🌐 MULTIPLAYER
 
 <ul>
 <li><b>SERVER:</b><br>
@@ -136,7 +136,7 @@ Choose your in-game name, select the number of players, and then enter the IP ad
 <tr>
 <td width="50%" valign="top">
 
-#### ⚙️ Configurations
+#### ⚙️ CONFIGURATIONS
 
 DOS Game Launcher automatically applies optimized settings for each available game.
 
@@ -179,7 +179,7 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 
 <td width="50%" valign="top">
 
-#### 🧩 Supported Platforms
+#### 🧩 SUPPORTED PLATFORMS
 
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
@@ -188,13 +188,13 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 <li>QuakeWorld 2.30<br>www.doomworld.com</li><br>
 </ul>
 
-#### 🔥 Firewall Rules
+#### 🔥 FIREWALL RULES
 
 On first launch after installation, DOS Game Launcher automatically adds a Windows Firewall exception rule to allow Server and/or Client mode.
 
 These rules apply only to DOSBox, ZDoom and Quakespasm platform connections.<br>
 <br>
-#### 🐞 Debug Mode
+#### 🐞 DEBUG MODE
 
 <ul>
 <li>Displays parameters sent to platforms</li>
