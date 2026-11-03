@@ -8,3 +8,4 @@ DEV/QW_Server/build
 *.spec
 /DEV/qw_skins/build
 /DEV/qw_skins/dist
+/__history

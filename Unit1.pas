@@ -4,11 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, RXCtrls, StdCtrls, ToolEdit, ComCtrls, RXSwitch,
-  pngextra, ExtCtrls, abfControls, ImgList, pngimage, ShellAPI, RxGIF,
-  abfAppProps, Animate, GIFCtrl, Buttons, abfComponents, RxCombos,
-  RXSlider, WinSkinData, rxAnimate, rxGIFCtrl, StrUtils, abfEdits,
-  GraphicEx;
+  Dialogs, Menus, StdCtrls, ComCtrls,
+  ExtCtrls, ImgList, pngimage, ShellAPI,
+  Buttons, StrUtils,
+  System.ImageList, Vcl.CheckLst, Vcl.VirtualImage,
+  Vcl.VirtualImageList, Vcl.BaseImageCollection, Vcl.ImageCollection;
 
 type
 //------------------------------------
@@ -58,23 +58,18 @@ type
     MainMenu1: TMainMenu;
     Menu_Arquivo: TMenuItem;
     Menu_Sair: TMenuItem;
-    RxCheckListBox1: TRxCheckListBox;
     StatusBar1: TStatusBar;
     Lista_Imagens: TImageList;
     Panel_Status: TPanel;
     IMG_STATUS: TImage;
     Panel_Icones: TPanel;
-    img_game: TabfImage;
     Menu_Debug: TMenuItem;
     linha02: TBevel;
     linha01: TBevel;
-    abfImage1: TabfImage;
-    gif_dos: TRxGIFAnimator;
     Menu_Sobre: TMenuItem;
     Timer_MonitoraAPP: TTimer;
     loading_panel: TPanel;
     img_ing: TImage;
-    Wav: TabfWav;
     Menu_Firewall: TMenuItem;
     Menu_Site: TMenuItem;
     Menu_Opcoes: TMenuItem;
@@ -96,36 +91,19 @@ type
     menu_linha: TMenuItem;
     popup_commit: TMenuItem;
     Label_QuakeServer: TLabel;
-    logo_doom: TImage;
-    logo_quake: TImage;
-    logo_blood: TImage;
-    logo_duke3d: TImage;
-    logo_rott: TImage;
-    logo_heretic: TImage;
-    logo_warcraft: TImage;
-    logo_wolf3d: TImage;
-    logo_constructor: TImage;
-    logo_shadow: TImage;
-    combo_doom: TabfComboBox;
+    logo: TImage;
     GroupIP: TGroupBox;
-    ip_local: TabfEdit;
-    ip_internet: TabfEdit;
     Label1: TLabel;
     Label2: TLabel;
-    ip_porta: TabfIntegerEdit;
     Label3: TLabel;
-    combo_color: TabfComboBox;
     check_single: TRadioButton;
     check_servidor: TRadioButton;
     check_cliente: TRadioButton;
-    SkinData_Buttons: TSkinData;
     Panel1: TPanel;
     player_name: TEdit;
-    cont_player: TabfIntegerEdit;
     cont_seta: TUpDown;
     Label_Name: TLabel;
     btn_start: TButton;
-    logo_hexen: TabfImage;
     Refresh_Internet: TBitBtn;
     Refresh_Lan: TBitBtn;
     RxControle: TSpeedButton;
@@ -141,6 +119,21 @@ type
     Idioma_Auto: TMenuItem;
     Idioma_Por: TMenuItem;
     Idioma_Eng: TMenuItem;
+    RxCheckListBox1: TCheckListBox;
+    ip_local: TEdit;
+    ip_internet: TEdit;
+    ip_porta: TEdit;
+    cont_player: TEdit;
+    combo_color: TComboBox;
+    combo_doom: TComboBox;
+    VirtualImageList1: TVirtualImageList;
+    ImageCollection1: TImageCollection;
+    ImageCollection2: TImageCollection;
+    VirtualImageList2: TVirtualImageList;
+    img_game: TImage;
+    Image1: TImage;
+    gif_dos: TLabel;
+    Timer1: TTimer;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -195,6 +188,7 @@ type
     procedure RxDMClick(Sender: TObject);
     procedure RxQuakeServerClick(Sender: TObject);
     procedure popup_qspClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -249,6 +243,26 @@ Arquivo_INI:TIniFile;
 
 {$R *.dfm}
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+procedure MostrarLogo(const Nome: string);
+var
+Indice: Integer;
+Bmp: TBitmap;
+begin
+Indice := Form1_DGL.ImageCollection1.GetIndexByName(Nome);
+
+  if Indice < 0 then
+  Exit;
+
+  Bmp := Form1_DGL.ImageCollection1.GetBitmap(Indice, 256, 256);
+  try
+    Form1_DGL.img_game.Picture.Assign(Bmp);
+  finally
+    Bmp.Free;
+  end;
+
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function PT_MessageDlg( Topo_Caixa:String; Msg: string; AType: TMsgDlgType; AButtons:
@@ -346,7 +360,7 @@ Wav.FileName:=ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav';
   RxCheckListBox1.Items.Add(UpperCase(Array_Games[i][2]));
 
     if not FileExists(ExtractFilePath(Application.ExeName)+Array_Games[i][3]+Array_Games[i][5]) then
-    RxCheckListBox1.EnabledItem[i-1]:=False;
+    RxCheckListBox1.ItemEnabled[i-1]:=False;
 
   end;
 
@@ -386,7 +400,7 @@ procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
 
-  abfImage1.Visible:=False;
+  Image1.Visible:=False;
   //------------------------------
   id:=RxCheckListBox1.ItemIndex+1;
   //------------------------------
@@ -399,7 +413,7 @@ procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
 var
 i:Integer;
 begin
-Form1_DGL.abfImage1.Visible:=True;
+Form1_DGL.Image1.Visible:=True;
 //----------------------------------------
 DesabilitaMarcaDagua(False);
 //----------------------------------------
@@ -459,7 +473,7 @@ Lista_Imagens.GetBitmap(3,IMG_STATUS.Picture.Bitmap);
   begin
   RxCheckListBox1.Items.Add(Array_Games[i][1]+' ; '+Array_Games[i][3]+' ; '+Array_Games[i][4]+' ; '+Array_Games[i][5]+' ; '+Array_Games[i][6]);
     if not FileExists(ExtractFilePath(Application.ExeName)+Array_Games[i][3]+Array_Games[i][5]) then
-    RxCheckListBox1.EnabledItem[i-1]:=False;
+    RxCheckListBox1.ItemEnabled[i-1]:=False;
   end;
 //------------------------------------------------------------------------------------------------
 end
@@ -472,7 +486,7 @@ begin
   begin
   RxCheckListBox1.Items.Add(UpperCase(Array_Games[i][2]));
     if not FileExists(ExtractFilePath(Application.ExeName)+Array_Games[i][3]+Array_Games[i][5]) then
-    RxCheckListBox1.EnabledItem[i-1]:=False;
+    RxCheckListBox1.ItemEnabled[i-1] := False;
   end;
 //------------------------------------------------------------------------------------------------
 end;
@@ -496,6 +510,19 @@ begin
 
   if (check_single.Checked = True) and (btn_start.Enabled = True) and (Menu_Debug.Checked = False) then
   btn_startClick(Sender);
+
+end;
+
+procedure TForm1_DGL.Timer1Timer(Sender: TObject);
+begin
+
+   if not gif_dos.Visible then
+   Exit;
+
+   if gif_dos.Caption = 'C:\>_' then
+   gif_dos.Caption := 'C:\> '
+   else
+   gif_dos.Caption := 'C:\>_';
 
 end;
 
@@ -578,7 +605,7 @@ begin
   else
   Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+Array_Games[id][6];
 
-WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
+ShellExecute(Handle, 'open', PChar(Caminho_Conf), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TForm1_DGL.RxCheckListBox1Exit(Sender: TObject);
@@ -596,7 +623,7 @@ end;
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 var
-i:Integer;
+i,j:Integer;
 p:TPoint;
 begin
 BeginUIUpdate(Self);
@@ -611,7 +638,10 @@ Try
    if i > -1 then //SE EXISTE ITEM NA POSIÇÃO
    begin
    RxCheckListBox1.ItemIndex:=i; //SETA O ITEM SELECIONADO
-   RxCheckListBox1.CheckedIndex:=i;
+
+      for j := 0 to RxCheckListBox1.Items.Count - 1 do
+      RxCheckListBox1.Checked[j] := (j = i); //MARCA SÓ O ITEM i
+
    p:=RxCheckListBox1.ClientToScreen(p);
 
      {QUAKE}
@@ -646,7 +676,7 @@ Try
      end;
      end;
 
-     if RxCheckListBox1.EnabledItem[i] = True then
+     if RxCheckListBox1.ItemEnabled[i] then
      PopupMenu1.Popup(p.X,p.Y); //MOSTRA O POPUP
 
    end;
@@ -665,7 +695,7 @@ var
 Caminho_Conf:String;
 begin
 Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'qw\config.cfg';
-WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
+ShellExecute(Handle, 'open', PChar(Caminho_Conf), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TForm1_DGL.popup_saClick(Sender: TObject);
@@ -673,7 +703,7 @@ var
 Caminho_Conf:String;
 begin
 Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'hipnotic\config.cfg';
-WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
+ShellExecute(Handle, 'open', PChar(Caminho_Conf), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TForm1_DGL.popup_deClick(Sender: TObject);
@@ -681,7 +711,7 @@ var
 Caminho_Conf:String;
 begin
 Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'rogue\config.cfg';
-WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
+ShellExecute(Handle, 'open', PChar(Caminho_Conf), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TForm1_DGL.popup_commitClick(Sender: TObject);
@@ -689,7 +719,7 @@ var
 Caminho_Conf:String;
 begin
 Caminho_Conf:=ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'COMMIT.dat';
-WinExec(PChar('Notepad.exe '+Caminho_Conf),sw_shownormal);
+ShellExecute(Handle, 'open', PChar(Caminho_Conf), nil, nil, SW_SHOWNORMAL);
 end;
 
 procedure TForm1_DGL.abfIntegerEdit1Enter(Sender: TObject);
@@ -704,7 +734,7 @@ begin
   //----------------------------------
   {ZDOOM - CORES DO COMBOBOX}
   //----------------------------------
-  with Control as TabfComboBox, Canvas do
+  with Control as TComboBox, Canvas do
   begin
     if (Index >= 0) and (Index < Items.Count) then
     begin
@@ -1157,7 +1187,7 @@ begin
     UIUtils.SetEnabled(Label_Opcoes, True);
     UIUtils.SetEnabled(RxOpcoes    , True);
     //--------------------------------------------
-    img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
+    MostrarLogo('08');
     UIUtils.SetVisible(combo_color, True);
     //--------------------------------------------
     MostrarQuakeServer(False);
@@ -1173,11 +1203,11 @@ begin
 
   if RxQuakeServer.Down then
   begin
-  EPI_Global_DLC:=1; 
-  img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08S.png');
+  EPI_Global_DLC:=1;
+  MostrarLogo('08S');
   end
   else
-  img_game.Picture.LoadFromFile(ExtractFilePath(Application.ExeName)+'CONFIG\png\08.png');
+  MostrarLogo('08');
 
 UIUtils.SetEnabled(Label_Opcoes, Not(RxQuakeServer.Down));
 UIUtils.SetEnabled(RxOpcoes    , Not(RxQuakeServer.Down));

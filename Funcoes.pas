@@ -3,12 +3,28 @@ unit Funcoes;
 interface
 
 uses
-  IdHTTP, GraphicEx, SysUtils, Forms, Classes, Windows, ShellApi,
+  IdHTTP, System.IOUtils, SysUtils, Forms, Classes, Windows, ShellApi,
   Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
-  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons;
+  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons, MMSystem;
 
 type
   TEstadoPortaUDP = (epuOnline, epuFechada, epuIndefinido);
+
+const
+  Marcas: array[1..13] of string = (
+    '01_1',   // 1  Blood
+    '02_1',   // 2  Constructor
+    '03-04',  // 3  Doom
+    '03-04',  // 4  Doom II
+    '05_1',   // 5  Duke Nukem 3D
+    '06_1',   // 6  Heretic
+    '07_1',   // 7  Hexen
+    '08_1',   // 8  Quake
+    '09_1',   // 9  Rise of the Triad
+    '10_1',   // 10 Shadow Warrior
+    '11_1',   // 11 Warcraft II
+    '12-13',  // 12 Wolfenstein 3D
+    '12-13'); // 13 Spear of Destiny
 
 //----------------------------------------------------------------------
 procedure MostrarLogo(ID: Integer);
@@ -70,36 +86,40 @@ uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 //----------------------------------------------------------------------
 procedure MostrarLogo(ID: Integer);
 var
-i: Integer;
+Indice, W, H: Integer;
+Bmp: TBitmap;
 begin
-SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
+
+   if (ID < Low(Marcas)) or (ID > High(Marcas)) then
+   begin
+   Form1_DGL.logo.Picture := nil;
+   Exit;
+   end;
+
+Indice := Form1_DGL.ImageCollection1.GetIndexByName(Marcas[ID]);
+
+  if Indice < 0 then
+  Exit;
+
+  W := Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width;
+  H := Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Height;
+  W := Form1_DGL.logo.Width;
+  H := Round(W * (H / Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width));
+
+  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
 
   try
-    for i := 0 to Form1_DGL.ControlCount - 1 do
-    begin
-      if Pos('logo_', Form1_DGL.Controls[i].Name) = 1 then
-      Form1_DGL.Controls[i].Visible := False;
+    Bmp := Form1_DGL.ImageCollection1.GetBitmap(Indice, W, H);
+    try
+    Form1_DGL.logo.Picture.Assign(Bmp);
+    finally
+    Bmp.Free;
     end;
-
-    case ID of
-      1: Form1_DGL.logo_blood.Visible      := True;
-      2: Form1_DGL.logo_constructor.Visible:= True;
-    3,4: Form1_DGL.logo_doom.Visible       := True;
-      5: Form1_DGL.logo_duke3d.Visible     := True;
-      6: Form1_DGL.logo_heretic.Visible    := True;
-      7: Form1_DGL.logo_hexen.Visible      := True;
-      8: Form1_DGL.logo_quake.Visible      := True;
-      9: Form1_DGL.logo_rott.Visible       := True;
-     10: Form1_DGL.logo_shadow.Visible     := True;
-     11: Form1_DGL.logo_warcraft.Visible   := True;
-     12: Form1_DGL.logo_wolf3d.Visible     := True;
-    end;
-
   finally
   SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
   Form1_DGL.Invalidate;
   end;
-  
+
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -531,13 +551,19 @@ Result:=LowerCase(Copy(String(Language),0,3));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Centraliza_Janela(Nome_WinSpy:PAnsiChar);
+procedure Centraliza_Janela(const Nome_WinSpy: string);
 var
 DOSBox,CLauncher:TRect;
-DOSBox_X,DOSBox_Y,CLauncher_X,CLauncher_Y,X,Y:Word;
+DOSBox_X,DOSBox_Y,CLauncher_X,CLauncher_Y,X,Y:Integer;
+DOSBox_Wnd:HWND;
 begin
-GetWindowRect(FindWindow(Nome_WinSpy,nil),DOSBox);
-GetWindowRect(FindWindow(nil,pchar(Application.Title)),CLauncher);
+DOSBox_Wnd:=FindWindow(PChar(Nome_WinSpy),nil);
+
+   if DOSBox_Wnd=0 then
+   Exit; //DOSBOX AINDA NÃO ABRIU
+
+GetWindowRect(DOSBox_Wnd,DOSBox);
+GetWindowRect(Application.MainForm.Handle,CLauncher);
 
 //DOSBOX - Largura e Altura
 DOSBox_X:=DOSBox.Right -DOSBox.Left;
@@ -550,26 +576,116 @@ CLauncher_Y:=CLauncher.Bottom-CLauncher.Top;
 X:=CLauncher.Left+((CLauncher_X div 2)-(DOSBox_X div 2));
 Y:=CLauncher.Top +((CLauncher_Y div 2)-(DOSBox_Y div 2));
 
-MoveWindow(FindWindow(Nome_WinSpy,nil),X,Y,DOSBox.Right-DOSBox.Left,DOSBox.Bottom-DOSBox.Top,True);
+MoveWindow(DOSBox_Wnd,X,Y,DOSBox_X,DOSBox_Y,True);
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure Carrega_PCX(const FileName: String);
+{$POINTERMATH ON}
+function Ler_PCX(const FileName: string): TBitmap;
 var
-GraphicClass:TGraphicExGraphicClass;
-Graphic:TGraphic;
+  Dados, Linha: TBytes;
+  Pal: array[0..255, 0..2] of Byte;
+  Pos, W, H, Planos, BytesLinha, x, y, k, Cont: Integer;
+  Dado: Byte;
+  Pix: PByte;
 begin
-GraphicClass := FileFormatList.GraphicFromContent(FileName);
+  Dados := TFile.ReadAllBytes(FileName);
 
- if GraphicClass = nil then
- Form3_NameFun.Image1.Picture.LoadFromFile(FileName)
- else
- begin
- Graphic:=GraphicClass.Create;
- Graphic.LoadFromFile(FileName);
- Form3_NameFun.Image1.Picture.Graphic:=Graphic;
- end;
+  if (Length(Dados) < 128) or (Dados[0] <> $0A) or (Dados[2] <> 1) then
+    raise Exception.Create('Arquivo PCX inválido');
 
+  Planos := Dados[65];
+  if (Dados[3] <> 8) or not (Planos in [1, 3]) then
+    raise Exception.Create('PCX não suportado (só 8 bits, com 1 ou 3 planos)');
+
+  W := (Dados[8]  or (Dados[9]  shl 8)) - (Dados[4] or (Dados[5] shl 8)) + 1;
+  H := (Dados[10] or (Dados[11] shl 8)) - (Dados[6] or (Dados[7] shl 8)) + 1;
+  BytesLinha := Dados[66] or (Dados[67] shl 8);
+
+  //Paleta de 256 cores: fica nos últimos 768 bytes, depois do marcador $0C
+  if Planos = 1 then
+  begin
+    if (Length(Dados) < 128 + 769) or (Dados[Length(Dados) - 769] <> $0C) then
+      raise Exception.Create('PCX sem paleta de 256 cores');
+    for k := 0 to 255 do
+    begin
+      Pal[k, 0] := Dados[Length(Dados) - 768 + k * 3];     // R
+      Pal[k, 1] := Dados[Length(Dados) - 768 + k * 3 + 1]; // G
+      Pal[k, 2] := Dados[Length(Dados) - 768 + k * 3 + 2]; // B
+    end;
+  end;
+
+  Pos := 128;
+  SetLength(Linha, BytesLinha * Planos);
+  Result := TBitmap.Create;
+  try
+    Result.PixelFormat := pf24bit;
+    Result.SetSize(W, H);
+
+    for y := 0 to H - 1 do
+    begin
+      //Descompacta uma linha (RLE)
+      k := 0;
+      while k < Length(Linha) do
+      begin
+        if Pos >= Length(Dados) then
+          raise Exception.Create('PCX incompleto');
+        Dado := Dados[Pos]; Inc(Pos);
+        Cont := 1;
+        if (Dado and $C0) = $C0 then
+        begin
+          Cont := Dado and $3F;
+          if Pos >= Length(Dados) then
+            raise Exception.Create('PCX incompleto');
+          Dado := Dados[Pos]; Inc(Pos);
+        end;
+        while (Cont > 0) and (k < Length(Linha)) do
+        begin
+          Linha[k] := Dado; Inc(k); Dec(Cont);
+        end;
+      end;
+
+      //Converte a linha para 24 bits (ordem BGR do Windows)
+      Pix := Result.ScanLine[y];
+      for x := 0 to W - 1 do
+      begin
+        if Planos = 1 then
+        begin
+          Pix[0] := Pal[Linha[x], 2];
+          Pix[1] := Pal[Linha[x], 1];
+          Pix[2] := Pal[Linha[x], 0];
+        end
+        else
+        begin
+          Pix[0] := Linha[x + 2 * BytesLinha];
+          Pix[1] := Linha[x + BytesLinha];
+          Pix[2] := Linha[x];
+        end;
+        Inc(Pix, 3);
+      end;
+    end;
+  except
+    Result.Free;
+    raise;
+  end;
+end;
+{$POINTERMATH OFF}
+//------------------------------------------------------------------------------
+procedure Carrega_PCX(const FileName: string);
+var
+  Bmp: TBitmap;
+begin
+  if SameText(ExtractFileExt(FileName), '.pcx') then
+  begin
+    Bmp := Ler_PCX(FileName);
+    try
+      Form3_NameFun.Image1.Picture.Bitmap.Assign(Bmp);
+    finally
+      Bmp.Free;
+    end;
+  end
+  else
+    Form3_NameFun.Image1.Picture.LoadFromFile(FileName); // BMP, PNG, JPG, GIF
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -621,7 +737,7 @@ Form1_DGL.btn_start.Enabled:=False;
  Dec(contador);
  Form1_DGL.btn_start.Caption:=Lang_DGL(14)+' ('+inttostr(contador)+')';
  Form1_DGL.btn_start.Refresh;
- Form1_DGL.Wav.Play;
+ PlaySound(PChar(ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav'),0,SND_FILENAME or SND_ASYNC);
  Sleep(1000);
  end;
 
@@ -810,7 +926,8 @@ CoolStuff_Global:='';
           MostrarBrutal(False);
           MostrarOpcoes(False);
           MostrarQuakeServer(False);
-          //---------------------------------------------
+
+          //---------------------------------------------
 
             {SINGLE PLAYER - CLIENTE}
             if (Tipo = 0) or (Tipo = 2) then
@@ -1040,16 +1157,16 @@ begin
 Pasta_App:=ExtractFilePath(Application.ExeName)+Pasta_Game;
 
 if FileExists(Pasta_App+'stderr.txt') then
-DeleteFile(PAnsiChar(Pasta_App+'stderr.txt'));
+DeleteFile(PChar(Pasta_App+'stderr.txt'));
 
 if FileExists(Pasta_App+'stdout.txt') then
-DeleteFile(PAnsiChar(Pasta_App+'stdout.txt'));
+DeleteFile(PChar(Pasta_App+'stdout.txt'));
 
 if FileExists(Pasta_App+ExtractName(Single_EXE)+'_dosbox.conf')then
-DeleteFile(PAnsiChar(Pasta_App+ExtractName(Single_EXE)+'_dosbox.conf'));
+DeleteFile(PChar(Pasta_App+ExtractName(Single_EXE)+'_dosbox.conf'));
 
 if FileExists(Pasta_App+ExtractName(Multi_EXE)+'_dosbox.conf')then
-DeleteFile(PAnsiChar(Pasta_App+ExtractName(Multi_EXE)+'_dosbox.conf'));
+DeleteFile(PChar(Pasta_App+ExtractName(Multi_EXE)+'_dosbox.conf'));
 
 //----------------------------------------------
 {BLOOD}
@@ -1057,7 +1174,7 @@ DeleteFile(PAnsiChar(Pasta_App+ExtractName(Multi_EXE)+'_dosbox.conf'));
 if (id = 1) then
 begin
   if FileExists(Pasta_App+'phobos.ini') then
-  DeleteFile(PAnsiChar(Pasta_App+'phobos.ini'));
+  DeleteFile(PChar(Pasta_App+'phobos.ini'));
 end;
 //----------------------------------------------
 
@@ -1067,16 +1184,16 @@ end;
 if (id = 8) then
 begin
   if FileExists(Pasta_App+'id1\autoexec.cfg') then
-  DeleteFile(PAnsiChar(Pasta_App+'id1\autoexec.cfg'));
+  DeleteFile(PChar(Pasta_App+'id1\autoexec.cfg'));
 
   if FileExists(Pasta_App+'hipnotic\autoexec.cfg') then
-  DeleteFile(PAnsiChar(Pasta_App+'hipnotic\autoexec.cfg'));
+  DeleteFile(PChar(Pasta_App+'hipnotic\autoexec.cfg'));
 
   if FileExists(Pasta_App+'rogue\autoexec.cfg') then
-  DeleteFile(PAnsiChar(Pasta_App+'rogue\autoexec.cfg'));
+  DeleteFile(PChar(Pasta_App+'rogue\autoexec.cfg'));
 
   if FileExists(Pasta_App+'qw\autoexec.cfg') then
-  DeleteFile(PAnsiChar(Pasta_App+'qw\autoexec.cfg'));
+  DeleteFile(PChar(Pasta_App+'qw\autoexec.cfg'));
 end;
 //----------------------------------------------
 
@@ -1189,7 +1306,7 @@ Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
 Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
                +ExtractNamePath(Array_Games[id][1])+'.png';
 //-------------------------------------------------------------------------
-Game_Existe:=Form1_DGL.RxCheckListBox1.EnabledItem[id-1];
+Game_Existe:=Form1_DGL.RxCheckListBox1.ItemEnabled[id-1];
 SetVisible(Form1_DGL.gif_dos, False);
 //-------------------------------------------------------------------------
 
@@ -1203,7 +1320,7 @@ ResetarBotoes;
 
  if (Game_Existe = False) then
  begin
- Form1_DGL.abfImage1.Visible:=True;
+ Form1_DGL.Image1.Visible:=True;
  //----------------------------------------
  Form1_DGL.img_game.Picture:=nil;
  SetVisible(Form1_DGL.gif_dos, True);

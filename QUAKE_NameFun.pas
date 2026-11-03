@@ -4,8 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, StdCtrls, RxNotify, ShellAPI, ExtCtrls, pngextra,
-  WinSkinData;
+  Dialogs, Buttons, StdCtrls, ShellAPI, ExtCtrls, PastaMonitor,
+  Vcl.BaseImageCollection, Vcl.ImageCollection, System.ImageList, Vcl.ImgList,
+  Vcl.VirtualImageList;
 
 type
   TForm3_NameFun = class(TForm)
@@ -17,17 +18,16 @@ type
     btn_folder1: TSpeedButton;
     btn_folder2: TSpeedButton;
     btn_namefun: TSpeedButton;
-    RxFolderMonitor1: TRxFolderMonitor;
-    RxFolderMonitor2: TRxFolderMonitor;
     btn_skinbase: TSpeedButton;
     Panel1: TPanel;
     Image1: TImage;
     Label1: TLabel;
     Mensagem_SemNome: TPanel;
-    SkinData_Buttons: TSkinData;
     Mensagem_SemSkin: TPanel;
     btn_skins: TSpeedButton;
     btn_SkinDownload: TSpeedButton;
+    ImageCollection1: TImageCollection;
+    VirtualImageList1: TVirtualImageList;
     procedure btn_aplicarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btn_folder1Click(Sender: TObject);
@@ -45,6 +45,7 @@ type
     procedure btn_SkinDownloadClick(Sender: TObject);
   private
     { Private declarations }
+    Monitor1, Monitor2: TPastaMonitor;
   public
     { Public declarations }
   end;
@@ -117,6 +118,9 @@ begin
 if CoolStuff_Global = '+name '+Trim(Form1_DGL.player_name.Text) then
 Form1_DGL.RxOpcoes.Down:=False;
 
+Monitor1.Free;
+Monitor2.Free;
+
 Form3_NameFun.Release;
 Form3_NameFun:=Nil;
 end;
@@ -141,15 +145,15 @@ CaminhoQW:=Caminho_Global+'qw\config.cfg';
 
 //-------------------------------------------------
 Caminho_Nome:=Caminho_Global+'ID1\';
-RxFolderMonitor1.FolderName:=Caminho_Nome;
-RxFolderMonitor1.Active:=True;
+Monitor1.Pasta:=Caminho_Nome;
+Monitor1.Ativo:=True;
 Listar_Arquivos(ListBox_Nome,Caminho_Nome,'scr');
 Caminho_Skin:=Caminho_Nome+'skins\';
 
   if Form1_DGL.RxDM.Down = True then
   begin
-  RxFolderMonitor2.FolderName:=Caminho_Skin;
-  RxFolderMonitor2.Active:=True;
+  Monitor2.Pasta:=Caminho_Skin;
+  Monitor2.Ativo:=True;
   btn_SkinDownload.Enabled:=True;
   Listar_Arquivos(ListBox_Skin,Caminho_Skin,'pcx');
   end;
@@ -262,6 +266,10 @@ end;
 procedure TForm3_NameFun.FormCreate(Sender: TObject);
 begin
 Lang_DGL(19);
+Monitor1:=TPastaMonitor.Create;
+Monitor1.OnChange:=RxFolderMonitor1Change;
+Monitor2:=TPastaMonitor.Create;
+Monitor2.OnChange:=RxFolderMonitor2Change;
 end;
 
 procedure TForm3_NameFun.btn_skinsClick(Sender: TObject);
