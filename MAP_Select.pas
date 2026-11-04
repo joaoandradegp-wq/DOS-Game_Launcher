@@ -13,7 +13,6 @@ type
     label_episodio: TLabel;
     ListBox_Episodio: TListBox;
     btn_aplicar: TSpeedButton;
-    SkinData_Buttons: TSkinData;
     SIGIL_Off: TListBox;
     procedure btn_aplicarClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);

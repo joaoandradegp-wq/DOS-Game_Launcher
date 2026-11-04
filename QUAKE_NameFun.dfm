@@ -378,7 +378,7 @@ object Form3_NameFun: TForm3_NameFun
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -28
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -538,6 +538,7 @@ object Form3_NameFun: TForm3_NameFun
     BevelOuter = bvLowered
     BorderStyle = bsSingle
     Color = clBlack
+    ParentBackground = False
     TabOrder = 2
     object Image1: TImage
       Left = 1

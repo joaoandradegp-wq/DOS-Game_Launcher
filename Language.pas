@@ -32,6 +32,7 @@ end;
 //------------------------------------------------------------------------------
 function Lang_DGL(id:Integer):String;
 begin
+Result:='';
 
 if UsePortuguese then
 begin
@@ -60,8 +61,6 @@ begin
      Form1_DGL.Idioma_Eng.Checked :=(Language_Global = 2);
      //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NOME:';
-     Form1_DGL.img_ing.Visible:=False;
-     Form1_DGL.img_por.Visible:=True;
      //-----------------------------------------------------
      Form1_DGL.GroupIP.Caption:=' Rede Local ';
      Form1_DGL.Label3.Caption:='PORTA:';
@@ -126,6 +125,7 @@ begin
  35: Result:='MAGIA';
  36: Result:='FORÇA';
  37: Result:='© 2026 JMBA Softwares. Todos os direitos reservados.';
+ 38: Result:='INICIANDO';
  end;
 
 end
@@ -156,8 +156,6 @@ begin
      Form1_DGL.Idioma_Eng.Checked :=(Language_Global = 2);
      //-----------------------------------------------------
      Form1_DGL.Label_Name.Caption:='NAME:';
-     Form1_DGL.img_por.Visible:=False;
-     Form1_DGL.img_ing.Visible:=True;
      //-----------------------------------------------------
      Form1_DGL.GroupIP.Caption:=' Local Network ';
      Form1_DGL.Label3.Caption:='PORT:';
@@ -222,6 +220,7 @@ begin
  35: Result:='MAGIC';
  36: Result:='STRENGTH';
  37: Result:='© 2026 JMBA Softwares. All rights reserved.';
+ 38: Result:='STARTING';
  end;
 
 end;

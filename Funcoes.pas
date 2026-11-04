@@ -12,22 +12,23 @@ type
 
 const
   Marcas: array[1..13] of string = (
-    '01_1',   // 1  Blood
-    '02_1',   // 2  Constructor
-    '03-04',  // 3  Doom
-    '03-04',  // 4  Doom II
-    '05_1',   // 5  Duke Nukem 3D
-    '06_1',   // 6  Heretic
-    '07_1',   // 7  Hexen
-    '08_1',   // 8  Quake
-    '09_1',   // 9  Rise of the Triad
-    '10_1',   // 10 Shadow Warrior
-    '11_1',   // 11 Warcraft II
-    '12-13',  // 12 Wolfenstein 3D
-    '12-13'); // 13 Spear of Destiny
+    '01',    // 01 Blood
+    '02',    // 02 Constructor
+    '03-04', // 03 Doom
+    '03-04', // 04 Doom II
+    '05',    // 05 Duke Nukem 3D
+    '06',    // 06 Heretic
+    '07',    // 07 Hexen
+    '08',    // 08 Quake
+    '09',    // 09 Rise of the Triad
+    '10',    // 10 Shadow Warrior
+    '11',    // 11 Warcraft II
+    '12-13', // 12 Wolfenstein 3D
+    '12-13');// 13 Spear of Destiny
 
 //----------------------------------------------------------------------
-procedure MostrarLogo(ID: Integer);
+procedure MostrarLogo(const Nome: string);
+procedure MostrarFundo(const Nome: string);
 //----------------------------------------------------------------------
 procedure ResetarBotoes;
 procedure ResetarBotoesInterno;
@@ -84,42 +85,55 @@ uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-procedure MostrarLogo(ID: Integer);
+procedure MostrarFundo(const Nome: string);
 var
 Indice, W, H: Integer;
 Bmp: TBitmap;
 begin
+Indice:=Form1_DGL.ImageCollection1.GetIndexByName(Nome);
 
-   if (ID < Low(Marcas)) or (ID > High(Marcas)) then
+   if Indice < 0 then
    begin
-   Form1_DGL.logo.Picture := nil;
+   Form1_DGL.img_fundo.Picture:=Nil;
    Exit;
    end;
 
-Indice := Form1_DGL.ImageCollection1.GetIndexByName(Marcas[ID]);
+W:=Form1_DGL.img_fundo.Width;
+H:=Round(W * Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Height
+           / Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width);
 
-  if Indice < 0 then
-  Exit;
-
-  W := Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width;
-  H := Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Height;
-  W := Form1_DGL.logo.Width;
-  H := Round(W * (H / Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width));
-
-  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 0, 0);
-
+Bmp:=Form1_DGL.ImageCollection1.GetBitmap(Indice,W,H);
   try
-    Bmp := Form1_DGL.ImageCollection1.GetBitmap(Indice, W, H);
-    try
-    Form1_DGL.logo.Picture.Assign(Bmp);
-    finally
-    Bmp.Free;
-    end;
+  Form1_DGL.img_fundo.Picture.Assign(Bmp);
   finally
-  SendMessage(Form1_DGL.Handle, WM_SETREDRAW, 1, 0);
-  Form1_DGL.Invalidate;
+  Bmp.Free;
   end;
+end;
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure MostrarLogo(const Nome: string);
+var
+Indice, W, H: Integer;
+Bmp: TBitmap;
+begin
+Indice:=Form1_DGL.ImageCollection2.GetIndexByName(Nome);
 
+   if Indice < 0 then
+   begin
+   Form1_DGL.img_game.Picture:=Nil;
+   Exit;
+   end;
+
+W:=Form1_DGL.img_game.Width;
+H:=Round(W * Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Height
+           / Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Width);
+
+Bmp:=Form1_DGL.ImageCollection2.GetBitmap(Indice,W,H);
+  try
+  Form1_DGL.img_game.Picture.Assign(Bmp);
+  finally
+  Bmp.Free;
+  end;
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -1208,6 +1222,8 @@ begin
  Form1_DGL.Enabled:=False;
  //---------------------------------------------------------
  SetVisible(Form1_DGL.loading_panel, True);
+ Form1_DGL.gif_texto.Caption:=Lang_DGL(38);
+ Form1_DGL.Timer2.Enabled:=True;
 
    {QUAKEWORLD SERVER DEDICADO - MANTEM O IMG_GAME VISIVEL}
    if (id = 8) and (Form1_DGL.RxQuakeServer.Down) then
@@ -1229,6 +1245,7 @@ begin
  Form1_DGL.Enabled:=True;
  //-------------------------------------
  SetVisible(Form1_DGL.loading_panel, False);
+ Form1_DGL.Timer2.Enabled:=False;
  
  SetVisible(Form1_DGL.img_game , True);
  SetVisible(Form1_DGL.gif_dos  , False);
@@ -1293,7 +1310,7 @@ end;
 //------------------------------------------------------------------------------
 procedure Funcao_Config_Opcoes;
 var
-Nome_Game,Caminho_Imagem,Config_Game,DoomSkin:String;
+Config_Game,DoomSkin:String;
 Game_Existe,ZDOOM_Mouse:Boolean;
 Arquivo_DOSBOX_Fisico:TStringList;
 ZDOOM_INI: TMemIniFile;
@@ -1301,13 +1318,7 @@ i:Integer;
 Arquivo_Blood_Default,Arquivo_Blood_Atual: File of Byte;
 begin
 //-------------------------------------------------------------------------
-Nome_Game:=UpperCase(ExtractName(Array_Games[id][5]));
-//-------------------------------------------------------------------------
-Caminho_Imagem:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'
-               +ExtractNamePath(Array_Games[id][1])+'.png';
-//-------------------------------------------------------------------------
 Game_Existe:=Form1_DGL.RxCheckListBox1.ItemEnabled[id-1];
-SetVisible(Form1_DGL.gif_dos, False);
 //-------------------------------------------------------------------------
 
 BeginUIUpdate(Form1_DGL);
@@ -1320,12 +1331,10 @@ ResetarBotoes;
 
  if (Game_Existe = False) then
  begin
- Form1_DGL.Image1.Visible:=True;
- //----------------------------------------
- Form1_DGL.img_game.Picture:=nil;
  SetVisible(Form1_DGL.gif_dos, True);
  //----------------------------------------
- DesabilitaMarcaDagua(False);
+ Form1_DGL.img_game.Picture:=nil;
+ MostrarFundo('default');
  //----------------------------------------
  HabilitaPlayer(False);
  SetVisible(Form1_DGL.combo_color, False);
@@ -1356,6 +1365,12 @@ ResetarBotoes;
  end
  else
  begin
+ SetVisible(Form1_DGL.gif_dos, False);
+ //-----------------------------------
+ MostrarLogo (Array_Games[id][1]);
+ MostrarFundo(Marcas[id]);
+ //-----------------------------------
+
  Form1_DGL.cont_player.Text:='2';
 
    //------------------------------------------
@@ -1369,20 +1384,6 @@ ResetarBotoes;
    //------------------------------------------
 
  HabilitaTipoGame(True);
- //--------------
- MostrarLogo(id);
- //--------------
-
-   if FileExists(Caminho_Imagem) then
-   begin
-   Form1_DGL.img_game.Picture.LoadFromFile(Caminho_Imagem);
-   SetVisible(Form1_DGL.gif_dos, False);
-   end
-   else
-   begin
-   Form1_DGL.img_game.Picture:= nil;
-   SetVisible(Form1_DGL.gif_dos, True);
-   end;
 
    //---------------------------------------------------
    {HABILITAR SELEÇÃO TECLADO OU MOUSE}

@@ -69,7 +69,6 @@ type
     Menu_Sobre: TMenuItem;
     Timer_MonitoraAPP: TTimer;
     loading_panel: TPanel;
-    img_ing: TImage;
     Menu_Firewall: TMenuItem;
     Menu_Site: TMenuItem;
     Menu_Opcoes: TMenuItem;
@@ -84,14 +83,13 @@ type
     LoadingMod: TOpenDialog;
     Label_Opcoes: TLabel;
     Label_DM: TLabel;
-    img_por: TImage;
     popup_qw: TMenuItem;
     popup_sa: TMenuItem;
     popup_de: TMenuItem;
     menu_linha: TMenuItem;
     popup_commit: TMenuItem;
     Label_QuakeServer: TLabel;
-    logo: TImage;
+    img_fundo: TImage;
     GroupIP: TGroupBox;
     Label1: TLabel;
     Label2: TLabel;
@@ -119,7 +117,6 @@ type
     Idioma_Auto: TMenuItem;
     Idioma_Por: TMenuItem;
     Idioma_Eng: TMenuItem;
-    RxCheckListBox1: TCheckListBox;
     ip_local: TEdit;
     ip_internet: TEdit;
     ip_porta: TEdit;
@@ -131,9 +128,11 @@ type
     ImageCollection2: TImageCollection;
     VirtualImageList2: TVirtualImageList;
     img_game: TImage;
-    Image1: TImage;
     gif_dos: TLabel;
     Timer1: TTimer;
+    Timer2: TTimer;
+    RxCheckListBox1: TCheckListBox;
+    gif_texto: TLabel;
     procedure Menu_SairClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -189,6 +188,7 @@ type
     procedure RxQuakeServerClick(Sender: TObject);
     procedure popup_qspClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
   private
     { Private declarations }
   public
@@ -351,7 +351,6 @@ Pasta_INI_Global :=ExtractFilePath(Application.ExeName)+'CONFIG\ini\';
 DoomSkin_Global:=Pasta_INI_Global+'\data\PHSKIN.WAD';
 
 Form1_DGL.Caption:=Application.Title;
-Wav.FileName:=ExtractFilePath(Application.ExeName)+'CONFIG\bin\st_button.wav';
 
   {VERIFICA SE OS JOGOS ESTÃO NA PASTA CORRETAMENTE VERIFICANDO O .EXE}
   for i:=1 to Length(Array_Games) do
@@ -400,7 +399,7 @@ procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
 
-  Image1.Visible:=False;
+  MostrarLogo('default');
   //------------------------------
   id:=RxCheckListBox1.ItemIndex+1;
   //------------------------------
@@ -413,7 +412,7 @@ procedure TForm1_DGL.Menu_DebugClick(Sender: TObject);
 var
 i:Integer;
 begin
-Form1_DGL.Image1.Visible:=True;
+MostrarFundo('default');
 //----------------------------------------
 DesabilitaMarcaDagua(False);
 //----------------------------------------
@@ -523,6 +522,23 @@ begin
    gif_dos.Caption := 'C:\> '
    else
    gif_dos.Caption := 'C:\>_';
+
+end;
+
+procedure TForm1_DGL.Timer2Timer(Sender: TObject);
+var
+Base:String;
+begin
+
+   if not loading_panel.Visible then
+   Exit;
+
+Base:=Lang_DGL(38);
+
+   if Length(gif_texto.Caption)-Length(Base) >= 3 then
+   gif_texto.Caption:=Base
+   else
+   gif_texto.Caption:=gif_texto.Caption+'.';
 
 end;
 
