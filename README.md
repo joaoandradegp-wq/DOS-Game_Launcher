@@ -188,13 +188,14 @@ Choose your in-game name, select the number of players, and then enter the IP ad
 <li>QuakeWorld 2.30<br>www.doomworld.com</li><br>
 </ul>
 
-<h3>🔥 Firewall Rules</h3>
+#### 🔥 FIREWALL RULES
 
 On first launch after installation, DOS Game Launcher automatically adds a Windows Firewall exception rule to allow Server and/or Client mode.
 
 These rules apply only to DOSBox, ZDoom and Quakespasm platform connections.<br>
 <br>
-<h3>🐞 Debug Mode</h3>
+
+#### 🐞 DEBUG MODE
 
 <ul>
 <li>Displays parameters sent to platforms</li>
