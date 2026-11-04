@@ -193,6 +193,7 @@ Choose your in-game name, select the number of players, and then enter the IP ad
 On first launch after installation, DOS Game Launcher automatically adds a Windows Firewall exception rule to allow Server and/or Client mode.
 
 These rules apply only to DOSBox, ZDoom and Quakespasm platform connections.<br>
+
 <br>
 
 #### 🐞 DEBUG MODE
