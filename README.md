@@ -23,7 +23,7 @@ It was designed to automatically configure and adapt each game to make use of ne
 
 The launcher is compatible with game data from:
 
-- ✅ Original CD-ROM releases
+- ✅ Original CD and Floppy Disk releases
 - ✅ GOG releases
 
 > Simply provide your legally obtained game files, and **DOS Game Launcher** will automatically recognize and configure them.
@@ -31,11 +31,12 @@ The launcher is compatible with game data from:
 ---
 
 ## ✨ Features
-<table>
+
+<table style="border: none; border-collapse: collapse;">
 <tr>
-<td width="50%" valign="top"">
+<td width="50%" valign="top" style="border: none; padding: 15px;">
   
-<h3>🎮 Supported Games</h3>
+#### 🎮 SUPPORTED GAMES
 
 It offers integration with the following games in their original or GOG versions:
 
@@ -116,27 +117,9 @@ It offers integration with the following games in their original or GOG versions
 <br>
 </td>
 
-<td width="50%" valign="top">
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
-<h3>🌐 Multiplayer</h3>
-
-<ul>
-<li><b>SERVER:</b><br>
-Choose your in-game name, select the number of players, and provide your Local or Internet IP address along with the connection Port to the other players.
-</li>
-<br>
-<li><b>CLIENT:</b><br>
-Choose your in-game name, select the number of players, and then enter the IP address and connection Port provided by the server host.
-</li>
-</ul>
-
-</td>
-</tr>
-
-<tr>
-<td width="50%" valign="top">
-
-<h3>⚙️ Configurations</h3>
+#### ⚙️ CONFIGURATIONS
 
 DOS Game Launcher automatically applies optimized settings for each available game.
 
@@ -176,10 +159,27 @@ DOS Game Launcher automatically applies optimized settings for each available ga
 </ul>
 
 </td>
+</tr>
 
-<td width="50%" valign="top">
+<td width="50%" valign="top" style="border: none; padding: 15px;">
 
-<h3>🧩 Supported Platforms</h3>
+#### 🌐 MULTIPLAYER
+
+<ul>
+<li><b>SERVER:</b><br>
+Choose your in-game name, select the number of players, and provide your Local or Internet IP address along with the connection Port to the other players.
+</li>
+<br>
+<li><b>CLIENT:</b><br>
+Choose your in-game name, select the number of players, and then enter the IP address and connection Port provided by the server host.
+</li>
+</ul>
+
+</td>
+
+<td width="50%" valign="top" style="border: none; padding: 15px;">
+
+#### 🧩 SUPPORTED PLATFORMS
 
 <ul>
 <li>DOSBox 0.74<br>www.dosbox.com</li>
