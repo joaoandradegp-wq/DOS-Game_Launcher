@@ -11,6 +11,7 @@ It was designed to automatically configure and adapt each game to make use of ne
   <img src="https://img.shields.io/badge/Status-Active-success">
   <img src="https://img.shields.io/badge/Platform-Windows-blue">
   <img src="https://img.shields.io/badge/Games-DOS-orange">
+  <img src="https://img.shields.io/badge/Arquitetura-x86 | x64-blue">  
   <img src="https://img.shields.io/badge/Languages-PT--BR%20%7C%20EN-purple">
 </p>
 
@@ -30,11 +31,8 @@ The launcher is compatible with game data from:
 ---
 
 ## ✨ Features
-
 <table>
-  
 <tr>
-  
 <td width="50%" valign="top"">
   
 <h3>🎮 Supported Games</h3>
