@@ -130,15 +130,15 @@
         <DCCReference Include="About.pas">
             <Form>Form7_About</Form>
         </DCCReference>
+        <DCCReference Include="HEXEN_Class.pas">
+            <Form>Form8_HexenClass</Form>
+        </DCCReference>
         <DCCReference Include="Language.pas"/>
         <DCCReference Include="Funcoes.pas"/>
         <DCCReference Include="NO_DOSBOX_Bind.pas"/>
         <DCCReference Include="ZDOOM_Bind.pas"/>
         <DCCReference Include="DOSBOX_Bind_FPS.pas"/>
         <DCCReference Include="QUAKE_Bind.pas"/>
-        <DCCReference Include="HEXEN_Class.pas">
-            <Form>Form8_HexenClass</Form>
-        </DCCReference>
         <DCCReference Include="UIUtils.pas"/>
         <DCCReference Include="PastaMonitor.pas"/>
         <BuildConfiguration Include="Base">

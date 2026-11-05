@@ -244,20 +244,13 @@ Config_Game_Global := IncludeTrailingPathDelimiter(Caminho_Global) + 'qw\config.
     if Fecha_ESC then
     Exit;
 
-  ServerParams := '+map ' + Map_Global + ' -port ' + Form1_DGL.ip_porta.Text + ' ' + IfThen(UsePortuguese, 'bra', 'eua');
+  ServerParams := '+map ' + Map_Global + ' -port ' + Form1_DGL.ip_porta.Text + ' ' + IntToStr(ActiveLang);
 
   {DEBUG - SERVER}
   if (Form1_DGL.menu_debug.Checked) and (ServerDedicado = True) then
   MessageBox(Application.Handle,pchar(ServerParams),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
 
 
-  {SERVER}
-  {
-  if ServerDedicado = False then
-  ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
-                                       PChar(ServerParams),
-                                       PChar(QWPath),SW_HIDE)
-  }
   if Form1_DGL.menu_debug.Checked then
   ShellExecute(Form1_DGL.Handle,'open',PChar(ServerExe),
                                        PChar('debug '+ServerParams),

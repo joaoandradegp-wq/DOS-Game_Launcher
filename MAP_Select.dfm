@@ -70,7 +70,7 @@ object Form4_Select: TForm4_Select
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -28
+    Font.Height = -32
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False

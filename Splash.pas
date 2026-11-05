@@ -3,20 +3,18 @@ unit Splash;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, RXCtrls, Animate, GIFCtrl, ShellAPI,
-  GraphicEx, jpeg;
+  Windows, SysUtils, Forms, ExtCtrls, ShellAPI, Vcl.StdCtrls,
+  Vcl.WinXCtrls, Vcl.Imaging.jpeg, System.Classes, Vcl.Controls;
 
 type
   TForm5_Splash = class(TForm)
     Image1: TImage;
-    rx_loading: TRxGIFAnimator;
-    RxLabel1: TRxLabel;
+    Label1: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
+    FIndicator: TActivityIndicator;
   public
     { Public declarations }
   end;
@@ -39,21 +37,19 @@ end;
 
 procedure TForm5_Splash.FormCreate(Sender: TObject);
 begin
-RxLabel1.Caption:=Lang_DGL(37);
-RxLabel1.Left:=(ClientWidth-RxLabel1.Width) div 2;
-rx_loading.Left:=(ClientWidth-rx_loading.Width) div 2;
+Label1.Caption:=Lang_DGL(37);
+Label1.Left:=(ClientWidth-Label1.Width) div 2;
 
-if Form1_DGL <> nil then
-rx_loading.Visible:=False;
+FIndicator := TActivityIndicator.Create(Self);
+FIndicator.Parent := Self;
+FIndicator.IndicatorSize := aisMedium;
+FIndicator.Left := (ClientWidth - FIndicator.Width) div 2;
+FIndicator.Top  := ClientHeight - FIndicator.Height - MulDiv(50, CurrentPPI, 96);
+FIndicator.Animate := True;
 
-if FileExists('check_update.exe') then
-ShellExecute(0,'open','check_update.exe',pchar(DGL_VERSAO_Global),nil,SW_HIDE);
+   if FileExists('check_update.exe') then
+   ShellExecute(0,'open','check_update.exe',pchar(DGL_VERSAO_Global),nil,SW_HIDE);
 
-end;
-
-procedure TForm5_Splash.FormActivate(Sender: TObject);
-begin
-rx_loading.Visible:=True;
 end;
 
 end.

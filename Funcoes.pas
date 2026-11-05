@@ -56,7 +56,6 @@ procedure VarGlobais(Executavel,Diretorio,Versao,Blog:String);
 function  ProcessExists(exeFileName: String): Boolean;
 function  UsuarioLogado:String;
 function  AspectRatio(Largura,Altura:Integer):Integer;
-function  GetLanguageWin:String;
 procedure FirewallBatch;
 procedure Carrega_PCX(const FileName: String);
 procedure Fecha_EXE(Executavel:String);
@@ -551,17 +550,6 @@ aux:=Trunc((Largura/Altura)*100)/100;
  else
  Result:=0;
 
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-function GetLanguageWin:String;
-var
-ID:LangID;
-Language: Array [0..100] of Char;
-begin
-ID:=GetSystemDefaultLangID;
-VerLanguageName(ID,Language,100);
-Result:=LowerCase(Copy(String(Language),0,3));
 end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

@@ -14238,7 +14238,7 @@ object Form1_DGL: TForm1_DGL
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -28
+    Font.Height = -32
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False

@@ -25,8 +25,7 @@ Map_Global,Nome_DLC_Global:String;
 IP_Externo_Global,IP_Interno_Global:String;
 Caminho_Global,Pasta_INI_Global,DosBox_EXE_Global,ZDoom_EXE_Global:String;
 DoomSkin_Global,DoomMod_Global,DoomDM_Global,Game_EXE_Global:String;
-EPI_Global_DLC,CAP_Global_DLC,Language_Global:Integer;
-//Language_Global: 0 = Automático (idioma do Windows) | 1 = Português | 2 = English
+EPI_Global_DLC,CAP_Global_DLC:Integer;
 Config_Game_Global,VarParametro_Global,LogoAtual_Global:String;
 
 UltimoGrupoCores: Integer = -1;
@@ -399,7 +398,7 @@ procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
 
-  MostrarLogo('default');
+  MostrarLogo(Array_Games[id][1]);
   //------------------------------
   id:=RxCheckListBox1.ItemIndex+1;
   //------------------------------
@@ -413,8 +412,6 @@ var
 i:Integer;
 begin
 MostrarFundo('default');
-//----------------------------------------
-DesabilitaMarcaDagua(False);
 //----------------------------------------
 RxCheckListBox1.Clear;
 img_game.Picture.Graphic:=Nil;

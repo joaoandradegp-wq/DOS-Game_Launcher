@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, pngextra, Buttons, ExtCtrls;
+  Dialogs, StdCtrls, ComCtrls, Buttons, ExtCtrls;
 
 type
   TForm6_Mouse = class(TForm)

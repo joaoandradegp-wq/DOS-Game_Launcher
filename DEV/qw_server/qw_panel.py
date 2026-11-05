@@ -48,7 +48,7 @@ IS_WINDOWS = platform.system() == "Windows"
 # ----------------------------------------------------------------------
 #
 # Regra: se o idioma do sistema operacional for Português do Brasil
-# (pt_BR), o painel fala PT-BR. Qualquer outro idioma do SO -> Inglês.
+# (pt_BR, pt_PT)), o painel fala PT-BR. Qualquer outro idioma do SO -> Inglês.
 
 def detect_system_language():
     """Detecta o idioma do sistema operacional (Windows ou Linux) e
@@ -81,23 +81,31 @@ def detect_system_language():
 
     for c in candidates:
         norm = c.strip().lower().replace("-", "_")
-        if norm.startswith("pt_br"):
+        if norm == "pt" or norm.startswith("pt_"):   # pt_BR, pt_PT, pt
             return "pt_BR"
 
     return "en"
 
 def get_forced_language():
-    """Só no Windows: procura 'eua' ou 'bra' em qualquer posição da linha
-    de comando e devolve 'en' / 'pt_BR'. Sem o parâmetro, devolve None
-    e vale a detecção automática pelo idioma do SO."""
+    """Só no Windows: o DOS Game Launcher manda o idioma já resolvido na
+    linha de comando: '1' = português (pt_BR), '2' = English. Os valores
+    que vêm depois de '+map' e '-port' são pulados, para um número de
+    porta nunca ser confundido com o idioma. Sem o parâmetro, devolve
+    None e vale a detecção automática pelo idioma do SO."""
     if not IS_WINDOWS:
         return None
-    for arg in sys.argv[1:]:
-        a = arg.strip().lower()
-        if a == "eua":
-            return "en"
-        if a == "bra":
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        a = args[i].strip().lower()
+        if a in ("+map", "-port"):
+            i += 2
+            continue
+        if a == "1":
             return "pt_BR"
+        if a == "2":
+            return "en"
+        i += 1
     return None
 
 LANG = get_forced_language() or detect_system_language()
@@ -1590,10 +1598,10 @@ class QuakePanel(tk.Tk):
 
 def _get_launch_param():
     """Primeiro argumento de linha de comando que não seja o idioma
-    forçado (eua/bra), ex: 'Phobos' ou 'Debug'."""
+    forçado (1/2), ex: 'Phobos' ou 'Debug'."""
     for arg in sys.argv[1:]:
         a = arg.strip()
-        if a and a.lower() not in ("eua", "bra"):
+        if a and a not in ("1", "2"):
             return a
     return None
 

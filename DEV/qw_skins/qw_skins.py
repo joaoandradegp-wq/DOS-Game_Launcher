@@ -29,7 +29,7 @@ MB_ICONINFORMATION = 0x40
 MB_TOPMOST = 0x40000
 
 MSG = {
-    "bra": {
+    "1": {
         "erro_403": "Limite de requisições da API do GitHub atingido (erro 403).\nTente novamente mais tarde.",
         "erro_http": "Erro HTTP ao listar a pasta de skins: {code} {reason}",
         "erro_listar": "Erro ao listar a pasta de skins:\n{err}",
@@ -39,7 +39,7 @@ MSG = {
         "baixadas": "Foram baixadas {n} skins novas.",
         "falharam": "{n} arquivo(s) falharam ao baixar:\n{lista}",
     },
-    "eua": {
+    "2": {
         "erro_403": "GitHub API rate limit reached (error 403).\nPlease try again later.",
         "erro_http": "HTTP error while listing the skins folder: {code} {reason}",
         "erro_listar": "Error while listing the skins folder:\n{err}",
@@ -102,14 +102,12 @@ def main() -> int:
     parser.add_argument(
         "idioma",
         nargs="?",
-        default="bra",
-        type=str.lower,
-        choices=["bra", "eua"],
-        help="bra = Português | eua = English (padrão/default: bra)",
+        default="1",
+        help="1 = Português | 2 = English (padrão/default: 1)",
     )
     args = parser.parse_args()
 
-    m = MSG[args.idioma]
+    m = MSG["1"] if args.idioma.strip() == "1" else MSG["2"]
     destino = os.path.abspath(args.destino)
 
     try:

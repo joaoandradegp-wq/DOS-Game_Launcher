@@ -1,23 +1,21 @@
 program dos_games;
 
 uses
-  Forms,
-  Wininet,
-  SysUtils,
+  Forms, Windows, SysUtils,
   Unit1 in 'Unit1.pas' {Form1_DGL},
-  DLC in 'DLC.pas' {Form2_DLC},
+  DLC in 'DLC.pas'     {Form2_DLC},
   QUAKE_NameFun in 'QUAKE_NameFun.pas' {Form3_NameFun},
-  MAP_Select in 'MAP_Select.pas' {Form4_Select},
-  Splash in 'Splash.pas' {Form5_Splash},
-  Mouse_Sense in 'Mouse_Sense.pas' {Form6_Mouse},
-  About in 'About.pas' {Form7_About},
+  MAP_Select in 'MAP_Select.pas'       {Form4_Select},
+  Splash in 'Splash.pas'               {Form5_Splash},
+  Mouse_Sense in 'Mouse_Sense.pas'     {Form6_Mouse},
+  About in 'About.pas'                 {Form7_About},
+  HEXEN_Class in 'HEXEN_Class.pas'     {Form8_HexenClass},
   Language in 'Language.pas',
   Funcoes in 'Funcoes.pas',
   NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas',
   ZDOOM_Bind in 'ZDOOM_Bind.pas',
   DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas',
   QUAKE_Bind in 'QUAKE_Bind.pas',
-  HEXEN_Class in 'HEXEN_Class.pas' {Form8_HexenClass},
   UIUtils in 'UIUtils.pas',
   PastaMonitor in 'PastaMonitor.pas';
 
@@ -33,41 +31,40 @@ var
 //------------------------------------------------------
 DGL_EXE,
 DGL_RAIZ:String;
+T: UInt64;
 //------------------------------------------------------
 
 begin
   Application.Initialize;
   Application.Title := 'DOS GAME LAUNCHER 3.0';
-  IP_Interno_Global := GetInternalIP;
-  IP_Externo_Global := GetExternalIP;
-
   DGL_EXE  := Copy(ExtractFileName(Application.ExeName), 1,
                    Length(ExtractFileName(Application.ExeName)) - 4);
   DGL_RAIZ := ExtractFilePath(Application.ExeName);
 
   VarGlobais(DGL_EXE, DGL_RAIZ, DGL_VERSAO, DGL_BLOG);
 
-  {IDIOMA: LE A ESCOLHA DO dos.ini (0 = AUTOMATICO). O PARAMETRO 'eua' FORCA INGLES SEM GRAVAR NO .INI}
   Lang_Load;
-  if ParamStr(2) = 'eua' then
-  Language_Global:=2
-  else
-   if ParamStr(2) = 'bra' then
-   Language_Global:=1;
 
   Form5_Splash := TForm5_Splash.Create(nil);
   try
     Form5_Splash.Show;
     Form5_Splash.Update;
-    Sleep(3000);
+    T := GetTickCount64;
+
+      while GetTickCount64 - T < 3000 do
+      begin
+      Application.ProcessMessages;
+      Sleep(10);
+      end;
+
   finally
     Form5_Splash.Free;
   end;
 
- if ParamStr(1) <> 'phobos' then
- Halt;
+   if ParamStr(1) <> 'phobos' then
+   Halt;
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
-  Application.Run;
+ Application.Run;
 
 end.

@@ -1,6 +1,6 @@
 object Form8_HexenClass: TForm8_HexenClass
-  Left = 372
-  Top = 247
+  Left = 883
+  Top = 698
   Margins.Left = 9
   Margins.Top = 9
   Margins.Right = 9
@@ -8,8 +8,8 @@ object Form8_HexenClass: TForm8_HexenClass
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone
-  ClientHeight = 860
-  ClientWidth = 1404
+  ClientHeight = 867
+  ClientWidth = 1352
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object Form8_HexenClass: TForm8_HexenClass
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  Position = poMainFormCenter
+  Position = poDesigned
   OnActivate = FormActivate
   OnClose = FormClose
   OnKeyPress = FormKeyPress
@@ -26,8 +26,8 @@ object Form8_HexenClass: TForm8_HexenClass
   object Select: TImage
     Left = 0
     Top = 0
-    Width = 1404
-    Height = 860
+    Width = 1352
+    Height = 867
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -7847,10 +7847,11 @@ object Form8_HexenClass: TForm8_HexenClass
     Stretch = True
     ExplicitLeft = 48
     ExplicitWidth = 1356
+    ExplicitHeight = 860
   end
   object S01: TImage
     Left = 14
-    Top = 27
+    Top = 48
     Width = 450
     Height = 819
     Margins.Left = 9
@@ -7860,8 +7861,8 @@ object Form8_HexenClass: TForm8_HexenClass
     OnClick = S01Click
   end
   object S02: TImage
-    Left = 931
-    Top = 27
+    Left = 449
+    Top = 48
     Width = 435
     Height = 819
     Margins.Left = 9
@@ -7872,8 +7873,8 @@ object Form8_HexenClass: TForm8_HexenClass
     OnClick = S02Click
   end
   object S03: TImage
-    Left = 463
-    Top = 27
+    Left = 902
+    Top = 48
     Width = 450
     Height = 819
     Margins.Left = 9
@@ -7883,7 +7884,7 @@ object Form8_HexenClass: TForm8_HexenClass
     OnClick = S03Click
   end
   object Label1: TLabel
-    Left = 182
+    Left = 105
     Top = 589
     Width = 120
     Height = 40
@@ -7901,8 +7902,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label2: TLabel
-    Left = 176
-    Top = 647
+    Left = 88
+    Top = 654
     Width = 137
     Height = 40
     Margins.Left = 9
@@ -7919,8 +7920,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label3: TLabel
-    Left = 176
-    Top = 713
+    Left = 96
+    Top = 726
     Width = 126
     Height = 40
     Margins.Left = 9
@@ -7937,8 +7938,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label4: TLabel
-    Left = 106
-    Top = 779
+    Left = 27
+    Top = 795
     Width = 201
     Height = 40
     Margins.Left = 9
@@ -7955,7 +7956,7 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label5: TLabel
-    Left = 597
+    Left = 560
     Top = 589
     Width = 120
     Height = 40
@@ -7973,8 +7974,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label6: TLabel
-    Left = 585
-    Top = 647
+    Left = 543
+    Top = 654
     Width = 137
     Height = 40
     Margins.Left = 9
@@ -7991,8 +7992,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label7: TLabel
-    Left = 591
-    Top = 713
+    Left = 554
+    Top = 726
     Width = 126
     Height = 40
     Margins.Left = 9
@@ -8009,8 +8010,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label8: TLabel
-    Left = 505
-    Top = 779
+    Left = 482
+    Top = 795
     Width = 201
     Height = 40
     Margins.Left = 9
@@ -8027,7 +8028,7 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label9: TLabel
-    Left = 1050
+    Left = 1025
     Top = 589
     Width = 120
     Height = 40
@@ -8045,8 +8046,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label10: TLabel
-    Left = 1044
-    Top = 647
+    Left = 1008
+    Top = 654
     Width = 137
     Height = 40
     Margins.Left = 9
@@ -8063,8 +8064,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label11: TLabel
-    Left = 1044
-    Top = 713
+    Left = 1019
+    Top = 726
     Width = 126
     Height = 40
     Margins.Left = 9
@@ -8081,8 +8082,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object Label12: TLabel
-    Left = 958
-    Top = 779
+    Left = 944
+    Top = 795
     Width = 201
     Height = 40
     Margins.Left = 9

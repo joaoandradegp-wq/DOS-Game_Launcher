@@ -4,18 +4,18 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, StdCtrls, registry, WinSkinData, Buttons;
+  Dialogs, pngimage, ExtCtrls, StdCtrls, registry, Buttons;
 
 type
   TForm7_About = class(TForm)
     Panel_Lateral: TPanel;
     IMG_LOGO: TImage;
-    IMG_TOPO: TImage;
     Linha: TBevel;
     MemoSIGIL: TMemo;
-    SkinData_Buttons: TSkinData;
     SpeedButton1: TSpeedButton;
     Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormActivate(Sender: TObject);
     procedure FormKeyPress(Sender: TObject; var Key: Char);

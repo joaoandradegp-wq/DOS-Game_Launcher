@@ -4,7 +4,12 @@ interface
 
 uses SysUtils;
 
-function  UsePortuguese:Boolean;
+var
+  // 0 = Automatico (idioma do Windows) | 1 = Portugues | 2 = English
+  Language_Global: Integer = 0;
+
+function  GetLanguageWin: String;
+function  ActiveLang: Integer;
 function  Lang_DGL(id:Integer):String;
 procedure Lang_Load;
 procedure Lang_Save;
@@ -12,29 +17,41 @@ procedure Lang_Apply(NewLang:Integer);
 
 implementation
 
-uses Funcoes, Unit1, MAP_Select, QUAKE_NameFun, About, IniFiles, Forms;
+uses Windows, Unit1, MAP_Select, QUAKE_NameFun, About, IniFiles, Forms;   {IDIOMA DO WINDOWS - 03/05}
 
 //------------------------------------------------------------------------------
-// Language_Global (declarada no Unit1):
-//   0 = Automatico (idioma do Windows) | 1 = Portugues | 2 = English
+// Retorna o codigo ISO 639-1 do idioma do usuario no Windows ('pt', 'en', ...)
 //------------------------------------------------------------------------------
-function UsePortuguese:Boolean;
+function GetLanguageWin: String;   {IDIOMA DO WINDOWS - 04/05}
+var
+  Buf: array[0..9] of Char;
 begin
-  case Language_Global of
-    1: Result:=True;
-    2: Result:=False;
-  else
-    Result:=(GetLanguageWin = 'por');
-  end;
+  FillChar(Buf, SizeOf(Buf), 0);
+  GetLocaleInfo(GetUserDefaultLangID, LOCALE_SISO639LANGNAME, Buf, Length(Buf));
+  Result := LowerCase(String(Buf));
 end;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+function ActiveLang: Integer;
+begin
+  if (Language_Global = 1) or (Language_Global = 2) then
+  begin
+    Result := Language_Global;
+    Exit;
+  end;
 
+  if GetLanguageWin = 'pt' then
+  Result := 1
+  else
+  Result := 2;
+end;
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 function Lang_DGL(id:Integer):String;
 begin
 Result:='';
 
-if UsePortuguese then
+if ActiveLang = 1 then
 begin
 
   case id of
@@ -178,7 +195,7 @@ begin
   5: Result:='STARTING...';
   6: Result:='This Expansion has no SETUP.EXE file.';
   7: Result:='Choose your Class';
-  8: Result:='Could not find the directory';
+  8: Result:='Could not find the directory at';
   9: Result:='Waiting for players...';
  10: begin
      Form4_Select.label_episodio.Caption:='EPISODE:';
@@ -190,7 +207,7 @@ begin
  14: Result:='START';
  15: Result:='SERVER ADDRESS';
  16: Result:='Run as Administrator to include DGL Services in Windows Firewall.';
- 17: Result:='The DGL Services was included at Windows Firewall!';
+ 17: Result:='The DGL Services were included in Windows Firewall!';
  18: Result:='KEYBOARD';
  19: begin
      Form3_NameFun.Caption:='Options';

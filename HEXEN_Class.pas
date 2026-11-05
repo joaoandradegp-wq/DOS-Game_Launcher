@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, GraphicEx, ExtCtrls, pngimage, StdCtrls;
+  Dialogs, ExtCtrls, pngimage, StdCtrls;
 
 type
   TForm8_HexenClass = class(TForm)
@@ -85,7 +85,7 @@ procedure TForm8_HexenClass.FormActivate(Sender: TObject);
 begin
 
   {PT-BR}
-  if UsePortuguese then
+  if ActiveLang = 1 then
   begin
   Label1.Left:=10;
   Label2.Left:=12;

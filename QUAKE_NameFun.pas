@@ -284,7 +284,7 @@ Params, Destino: String;
 begin
 Destino := Caminho_Global + 'id1\skins\';
 Params  := '"' + ExcludeTrailingPathDelimiter(Destino) + '" ' +
-                 IfThen(UsePortuguese, 'bra', 'eua');
+                 IntToStr(ActiveLang);   {SKIN DOWNLOAD IDIOMA}
 
 ShellExecute(Handle, 'open',
                PChar(IncludeTrailingPathDelimiter(Caminho_Global) + 'qw_skins.exe'),

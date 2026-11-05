@@ -4,7 +4,7 @@ interface
 
 uses
   Messages, SysUtils, Forms, Dialogs, Buttons,
-  StdCtrls, WinSkinData, StrUtils, ExtCtrls, Classes, Controls;
+  StdCtrls, StrUtils, ExtCtrls, Classes, Controls;
 
 type
   TForm4_Select = class(TForm)
