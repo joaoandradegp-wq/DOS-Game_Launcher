@@ -3,14 +3,12 @@ unit DLC;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, StdCtrls, WinSkinData;
+  SysUtils, Forms, Buttons, System.Classes, Vcl.Controls, Windows;
 
 type
   TForm2_DLC = class(TForm)
     PACK01: TSpeedButton;
     PACK02: TSpeedButton;
-    SkinData_Buttons: TSkinData;
     PACK00: TSpeedButton;
     procedure PACK01Click(Sender: TObject);
     procedure PACK02Click(Sender: TObject);
@@ -19,7 +17,6 @@ type
     procedure PACK00Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
   private
-  IMG_QUAKE_DLC1, IMG_QUAKE_DLC2, IMG_WOLF3D_DLC:String;
     { Private declarations }
   public
     { Public declarations }
@@ -30,15 +27,12 @@ var
 
 implementation
 
-uses Unit1, Language, Funcoes, ZDOOM_Bind, DOSBOX_Bind_FPS, HEXEN_Class;
+uses Unit1, Language, ZDOOM_Bind, DOSBOX_Bind_FPS, Funcoes;
 
 {$R *.dfm}
 
 procedure TForm2_DLC.FormActivate(Sender: TObject);
 begin
-IMG_QUAKE_DLC1 := ExtractFilePath(Application.ExeName)+'CONFIG\png\08A.png';
-IMG_QUAKE_DLC2 := ExtractFilePath(Application.ExeName)+'CONFIG\png\08B.png';
-IMG_WOLF3D_DLC := ExtractFilePath(Application.ExeName)+'CONFIG\png\12A.png';
 
   case id of
    3: begin
@@ -78,7 +72,7 @@ IMG_WOLF3D_DLC := ExtractFilePath(Application.ExeName)+'CONFIG\png\12A.png';
       PACK02.Caption:='';
       PACK01.Enabled:=FileExists(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'SoD.pk7');
       PACK02.Visible:=not PACK01.Enabled;
-      Form2_DLC.Height:=105;
+      Form2_DLC.Height:=MulDiv(105, CurrentPPI, 96);
       end;
   end;
 
@@ -109,16 +103,14 @@ begin
          Nome_DLC_Global:='Scourge of Armagon';
          Config_Game_Global:=Caminho_Global+'hipnotic\config.cfg';
          VarParametro_Global:=VarParametro_Global+' -game hipnotic -hipnotic';
-           if FileExists (IMG_QUAKE_DLC1) then
-           Form1_DGL.img_game.Picture.LoadFromFile(IMG_QUAKE_DLC1);
+         MostrarLogo('08A');
          end;
 7,10,12: begin
          EPI_Global_DLC:=2; {HEXEN(CLASSE) + WANTON DESTRUCTION + SPEAR OF DESTINY}
            if id = 12 then
            begin
            Nome_DLC_Global:='Spear of Destiny';
-             if FileExists(IMG_WOLF3D_DLC) then
-             Form1_DGL.img_game.Picture.LoadFromFile(IMG_WOLF3D_DLC);
+           MostrarLogo('12A');
            end;
          end;
   end;
@@ -136,8 +128,7 @@ begin
       Nome_DLC_Global:='Dissolution of Eternity';
       Config_Game_Global:=Caminho_Global+'rogue\config.cfg';
       VarParametro_Global:=VarParametro_Global+' -rogue';
-        if FileExists (IMG_QUAKE_DLC2) then
-        Form1_DGL.img_game.Picture.LoadFromFile(IMG_QUAKE_DLC2);
+      MostrarLogo('08B');
       end;
 7,10: EPI_Global_DLC:=3; {HEXEN(CLASSE) + TWIN DRAGON}
   end;

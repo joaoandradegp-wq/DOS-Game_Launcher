@@ -3,10 +3,9 @@ unit QUAKE_NameFun;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Buttons, StdCtrls, ShellAPI, ExtCtrls, PastaMonitor,
-  Vcl.BaseImageCollection, Vcl.ImageCollection, System.ImageList, Vcl.ImgList,
-  Vcl.VirtualImageList;
+  Windows, SysUtils, Classes, Forms, Buttons, StdCtrls, ShellAPI, ExtCtrls,
+  Vcl.ImageCollection, Vcl.VirtualImageList, PastaMonitor, System.ImageList,
+  Vcl.ImgList, Vcl.BaseImageCollection, Vcl.Controls;
 
 type
   TForm3_NameFun = class(TForm)
@@ -56,7 +55,7 @@ var
 
 implementation
 
-uses Unit1, Funcoes, Language, StrUtils;
+uses Unit1, Funcoes, Language;
 
 {$R *.dfm}
 

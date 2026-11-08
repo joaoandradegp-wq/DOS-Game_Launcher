@@ -3,12 +3,10 @@ unit Unit1;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, StdCtrls, ComCtrls,
-  ExtCtrls, ImgList, pngimage, ShellAPI,
-  Buttons, StrUtils,
-  System.ImageList, Vcl.CheckLst, Vcl.VirtualImage,
-  Vcl.VirtualImageList, Vcl.BaseImageCollection, Vcl.ImageCollection;
+  Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, Menus,
+  StdCtrls, ComCtrls, ExtCtrls, ImgList, ShellAPI,
+  Buttons, StrUtils, Vcl.CheckLst, Vcl.VirtualImageList, Vcl.ImageCollection,
+  Vcl.BaseImageCollection, System.ImageList, Vcl.Imaging.pngimage;
 
 type
 //------------------------------------
@@ -234,8 +232,8 @@ SW_MouseAnalogY = 52312;
 
 implementation
 
-uses IniFiles, Funcoes, About, QUAKE_NameFun, MAP_Select, Mouse_Sense, Language,
-DLC, Splash, NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind, UIUtils;
+uses IniFiles, Funcoes, About, QUAKE_NameFun, Mouse_Sense, Language,
+     NO_DOSBOX_Bind, ZDOOM_Bind, DOSBOX_Bind_FPS, QUAKE_Bind, UIUtils;
 
 var
 Arquivo_INI:TIniFile;

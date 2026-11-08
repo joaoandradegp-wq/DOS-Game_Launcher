@@ -3,8 +3,7 @@ unit QUAKE_Bind;
 interface
 
 uses
-  Classes, SysUtils, StrUtils, ShellAPI, Forms, Windows, Dialogs,
-  Unit1, DLC, Funcoes, Language, UIUtils;
+  Classes, SysUtils, ShellAPI, Forms, Windows;
 
 //--------------------------------------------------
 type
@@ -59,6 +58,8 @@ function  Quake_Color(Cor:Integer):Integer;
 //------------------------------------------------------------------------------
 
 implementation
+
+uses Unit1, DLC, Funcoes, Language, UIUtils;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

@@ -4,7 +4,8 @@ interface
 
 uses
   Windows, SysUtils, Forms, ExtCtrls, ShellAPI, Vcl.StdCtrls,
-  Vcl.WinXCtrls, Vcl.Imaging.jpeg, System.Classes, Vcl.Controls;
+  Vcl.WinXCtrls, Vcl.Imaging.jpeg, System.Classes, Vcl.Controls,
+  Vcl.Imaging.pngimage;
 
 type
   TForm5_Splash = class(TForm)

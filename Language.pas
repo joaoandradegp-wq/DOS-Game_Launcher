@@ -2,7 +2,7 @@ unit Language;
 
 interface
 
-uses SysUtils;
+uses SysUtils, Windows, IniFiles, Forms;
 
 var
   // 0 = Automatico (idioma do Windows) | 1 = Portugues | 2 = English
@@ -17,7 +17,7 @@ procedure Lang_Apply(NewLang:Integer);
 
 implementation
 
-uses Windows, Unit1, MAP_Select, QUAKE_NameFun, About, IniFiles, Forms;   {IDIOMA DO WINDOWS - 03/05}
+uses Unit1, MAP_Select, QUAKE_NameFun;   {IDIOMA DO WINDOWS - 03/05}
 
 //------------------------------------------------------------------------------
 // Retorna o codigo ISO 639-1 do idioma do usuario no Windows ('pt', 'en', ...)

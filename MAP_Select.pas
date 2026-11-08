@@ -3,8 +3,7 @@ unit MAP_Select;
 interface
 
 uses
-  Messages, SysUtils, Forms, Dialogs, Buttons,
-  StdCtrls, StrUtils, ExtCtrls, Classes, Controls;
+  Messages, SysUtils, Forms, Buttons, StdCtrls, Controls, System.Classes;
 
 type
   TForm4_Select = class(TForm)
@@ -624,15 +623,6 @@ uses Unit1, Funcoes, Language, ZDOOM_Bind, DOSBOX_Bind_FPS;
 
 {$R *.dfm}
 
-procedure LoadImageIfNeeded(const Caminho: string);
-begin
-  if LogoAtual_Global <> Caminho then
-  begin
-  Form1_DGL.img_game.Picture.LoadFromFile(Caminho);
-  LogoAtual_Global:=Caminho;
-  end;
-end;
-
 procedure TForm4_Select.FormCreate(Sender: TObject);
 begin
 Lang_DGL(10);
@@ -906,10 +896,10 @@ btn_aplicar.Enabled:=False;
  if (id = 10) then
  begin
    case ListBox_Episodio.ItemIndex of
-     2: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10A.png');
-     3: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10B.png');
+     2: MostrarLogo('10A');
+     3: MostrarLogo('10B');
    else
-   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\10.png');
+   MostrarLogo('10');
    end;
  end;
  //--------------------------------------------------------------------------
@@ -923,7 +913,7 @@ btn_aplicar.Enabled:=False;
 
    case ListBox_Episodio.ItemIndex of
    4: begin
-      LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03A.png');
+      MostrarLogo('03A');
       SIGIL_State:=SIGIL_DLC_Exists(1);
 
         if SIGIL_State then
@@ -931,7 +921,7 @@ btn_aplicar.Enabled:=False;
 
       end;
    5: begin
-      LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03B.png');
+      MostrarLogo('03B');
       SIGIL_State:=SIGIL_DLC_Exists(2);
 
         if SIGIL_State then
@@ -940,7 +930,7 @@ btn_aplicar.Enabled:=False;
       end;
    else
    begin
-   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\03.png');
+   MostrarLogo('03');
    SIGIL_State:=True;
    end;
    end;
@@ -955,10 +945,10 @@ btn_aplicar.Enabled:=False;
  if (id = 1) then
  begin
    case ListBox_Episodio.ItemIndex of
-     4: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01A.png');
-     5: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01B.png');
+     4: MostrarLogo('01A');
+     5: MostrarLogo('01B');
    else
-   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\01.png');
+   MostrarLogo('01');
    end;
  end;
  //--------------------------------------------------------------------------
@@ -969,9 +959,9 @@ btn_aplicar.Enabled:=False;
  if (id = 5) then
  begin
    case ListBox_Episodio.ItemIndex of
-     3: LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\05A.png');
+     3: MostrarLogo('05A');
    else
-   LoadImageIfNeeded(Caminho_EXE+'CONFIG\png\05.png');
+   MostrarLogo('05');
    end;
  end;
  //--------------------------------------------------------------------------
@@ -979,13 +969,10 @@ btn_aplicar.Enabled:=False;
 end;
 
 procedure TForm4_Select.FormClose(Sender: TObject; var Action: TCloseAction);
-var
-Logo_Original:String;
 begin
-Logo_Original:=ExtractFilePath(Application.ExeName)+'CONFIG\png\'+ExtractNamePath(Array_Games[id][1])+'.png';
 
   if (Form1_DGL.RxQuakeServer.Down = False) then
-  Form1_DGL.img_game.Picture.LoadFromFile(Logo_Original);
+  MostrarLogo(IntToStr(id));
 
 Nome_DLC_Global:='';
 Form4_Select.Release;
@@ -1007,10 +994,10 @@ Caminho_EXE:=ExtractFilePath(Application.ExeName);
    case ListBox_Episodio.ItemIndex of
      4: begin
           case ListBox_Capitulo.ItemIndex of
-           6,7,8,9: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10A.png');
-          10,11,12: Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10B.png');
+           6,7,8,9: MostrarLogo('10A');
+          10,11,12: MostrarLogo('10B');
           else
-          Form1_DGL.img_game.Picture.LoadFromFile(Caminho_EXE+'CONFIG\png\10.png');
+          MostrarLogo('10');
           end;
         end;
    end;

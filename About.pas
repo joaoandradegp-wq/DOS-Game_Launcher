@@ -3,8 +3,8 @@ unit About;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, StdCtrls, registry, Buttons;
+  SysUtils, Forms, ExtCtrls, StdCtrls, Buttons, Vcl.Imaging.pngimage,
+  Vcl.Controls, System.Classes;
 
 type
   TForm7_About = class(TForm)
@@ -32,7 +32,7 @@ var
 
 implementation
 
-uses Unit1, Language;
+uses Language;
 
 {$R *.dfm}
 

@@ -3,8 +3,7 @@ unit HEXEN_Class;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, pngimage, StdCtrls;
+  Forms, ExtCtrls, StdCtrls, Vcl.Imaging.pngimage, System.Classes, Vcl.Controls;
 
 type
   TForm8_HexenClass = class(TForm)
@@ -41,7 +40,7 @@ var
 
 implementation
 
-uses Unit1, DLC, Language;
+uses Unit1, Language;
 
 {$R *.dfm}
 

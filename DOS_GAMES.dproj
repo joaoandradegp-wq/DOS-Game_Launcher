@@ -104,6 +104,9 @@
         <VerInfo_MinorVer>0</VerInfo_MinorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=3.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <Icon_MainIcon>CONFIG\png\art\icon_ICO.ico</Icon_MainIcon>
+        <UWP_DelphiLogo44>CONFIG\png\art\icon_PNG.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>CONFIG\png\art\icon_PNG.png</UWP_DelphiLogo150>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -171,6 +174,13 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="5">
+                <DeployFile LocalName="CONFIG\png\art\icon_PNG.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo44x44.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="D:\DOSBOX\DOS_GAMES.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>DOS_GAMES.exe</RemoteName>

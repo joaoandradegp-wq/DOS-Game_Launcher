@@ -3,7 +3,7 @@ unit UIUtils;
 interface
 
 uses
-Windows, Messages, Classes, Controls, Forms, Graphics, ExtCtrls, StdCtrls, SysUtils, Buttons;
+Windows, Messages, Classes, Controls, ExtCtrls, StdCtrls, SysUtils, Buttons;
 
 //==========================================
 //REDRAW

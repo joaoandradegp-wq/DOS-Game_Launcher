@@ -4,7 +4,7 @@ interface
 
 uses
   IdHTTP, System.IOUtils, SysUtils, Forms, Classes, Windows, ShellApi,
-  Graphics, StdCtrls, Dialogs, WinSock, TlHelp32, IdIcmpClient, Messages,
+  Graphics, StdCtrls, WinSock, TlHelp32, IdIcmpClient, Messages,
   IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons, MMSystem;
 
 type

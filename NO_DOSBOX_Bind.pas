@@ -3,8 +3,7 @@ unit NO_DOSBOX_Bind;
 interface
 
 uses
-  Classes, SysUtils, Forms, Windows, Unit1, Funcoes,
-  Language, IniFiles, Messages;
+  Classes, SysUtils, Forms, Windows, IniFiles;
 
 //Dialogs - Para testar com ShowMessage();
 
@@ -28,6 +27,8 @@ procedure DOSBOX_Bind_NEWS(
 //------------------------------------------------------------------------------
 
 implementation
+
+uses Unit1, Funcoes, Language;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
