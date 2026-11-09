@@ -3,7 +3,8 @@ unit UIUtils;
 interface
 
 uses
-Windows, Messages, Classes, Controls, ExtCtrls, StdCtrls, SysUtils, Buttons;
+Windows, Messages, Classes, Controls, ExtCtrls, StdCtrls,
+SysUtils, Vcl.Buttons, Vcl.ImageCollection, Vcl.Graphics, Vcl.VirtualImageList;
 
 //==========================================
 //REDRAW
@@ -43,8 +44,9 @@ procedure MostrarQuakeServer(Visible: Boolean);
 procedure HabilitaPlayer(Enabled: Boolean);
 procedure HabilitaTipoGame(Enabled: Boolean);
 
-procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
-procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
+procedure PosicionarBotao(Botao: TControl; Texto: TLabel; NovoTop: Integer);
+procedure SetGlyph(Button: TButton; ImageList: TVirtualImageList; Index: Integer);
+procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 48);
 
 procedure GaranteLinha(Lista: TStringList; const Linha: string);
 
@@ -100,7 +102,7 @@ begin
   begin
   C := AParent.Controls[i];
 
-    if (C is TWinControl) and (not (C is TCustomListBox)) then
+    if (C is TWinControl) and C.Visible and (not (C is TCustomListBox)) then
     begin
 
       if TWinControl(C).HandleAllocated then
@@ -149,7 +151,7 @@ begin
     if PularGrupo_Local and (C = Form1_DGL.GroupIP) then
     Continue;
 
-    if C is TWinControl then
+    if (C is TWinControl) and C.Visible then
     ApagaControlesGraficos(TWinControl(C))
     else
     begin
@@ -373,7 +375,7 @@ SetEnabled(Form1_DGL.check_servidor, Enabled);
 SetEnabled(Form1_DGL.check_cliente, Enabled);
 end;
 
-procedure PosicionarBotao(Botao: TSpeedButton; Texto: TLabel; NovoTop: Integer);
+procedure PosicionarBotao(Botao: TControl; Texto: TLabel; NovoTop: Integer);
 begin
   if Botao.Top <> NovoTop then
   Botao.Top := NovoTop;
@@ -382,10 +384,26 @@ begin
   Texto.Top := NovoTop + 1;
 end;
 
-procedure SetGlyph(Button: TBitBtn; ImageList: TImageList; Index: Integer);
+procedure SetGlyph(Button: TButton; ImageList: TVirtualImageList; Index: Integer);
 begin
-Button.Glyph.Assign(nil);
-ImageList.GetBitmap(Index, Button.Glyph);
+  Button.Images := ImageList;
+  Button.ImageIndex := Index;
+end;
+
+procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 48);
+var
+  Bmp: Vcl.Graphics.TBitmap;
+begin
+  Bmp := ImageCollection.GetBitmap(Index, Size, Size);
+  try
+    Bmp.PixelFormat := pf32bit;
+    Bmp.AlphaFormat := afDefined;
+    Image.Picture.Bitmap.Assign(Bmp);
+    Image.Picture.Bitmap.AlphaFormat := afDefined;
+    Image.Transparent := True;
+  finally
+    Bmp.Free;
+  end;
 end;
 
 procedure GaranteLinha(Lista: TStringList; const Linha: string);

@@ -553,6 +553,7 @@ object Form3_NameFun: TForm3_NameFun
       AutoSize = True
       Center = True
       Proportional = True
+      Stretch = True
       ExplicitLeft = -2
       ExplicitTop = 13
     end

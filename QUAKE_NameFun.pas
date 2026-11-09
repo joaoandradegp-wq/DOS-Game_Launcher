@@ -5,7 +5,7 @@ interface
 uses
   Windows, SysUtils, Classes, Forms, Buttons, StdCtrls, ShellAPI, ExtCtrls,
   Vcl.ImageCollection, Vcl.VirtualImageList, PastaMonitor, System.ImageList,
-  Vcl.ImgList, Vcl.BaseImageCollection, Vcl.Controls;
+  Vcl.ImgList, Vcl.BaseImageCollection, Vcl.Controls, Vcl.WinXCtrls;
 
 type
   TForm3_NameFun = class(TForm)
@@ -115,7 +115,7 @@ end;
 procedure TForm3_NameFun.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 if CoolStuff_Global = '+name '+Trim(Form1_DGL.player_name.Text) then
-Form1_DGL.RxOpcoes.Down:=False;
+Form1_DGL.RxOpcoes.State:=tssOff;
 
 Monitor1.Free;
 Monitor2.Free;
@@ -149,7 +149,7 @@ Monitor1.Ativo:=True;
 Listar_Arquivos(ListBox_Nome,Caminho_Nome,'scr');
 Caminho_Skin:=Caminho_Nome+'skins\';
 
-  if Form1_DGL.RxDM.Down = True then
+  if Form1_DGL.RxDM.State = tssOn then
   begin
   Monitor2.Pasta:=Caminho_Skin;
   Monitor2.Ativo:=True;
@@ -164,13 +164,13 @@ Caminho_Skin:=Caminho_Nome+'skins\';
   else
   Mensagem_SemNome.Visible:=False;
 
-  if (ListBox_Skin.Items.Count = 0) and (Form1_DGL.RxDM.Down = False) then
+  if (ListBox_Skin.Items.Count = 0) and (Form1_DGL.RxDM.State = tssOff) then
   Mensagem_SemSkin.Visible:=True
   else
   Mensagem_SemSkin.Visible:=False;
   //----------------------------------
 
-  if (ListBox_Skin.Items.Count = 1) and (Form1_DGL.RxDM.Down = True) and (ListBox_Skin.Items[0] = 'base') then
+  if (ListBox_Skin.Items.Count = 1) and (Form1_DGL.RxDM.State = tssOn) and (ListBox_Skin.Items[0] = 'base') then
   btn_skins.Enabled:=True;;
 
   //------------------------------------------------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ Caminho_Skin:=Caminho_Nome+'skins\';
   MessageBox(Application.Handle,pchar(CaminhoQW),pchar(Lang_DGL(23)),MB_ICONINFORMATION+MB_OK);
   //------------------------------------------------------------------------------------------------------------------------
 
-  if Form1_DGL.RxDM.Down = True then
+  if Form1_DGL.RxDM.State = tssOn then
   begin
   ArquivoQW:=TStringList.Create;
   ArquivoQW.LoadFromFile(CaminhoQW);

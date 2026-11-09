@@ -3,7 +3,7 @@ unit Mouse_Sense;
 interface
 
 uses
-  SysUtils, Classes, Forms, ComCtrls, ExtCtrls, Vcl.Controls;
+  SysUtils, Classes, Forms, ComCtrls, ExtCtrls, Vcl.Controls, Vcl.WinXCtrls;
 
 type
   TForm6_Mouse = class(TForm)
@@ -82,7 +82,7 @@ end;
 procedure TForm6_Mouse.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 Form1_DGL.RxCheckListBox1.SetFocus;
-Form1_DGL.RxSense.Down:=False;
+Form1_DGL.RxSense.State:=tssOff;
 Form6_Mouse.Release;
 Form6_Mouse:=Nil;
 end;

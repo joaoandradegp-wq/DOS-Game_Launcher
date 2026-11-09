@@ -5,7 +5,9 @@ interface
 uses
   IdHTTP, System.IOUtils, SysUtils, Forms, Classes, Windows, ShellApi,
   Graphics, StdCtrls, WinSock, TlHelp32, IdIcmpClient, Messages,
-  IniFiles, Unit1, QUAKE_NameFun, MAP_Select, Language, Buttons, MMSystem;
+  IniFiles, Buttons, MMSystem, Vcl.Controls, Vcl.WinXCtrls,
+  //------------------------------------------------------------------
+  Unit1, QUAKE_NameFun, MAP_Select, Language;
 
 type
   TEstadoPortaUDP = (epuOnline, epuFechada, epuIndefinido);
@@ -221,7 +223,7 @@ end;
 procedure ResetarBotoesInterno;
 var
 i: Integer;
-Botoes: array[0..5] of TSpeedButton;
+Botoes: array[0..5] of TControl;
 Labels: array[0..5] of TLabel;
 begin
 //Form1_DGL.img_game.Picture:=Nil;
@@ -244,17 +246,23 @@ Labels[5] := Form1_DGL.Label_QuakeServer;
   begin
     if Assigned(Botoes[i]) then
     begin
-      with Botoes[i] do
+      if Botoes[i] is TSpeedButton then
       begin
-        if Down then
-        Down := False;
-        //-----------------
-        if not Enabled then
-        Enabled := True;
-        //-----------------
-        if Visible then
-        Visible := False;
+        if TSpeedButton(Botoes[i]).Down then
+        TSpeedButton(Botoes[i]).Down := False;
+      end
+      else
+      if Botoes[i] is TToggleSwitch then
+      begin
+        if TToggleSwitch(Botoes[i]).State = tssOn then
+        TToggleSwitch(Botoes[i]).State := tssOff;
       end;
+      //-----------------
+      if not Botoes[i].Enabled then
+      Botoes[i].Enabled := True;
+      //-----------------
+      if Botoes[i].Visible then
+      Botoes[i].Visible := False;
     end;
   end;
 
@@ -834,7 +842,7 @@ CoolStuff_Global:='';
  case Tipo of
   {SINGLE PLAYER}
   0: begin
-     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 4);
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.VirtualImageList3, 4);
      //--------------------------------------------
      SetEnabled(Form1_DGL.label_name , False);
      SetEnabled(Form1_DGL.player_name, False);
@@ -865,7 +873,7 @@ CoolStuff_Global:='';
   {SERVIDOR}
   1: begin
      SetEnabled(Form1_DGL.player_name, True);
-     SetGlyph(Form1_DGL.Refresh_Lan  , Form1_DGL.Lista_Imagens, 4);
+     SetGlyph(Form1_DGL.Refresh_Lan  , Form1_DGL.VirtualImageList3, 4);
      //---------------------------------------------------------
      Form1_DGL.player_name.SetFocus;
      //---------------------------------------------------------
@@ -897,7 +905,7 @@ CoolStuff_Global:='';
      end;
   {CLIENTE}
   2: begin
-     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.Lista_Imagens, 5);
+     SetGlyph(Form1_DGL.Refresh_Lan, Form1_DGL.VirtualImageList3, 5);
      //-----------------------------------------------
      SetCaption(Form1_DGL.Label2     , Lang_DGL(15)+':');
      Form1_DGL.ip_local.ReadOnly:=False;
@@ -942,7 +950,7 @@ CoolStuff_Global:='';
             //------------------------------------------------------
             // {BOTOES DPI - 02/07}  (DOOM - SINGLE/CLIENTE)
             PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + PassoBotao);
-            Form1_DGL.RxBrutal.Down:=False;
+            Form1_DGL.RxBrutal.State:=tssOff;
             //------------------------------------------------------
             MostrarBrutal(True);
             MostrarDM(False);
@@ -956,12 +964,12 @@ CoolStuff_Global:='';
             // {BOTOES DPI - 03/07}  (DOOM - SERVIDOR, RxBrutal)
             PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + PassoBotao);
 
-            Form1_DGL.RxBrutal.Down:=False;
+            Form1_DGL.RxBrutal.State:=tssOff;
 
             // {BOTOES DPI - 04/07}  (DOOM - SERVIDOR, RxDM)
             PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxBrutal.Top + PassoBotao);
 
-            Form1_DGL.RxDM.Down:=False;
+            Form1_DGL.RxDM.State:=tssOff;
             //------------------------------------------------------
             MostrarBrutal(True);
             MostrarDM(True);
@@ -979,14 +987,14 @@ CoolStuff_Global:='';
             begin
             //-------------------------------------------------------------
             //-------------------------------------------------------------
-            Form1_DGL.RxOpcoes.Down:=False;
+            Form1_DGL.RxOpcoes.State:=tssOff;
             PosicionarBotao(Form1_DGL.RxOpcoes     ,Form1_DGL.Label_Opcoes
                                                    ,Form1_DGL.RxControle.Top);
-            Form1_DGL.RxDM.Down:=False;
+            Form1_DGL.RxDM.State:=tssOff;
             {BOTOES DPI - 05/07}
             PosicionarBotao(Form1_DGL.RxDM         ,Form1_DGL.Label_DM
                                                    ,Form1_DGL.RxOpcoes.Top + PassoBotao);
-            Form1_DGL.RxQuakeServer.Down:=False;
+            Form1_DGL.RxQuakeServer.State:=tssOff;
             {BOTOES DPI - 06/07}
             PosicionarBotao(Form1_DGL.RxQuakeServer,Form1_DGL.Label_QuakeServer
                                                    ,Form1_DGL.RxDM.Top + PassoBotao);
@@ -994,7 +1002,7 @@ CoolStuff_Global:='';
             //-------------------------------------------------------------
             MostrarOpcoes(True);
             MostrarDM(DirectoryExists(Caminho_Global+'qw\'));
-            MostrarQuakeServer( (Tipo = 1) and DirectoryExists(Caminho_Global + 'qw\') and Form1_DGL.RxDM.Down );
+            MostrarQuakeServer( (Tipo = 1) and DirectoryExists(Caminho_Global + 'qw\') and (Form1_DGL.RxDM.State=tssOn));
             //---------------------------------------------
             end
             {SINGLE PLAYER}
@@ -1033,7 +1041,7 @@ CoolStuff_Global:='';
             // {BOTOES DPI - 07/07}  (HERETIC/HEXEN/WOLF - SERVIDOR, RxDM)
             PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxControle.Top + PassoBotao);
 
-            Form1_DGL.RxDM.Down:=False;
+            Form1_DGL.RxDM.State:=tssOff;
             //--------------------------------------------------
             MostrarDM(True);
             //--------------------------------------------------
@@ -1303,7 +1311,7 @@ begin
  Form1_DGL.Timer2.Enabled:=True;
 
    {QUAKEWORLD SERVER DEDICADO - MANTEM O IMG_GAME VISIVEL}
-   if (id = 8) and (Form1_DGL.RxQuakeServer.Down) then
+   if (id = 8) and (Form1_DGL.RxQuakeServer.State=tssOn) then
    begin
    UIUtils.SetVisible(Form1_DGL.img_game, True);
    UIUtils.SetVisible(Form1_DGL.gif_dos , False);
@@ -1580,7 +1588,7 @@ ResetarBotoesInterno;
                        end;
                        //-------------------------------------
 
-                     MostrarSensibilidade(Form1_DGL.RxControle.Down);
+                     MostrarSensibilidade(Form1_DGL.RxControle.State=tssOn);
                      end
                      else
                      MostrarSensibilidade(False);
@@ -1606,7 +1614,7 @@ ResetarBotoesInterno;
 
                        ZDOOM_Mouse:= SameText(ZDOOM_INI.ReadString('GlobalSettings', 'use_mouse', ''),'true');
 
-                       Form1_DGL.RxControle.Down:=ZDOOM_Mouse;
+                       Form1_DGL.RxControle.State:=TToggleSwitchState(Ord(ZDOOM_Mouse));
 
                          if ZDOOM_Mouse then
                          SetCaption(Form1_DGL.Label_Controle, 'MOUSE')
@@ -1649,16 +1657,16 @@ ResetarBotoesInterno;
                            //----------------------------------------------------------------------------
                            if Pos('ControllerType = 3',Arquivo_DOSBOX_Fisico[i]) = 1 then
                            begin
-                           Form1_DGL.RxControle.Down:=True;
+                           Form1_DGL.RxControle.State:=tssOn;
                            SetCaption(Form1_DGL.Label_Controle, 'MOUSE');
                            end
                            else
                            begin
-                           Form1_DGL.RxControle.Down:=False;
+                           Form1_DGL.RxControle.State:=tssOff;
                            SetCaption(Form1_DGL.Label_Controle, Lang_DGL(18));
                            end;
                            //----------------------------------------------------------------------------
-                         MostrarSensibilidade(Form1_DGL.RxControle.Down);
+                         MostrarSensibilidade(Form1_DGL.RxControle.State=tssOn);
                          end;
                        //--------------------------------------------------------------
                        end;

@@ -3,7 +3,7 @@ unit MAP_Select;
 interface
 
 uses
-  Messages, SysUtils, Forms, Buttons, StdCtrls, Controls, System.Classes;
+  Messages, SysUtils, Forms, Buttons, StdCtrls, Controls, System.Classes, Vcl.WinXCtrls;
 
 type
   TForm4_Select = class(TForm)
@@ -674,7 +674,7 @@ Inc(EPI, 6);
   Game_EXE_Global:=Array_Games[3][5];
 
   {DOOM II - CONSERTA BUG - EXTRA EQUIPMENT IN CO-OP MULTIPLAYER}
-  if (id = 4) and (Form1_DGL.RxDM.Down = False) then
+  if (id = 4) and (Form1_DGL.RxDM.State = tssOff) then
   Map_Global:=Map_Global+' +dmflags 2097152';
 
   {SHADOW WARRIOR - DIFERENCIA AS DLC´s}
@@ -762,7 +762,7 @@ Fecha_ESC:=False;
                   //------------------------------------------------------
                   if (i = 38) then
                   begin
-                    if (Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.Down = False) then
+                    if (Form1_DGL.check_single.Checked) or (Form1_DGL.RxDM.State = tssOff) then
                     Break;
                   end
                   else if (i = 39) then
@@ -971,7 +971,7 @@ end;
 procedure TForm4_Select.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
-  if (Form1_DGL.RxQuakeServer.Down = False) then
+  if (Form1_DGL.RxQuakeServer.State = tssOff) then
   MostrarLogo(IntToStr(id));
 
 Nome_DLC_Global:='';

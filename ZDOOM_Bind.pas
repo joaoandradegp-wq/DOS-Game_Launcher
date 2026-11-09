@@ -3,7 +3,7 @@ unit ZDOOM_Bind;
 interface
 
 uses IniFiles, SysUtils, Forms, Unit1, DLC, Funcoes, Windows, ShellAPI,
-     Language, HEXEN_Class;
+     Language, HEXEN_Class, Vcl.WinXCtrls;
 
 //--------------------------------------------------
 {USADO EM CONFIGUREZDOOM}
@@ -555,7 +555,7 @@ Opt.ExtraDMParams := DoomDM_Global;
 //-----------------------------------------------------
 
   {SELEÇÃO DE MAPA}
-  if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') and (Form1_DGL.RxBrutal.Down = False) then
+  if (Mode in [zmSinglePlayer, zmServer]) and (Map = '') and (Form1_DGL.RxBrutal.State = tssOff) then
   begin
     if Assigned(SelectMap) then
     Map := SelectMap;
@@ -565,7 +565,7 @@ Opt.ExtraDMParams := DoomDM_Global;
   end;
 
   {DOOM II - MOD DE FASE PARA COMEÇAR NA PRIMEIRA}
-  if (id = 4) and (Form1_DGL.RxBrutal.Down) then
+  if (id = 4) and (Form1_DGL.RxBrutal.State=tssOn) then
   Map := 'MAP01';
 
   {DEBUG MODE - SIMULAR MULTIPLAYER}
