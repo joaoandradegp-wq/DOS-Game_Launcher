@@ -242,7 +242,7 @@ Arquivo_INI:TIniFile;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure MostrarLogo(const Nome: string);
+procedure MostrarLogo_Unit1(const Nome: string);
 var
 Indice: Integer;
 Bmp: TBitmap;
@@ -396,8 +396,6 @@ procedure TForm1_DGL.RxCheckListBox1StateChange(Sender: TObject;
   Index: Integer);
 begin
 
-  MostrarLogo(Array_Games[id][1]);
-  //------------------------------
   id:=RxCheckListBox1.ItemIndex+1;
   //------------------------------
   Caminho_Global:=ExtractFilePath(Application.ExeName)+Array_Games[id][3];
@@ -495,8 +493,27 @@ Form7_About.Free;
 end;
 
 procedure TForm1_DGL.RxCheckListBox1Click(Sender: TObject);
+var
+k,Sel:Integer;
 begin
-RxCheckListBox1.Checked[RxCheckListBox1.ItemIndex]:=True;
+Sel:=RxCheckListBox1.ItemIndex;
+
+  if Sel < 0 then
+  Exit;
+
+  if not RxCheckListBox1.ItemEnabled[Sel] then
+  Exit;
+
+  {CHECKLIST SEM FLICKER - 01/02}
+  if (Sel+1 = id) and RxCheckListBox1.Checked[Sel] then
+  Exit;
+
+  {CHECKLIST SEM FLICKER - 02/02}
+  for k := 0 to RxCheckListBox1.Items.Count - 1 do
+    if RxCheckListBox1.Checked[k] <> (k = Sel) then
+    RxCheckListBox1.Checked[k]:=(k = Sel);
+
+RxCheckListBox1StateChange(Sender, Sel);
 end;
 
 procedure TForm1_DGL.RxCheckListBox1DblClick(Sender: TObject);
@@ -552,8 +569,8 @@ end;
           AppAberto('qw_panel.exe') or
           AppAberto(Array_Games[id][4])) then
   begin
-  Form1_DGL.ClientHeight:=461;
-  Form1_DGL.ClientWidth:=633;
+  Form1_DGL.ClientHeight:=MulDiv(461, CurrentPPI, 96);
+  Form1_DGL.ClientWidth :=MulDiv(633, CurrentPPI, 96);
   Form1_DGL.Left:=(Screen.Width  div 2)-(Form1_DGL.Width  div 2);
   Form1_DGL.Top :=(Screen.Height div 2)-(Form1_DGL.Height div 2);
 
@@ -574,8 +591,8 @@ end;
 
 procedure TForm1_DGL.FormDblClick(Sender: TObject);
 begin
-Form1_DGL.ClientHeight:=461;
-Form1_DGL.ClientWidth:=633;
+Form1_DGL.ClientHeight:=MulDiv(461, CurrentPPI, 96);
+Form1_DGL.ClientWidth :=MulDiv(633, CurrentPPI, 96);
 end;
 
 procedure TForm1_DGL.Menu_FirewallClick(Sender: TObject);
@@ -629,6 +646,24 @@ begin
 Lang_DGL(0);
 DoubleBuffered := True;
 SetDoubleBufferedRecursive(Self);
+
+{IP AUTOMATICO - 01/04}
+IP_Interno_Global:=GetInternalIP;
+IP_Externo_Global:='0.0.0.0';
+
+TThread.CreateAnonymousThread(
+  procedure
+  var
+  IP:String;
+  begin
+  IP:=GetExternalIP;
+
+    TThread.Queue(nil,
+      procedure
+      begin
+      IP_Externo_Global:=IP;
+      end);
+  end).Start;
 end;
 
 procedure TForm1_DGL.RxCheckListBox1MouseDown(Sender: TObject;
@@ -637,7 +672,12 @@ var
 i,j:Integer;
 p:TPoint;
 begin
+
+   if Button <> mbRight then
+   Exit;
+
 BeginUIUpdate(Self);
+
 Try
 //----------------------------------------------------------
 
@@ -653,6 +693,7 @@ Try
       for j := 0 to RxCheckListBox1.Items.Count - 1 do
       RxCheckListBox1.Checked[j] := (j = i); //MARCA SÓ O ITEM i
 
+   RxCheckListBox1StateChange(Sender, i);
    p:=RxCheckListBox1.ClientToScreen(p);
 
      {QUAKE}

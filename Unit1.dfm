@@ -10,6 +10,7 @@ object Form1_DGL: TForm1_DGL
   ClientHeight = 1383
   ClientWidth = 1899
   Color = clBtnFace
+  DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -33
@@ -30,7 +31,7 @@ object Form1_DGL: TForm1_DGL
   TextHeight = 37
   object img_fundo: TImage
     Left = 1173
-    Top = 840
+    Top = 838
     Width = 800
     Height = 800
     Margins.Left = 9
@@ -13530,9 +13531,8 @@ object Form1_DGL: TForm1_DGL
       D5E325BF2A180000000000009B4182FF0ADBFFDF18FB1734DF2775CDDA3A08E4
       B474D40260FF953003A07F9D6621D1AD1F87D8AD4CFCDB5507F1AF75B2CF57FC
       9F46A800588721F139FE0FE5073EE5EFEAA2270000000049454E44AE426082}
-    Proportional = True
     Stretch = True
-    Visible = False
+    Transparent = True
   end
   object linha02: TBevel
     Left = 0
@@ -13679,8 +13679,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxControleClick
   end
@@ -13693,8 +13705,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxSenseClick
   end
@@ -13707,8 +13731,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 3
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxBrutalClick
   end
@@ -13721,8 +13757,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 4
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxOpcoesClick
   end
@@ -13735,8 +13783,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 5
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxDMClick
   end
@@ -13749,8 +13809,20 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
+    ParentCustomHint = False
     AllowAllUp = True
+    BiDiMode = bdLeftToRight
     GroupIndex = 6
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -33
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ParentShowHint = False
+    ParentBiDiMode = False
+    ShowHint = False
+    Transparent = False
     Visible = False
     OnClick = RxQuakeServerClick
   end
@@ -13824,8 +13896,8 @@ object Form1_DGL: TForm1_DGL
       Margins.Right = 9
       Margins.Bottom = 9
       Align = alClient
-      Center = True
-      Proportional = True
+      AutoSize = True
+      Transparent = True
       ExplicitTop = 4
     end
     object gif_dos: TLabel
@@ -14005,34 +14077,55 @@ object Form1_DGL: TForm1_DGL
       Left = 24
       Top = 106
       Width = 363
-      Height = 53
+      Height = 42
       Margins.Left = 9
       Margins.Top = 9
       Margins.Right = 9
       Margins.Bottom = 9
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -28
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 2
+      Text = '0.0.0.0'
     end
     object ip_internet: TEdit
       Left = 24
       Top = 226
       Width = 363
-      Height = 53
+      Height = 42
       Margins.Left = 9
       Margins.Top = 9
       Margins.Right = 9
       Margins.Bottom = 9
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -28
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 3
+      Text = '0.0.0.0'
     end
     object ip_porta: TEdit
       Left = 24
       Top = 351
       Width = 363
-      Height = 53
+      Height = 42
       Margins.Left = 9
       Margins.Top = 9
       Margins.Right = 9
       Margins.Bottom = 9
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -28
+      Font.Name = 'Verdana'
+      Font.Style = []
+      ParentFont = False
       TabOrder = 4
+      Text = '0'
     end
   end
   object check_single: TRadioButton
@@ -14101,7 +14194,7 @@ object Form1_DGL: TForm1_DGL
     Left = 14
     Top = 90
     Width = 1004
-    Height = 66
+    Height = 56
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -14152,7 +14245,7 @@ object Form1_DGL: TForm1_DGL
       Left = 574
       Top = 0
       Width = 48
-      Height = 66
+      Height = 56
       Margins.Left = 9
       Margins.Top = 9
       Margins.Right = 9
@@ -14198,6 +14291,7 @@ object Form1_DGL: TForm1_DGL
       ParentFont = False
       TabOrder = 3
       Visible = False
+      OnDrawItem = combo_colorDrawItem
     end
     object combo_doom: TComboBox
       Left = 806
@@ -14227,7 +14321,7 @@ object Form1_DGL: TForm1_DGL
   end
   object btn_start: TButton
     Left = 624
-    Top = 1200
+    Top = 1212
     Width = 555
     Height = 96
     Margins.Left = 9
@@ -14254,9 +14348,16 @@ object Form1_DGL: TForm1_DGL
     Margins.Top = 9
     Margins.Right = 9
     Margins.Bottom = 9
-    ItemHeight = 40
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ItemHeight = 45
+    ParentFont = False
     TabOrder = 10
     OnClick = RxCheckListBox1Click
+    OnMouseDown = RxCheckListBox1MouseDown
   end
   object loading_panel: TPanel
     Left = 30
@@ -37463,7 +37564,7 @@ object Form1_DGL: TForm1_DGL
           end>
       end
       item
-        Name = '12-13'
+        Name = '12'
         SourceImages = <
           item
             Image.Data = {

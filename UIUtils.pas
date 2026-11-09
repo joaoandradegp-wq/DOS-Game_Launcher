@@ -8,7 +8,6 @@ Windows, Messages, Classes, Controls, ExtCtrls, StdCtrls, SysUtils, Buttons;
 //==========================================
 //REDRAW
 //==========================================
-procedure LockWindow(AControl: TWinControl);
 procedure UnlockWindow(AControl: TWinControl);
 procedure BeginUIUpdate(AControl: TWinControl);
 procedure EndUIUpdate(AControl: TWinControl);
@@ -57,11 +56,135 @@ uses Unit1;
 //LOCK / UNLOCK
 //==========================================
 
+{GRUPO IP - 01/07}
+var
+AssinaturaGrupo_Local: String;
+PularGrupo_Local: Boolean;
+
+{GRUPO IP - 02/07}
+function AssinaturaDe(AParent: TWinControl): String;
+var
+i: Integer;
+C: TControl;
+begin
+Result := '';
+
+  for i := 0 to AParent.ControlCount - 1 do
+  begin
+  C := AParent.Controls[i];
+
+  Result := Result + C.Name + IntToStr(Ord(C.Visible)) + IntToStr(Ord(C.Enabled)) +
+            IntToStr(C.Left) + ',' + IntToStr(C.Top) + '|';
+
+    if C is TCustomEdit then
+    Result := Result + TCustomEdit(C).Text + '|'
+    else
+    if C is TLabel then
+    Result := Result + TLabel(C).Caption + '|';
+
+    if C is TWinControl then
+    Result := Result + AssinaturaDe(TWinControl(C));
+
+  end;
+
+end;
+
+{LOCK FILHOS - 01/03}
+procedure TravaFilhos(AParent: TWinControl; Trava: Boolean);
+var
+i: Integer;
+C: TControl;
+begin
+
+  for i := 0 to AParent.ControlCount - 1 do
+  begin
+  C := AParent.Controls[i];
+
+    if (C is TWinControl) and (not (C is TCustomListBox)) then
+    begin
+
+      if TWinControl(C).HandleAllocated then
+      SendMessage(TWinControl(C).Handle, WM_SETREDRAW, Ord(not Trava), 0);
+
+    TravaFilhos(TWinControl(C), Trava);
+    end;
+
+  end;
+
+end;
+
 procedure LockWindow(AControl: TWinControl);
 begin
 
   if Assigned(AControl) and AControl.HandleAllocated then
-  SendMessage(AControl.Handle, WM_SETREDRAW, 0, 0);
+  begin
+    {GRUPO IP - 03/07}
+    if AControl = Form1_DGL then
+    AssinaturaGrupo_Local := AssinaturaDe(Form1_DGL.GroupIP);
+
+    SendMessage(AControl.Handle, WM_SETREDRAW, 0, 0);
+
+    {LOCK FILHOS - 02/03}
+    TravaFilhos(AControl, True);
+  end;
+
+end;
+
+{UNLOCK SEM LISTA - 01/04}
+procedure ApagaControlesGraficos(AParent: TWinControl);
+var
+i: Integer;
+C: TControl;
+R: TRect;
+begin
+
+  if not AParent.HandleAllocated then
+  Exit;
+
+  for i := 0 to AParent.ControlCount - 1 do
+  begin
+  C := AParent.Controls[i];
+
+    {GRUPO IP - 04/07}
+    if PularGrupo_Local and (C = Form1_DGL.GroupIP) then
+    Continue;
+
+    if C is TWinControl then
+    ApagaControlesGraficos(TWinControl(C))
+    else
+    begin
+    R := C.BoundsRect;
+    RedrawWindow(AParent.Handle, @R, 0, RDW_INVALIDATE or RDW_ERASE);
+    end;
+
+  end;
+
+end;
+
+{UNLOCK SEM LISTA - 02/04}
+procedure InvalidaSemLista(AParent: TWinControl);
+var
+i: Integer;
+C: TControl;
+begin
+
+  if not AParent.HandleAllocated then
+  Exit;
+
+RedrawWindow(AParent.Handle, nil, 0, RDW_INVALIDATE);
+
+  for i := 0 to AParent.ControlCount - 1 do
+  begin
+  C := AParent.Controls[i];
+
+    {GRUPO IP - 05/07}
+    if PularGrupo_Local and (C = Form1_DGL.GroupIP) then
+    Continue;
+
+    if (C is TWinControl) and (not (C is TCustomListBox)) then
+    InvalidaSemLista(TWinControl(C));
+
+  end;
 
 end;
 
@@ -71,9 +194,24 @@ begin
   if Assigned(AControl) and AControl.HandleAllocated then
   begin
     SendMessage(AControl.Handle, WM_SETREDRAW, 1, 0);
-    RedrawWindow(AControl.Handle, nil, 0, RDW_INVALIDATE or RDW_ERASE or RDW_ALLCHILDREN or RDW_FRAME);
+
+    {LOCK FILHOS - 03/03}
+    TravaFilhos(AControl, False);
+
+    {GRUPO IP - 06/07}
+    PularGrupo_Local := (AControl = Form1_DGL) and
+                        (AssinaturaDe(Form1_DGL.GroupIP) = AssinaturaGrupo_Local);
+
+    {UNLOCK SEM LISTA - 03/04}
+    InvalidaSemLista(AControl);
+
+    {UNLOCK SEM LISTA - 04/04}
+    ApagaControlesGraficos(AControl);
+
+    {GRUPO IP - 07/07}
+    PularGrupo_Local := False;
   end;
-  
+
 end;
 
 procedure BeginUIUpdate(AControl: TWinControl);

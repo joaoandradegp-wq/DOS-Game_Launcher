@@ -10,8 +10,30 @@ uses
 type
   TEstadoPortaUDP = (epuOnline, epuFechada, epuIndefinido);
 
+  TFundoPos = record
+    Nome: string;
+    L, T, W, H: Integer;
+  end;
+
 const
-  Marcas: array[1..13] of string = (
+  Fundos_Pos: array[0..12] of TFundoPos = (
+    (Nome:'default'; L:400; T:280; W:256; H:256),
+    (Nome:'01';      L:350; T:0;   W:420; H:420),
+    (Nome:'02';      L:336; T:80;  W:561; H:320),
+    (Nome:'03-04';   L:250; T:7;   W:739; H:338),
+    (Nome:'04-04';   L:250; T:7;   W:739; H:338),
+    (Nome:'05';      L:400; T:50;  W:354; H:360),
+    (Nome:'06';      L:430; T:-10; W:261; H:390),
+    (Nome:'07';      L:385; T:13;  W:320; H:325),
+    (Nome:'08';      L:420; T:30;  W:287; H:390),
+    (Nome:'09';      L:420; T:10;  W:269; H:320),
+    (Nome:'10';      L:370; T:0;   W:340; H:347),
+    (Nome:'11';      L:400; T:0;   W:330; H:380),
+    (Nome:'12';      L:440; T:0;   W:269; H:340)
+  );
+
+const
+  Marcas: array[1..12] of string = (
     '01',    // 01 Blood
     '02',    // 02 Constructor
     '03-04', // 03 Doom
@@ -23,8 +45,7 @@ const
     '09',    // 09 Rise of the Triad
     '10',    // 10 Shadow Warrior
     '11',    // 11 Warcraft II
-    '12-13', // 12 Wolfenstein 3D
-    '12-13');// 13 Spear of Destiny
+    '12');   // 12 Wolfenstein 3D
 
 //----------------------------------------------------------------------
 procedure MostrarLogo(const Nome: string);
@@ -82,31 +103,80 @@ implementation
 
 uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 
+var
+FundoAtual_Local,LogoAtual_Local:String;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure MostrarFundo(const Nome: string);
 var
-Indice, W, H: Integer;
-Bmp: TBitmap;
+i, Indice, PPI: Integer;
+Nm: string;
+L, T, W, H: Integer;
+Bmp, Final: TBitmap;
+Achou: Boolean;
 begin
-Indice:=Form1_DGL.ImageCollection1.GetIndexByName(Nome);
+Nm := Nome;
 
-   if Indice < 0 then
-   begin
-   Form1_DGL.img_fundo.Picture:=Nil;
-   Exit;
-   end;
+  // Quake servidor usa a mesma posição do Quake
+  if SameText(Nm, '08S') then
+  Nm := '08';
 
-W:=Form1_DGL.img_fundo.Width;
-H:=Round(W * Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Height
-           / Form1_DGL.ImageCollection1.Images[Indice].SourceImages[0].Image.Width);
+// posição e tamanho originais do DFM (escalados pelo DPI atual)
+PPI := Form1_DGL.CurrentPPI;
+Achou := False;
+L := 0; T := 0; W := 0; H := 0;
 
-Bmp:=Form1_DGL.ImageCollection1.GetBitmap(Indice,W,H);
+  for i := Low(Fundos_Pos) to High(Fundos_Pos) do
+    if SameText(Fundos_Pos[i].Nome, Nm) then
+    begin
+      L := MulDiv(Fundos_Pos[i].L, PPI, 96);
+      T := MulDiv(Fundos_Pos[i].T, PPI, 96);
+      W := MulDiv(Fundos_Pos[i].W, PPI, 96);
+      H := MulDiv(Fundos_Pos[i].H, PPI, 96);
+      Achou := True;
+      Break;
+    end;
+
+  if not Achou then
+  Exit;
+
+Indice := Form1_DGL.ImageCollection1.GetIndexByName(Nome);
+
+  if Indice < 0 then
+  Exit;
+
+  Bmp := Form1_DGL.ImageCollection1.GetBitmap(Indice, W, H);
   try
-  Form1_DGL.img_fundo.Picture.Assign(Bmp);
+    Final := TBitmap.Create;
+    try
+      Final.PixelFormat := pf24bit;
+      Final.SetSize(Bmp.Width, Bmp.Height);
+      Final.Canvas.Brush.Color := Form1_DGL.Color;
+      Final.Canvas.FillRect(Rect(0, 0, Final.Width, Final.Height));
+
+      Bmp.AlphaFormat := afPremultiplied;
+      Final.Canvas.Draw(0, 0, Bmp);
+
+      with Form1_DGL.img_fundo do
+      begin
+        AutoSize     := False;
+        Stretch      := True;
+        Proportional := False;
+        Transparent  := False;
+
+        Visible := False;
+        SetBounds(L, T, W, H);
+        Picture.Assign(Final);
+        SendToBack;
+        Visible := True;
+      end;
+    finally
+      Final.Free;
+    end;
   finally
-  Bmp.Free;
+    Bmp.Free;
   end;
+
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
@@ -154,7 +224,7 @@ i: Integer;
 Botoes: array[0..5] of TSpeedButton;
 Labels: array[0..5] of TLabel;
 begin
-Form1_DGL.img_game.Picture:=Nil;
+//Form1_DGL.img_game.Picture:=Nil;
 
 Botoes[0] := Form1_DGL.RxControle;
 Botoes[1] := Form1_DGL.RxSense;
@@ -745,6 +815,13 @@ Form1_DGL.btn_start.Enabled:=False;
 
 end;
 //------------------------------------------------------------------------------
+//{BOTOES DPI - 01/07}
+//------------------------------------------------------------------------------
+function PassoBotao: Integer;
+begin
+Result:=MulDiv(24, Form1_DGL.CurrentPPI, 96);
+end;
+//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 procedure Modo_Game(Tipo:Integer);
 var
@@ -826,6 +903,7 @@ CoolStuff_Global:='';
      Form1_DGL.ip_local.ReadOnly:=False;
      Form1_DGL.ip_porta.ReadOnly:=False;
      SetEnabled(Form1_DGL.ip_local   , True);
+     SetEditText(Form1_DGL.ip_internet, IP_Externo_Global);
      SetEnabled(Form1_DGL.ip_internet, False);
      SetEnabled(Form1_DGL.ip_porta   , True);
      //------------------------------------------------------------------------------------------
@@ -862,7 +940,8 @@ CoolStuff_Global:='';
             if (Tipo = 0) or (Tipo = 2) then
             begin
             //------------------------------------------------------
-            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
+            // {BOTOES DPI - 02/07}  (DOOM - SINGLE/CLIENTE)
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + PassoBotao);
             Form1_DGL.RxBrutal.Down:=False;
             //------------------------------------------------------
             MostrarBrutal(True);
@@ -874,10 +953,14 @@ CoolStuff_Global:='';
             if (Tipo = 1) then
             begin
             //------------------------------------------------------
-            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + 24);
+            // {BOTOES DPI - 03/07}  (DOOM - SERVIDOR, RxBrutal)
+            PosicionarBotao(Form1_DGL.RxBrutal,Form1_DGL.Label_Brutal,Form1_DGL.RxControle.Top + PassoBotao);
+
             Form1_DGL.RxBrutal.Down:=False;
 
-            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxBrutal.Top + 24);
+            // {BOTOES DPI - 04/07}  (DOOM - SERVIDOR, RxDM)
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxBrutal.Top + PassoBotao);
+
             Form1_DGL.RxDM.Down:=False;
             //------------------------------------------------------
             MostrarBrutal(True);
@@ -895,15 +978,19 @@ CoolStuff_Global:='';
             if (Tipo = 1) or (Tipo = 2) then
             begin
             //-------------------------------------------------------------
+            //-------------------------------------------------------------
             Form1_DGL.RxOpcoes.Down:=False;
             PosicionarBotao(Form1_DGL.RxOpcoes     ,Form1_DGL.Label_Opcoes
                                                    ,Form1_DGL.RxControle.Top);
             Form1_DGL.RxDM.Down:=False;
+            {BOTOES DPI - 05/07}
             PosicionarBotao(Form1_DGL.RxDM         ,Form1_DGL.Label_DM
-                                                   ,Form1_DGL.RxOpcoes.Top + 24);
+                                                   ,Form1_DGL.RxOpcoes.Top + PassoBotao);
             Form1_DGL.RxQuakeServer.Down:=False;
+            {BOTOES DPI - 06/07}
             PosicionarBotao(Form1_DGL.RxQuakeServer,Form1_DGL.Label_QuakeServer
-                                                   ,Form1_DGL.RxDM.Top + 24);
+                                                   ,Form1_DGL.RxDM.Top + PassoBotao);
+            //-------------------------------------------------------------
             //-------------------------------------------------------------
             MostrarOpcoes(True);
             MostrarDM(DirectoryExists(Caminho_Global+'qw\'));
@@ -943,7 +1030,9 @@ CoolStuff_Global:='';
             if (Tipo = 1) then
             begin
             //--------------------------------------------------
-            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxControle.Top + 24);
+            // {BOTOES DPI - 07/07}  (HERETIC/HEXEN/WOLF - SERVIDOR, RxDM)
+            PosicionarBotao(Form1_DGL.RxDM,Form1_DGL.Label_DM,Form1_DGL.RxControle.Top + PassoBotao);
+
             Form1_DGL.RxDM.Down:=False;
             //--------------------------------------------------
             MostrarDM(True);
@@ -1313,9 +1402,9 @@ BeginUIUpdate(Form1_DGL);
 Try
 //----------------------------------------------------------
 
-//------------
-ResetarBotoes;
-//------------
+//-------------------
+ResetarBotoesInterno;
+//-------------------
 
  if (Game_Existe = False) then
  begin
