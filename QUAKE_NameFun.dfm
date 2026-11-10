@@ -1,18 +1,14 @@
 object Form3_NameFun: TForm3_NameFun
   Left = 461
   Top = 193
-  Margins.Left = 9
-  Margins.Top = 9
-  Margins.Right = 9
-  Margins.Bottom = 9
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
-  ClientHeight = 816
-  ClientWidth = 1728
+  ClientHeight = 272
+  ClientWidth = 577
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -33
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   Icon.Data = {
@@ -329,143 +325,106 @@ object Form3_NameFun: TForm3_NameFun
   OnClose = FormClose
   OnCreate = FormCreate
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 288
-  TextHeight = 37
+  TextHeight = 13
   object label_name: TLabel
-    Left = 14
-    Top = 14
-    Width = 169
-    Height = 45
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 5
+    Top = 5
+    Width = 58
+    Height = 13
     Caption = 'NICKNAME:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object label_skin: TLabel
-    Left = 24
-    Top = 264
-    Width = 76
-    Height = 45
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 8
+    Top = 88
+    Width = 26
+    Height = 13
     Caption = 'SKIN:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object btn_aplicar: TSpeedButton
-    Left = 14
-    Top = 717
-    Width = 531
-    Height = 75
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 5
+    Top = 239
+    Width = 177
+    Height = 25
     Caption = 'APLICAR'
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -28
+    Font.Height = -9
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     OnClick = btn_aplicarClick
   end
   object btn_folder1: TSpeedButton
-    Left = 576
-    Top = 72
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 192
+    Top = 24
+    Width = 25
+    Height = 22
     ImageIndex = 0
     ImageName = '01'
     Images = VirtualImageList1
     OnClick = btn_folder1Click
   end
   object btn_folder2: TSpeedButton
-    Left = 576
-    Top = 312
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 192
+    Top = 104
+    Width = 25
+    Height = 22
     ImageIndex = 0
     ImageName = '01'
     Images = VirtualImageList1
     OnClick = btn_folder2Click
   end
   object btn_namefun: TSpeedButton
-    Left = 573
-    Top = 156
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 191
+    Top = 52
+    Width = 25
+    Height = 22
     ImageIndex = 1
     ImageName = '02'
     Images = VirtualImageList1
     OnClick = btn_namefunClick
   end
   object btn_skinbase: TSpeedButton
-    Left = 576
-    Top = 384
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 192
+    Top = 128
+    Width = 25
+    Height = 22
     ImageIndex = 2
     ImageName = '03'
     Images = VirtualImageList1
     OnClick = btn_skinbaseClick
   end
   object Label1: TLabel
-    Left = 696
-    Top = 24
-    Width = 287
-    Height = 45
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 232
+    Top = 8
+    Width = 101
+    Height = 13
     Caption = 'PR'#201'-VISUALIZA'#199#195'O:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
   end
   object btn_skins: TSpeedButton
-    Left = 576
-    Top = 456
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 192
+    Top = 152
+    Width = 25
+    Height = 22
     ImageIndex = 3
     ImageName = '04'
     Images = VirtualImageList1
@@ -474,14 +433,10 @@ object Form3_NameFun: TForm3_NameFun
     OnClick = btn_skinsClick
   end
   object btn_SkinDownload: TSpeedButton
-    Left = 576
-    Top = 528
-    Width = 75
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 192
+    Top = 176
+    Width = 25
+    Height = 22
     ImageIndex = 4
     ImageName = '05'
     Images = VirtualImageList1
@@ -489,52 +444,40 @@ object Form3_NameFun: TForm3_NameFun
     OnClick = btn_SkinDownloadClick
   end
   object ListBox_Nome: TListBox
-    Left = 24
-    Top = 72
-    Width = 531
-    Height = 171
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 8
+    Top = 24
+    Width = 177
+    Height = 57
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ItemHeight = 45
+    ItemHeight = 13
     ParentFont = False
     TabOrder = 0
     OnClick = ListBox_NomeClick
   end
   object ListBox_Skin: TListBox
-    Left = 24
-    Top = 312
-    Width = 531
-    Height = 387
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 8
+    Top = 104
+    Width = 177
+    Height = 129
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ItemHeight = 45
+    ItemHeight = 13
     ParentFont = False
     TabOrder = 1
     OnClick = ListBox_SkinClick
   end
   object Panel1: TPanel
-    Left = 696
-    Top = 72
-    Width = 1011
-    Height = 627
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 232
+    Top = 24
+    Width = 337
+    Height = 209
     BevelOuter = bvLowered
     BorderStyle = bsSingle
     Color = clBlack
@@ -543,30 +486,24 @@ object Form3_NameFun: TForm3_NameFun
     object Image1: TImage
       Left = 1
       Top = 1
-      Width = 1005
-      Height = 621
-      Margins.Left = 9
-      Margins.Top = 9
-      Margins.Right = 9
-      Margins.Bottom = 9
+      Width = 331
+      Height = 203
       Align = alClient
       AutoSize = True
       Center = True
       Proportional = True
       Stretch = True
-      ExplicitLeft = -2
-      ExplicitTop = 13
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 335
+      ExplicitHeight = 207
     end
   end
   object Mensagem_SemNome: TPanel
-    Left = 30
-    Top = 78
-    Width = 519
-    Height = 51
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 10
+    Top = 26
+    Width = 173
+    Height = 17
     Alignment = taLeftJustify
     BevelOuter = bvNone
     Caption = ' Mensagem'
@@ -574,7 +511,7 @@ object Form3_NameFun: TForm3_NameFun
     Ctl3D = True
     Font.Charset = ANSI_CHARSET
     Font.Color = clGray
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = [fsItalic]
     ParentCtl3D = False
@@ -583,14 +520,10 @@ object Form3_NameFun: TForm3_NameFun
     Visible = False
   end
   object Mensagem_SemSkin: TPanel
-    Left = 30
-    Top = 318
-    Width = 519
-    Height = 51
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 10
+    Top = 106
+    Width = 173
+    Height = 17
     Alignment = taLeftJustify
     BevelOuter = bvNone
     Caption = ' Mensagem'
@@ -598,7 +531,7 @@ object Form3_NameFun: TForm3_NameFun
     Ctl3D = True
     Font.Charset = ANSI_CHARSET
     Font.Color = clGray
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = [fsItalic]
     ParentCtl3D = False
@@ -1556,8 +1489,6 @@ object Form3_NameFun: TForm3_NameFun
         Name = '05'
       end>
     ImageCollection = ImageCollection1
-    Width = 48
-    Height = 48
     Left = 1200
     Top = 96
   end

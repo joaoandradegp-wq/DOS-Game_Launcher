@@ -1,18 +1,14 @@
 object Form7_About: TForm7_About
   Left = 601
   Top = 216
-  Margins.Left = 9
-  Margins.Top = 9
-  Margins.Right = 9
-  Margins.Bottom = 9
   BorderIcons = []
   BorderStyle = bsSingle
-  ClientHeight = 871
-  ClientWidth = 1665
+  ClientHeight = 296
+  ClientWidth = 546
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -33
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -20,111 +16,82 @@ object Form7_About: TForm7_About
   OnActivate = FormActivate
   OnClose = FormClose
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 288
-  TextHeight = 37
+  TextHeight = 13
   object Linha: TBevel
-    Left = 552
-    Top = 624
-    Width = 1083
-    Height = 27
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 184
+    Top = 208
+    Width = 361
+    Height = 9
     Shape = bsTopLine
   end
   object SpeedButton1: TSpeedButton
-    Left = 1426
-    Top = 797
-    Width = 225
-    Height = 66
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 463
+    Top = 266
+    Width = 75
+    Height = 22
     Caption = 'OK'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     OnClick = SpeedButton1Click
   end
   object Label1: TLabel
-    Left = 550
-    Top = 185
-    Width = 453
-    Height = 48
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 183
+    Top = 62
+    Width = 181
+    Height = 14
     Caption = 'JMBA Softwares - 2017-2026'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -36
-    Font.Name = 'Segoe UI'
+    Font.Height = -12
+    Font.Name = 'Verdana'
     Font.Style = []
     ParentFont = False
     Transparent = True
   end
   object Label3: TLabel
-    Left = 539
-    Top = 71
-    Width = 977
-    Height = 127
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 180
+    Top = 24
+    Width = 329
+    Height = 42
     Caption = 'DOS GAME LAUNCHER'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -104
+    Font.Height = -35
     Font.Name = 'Calibri'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
   object Label2: TLabel
-    Left = 539
-    Top = 50
-    Width = 408
-    Height = 44
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 180
+    Top = 17
+    Width = 137
+    Height = 14
     Caption = 'PHOBOS && OVERMIND'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -36
+    Font.Height = -12
     Font.Name = 'Verdana'
     Font.Style = []
     ParentFont = False
     Transparent = True
   end
   object Panel_Lateral: TPanel
-    Left = 24
-    Top = 24
-    Width = 492
-    Height = 840
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 8
+    Top = 8
+    Width = 164
+    Height = 280
     BevelOuter = bvLowered
     TabOrder = 0
     object IMG_LOGO: TImage
       Left = 1
       Top = 1
-      Width = 490
-      Height = 838
-      Margins.Left = 9
-      Margins.Top = 9
-      Margins.Right = 9
-      Margins.Bottom = 9
+      Width = 162
+      Height = 278
       Align = alClient
       Center = True
       Picture.Data = {
@@ -37237,23 +37204,20 @@ object Form7_About: TForm7_About
         FA17E5CB8A06A62B0000000049454E44AE426082}
       Proportional = True
       Stretch = True
-      ExplicitLeft = 7
+      ExplicitLeft = 0
       ExplicitTop = 0
-      ExplicitHeight = 843
+      ExplicitWidth = 164
+      ExplicitHeight = 280
     end
   end
   object MemoSIGIL: TMemo
-    Left = 552
-    Top = 288
-    Width = 1068
-    Height = 315
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 184
+    Top = 96
+    Width = 356
+    Height = 105
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -32
+    Font.Height = -11
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
