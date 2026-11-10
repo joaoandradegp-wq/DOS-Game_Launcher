@@ -16,6 +16,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FIndicator: TActivityIndicator;
+    procedure AjustarFonteLabel;
   public
     procedure AjustarTamanho;
   end;
@@ -28,6 +29,17 @@ implementation
 uses Unit1, Language;
 
 {$R *.dfm}
+
+procedure TForm5_Splash.AjustarFonteLabel;
+const
+PERC_FONTE = 0.05;
+MIN_FONTE_PX = 14;
+begin
+Label1.ParentFont := False;
+Label1.Font.Height := -Max(Round(ClientHeight * PERC_FONTE), MIN_FONTE_PX);
+Label1.AutoSize := True;
+Label1.Transparent := True;
+end;
 
 procedure TForm5_Splash.AjustarTamanho;
 const
@@ -95,16 +107,25 @@ var
 Exe: string;
 begin
 AjustarTamanho;
+AjustarFonteLabel;
 
 Label1.Caption := Lang_DGL(37);
 Label1.Left := (ClientWidth - Label1.Width) div 2;
-Label1.Top := ClientHeight - Label1.Height - MulDiv(6, CurrentPPI, 96);
+Label1.Top := ClientHeight - Label1.Height - Round(ClientHeight * 0.015);
 
 FIndicator := TActivityIndicator.Create(Self);
 FIndicator.Parent := Self;
-FIndicator.IndicatorSize := aisMedium;
+
+  if ClientHeight >= 600 then
+  FIndicator.IndicatorSize := aisXLarge
+  else if ClientHeight >= 400 then
+  FIndicator.IndicatorSize := aisLarge
+  else
+  FIndicator.IndicatorSize := aisMedium;
+
 FIndicator.Left := (ClientWidth - FIndicator.Width) div 2;
-FIndicator.Top := ClientHeight - FIndicator.Height - MulDiv(50, CurrentPPI, 96);
+
+FIndicator.Top := Label1.Top - FIndicator.Height - Round(ClientHeight * 0.13);
 FIndicator.Animate := True;
 
 Exe := ExtractFilePath(ParamStr(0)) + 'check_update.exe';
