@@ -5,9 +5,9 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{340D73A0-1511-46CC-9213-9F5CAD9CD1CD}
+AppId={{31867818-E3CB-4E94-91C2-E524E0882FA8}
 AppName=DOS Game Launcher
-AppVersion=2.3
+AppVersion=2.4
 AppPublisher=JMBA Softwares
 AppPublisherURL=http://phobosfreeware.blogspot.com.br
 AppSupportURL=http://phobosfreeware.blogspot.com.br
@@ -17,8 +17,8 @@ DefaultGroupName=DOS Game Launcher
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=C:\Users\Phobos\Desktop
-OutputBaseFilename=DGL_Setup_2.3
-SetupIconFile=E:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
+OutputBaseFilename=DGL_Setup_2.4
+SetupIconFile=D:\GitHUB\DOS-Game_Launcher\DEV\update\launcher_icon.ico
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
