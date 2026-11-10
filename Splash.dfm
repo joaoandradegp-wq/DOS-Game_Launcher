@@ -1,38 +1,30 @@
 object Form5_Splash: TForm5_Splash
   Left = 355
   Top = 173
-  Margins.Left = 9
-  Margins.Top = 9
-  Margins.Right = 9
-  Margins.Bottom = 9
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Form5_Splash'
-  ClientHeight = 758
-  ClientWidth = 1701
+  ClientHeight = 374
+  ClientWidth = 819
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -33
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
+  FormStyle = fsStayOnTop
   Position = poScreenCenter
+  Scaled = False
   OnClose = FormClose
   OnCreate = FormCreate
-  PixelsPerInch = 288
-  TextHeight = 37
+  TextHeight = 13
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 1701
-    Height = 758
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
-    AutoSize = True
-    Center = True
+    Width = 819
+    Height = 374
+    Align = alClient
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D49484452000006A50000
       02F60806000000C81B9CE9000000017352474200AECE1CE90000000467414D41
@@ -34157,21 +34149,17 @@ object Form5_Splash: TForm5_Splash
       533FA9CB874F9BF3BCD141B49AFC3A1CE7E9E269617D5826FD00DA55970C38D3
       B750893EAAC8841F35DFC9FE5EE5FBF6FA7F7C31FA16C689BEF3000000004945
       4E44AE426082}
-    Proportional = True
+    Stretch = True
   end
   object Label1: TLabel
-    Left = 354
-    Top = 705
-    Width = 992
-    Height = 44
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 238
+    Top = 306
+    Width = 345
+    Height = 14
     Caption = #169' 2026 JMBA Softwares. Todos os direitos reservados.'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWhite
-    Font.Height = -36
+    Font.Height = -12
     Font.Name = 'Verdana'
     Font.Style = []
     ParentFont = False
