@@ -184,9 +184,10 @@ end;
 //----------------------------------------------------------------------
 procedure MostrarLogo(const Nome: string);
 var
-Indice, W, H: Integer;
-Bmp: TBitmap;
+Indice, W, H, LW, LH, SrcW, SrcH: Integer;
+Bmp, Final: TBitmap;
 begin
+
 Indice:=Form1_DGL.ImageCollection2.GetIndexByName(Nome);
 
    if Indice < 0 then
@@ -196,15 +197,53 @@ Indice:=Form1_DGL.ImageCollection2.GetIndexByName(Nome);
    end;
 
 W:=Form1_DGL.img_game.Width;
-H:=Round(W * Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Height
-           / Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Width);
+H:=Form1_DGL.img_game.Height;
 
-Bmp:=Form1_DGL.ImageCollection2.GetBitmap(Indice,W,H);
+SrcW:=Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Width;
+SrcH:=Form1_DGL.ImageCollection2.Images[Indice].SourceImages[0].Image.Height;
+
+   if (W <= 0) or (H <= 0) or (SrcW <= 0) or (SrcH <= 0) then
+   Exit;
+
+   if (W / H) > (SrcW / SrcH) then
+   begin
+   LH:=H;
+   LW:=Round(H * SrcW / SrcH);
+   end
+   else
+   begin
+   LW:=W;
+   LH:=Round(W * SrcH / SrcW);
+   end;
+
+Bmp:=Form1_DGL.ImageCollection2.GetBitmap(Indice,LW,LH);
   try
-  Form1_DGL.img_game.Picture.Assign(Bmp);
+  Final:=TBitmap.Create;
+    try
+    Final.PixelFormat:=pf24bit;
+    Final.SetSize(W,H);
+    Final.Canvas.Brush.Color:=clBlack;
+    Final.Canvas.FillRect(Rect(0,0,W,H));
+
+    Bmp.AlphaFormat:=afPremultiplied;
+    Final.Canvas.Draw((W-LW) div 2,(H-LH) div 2,Bmp);
+
+    with Form1_DGL.img_game do
+    begin
+    AutoSize    :=False;
+    Stretch     :=False;
+    Proportional:=False;
+    Center      :=False;
+    Transparent :=False;
+    Picture.Assign(Final);
+    end;
+    finally
+    Final.Free;
+    end;
   finally
   Bmp.Free;
   end;
+
 end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------

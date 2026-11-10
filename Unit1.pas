@@ -243,26 +243,6 @@ Arquivo_INI:TIniFile;
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-procedure MostrarLogo_Unit1(const Nome: string);
-var
-Indice: Integer;
-Bmp: TBitmap;
-begin
-Indice := Form1_DGL.ImageCollection1.GetIndexByName(Nome);
-
-  if Indice < 0 then
-  Exit;
-
-  Bmp := Form1_DGL.ImageCollection1.GetBitmap(Indice, 256, 256);
-  try
-    Form1_DGL.img_game.Picture.Assign(Bmp);
-  finally
-    Bmp.Free;
-  end;
-
-end;
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 function PT_MessageDlg( Topo_Caixa:String; Msg: string; AType: TMsgDlgType; AButtons:
   TMsgDlgButtons; IndiceHelp: LongInt; DefButton: TMOdalResult = mrNone): Word;
 var

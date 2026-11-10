@@ -67,6 +67,7 @@
         <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <VerInfo_Locale>1046</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=JMBA Softwares;FileDescription=;FileVersion=1.8.0.0;InternalName=DOS Game Launcher;LegalCopyright=;LegalTrademarks=;OriginalFilename=DOS_GAMES.exe;ProductName=DOS Game Launcher;ProductVersion=1.8.0.0;Comments=</VerInfo_Keys>
+        <Custom_Styles>&quot;Windows11 Modern Light|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows11_Modern_Light.vsf&quot;;&quot;Windows11 Polar Light|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows11_Polar_Light.vsf&quot;;&quot;Windows11 White Smoke|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows11_WhiteSmoke.vsf&quot;</Custom_Styles>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>

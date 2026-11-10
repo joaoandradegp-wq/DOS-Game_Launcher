@@ -1,15 +1,17 @@
 program dos_games;
 
 uses
-  Forms, Windows, SysUtils,
+  Forms,
+  Windows,
+  SysUtils,
   Unit1 in 'Unit1.pas' {Form1_DGL},
-  DLC in 'DLC.pas'     {Form2_DLC},
+  DLC in 'DLC.pas' {Form2_DLC},
   QUAKE_NameFun in 'QUAKE_NameFun.pas' {Form3_NameFun},
-  MAP_Select in 'MAP_Select.pas'       {Form4_Select},
-  Splash in 'Splash.pas'               {Form5_Splash},
-  Mouse_Sense in 'Mouse_Sense.pas'     {Form6_Mouse},
-  About in 'About.pas'                 {Form7_About},
-  HEXEN_Class in 'HEXEN_Class.pas'     {Form8_HexenClass},
+  MAP_Select in 'MAP_Select.pas' {Form4_Select},
+  Splash in 'Splash.pas' {Form5_Splash},
+  Mouse_Sense in 'Mouse_Sense.pas' {Form6_Mouse},
+  About in 'About.pas' {Form7_About},
+  HEXEN_Class in 'HEXEN_Class.pas' {Form8_HexenClass},
   Language in 'Language.pas',
   Funcoes in 'Funcoes.pas',
   NO_DOSBOX_Bind in 'NO_DOSBOX_Bind.pas',
@@ -17,7 +19,9 @@ uses
   DOSBOX_Bind_FPS in 'DOSBOX_Bind_FPS.pas',
   QUAKE_Bind in 'QUAKE_Bind.pas',
   UIUtils in 'UIUtils.pas',
-  PastaMonitor in 'PastaMonitor.pas';
+  PastaMonitor in 'PastaMonitor.pas',
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 
@@ -65,6 +69,6 @@ begin
    Halt;
 
  Application.CreateForm(TForm1_DGL, Form1_DGL);
- Application.Run;
+  Application.Run;
 
 end.
