@@ -98,6 +98,7 @@ AjustarTamanho;
 
 Label1.Caption := Lang_DGL(37);
 Label1.Left := (ClientWidth - Label1.Width) div 2;
+Label1.Top := ClientHeight - Label1.Height - MulDiv(6, CurrentPPI, 96);
 
 FIndicator := TActivityIndicator.Create(Self);
 FIndicator.Parent := Self;
