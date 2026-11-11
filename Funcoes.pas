@@ -52,6 +52,7 @@ const
 //----------------------------------------------------------------------
 procedure MostrarLogo(const Nome: string);
 procedure MostrarFundo(const Nome: string);
+procedure MostrarStatus(const Indice: Integer);
 //----------------------------------------------------------------------
 procedure ResetarBotoes;
 procedure ResetarBotoesInterno;
@@ -107,6 +108,71 @@ uses DOSBOX_Bind_FPS, Quake_Bind, UIUtils;
 
 var
 FundoAtual_Local,LogoAtual_Local:String;
+
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+procedure MostrarStatus(const Indice: Integer);
+var
+W, H, LW, LH, SrcW, SrcH: Integer;
+Bmp, Final: TBitmap;
+begin
+
+  if (Indice < 0) or (Indice >= Form1_DGL.ImageCollection3.Count) then
+  begin
+  Form1_DGL.IMG_STATUS.Picture:=Nil;
+  Exit;
+  end;
+
+W:=Form1_DGL.IMG_STATUS.Width;
+H:=Form1_DGL.IMG_STATUS.Height;
+
+SrcW:=Form1_DGL.ImageCollection3.Images[Indice].SourceImages[0].Image.Width;
+SrcH:=Form1_DGL.ImageCollection3.Images[Indice].SourceImages[0].Image.Height;
+
+  if (W <= 0) or (H <= 0) or (SrcW <= 0) or (SrcH <= 0) then
+  Exit;
+
+  {MANTEM A PROPORCAO DO ICONE}
+  if (W / H) > (SrcW / SrcH) then
+  begin
+  LH:=H;
+  LW:=Round(H * SrcW / SrcH);
+  end
+  else
+  begin
+  LW:=W;
+  LH:=Round(W * SrcH / SrcW);
+  end;
+
+Bmp:=Form1_DGL.ImageCollection3.GetBitmap(Indice,LW,LH);
+  try
+  Final:=TBitmap.Create;
+    try
+    Final.PixelFormat:=pf24bit;
+    Final.SetSize(W,H);
+    Final.Canvas.Brush.Color:=Form1_DGL.Panel_Status.Color;
+    Final.Canvas.FillRect(Rect(0,0,W,H));
+
+    Bmp.AlphaFormat:=afPremultiplied;
+    Final.Canvas.Draw((W-LW) div 2,(H-LH) div 2,Bmp);
+
+    with Form1_DGL.IMG_STATUS do
+    begin
+    AutoSize    :=False;
+    Stretch     :=False;
+    Proportional:=False;
+    Center      :=False;
+    Transparent :=False;
+    Picture.Assign(Final);
+    end;
+    finally
+    Final.Free;
+    end;
+  finally
+  Bmp.Free;
+  end;
+
+end;
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
 procedure MostrarFundo(const Nome: string);

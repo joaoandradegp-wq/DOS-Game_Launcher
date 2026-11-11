@@ -46,7 +46,7 @@ procedure HabilitaTipoGame(Enabled: Boolean);
 
 procedure PosicionarBotao(Botao: TControl; Texto: TLabel; NovoTop: Integer);
 procedure SetGlyph(Button: TButton; ImageList: TVirtualImageList; Index: Integer);
-procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 48);
+procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 0);
 
 procedure GaranteLinha(Lista: TStringList; const Linha: string);
 
@@ -390,17 +390,72 @@ begin
   Button.ImageIndex := Index;
 end;
 
-procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 48);
+procedure SetImagem(Image: TImage; ImageCollection: TImageCollection; Index: Integer; Size: Integer = 0);
 var
-  Bmp: Vcl.Graphics.TBitmap;
+  W, H, LW, LH, SrcW, SrcH: Integer;
+  Bmp, Final: Vcl.Graphics.TBitmap;
+  CorFundo: TColor;
 begin
-  Bmp := ImageCollection.GetBitmap(Index, Size, Size);
+  if (Index < 0) or (Index >= ImageCollection.Count) then
+  begin
+    Image.Picture := nil;
+    Exit;
+  end;
+
+  if Size > 0 then
+  begin
+    W := Size;
+    H := Size;
+  end
+  else
+  begin
+    W := Image.Width;
+    H := Image.Height;
+  end;
+
+  SrcW := ImageCollection.Images[Index].SourceImages[0].Image.Width;
+  SrcH := ImageCollection.Images[Index].SourceImages[0].Image.Height;
+
+  if (W <= 0) or (H <= 0) or (SrcW <= 0) or (SrcH <= 0) then
+    Exit;
+
+  if (W / H) > (SrcW / SrcH) then
+  begin
+    LH := H;
+    LW := Round(H * SrcW / SrcH);
+  end
+  else
+  begin
+    LW := W;
+    LH := Round(W * SrcH / SrcW);
+  end;
+
+  if Image.Parent is TPanel then
+    CorFundo := TPanel(Image.Parent).Color
+  else
+    CorFundo := clBtnFace;
+
+  Bmp := ImageCollection.GetBitmap(Index, LW, LH);
   try
-    Bmp.PixelFormat := pf32bit;
-    Bmp.AlphaFormat := afDefined;
-    Image.Picture.Bitmap.Assign(Bmp);
-    Image.Picture.Bitmap.AlphaFormat := afDefined;
-    Image.Transparent := True;
+    Final := Vcl.Graphics.TBitmap.Create;
+    try
+      Final.PixelFormat := pf24bit;
+      Final.SetSize(W, H);
+      Final.Canvas.Brush.Color := CorFundo;
+      Final.Canvas.FillRect(Rect(0, 0, W, H));
+
+      Bmp.AlphaFormat := afPremultiplied;
+      Final.Canvas.Draw((W - LW) div 2, (H - LH) div 2, Bmp);
+
+      Image.AutoSize     := False;
+      Image.Stretch      := False;
+      Image.Proportional := False;
+      Image.Center       := False;
+      Image.Transparent  := False;
+      Image.Picture.Assign(Final);
+    finally
+      Final.Free;
+    end;
   finally
     Bmp.Free;
   end;

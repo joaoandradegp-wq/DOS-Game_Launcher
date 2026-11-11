@@ -440,7 +440,7 @@ Panel_Icones.SetFocus;
 if menu_debug.Checked = True then
 begin
 StatusBar1.Panels[1].Text:=Application.ExeName;
-SetImagem(IMG_STATUS, ImageCollection3, 3);
+MostrarStatus(3);
 
   for i:=1 to Length(Array_Games) do
   begin
@@ -500,7 +500,9 @@ end;
 procedure TForm1_DGL.RxCheckListBox1DblClick(Sender: TObject);
 begin
 
-  if (check_single.Checked = True) and (btn_start.Enabled = True) and (Menu_Debug.Checked = False) then
+  if (RxCheckListBox1.ItemIndex >= 0) and
+      RxCheckListBox1.ItemEnabled[RxCheckListBox1.ItemIndex] and
+      btn_start.Enabled and (Menu_Debug.Checked = False) then
   btn_startClick(Sender);
 
 end;
@@ -1200,7 +1202,7 @@ begin
      begin
      StatusBar1.Panels[1].Text:='Online - '+Lang_DGL(12)+' '+ip_porta.Text;
      Form1_DGL.IMG_STATUS.Picture:=Nil;
-     SetImagem(IMG_STATUS, ImageCollection3, 1);
+     MostrarStatus(1);
      end;
      //--------------------------------
 
@@ -1217,7 +1219,7 @@ begin
      begin
      StatusBar1.Panels[1].Text:='Offline - '+Lang_DGL(12)+' '+ip_porta.Text;
      Form1_DGL.IMG_STATUS.Picture:=Nil;
-     SetImagem(IMG_STATUS, ImageCollection3, 0);
+     MostrarStatus(0);
      end;
      //--------------------------------
 

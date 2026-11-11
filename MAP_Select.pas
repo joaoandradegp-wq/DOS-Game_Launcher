@@ -972,7 +972,7 @@ procedure TForm4_Select.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
 
   if (Form1_DGL.RxQuakeServer.State = tssOff) then
-  MostrarLogo(IntToStr(id));
+  MostrarLogo(Array_Games[id][1]);
 
 Nome_DLC_Global:='';
 Form4_Select.Release;

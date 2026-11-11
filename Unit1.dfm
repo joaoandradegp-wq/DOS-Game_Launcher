@@ -1,15 +1,19 @@
 object Form1_DGL: TForm1_DGL
   Left = 364
   Top = 174
+  Margins.Left = 9
+  Margins.Top = 9
+  Margins.Right = 9
+  Margins.Bottom = 9
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  ClientHeight = 461
-  ClientWidth = 633
+  ClientHeight = 1383
+  ClientWidth = 1899
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
+  Font.Height = -33
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
@@ -20,15 +24,20 @@ object Form1_DGL: TForm1_DGL
   OnClose = FormClose
   OnCreate = FormCreate
   OnDblClick = FormDblClick
+  PixelsPerInch = 288
   DesignSize = (
-    633
-    461)
-  TextHeight = 13
+    1899
+    1383)
+  TextHeight = 37
   object img_fundo: TImage
-    Left = 391
-    Top = 279
-    Width = 267
-    Height = 267
+    Left = 1173
+    Top = 837
+    Width = 801
+    Height = 801
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Anchors = [akLeft, akTop, akRight, akBottom]
     Center = True
     Picture.Data = {
@@ -13527,27 +13536,39 @@ object Form1_DGL: TForm1_DGL
   end
   object linha02: TBevel
     Left = 0
-    Top = 280
-    Width = 633
-    Height = 9
+    Top = 840
+    Width = 1899
+    Height = 27
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Shape = bsTopLine
   end
   object linha01: TBevel
-    Left = 1
-    Top = 58
-    Width = 632
-    Height = 9
+    Left = 3
+    Top = 174
+    Width = 1896
+    Height = 27
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Shape = bsTopLine
   end
   object Label_Controle: TLabel
-    Left = 520
-    Top = 213
-    Width = 41
-    Height = 12
+    Left = 1560
+    Top = 639
+    Width = 121
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'TECLADO'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13555,14 +13576,18 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Sense: TLabel
-    Left = 521
-    Top = 233
-    Width = 87
-    Height = 12
+    Left = 1563
+    Top = 699
+    Width = 261
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'MOUSE SENSITIVITY'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13570,14 +13595,18 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Brutal: TLabel
-    Left = 520
-    Top = 261
-    Width = 28
-    Height = 12
+    Left = 1560
+    Top = 783
+    Width = 81
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'MODS'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13585,14 +13614,18 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Opcoes: TLabel
-    Left = 520
-    Top = 285
-    Width = 36
-    Height = 12
+    Left = 1560
+    Top = 855
+    Width = 103
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'OP'#199#213'ES'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13600,14 +13633,18 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_DM: TLabel
-    Left = 520
-    Top = 309
-    Width = 61
-    Height = 12
+    Left = 1560
+    Top = 927
+    Width = 184
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'DEATHMATCH'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13615,14 +13652,18 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_QuakeServer: TLabel
-    Left = 520
-    Top = 333
-    Width = 85
-    Height = 12
+    Left = 1560
+    Top = 999
+    Width = 251
+    Height = 37
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'DEDICATED SERVER'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -9
+    Font.Height = -27
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13631,30 +13672,42 @@ object Form1_DGL: TForm1_DGL
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 442
-    Width = 633
-    Height = 19
+    Top = 1326
+    Width = 1899
+    Height = 57
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Panels = <
       item
-        Width = 20
+        Width = 60
       end
       item
-        Width = 50
+        Width = 150
       end>
   end
   object Panel_Status: TPanel
-    Left = 1
-    Top = 445
-    Width = 18
-    Height = 17
+    Left = 3
+    Top = 1335
+    Width = 54
+    Height = 51
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     BevelOuter = bvNone
     Locked = True
     TabOrder = 2
     object IMG_STATUS: TImage
       Left = 0
       Top = 0
-      Width = 18
-      Height = 17
+      Width = 54
+      Height = 51
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Align = alClient
       AutoSize = True
       Center = True
@@ -13662,10 +13715,14 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object Panel_Icones: TPanel
-    Left = 479
-    Top = 64
-    Width = 149
-    Height = 142
+    Left = 1437
+    Top = 192
+    Width = 447
+    Height = 426
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     BevelOuter = bvLowered
     BorderStyle = bsSingle
     Color = clBlack
@@ -13676,24 +13733,32 @@ object Form1_DGL: TForm1_DGL
     object img_game: TImage
       Left = 1
       Top = 1
-      Width = 143
-      Height = 136
+      Width = 441
+      Height = 420
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Align = alClient
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 147
-      ExplicitHeight = 140
+      ExplicitLeft = 3
+      ExplicitTop = 3
+      ExplicitWidth = 429
+      ExplicitHeight = 408
     end
     object gif_dos: TLabel
-      Left = 8
-      Top = 8
-      Width = 35
-      Height = 14
+      Left = 24
+      Top = 24
+      Width = 100
+      Height = 42
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Caption = 'C:\>_'
       Color = clGray
       Font.Charset = ANSI_CHARSET
       Font.Color = clGray
-      Font.Height = -12
+      Font.Height = -36
       Font.Name = 'Consolas'
       Font.Style = [fsBold]
       ParentColor = False
@@ -13701,68 +13766,88 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object GroupIP: TGroupBox
-    Left = 5
-    Top = 291
-    Width = 190
-    Height = 145
+    Left = 15
+    Top = 873
+    Width = 570
+    Height = 435
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = ' Rede Local '
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
     TabOrder = 4
     object Label1: TLabel
-      Left = 8
-      Top = 59
-      Width = 51
-      Height = 13
+      Left = 24
+      Top = 177
+      Width = 154
+      Height = 45
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Caption = 'INTERNET:'
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
     object Label2: TLabel
-      Left = 8
-      Top = 19
-      Width = 23
-      Height = 13
+      Left = 24
+      Top = 57
+      Width = 70
+      Height = 45
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Caption = 'LAN:'
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
     object Label3: TLabel
-      Left = 8
-      Top = 99
-      Width = 36
-      Height = 13
+      Left = 24
+      Top = 297
+      Width = 105
+      Height = 45
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Caption = 'PORTA:'
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
     end
     object ip_local: TEdit
-      Left = 8
-      Top = 39
-      Width = 121
-      Height = 21
+      Left = 24
+      Top = 117
+      Width = 363
+      Height = 48
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Calibri'
       Font.Style = []
       ParentFont = False
@@ -13770,13 +13855,17 @@ object Form1_DGL: TForm1_DGL
       Text = '0.0.0.0'
     end
     object ip_internet: TEdit
-      Left = 8
-      Top = 75
-      Width = 121
-      Height = 21
+      Left = 24
+      Top = 225
+      Width = 363
+      Height = 48
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Calibri'
       Font.Style = []
       ParentFont = False
@@ -13784,13 +13873,17 @@ object Form1_DGL: TForm1_DGL
       Text = '0.0.0.0'
     end
     object ip_porta: TEdit
-      Left = 8
-      Top = 117
-      Width = 121
-      Height = 21
+      Left = 24
+      Top = 351
+      Width = 363
+      Height = 48
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Calibri'
       Font.Style = []
       ParentFont = False
@@ -13798,10 +13891,14 @@ object Form1_DGL: TForm1_DGL
       Text = '0'
     end
     object Refresh_Internet: TButton
-      Left = 130
-      Top = 70
-      Width = 23
-      Height = 23
+      Left = 390
+      Top = 215
+      Width = 69
+      Height = 69
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Enabled = False
       ImageAlignment = iaCenter
       ImageIndex = 4
@@ -13811,10 +13908,14 @@ object Form1_DGL: TForm1_DGL
       OnClick = Refresh_InternetClick
     end
     object Refresh_Lan: TButton
-      Left = 130
-      Top = 35
-      Width = 23
-      Height = 23
+      Left = 390
+      Top = 108
+      Width = 69
+      Height = 69
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Enabled = False
       ImageAlignment = iaCenter
       ImageIndex = 4
@@ -13825,16 +13926,20 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object check_single: TRadioButton
-    Left = 216
-    Top = 296
-    Width = 113
-    Height = 17
+    Left = 648
+    Top = 888
+    Width = 339
+    Height = 51
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'JOGAR'
     Checked = True
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -13843,15 +13948,19 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_singleClick
   end
   object check_servidor: TRadioButton
-    Left = 216
-    Top = 312
-    Width = 113
-    Height = 17
+    Left = 648
+    Top = 936
+    Width = 339
+    Height = 51
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'CRIAR SERVIDOR'
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -13859,15 +13968,19 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_servidorClick
   end
   object check_cliente: TRadioButton
-    Left = 216
-    Top = 328
-    Width = 177
-    Height = 17
+    Left = 648
+    Top = 984
+    Width = 531
+    Height = 51
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'CONECTAR EM UMA PARTIDA'
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = []
     ParentFont = False
@@ -13875,10 +13988,14 @@ object Form1_DGL: TForm1_DGL
     OnClick = RadioButton3Click
   end
   object Panel1: TPanel
-    Left = 5
-    Top = 30
-    Width = 335
-    Height = 22
+    Left = 15
+    Top = 90
+    Width = 1005
+    Height = 66
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = True
     BevelOuter = bvNone
     ParentColor = True
@@ -13886,27 +14003,35 @@ object Form1_DGL: TForm1_DGL
     object Label_Name: TLabel
       Left = 0
       Top = 0
-      Width = 36
-      Height = 13
+      Width = 104
+      Height = 45
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Caption = 'NOME:'
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -11
+      Font.Height = -33
       Font.Name = 'Segoe UI'
       Font.Style = []
       ParentFont = False
       Transparent = True
     end
     object player_name: TEdit
-      Left = 39
+      Left = 117
       Top = 0
-      Width = 121
-      Height = 22
+      Width = 363
+      Height = 52
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -36
       Font.Name = 'Calibri'
       Font.Style = []
       ParentFont = False
@@ -13914,10 +14039,14 @@ object Form1_DGL: TForm1_DGL
       OnChange = player_nameChange
     end
     object cont_seta: TUpDown
-      Left = 193
+      Left = 579
       Top = 0
-      Width = 16
-      Height = 22
+      Width = 48
+      Height = 52
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Associate = cont_player
       Enabled = False
       Min = 2
@@ -13925,13 +14054,17 @@ object Form1_DGL: TForm1_DGL
       TabOrder = 1
     end
     object cont_player: TEdit
-      Left = 166
+      Left = 498
       Top = 0
-      Width = 27
-      Height = 22
+      Width = 81
+      Height = 52
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -36
       Font.Name = 'Calibri'
       Font.Style = []
       ParentFont = False
@@ -13939,32 +14072,42 @@ object Form1_DGL: TForm1_DGL
       Text = '2'
     end
     object combo_color: TComboBox
-      Left = 213
+      Left = 639
       Top = 0
-      Width = 50
-      Height = 22
+      Width = 150
+      Height = 54
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Style = csOwnerDrawFixed
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -36
       Font.Name = 'Calibri'
       Font.Style = []
+      ItemHeight = 48
       ParentFont = False
       TabOrder = 3
       Visible = False
       OnDrawItem = combo_colorDrawItem
     end
     object combo_doom: TComboBox
-      Left = 269
+      Left = 807
       Top = 0
-      Width = 66
-      Height = 22
+      Width = 198
+      Height = 54
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Style = csOwnerDrawFixed
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
-      Font.Height = -12
+      Font.Height = -36
       Font.Name = 'Calibri'
       Font.Style = []
+      ItemHeight = 48
       ItemIndex = 0
       ParentFont = False
       TabOrder = 4
@@ -13976,15 +14119,19 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object btn_start: TButton
-    Left = 201
-    Top = 404
-    Width = 185
-    Height = 32
+    Left = 603
+    Top = 1212
+    Width = 555
+    Height = 96
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Caption = 'INICIAR'
     Enabled = False
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentFont = False
@@ -13992,26 +14139,35 @@ object Form1_DGL: TForm1_DGL
     OnClick = btn_startClick
   end
   object RxCheckListBox1: TCheckListBox
-    Left = 10
-    Top = 66
-    Width = 453
-    Height = 208
+    Left = 30
+    Top = 198
+    Width = 1359
+    Height = 624
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -11
+    Font.Height = -33
     Font.Name = 'Segoe UI'
     Font.Style = []
-    ItemHeight = 13
+    ItemHeight = 45
     ParentFont = False
     TabOrder = 10
     OnClick = RxCheckListBox1Click
+    OnDblClick = RxCheckListBox1DblClick
     OnMouseDown = RxCheckListBox1MouseDown
   end
   object loading_panel: TPanel
-    Left = 10
-    Top = 66
-    Width = 453
-    Height = 208
+    Left = 30
+    Top = 198
+    Width = 1359
+    Height = 624
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     BevelOuter = bvNone
     Color = clWhite
     TabOrder = 3
@@ -14019,8 +14175,12 @@ object Form1_DGL: TForm1_DGL
     object gif_texto: TLabel
       Left = 0
       Top = 0
-      Width = 453
-      Height = 208
+      Width = 1359
+      Height = 624
+      Margins.Left = 9
+      Margins.Top = 9
+      Margins.Right = 9
+      Margins.Bottom = 9
       Align = alClient
       Alignment = taCenter
       AutoSize = False
@@ -14028,7 +14188,7 @@ object Form1_DGL: TForm1_DGL
       Color = clWhite
       Font.Charset = ANSI_CHARSET
       Font.Color = clGray
-      Font.Height = -24
+      Font.Height = -72
       Font.Name = 'Retro Gaming'
       Font.Style = [fsBold]
       ParentColor = False
@@ -14038,80 +14198,122 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object RxControle: TToggleSwitch
-    Left = 480
-    Top = 212
-    Width = 35
-    Height = 15
+    Left = 1440
+    Top = 636
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 11
+    ThumbWidth = 45
     Visible = False
     OnClick = RxControleClick
   end
   object RxSense: TToggleSwitch
-    Left = 480
-    Top = 233
-    Width = 35
-    Height = 15
+    Left = 1440
+    Top = 699
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 12
+    ThumbWidth = 45
     Visible = False
     OnClick = RxSenseClick
   end
   object RxBrutal: TToggleSwitch
-    Left = 479
-    Top = 259
-    Width = 35
-    Height = 15
+    Left = 1437
+    Top = 777
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 13
+    ThumbWidth = 45
     Visible = False
     OnClick = RxBrutalClick
   end
   object RxOpcoes: TToggleSwitch
-    Left = 479
-    Top = 283
-    Width = 35
-    Height = 15
+    Left = 1437
+    Top = 849
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 14
+    ThumbWidth = 45
     Visible = False
     OnClick = RxOpcoesClick
   end
   object RxDM: TToggleSwitch
-    Left = 479
-    Top = 308
-    Width = 35
-    Height = 15
+    Left = 1437
+    Top = 924
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 15
+    ThumbWidth = 45
     Visible = False
     OnClick = RxDMClick
   end
   object RxQuakeServer: TToggleSwitch
-    Left = 479
-    Top = 332
-    Width = 35
-    Height = 15
+    Left = 1437
+    Top = 996
+    Width = 105
+    Height = 45
+    Margins.Left = 9
+    Margins.Top = 9
+    Margins.Right = 9
+    Margins.Bottom = 9
     AutoSize = False
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
+    SwitchHeight = 60
+    SwitchWidth = 150
     TabOrder = 16
+    ThumbWidth = 45
     Visible = False
     OnClick = RxQuakeServerClick
   end
@@ -14259,6 +14461,9 @@ object Form1_DGL: TForm1_DGL
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         Caption = '&Site Oficial'
+        SubMenuImages = VirtualImageList3
+        ImageIndex = 8
+        ImageName = 'home'
         OnClick = Menu_SiteClick
       end
       object N1: TMenuItem
@@ -14397,8 +14602,8 @@ object Form1_DGL: TForm1_DGL
         Name = 'default'
       end>
     ImageCollection = ImageCollection1
-    Width = 5
-    Height = 5
+    Width = 15
+    Height = 15
     Left = 1344
     Top = 1032
   end
@@ -61642,8 +61847,8 @@ object Form1_DGL: TForm1_DGL
         Name = '12A'
       end>
     ImageCollection = ImageCollection2
-    Width = 5
-    Height = 5
+    Width = 15
+    Height = 15
     Left = 1344
     Top = 1200
   end
@@ -63683,6 +63888,58 @@ object Form1_DGL: TForm1_DGL
               A9D475F761A3451D3232B68DFF0346B25040732C1F620000000049454E44AE42
               6082}
           end>
+      end
+      item
+        Name = 'home'
+        SourceImages = <
+          item
+            Image.Data = {
+              89504E470D0A1A0A0000000D4948445200000080000000800803000000F4E091
+              F90000000373424954080808DBE14FE000000009704859730000039400000394
+              014A11A92B0000001974455874536F667477617265007777772E696E6B736361
+              70652E6F72679BEE3C1A00000165504C5445FFFFFF0000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000990414170000007674
+              524E5300030408090A0B0C0E0F10111214151618191A1C20242528292A2B2C2D
+              3238393B3E3F4042454648515354585B5D65676A6D6E6F7071727383858A8B8C
+              8D8E91929497989A9B9D9E9FA3A4A5A6A7A8A9AAABADB8B9BABDC0C5C8CCCDCF
+              D0D5D6DADBDCDFE0E2E3E5E6E7E8E9EAF3F5F7F8F9FBFCFDFE4245EA10000003
+              274944415478DAEDDBFB53125118C6F1178C82F05262295E8A344A512B6BCD0B
+              A56579BFA1A9516A8A9A646258E1FEFD790B59F62CFB9EDDF7DD669AF3FCC639
+              E8F733388EB711404DCDF9021D3D03C9E4404FFBB57F518FF4AF1EEB97CB7F78
+              51EF71BEFEED4FDDB0E337B73DCCFB06F3BA69F9419F57FDF08A2EDC4AD89B7E
+              7447B7D84ED4FC62758F7CFCFCFE6988B0DF9AD32D976B2D7BF2DD4F1717FB8F
+              C8FA2D15FA26C1FD1FC59BE79EF4CB04D733259F26514FFA46C1EBD28BB4377D
+              83E04BE9F949D09B7E8920F0DB70DEEE51FF4AD0663C7EE655BF28B8673CD53C
+              EBFF15D00284FD8D782814DFB012900284FD19FFD9957FC64240096816F5672F
+              BFFCF966C5024240C5BEA5800ED07C58B16F25784205B0ED5B087E1101107D0B
+              010D00D5C70834D63E42A0D1F5E784DF7EFAE61800127D5B81C6DDB71368EC7D
+              1B813C202ADBAF2CD018FAE1B16C762C8C1468F4FD86DDB3B3DD069C4023E8CF
+              1BFB7B17A77B46C13C0940A28F154801A2DF25FA4881C6D7C7095E32F6518283
+              46C63EA9C0519F50D0E4AC4F2610F617107D9360C191C0459F44E0AA4F2070D9
+              772D70DD772920E8BB1290F45D0884FD45E9BE49B0881490F51D0A9A0E447DBF
+              937EB9C08F113452F61D0888FBD202F2BEA480A12F2510F6532EFB2641CA5250
+              F38DA58F12646B4E6F524C7D942005D0C9D647093A618AAF8F114CC126631F21
+              D88423CEBEBDE008D659FBB6827518371E2C11F74D8225E3ED38C499FB368238
+              C00473BFA260E2F420B4557C38CDD23709A68B175BE77FD2AD4A16CE1F1D2680
+              A75F2E80C4C56F3F0AC9AACB8396BEC9D591DE6AB6BE4950DD3BB23AD9D752E9
+              4714DABE49603BEABEAC80BE2F27E0E8CB0878FA784184A97F2A88A0006B3ADB
+              D6501F009D71989720CE097880003CE60474288002288002FC2780AF7BC2ED7B
+              06B8297ECB5B0AA0000AA0000AA0000AA0000A400378C8098821004D9C803B08
+              409013700301806DDB7713720AD8C6F46198EF15184601DA4EB800276D28008C
+              720146717D0864780099001200B10207A01003F48638004320B1448E1A904B80
+              D4EA966901CB7520BBEE74810A5048778393D576F5BF7A279AC5BFF906854F4E
+              6A5DB5A0A666BD3FFBF8E439982FF32B0000000049454E44AE426082}
+          end>
       end>
     Left = 1248
     Top = 672
@@ -63728,10 +63985,15 @@ object Form1_DGL: TForm1_DGL
         CollectionIndex = 7
         CollectionName = 'debug'
         Name = 'debug'
+      end
+      item
+        CollectionIndex = 8
+        CollectionName = 'home'
+        Name = 'home'
       end>
     ImageCollection = ImageCollection3
-    Width = 13
-    Height = 13
+    Width = 39
+    Height = 39
     Left = 1254
     Top = 510
   end
