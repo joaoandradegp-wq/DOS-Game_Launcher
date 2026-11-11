@@ -11,18 +11,18 @@ type
     S01: TImage;
     S02: TImage;
     S03: TImage;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    Label12: TLabel;
+    P_Speed: TLabel;
+    P_Armor: TLabel;
+    P_Magic: TLabel;
+    P_Strength: TLabel;
+    M_Speed: TLabel;
+    M_Armor: TLabel;
+    M_Magic: TLabel;
+    M_Strength: TLabel;
+    W_Strength: TLabel;
+    W_Magic: TLabel;
+    W_Armor: TLabel;
+    W_Speed: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyPress(Sender: TObject; var Key: Char);
     procedure S01Click(Sender: TObject);
@@ -82,42 +82,22 @@ end;
 
 procedure TForm8_HexenClass.FormActivate(Sender: TObject);
 begin
-
-  {PT-BR}
-  if ActiveLang = 1 then
-  begin
-  Label1.Left:=10;
-  Label2.Left:=12;
-  Label3.Left:=41;
-  Label4.Left:=44;
-
-  Label5.Left:=154;
-  Label6.Left:=156;
-  Label7.Left:=184;
-  Label8.Left:=184;
-
-  Label9.Left :=297;
-  Label10.Left:=298;
-  Label11.Left:=327;
-  Label12.Left:=327;
-  end;
-
-//----------------------------
-Label1.Caption :=Lang_DGL(33);
-Label2.Caption :=Lang_DGL(34);
-Label3.Caption :=Lang_DGL(35);
-Label4.Caption :=Lang_DGL(36);
-//----------------------------
-Label5.Caption :=Lang_DGL(33);
-Label6.Caption :=Lang_DGL(34);
-Label7.Caption :=Lang_DGL(35);
-Label8.Caption :=Lang_DGL(36);
-//----------------------------
-Label9.Caption :=Lang_DGL(33);
-Label10.Caption:=Lang_DGL(34);
-Label11.Caption:=Lang_DGL(35);
-Label12.Caption:=Lang_DGL(36);
-//----------------------------
+//--------------------------------
+W_Speed.Caption    :=Lang_DGL(33);
+W_Armor.Caption    :=Lang_DGL(34);
+W_Magic.Caption    :=Lang_DGL(35);
+W_Strength.Caption :=Lang_DGL(36);
+//--------------------------------
+P_Speed.Caption    :=Lang_DGL(33);
+P_Armor.Caption    :=Lang_DGL(34);
+P_Magic.Caption    :=Lang_DGL(35);
+P_Strength.Caption :=Lang_DGL(36);
+//--------------------------------
+M_Speed.Caption    :=Lang_DGL(33);
+M_Armor.Caption    :=Lang_DGL(34);
+M_Magic.Caption    :=Lang_DGL(35);
+M_Strength.Caption :=Lang_DGL(36);
+//--------------------------------
 end;
 
 end.

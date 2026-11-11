@@ -72,7 +72,7 @@ begin
       PACK02.Caption:='';
       PACK01.Enabled:=FileExists(ExtractFilePath(Application.ExeName)+Array_Games[id][3]+'SoD.pk7');
       PACK02.Visible:=not PACK01.Enabled;
-      Form2_DLC.Height:=MulDiv(105, CurrentPPI, 96);
+      Form2_DLC.Height:=MulDiv(113, CurrentPPI, 96);
       end;
   end;
 

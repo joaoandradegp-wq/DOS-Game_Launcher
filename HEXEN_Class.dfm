@@ -1,37 +1,28 @@
 object Form8_HexenClass: TForm8_HexenClass
-  Left = 883
-  Top = 698
-  Margins.Left = 9
-  Margins.Top = 9
-  Margins.Right = 9
-  Margins.Bottom = 9
+  Left = 470
+  Top = 291
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone
-  ClientHeight = 867
-  ClientWidth = 1352
+  ClientHeight = 289
+  ClientWidth = 448
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -33
+  Font.Height = -11
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   KeyPreview = True
-  Position = poDesigned
+  Position = poMainFormCenter
   OnActivate = FormActivate
   OnClose = FormClose
   OnKeyPress = FormKeyPress
-  PixelsPerInch = 288
-  TextHeight = 37
+  TextHeight = 13
   object Select: TImage
     Left = 0
     Top = 0
-    Width = 1352
-    Height = 867
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Width = 448
+    Height = 289
     Align = alClient
     AutoSize = True
     Center = True
@@ -7845,255 +7836,193 @@ object Form8_HexenClass: TForm8_HexenClass
       0000000049454E44AE426082}
     Proportional = True
     Stretch = True
-    ExplicitLeft = 48
-    ExplicitWidth = 1356
-    ExplicitHeight = 860
+    ExplicitWidth = 451
   end
   object S01: TImage
-    Left = 14
-    Top = 48
-    Width = 450
-    Height = 819
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 8
+    Top = 16
+    Width = 150
+    Height = 273
     OnClick = S01Click
   end
   object S02: TImage
-    Left = 449
-    Top = 48
-    Width = 435
-    Height = 819
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 150
+    Top = 16
+    Width = 145
+    Height = 273
     Transparent = True
     OnClick = S02Click
   end
   object S03: TImage
-    Left = 902
-    Top = 48
-    Width = 450
-    Height = 819
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+    Left = 301
+    Top = 16
+    Width = 147
+    Height = 273
     OnClick = S03Click
   end
-  object Label1: TLabel
-    Left = 105
-    Top = 589
-    Width = 120
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object P_Speed: TLabel
+    Left = 154
+    Top = 195
+    Width = 41
+    Height = 13
     Caption = 'SPEED'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label2: TLabel
-    Left = 88
-    Top = 654
-    Width = 137
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object P_Armor: TLabel
+    Left = 154
+    Top = 216
+    Width = 44
+    Height = 13
     Caption = 'ARMOR'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label3: TLabel
-    Left = 96
-    Top = 726
-    Width = 126
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object P_Magic: TLabel
+    Left = 154
+    Top = 239
+    Width = 42
+    Height = 13
     Caption = 'MAGIC'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label4: TLabel
-    Left = 27
-    Top = 795
-    Width = 201
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object P_Strength: TLabel
+    Left = 154
+    Top = 261
+    Width = 67
+    Height = 13
     Caption = 'STRENGTH'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label5: TLabel
-    Left = 560
-    Top = 589
-    Width = 120
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object M_Speed: TLabel
+    Left = 303
+    Top = 195
+    Width = 41
+    Height = 13
     Caption = 'SPEED'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label6: TLabel
-    Left = 543
-    Top = 654
-    Width = 137
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object M_Armor: TLabel
+    Left = 303
+    Top = 216
+    Width = 44
+    Height = 13
     Caption = 'ARMOR'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label7: TLabel
-    Left = 554
-    Top = 726
-    Width = 126
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object M_Magic: TLabel
+    Left = 303
+    Top = 239
+    Width = 42
+    Height = 13
     Caption = 'MAGIC'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label8: TLabel
-    Left = 482
-    Top = 795
-    Width = 201
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object M_Strength: TLabel
+    Left = 303
+    Top = 261
+    Width = 67
+    Height = 13
     Caption = 'STRENGTH'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
     Transparent = True
   end
-  object Label9: TLabel
-    Left = 1025
-    Top = 589
-    Width = 120
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
+  object W_Strength: TLabel
+    Left = 4
+    Top = 261
+    Width = 67
+    Height = 13
+    Caption = 'STRENGTH'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clSilver
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object W_Magic: TLabel
+    Left = 4
+    Top = 239
+    Width = 42
+    Height = 13
+    Caption = 'MAGIC'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clSilver
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object W_Armor: TLabel
+    Left = 4
+    Top = 216
+    Width = 44
+    Height = 13
+    Caption = 'ARMOR'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clSilver
+    Font.Height = -11
+    Font.Name = 'Verdana'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Transparent = True
+  end
+  object W_Speed: TLabel
+    Left = 4
+    Top = 195
+    Width = 41
+    Height = 13
     Caption = 'SPEED'
     Font.Charset = ANSI_CHARSET
     Font.Color = clSilver
-    Font.Height = -33
-    Font.Name = 'Verdana'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Transparent = True
-  end
-  object Label10: TLabel
-    Left = 1008
-    Top = 654
-    Width = 137
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
-    Caption = 'ARMOR'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clSilver
-    Font.Height = -33
-    Font.Name = 'Verdana'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Transparent = True
-  end
-  object Label11: TLabel
-    Left = 1019
-    Top = 726
-    Width = 126
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
-    Caption = 'MAGIC'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clSilver
-    Font.Height = -33
-    Font.Name = 'Verdana'
-    Font.Style = [fsBold]
-    ParentFont = False
-    Transparent = True
-  end
-  object Label12: TLabel
-    Left = 944
-    Top = 795
-    Width = 201
-    Height = 40
-    Margins.Left = 9
-    Margins.Top = 9
-    Margins.Right = 9
-    Margins.Bottom = 9
-    Caption = 'STRENGTH'
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clSilver
-    Font.Height = -33
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = [fsBold]
     ParentFont = False
