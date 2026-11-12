@@ -137,7 +137,7 @@ begin
  30: Result:='&Não';
  31: Result:='&Cancelar';
  32: Result:='Esse é o arquivo do próprio jogo, selecione apenas MODS.';
- 33: Result:='AGILIDADE';
+ 33: Result:='DESTREZA';
  34: Result:='ARMADURA';
  35: Result:='MAGIA';
  36: Result:='FORÇA';

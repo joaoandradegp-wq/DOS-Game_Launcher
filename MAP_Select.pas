@@ -12,7 +12,6 @@ type
     label_episodio: TLabel;
     ListBox_Episodio: TListBox;
     btn_aplicar: TSpeedButton;
-    SIGIL_Off: TListBox;
     procedure btn_aplicarClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure ListBox_EpisodioClick(Sender: TObject);
@@ -793,38 +792,22 @@ Fecha_ESC:=False;
  //--------------------------------------------------------------------------------------
  if (id = 10) then
  begin
- SIGIL_Off.Clear;
 
    if SW_DLC_Exists(1) = False then
    begin
    ListBox_Episodio.Perform(LB_SELECTSTRING,0,LongInt(PChar('Wanton Destruction')));
    ListBox_Episodio.DeleteSelected;
-   SIGIL_Off.Items.Add('Wanton Destruction');
-     if SW_DLC_Exists(2) = False then
-     SIGIL_Off.Top:=78
-     else
-     SIGIL_Off.Top:=65;
    end
    else if SW_DLC_Exists(2) = False then
    begin
    ListBox_Episodio.Perform(LB_SELECTSTRING,0,LongInt(PChar('Twin Dragon')));
    ListBox_Episodio.DeleteSelected;
-   SIGIL_Off.Items.Add('Twin Dragon');
-     if SW_DLC_Exists(1) = False then
-     SIGIL_Off.Top:=78
-     else
-     SIGIL_Off.Top:=65;
    end
    else if (SW_DLC_Exists(1) = False) and (SW_DLC_Exists(2) = False) then
    begin
    ListBox_Episodio.Items.Delete(2);
    ListBox_Episodio.Items.Delete(3);
-   SIGIL_Off.Items.Add('Wanton Destruction');
-   SIGIL_Off.Items.Add('Twin Dragon');
    end;
-
-   if (SW_DLC_Exists(1) = False) or (SW_DLC_Exists(2) = False) then
-   SIGIL_Off.Visible:=True;
 
  end;
  //--------------------------------------------------------------------------------------

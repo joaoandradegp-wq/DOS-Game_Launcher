@@ -89,25 +89,4 @@ object Form4_Select: TForm4_Select
     TabOrder = 0
     OnClick = ListBox_EpisodioClick
   end
-  object SIGIL_Off: TListBox
-    Left = 10
-    Top = 78
-    Width = 229
-    Height = 35
-    BevelInner = bvNone
-    BevelOuter = bvNone
-    BorderStyle = bsNone
-    Enabled = False
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -12
-    Font.Name = 'Calibri'
-    Font.Style = []
-    ItemHeight = 14
-    Items.Strings = (
-      'DLC')
-    ParentFont = False
-    TabOrder = 2
-    Visible = False
-  end
 end

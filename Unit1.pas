@@ -9,10 +9,10 @@ uses
   Vcl.BaseImageCollection, System.ImageList, Vcl.Imaging.pngimage, Vcl.WinXCtrls;
 
 type
-//------------------------------------
+//-----------------------------------
 Campos = Array[1..8] of String;
-//------------------------------------
-            
+//-----------------------------------
+
 var
 //--------------------------------
 id:Integer;
@@ -522,18 +522,24 @@ end;
 
 procedure TForm1_DGL.Timer2Timer(Sender: TObject);
 var
-Base:String;
+Base: String;
 begin
 
-   if not loading_panel.Visible then
-   Exit;
+  if not loading_panel.Visible then
+  Exit;
 
-Base:=Lang_DGL(38);
+Base := Lang_DGL(38);
 
-   if Length(gif_texto.Caption)-Length(Base) >= 3 then
-   gif_texto.Caption:=Base
-   else
-   gif_texto.Caption:=gif_texto.Caption+'.';
+gif_texto.AutoSize := False;
+gif_texto.Alignment := taLeftJustify;
+gif_texto.Canvas.Font.Assign(gif_texto.Font);
+gif_texto.Width := gif_texto.Canvas.TextWidth(Base + '...') + 4;
+gif_texto.Left := (loading_panel.Width - gif_texto.Width) div 2;
+
+  if Length(gif_texto.Caption) - Length(Base) >= 3 then
+  gif_texto.Caption := Base
+  else
+  gif_texto.Caption := gif_texto.Caption + '.';
 
 end;
 

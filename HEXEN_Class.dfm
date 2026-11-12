@@ -4,7 +4,7 @@ object Form8_HexenClass: TForm8_HexenClass
   AutoSize = True
   BorderIcons = []
   BorderStyle = bsNone
-  ClientHeight = 289
+  ClientHeight = 273
   ClientWidth = 448
   Color = clBackground
   Font.Charset = DEFAULT_CHARSET
@@ -22,7 +22,7 @@ object Form8_HexenClass: TForm8_HexenClass
     Left = 0
     Top = 0
     Width = 448
-    Height = 289
+    Height = 273
     Align = alClient
     AutoSize = True
     Center = True
@@ -7836,18 +7836,19 @@ object Form8_HexenClass: TForm8_HexenClass
       0000000049454E44AE426082}
     Proportional = True
     Stretch = True
-    ExplicitWidth = 451
+    ExplicitTop = 1
+    ExplicitHeight = 272
   end
   object S01: TImage
-    Left = 8
-    Top = 16
-    Width = 150
+    Left = 0
+    Top = 0
+    Width = 158
     Height = 273
     OnClick = S01Click
   end
   object S02: TImage
     Left = 150
-    Top = 16
+    Top = 0
     Width = 145
     Height = 273
     Transparent = True
@@ -7855,14 +7856,14 @@ object Form8_HexenClass: TForm8_HexenClass
   end
   object S03: TImage
     Left = 301
-    Top = 16
+    Top = 0
     Width = 147
     Height = 273
     OnClick = S03Click
   end
   object P_Speed: TLabel
-    Left = 154
-    Top = 195
+    Left = 156
+    Top = 181
     Width = 41
     Height = 13
     Caption = 'SPEED'
@@ -7875,8 +7876,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object P_Armor: TLabel
-    Left = 154
-    Top = 216
+    Left = 156
+    Top = 202
     Width = 44
     Height = 13
     Caption = 'ARMOR'
@@ -7889,8 +7890,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object P_Magic: TLabel
-    Left = 154
-    Top = 239
+    Left = 156
+    Top = 223
     Width = 42
     Height = 13
     Caption = 'MAGIC'
@@ -7903,8 +7904,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object P_Strength: TLabel
-    Left = 154
-    Top = 261
+    Left = 156
+    Top = 245
     Width = 67
     Height = 13
     Caption = 'STRENGTH'
@@ -7917,8 +7918,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object M_Speed: TLabel
-    Left = 303
-    Top = 195
+    Left = 300
+    Top = 181
     Width = 41
     Height = 13
     Caption = 'SPEED'
@@ -7931,8 +7932,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object M_Armor: TLabel
-    Left = 303
-    Top = 216
+    Left = 300
+    Top = 202
     Width = 44
     Height = 13
     Caption = 'ARMOR'
@@ -7945,8 +7946,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object M_Magic: TLabel
-    Left = 303
-    Top = 239
+    Left = 300
+    Top = 223
     Width = 42
     Height = 13
     Caption = 'MAGIC'
@@ -7959,8 +7960,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object M_Strength: TLabel
-    Left = 303
-    Top = 261
+    Left = 300
+    Top = 245
     Width = 67
     Height = 13
     Caption = 'STRENGTH'
@@ -7973,8 +7974,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object W_Strength: TLabel
-    Left = 4
-    Top = 261
+    Left = 14
+    Top = 245
     Width = 67
     Height = 13
     Caption = 'STRENGTH'
@@ -7987,8 +7988,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object W_Magic: TLabel
-    Left = 4
-    Top = 239
+    Left = 14
+    Top = 223
     Width = 42
     Height = 13
     Caption = 'MAGIC'
@@ -8001,8 +8002,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object W_Armor: TLabel
-    Left = 4
-    Top = 216
+    Left = 14
+    Top = 202
     Width = 44
     Height = 13
     Caption = 'ARMOR'
@@ -8015,8 +8016,8 @@ object Form8_HexenClass: TForm8_HexenClass
     Transparent = True
   end
   object W_Speed: TLabel
-    Left = 4
-    Top = 195
+    Left = 14
+    Top = 181
     Width = 41
     Height = 13
     Caption = 'SPEED'
