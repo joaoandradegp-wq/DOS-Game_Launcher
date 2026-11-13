@@ -32,8 +32,8 @@ uses Unit1, Language;
 
 procedure TForm5_Splash.AjustarFonteLabel;
 const
-PERC_FONTE = 0.04;
-MIN_FONTE_PX = 14;
+PERC_FONTE = 0.042;
+MIN_FONTE_PX = 13;
 begin
 Label1.ParentFont := False;
 Label1.Font.Height := -Max(Round(ClientHeight * PERC_FONTE), MIN_FONTE_PX);

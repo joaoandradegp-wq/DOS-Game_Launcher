@@ -23,7 +23,6 @@ object Form6_Mouse: TForm6_Mouse
     Top = 3
     Width = 280
     Height = 41
-    Align = alClient
     LineSize = 1000
     Max = 30000
     Min = -30000
@@ -35,38 +34,15 @@ object Form6_Mouse: TForm6_Mouse
     StyleElements = [seClient]
     StyleName = 'Windows11 White Smoke'
     OnChange = MouseSensitivityChange
-    ExplicitHeight = 142
-  end
-  object panel_negativo: TPanel
-    Left = 0
-    Top = 0
-    Width = 34
-    Height = 47
-    Align = alLeft
-    Alignment = taRightJustify
-    Anchors = [akLeft, akTop, akRight, akBottom]
-    AutoSize = True
-    BevelOuter = bvNone
-    Caption = '0  '
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -15
-    Font.Name = 'Segoe UI'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 1
-    ExplicitLeft = -6
-    ExplicitHeight = 53
   end
   object panel_positivo: TPanel
-    Left = 320
+    Left = 310
     Top = 0
-    Width = 34
+    Width = 44
     Height = 47
     Align = alRight
     Alignment = taLeftJustify
     Anchors = [akLeft, akTop, akRight, akBottom]
-    AutoSize = True
     BevelOuter = bvNone
     Caption = '  0'
     Font.Charset = ANSI_CHARSET
@@ -76,7 +52,26 @@ object Form6_Mouse: TForm6_Mouse
     Font.Style = [fsBold]
     ParentFont = False
     TabOrder = 2
-    ExplicitLeft = 314
-    ExplicitHeight = 53
+    ExplicitLeft = 315
+    ExplicitWidth = 45
+  end
+  object panel_negativo: TPanel
+    Left = 0
+    Top = 0
+    Width = 44
+    Height = 47
+    Align = alLeft
+    Alignment = taRightJustify
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    BevelOuter = bvNone
+    Caption = '0  '
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 1
+    ExplicitWidth = 45
   end
 end

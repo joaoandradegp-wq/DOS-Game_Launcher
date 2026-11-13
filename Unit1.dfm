@@ -13760,6 +13760,7 @@ object Form1_DGL: TForm1_DGL
       Top = 35
       Width = 121
       Height = 21
+      Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -13774,6 +13775,7 @@ object Form1_DGL: TForm1_DGL
       Top = 75
       Width = 121
       Height = 21
+      Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -13788,6 +13790,7 @@ object Form1_DGL: TForm1_DGL
       Top = 114
       Width = 121
       Height = 21
+      Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -13929,6 +13932,7 @@ object Form1_DGL: TForm1_DGL
       Top = 0
       Width = 27
       Height = 22
+      Enabled = False
       Font.Charset = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -12
