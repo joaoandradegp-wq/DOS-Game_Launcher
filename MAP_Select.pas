@@ -895,6 +895,7 @@ btn_aplicar.Enabled:=False;
  SIGIL_State:=False;
 
    case ListBox_Episodio.ItemIndex of
+   3: MostrarLogo('03W');
    4: begin
       MostrarLogo('03A');
       SIGIL_State:=SIGIL_DLC_Exists(1);
