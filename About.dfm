@@ -41,12 +41,12 @@ object Form7_About: TForm7_About
   object Label1: TLabel
     Left = 183
     Top = 62
-    Width = 181
-    Height = 14
+    Width = 165
+    Height = 13
     Caption = 'JMBA Softwares - 2017-2026'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -12
+    Font.Height = -11
     Font.Name = 'Verdana'
     Font.Style = []
     ParentFont = False

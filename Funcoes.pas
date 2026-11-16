@@ -17,6 +17,7 @@ type
     L, T, W, H: Integer;
   end;
 
+{
 const
   Fundos_Pos: array[0..12] of TFundoPos = (
     (Nome:'default'; L:400; T:280; W:256; H:256),
@@ -32,6 +33,23 @@ const
     (Nome:'10';      L:370; T:0;   W:340; H:347),
     (Nome:'11';      L:400; T:0;   W:330; H:380),
     (Nome:'12';      L:440; T:0;   W:269; H:340)
+  );
+}
+const
+  Fundos_Pos: array[0..12] of TFundoPos = (
+    (Nome:'default'; L:360; T:252; W:282; H:282),
+    (Nome:'01';      L:350; T:10;   W:420; H:420),
+    (Nome:'02';      L:302; T:72;  W:617; H:352),
+    (Nome:'03-04';   L:225; T:6;   W:813; H:372),
+    (Nome:'04-04';   L:225; T:6;   W:813; H:372),
+    (Nome:'05';      L:370; T:20;  W:389; H:396),
+    (Nome:'06';      L:410; T:-9;  W:287; H:429),
+    (Nome:'07';      L:380; T:12;  W:352; H:358),
+    (Nome:'08';      L:378; T:10;  W:316; H:429),
+    (Nome:'09';      L:378; T:9;   W:296; H:352),
+    (Nome:'10';      L:333; T:0;   W:374; H:382),
+    (Nome:'11';      L:360; T:0;   W:363; H:418),
+    (Nome:'12';      L:396; T:0;   W:296; H:374)
   );
 
 const

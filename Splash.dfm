@@ -5,8 +5,8 @@ object Form5_Splash: TForm5_Splash
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Form5_Splash'
-  ClientHeight = 3734
-  ClientWidth = 5299
+  ClientHeight = 4214
+  ClientWidth = 5939
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -22,8 +22,8 @@ object Form5_Splash: TForm5_Splash
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 5299
-    Height = 3734
+    Width = 5939
+    Height = 4214
     Align = alClient
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D494844520000072C0000

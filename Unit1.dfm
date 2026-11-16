@@ -13836,8 +13836,8 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object check_single: TRadioButton
-    Left = 216
-    Top = 296
+    Left = 205
+    Top = 299
     Width = 113
     Height = 17
     Caption = 'JOGAR'
@@ -13854,8 +13854,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_singleClick
   end
   object check_servidor: TRadioButton
-    Left = 216
-    Top = 312
+    Left = 205
+    Top = 315
     Width = 113
     Height = 17
     Caption = 'CRIAR SERVIDOR'
@@ -13870,8 +13870,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_servidorClick
   end
   object check_cliente: TRadioButton
-    Left = 216
-    Top = 328
+    Left = 205
+    Top = 331
     Width = 177
     Height = 17
     Caption = 'CONECTAR EM UMA PARTIDA'
