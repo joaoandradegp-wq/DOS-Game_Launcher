@@ -521,10 +521,10 @@ begin
 end;
 
 procedure TForm1_DGL.Timer2Timer(Sender: TObject);
-{ANIMACAO PONTOS GIF_TEXTO - 01/02}
+{ANIMACAO PONTOS GIF_TEXTO - 01/03}
 var
 Base: String;
-N: Integer;
+N, LarguraPonto, LarguraEspaco: Integer;
 begin
 
   if not loading_panel.Visible then
@@ -536,12 +536,17 @@ gif_texto.AutoSize := False;
 gif_texto.Alignment := taCenter;
 gif_texto.Canvas.Font.Assign(gif_texto.Font);
 gif_texto.Width := gif_texto.Canvas.TextWidth(Base + '...') + 4;
-gif_texto.Left := (loading_panel.Width - gif_texto.Width) div 2;
 
-{ANIMACAO PONTOS GIF_TEXTO - 02/02}
+{ANIMACAO PONTOS GIF_TEXTO - 02/03}
 N := (gif_texto.Tag + 1) mod 4;
 gif_texto.Tag := N;
 gif_texto.Caption := Base + StringOfChar('.', N) + StringOfChar(' ', 3 - N);
+
+{ANIMACAO PONTOS GIF_TEXTO - 03/03}
+LarguraPonto := gif_texto.Canvas.TextWidth('.');
+LarguraEspaco := gif_texto.Canvas.TextWidth(' ');
+gif_texto.Left := (loading_panel.Width - gif_texto.Width) div 2
+                  + ((3 - N) * (LarguraEspaco - LarguraPonto)) div 2;
 
 end;
 
