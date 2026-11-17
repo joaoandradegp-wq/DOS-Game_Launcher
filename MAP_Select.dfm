@@ -25,9 +25,9 @@ object Form4_Select: TForm4_Select
   TextHeight = 37
   object label_capitulo: TLabel
     Left = 24
-    Top = 363
-    Width = 136
-    Height = 38
+    Top = 360
+    Width = 157
+    Height = 45
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -35,16 +35,16 @@ object Form4_Select: TForm4_Select
     Caption = 'CAP'#205'TULO:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -28
+    Font.Height = -32
     Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
   end
   object label_episodio: TLabel
     Left = 24
-    Top = 27
-    Width = 131
-    Height = 38
+    Top = 24
+    Width = 150
+    Height = 45
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -52,7 +52,7 @@ object Form4_Select: TForm4_Select
     Caption = 'EPIS'#211'DIO:'
     Font.Charset = ANSI_CHARSET
     Font.Color = clWindowText
-    Font.Height = -28
+    Font.Height = -32
     Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
