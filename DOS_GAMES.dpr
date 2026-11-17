@@ -6,6 +6,8 @@ uses
   Forms,
   Windows,
   SysUtils,
+  {FONTES - 01/03}
+  Classes,
   Unit1 in 'Unit1.pas' {Form1_DGL},
   DLC in 'DLC.pas' {Form2_DLC},
   QUAKE_NameFun in 'QUAKE_NameFun.pas' {Form3_NameFun},
@@ -40,7 +42,30 @@ DGL_RAIZ:String;
 T: UInt64;
 //------------------------------------------------------
 
+{FONTES - 02/03}
+procedure CarregarFontes;
+var
+  Nome: string;
+  RS: TResourceStream;
+  Qtd: DWORD;
 begin
+  for Nome in ['RETRO_FONT', 'SEGOE_REGULAR', 'SEGOE_BOLD', 'SEGOE_LIGHT',
+               'SEGOE_SEMILIGHT', 'SEGOE_BLACK', 'SEGOE_SEMIBOLD'] do
+  begin
+    RS := TResourceStream.Create(HInstance, Nome, RT_RCDATA);
+    try
+      Qtd := 0;
+      AddFontMemResourceEx(RS.Memory, RS.Size, nil, @Qtd);
+    finally
+      RS.Free;
+    end;
+  end;
+end;
+
+begin
+  {FONTES - 03/03}
+  CarregarFontes;
+
   Application.Initialize;
   Application.Title := 'DOS GAME LAUNCHER 3.0';
   DGL_EXE  := Copy(ExtractFileName(Application.ExeName), 1,

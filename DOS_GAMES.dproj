@@ -147,7 +147,31 @@
         <DCCReference Include="PastaMonitor.pas"/>
         <RcItem Include="CONFIG\font\Retro Gaming.ttf">
             <ResourceType>RCDATA</ResourceType>
-            <ResourceId>FONTE_MINHA</ResourceId>
+            <ResourceId>RETRO_FONT</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\segoeui.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_REGULAR</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\segoeuib.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_BOLD</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\segoeuil.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_LIGHT</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\segoeuisl.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_SEMILIGHT</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\seguibl.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_BLACK</ResourceId>
+        </RcItem>
+        <RcItem Include="D:\seguisb.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SEGOE_SEMIBOLD</ResourceId>
         </RcItem>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -195,6 +219,42 @@
                 <DeployFile LocalName="D:\DOSBOX\DOS_GAMES.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>DOS_GAMES.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\segoeui.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\segoeuib.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\segoeuil.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\segoeuisl.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\seguibl.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="D:\seguisb.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

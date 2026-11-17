@@ -780,26 +780,10 @@ RxCheckListBox1.PopupMenu:=Nil;
 end;
 
 procedure TForm1_DGL.FormCreate(Sender: TObject);
-{FONTE GIF_TEXTO - 01/03}
-var
-RSFonte: TResourceStream;
-QtdFonte: DWORD;
 begin
 Lang_DGL(0);
 DoubleBuffered := True;
 SetDoubleBufferedRecursive(Self);
-
-  {FONTE GIF_TEXTO - 02/03}
-  RSFonte := TResourceStream.Create(HInstance, 'FONTE_MINHA', RT_RCDATA);
-  try
-  QtdFonte := 0;
-  AddFontMemResourceEx(RSFonte.Memory, RSFonte.Size, nil, @QtdFonte);
-  finally
-  RSFonte.Free;
-  end;
-
-{FONTE GIF_TEXTO - 03/03}
-gif_texto.Font.Name := 'Retro Gaming';
 
 {IP AUTOMATICO - 01/04}
 IP_Interno_Global:=GetInternalIP;

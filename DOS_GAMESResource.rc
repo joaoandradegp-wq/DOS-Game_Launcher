@@ -1,1 +1,7 @@
-FONTE_MINHA RCDATA "CONFIG\\font\\Retro Gaming.ttf"
+RETRO_FONT RCDATA "CONFIG\\font\\Retro Gaming.ttf"
+SEGOE_REGULAR RCDATA "D:\\segoeui.ttf"
+SEGOE_BOLD RCDATA "D:\\segoeuib.ttf"
+SEGOE_LIGHT RCDATA "D:\\segoeuil.ttf"
+SEGOE_SEMILIGHT RCDATA "D:\\segoeuisl.ttf"
+SEGOE_BLACK RCDATA "D:\\seguibl.ttf"
+SEGOE_SEMIBOLD RCDATA "D:\\seguisb.ttf"
