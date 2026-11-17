@@ -49,6 +49,13 @@ PicW, PicH, MaxW, MaxH, NewW, NewH: Integer;
 Esc: Double;
 Src, Dst: TBitmap;
 begin
+{SPLASH TAMANHO FIXO - 01/02}
+AutoSize := False;
+Image1.AutoSize := False;
+Image1.Align := alNone;
+Image1.Stretch := False;
+Image1.Proportional := False;
+
 PicW := Image1.Picture.Width;
 PicH := Image1.Picture.Height;
 
@@ -86,13 +93,13 @@ NewH := Round(PicH * Esc);
     end;
   end;
 
-Image1.Align := alNone;
-Image1.Stretch := False;
-Image1.AutoSize := False;
+{SPLASH TAMANHO FIXO - 02/02}
 Image1.SetBounds(0, 0, NewW, NewH);
-
 ClientWidth := NewW;
 ClientHeight := NewH;
+Image1.Stretch := True;
+Image1.Align := alClient;
+
 Position := poScreenCenter;
 end;
 

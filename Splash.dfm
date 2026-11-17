@@ -5,9 +5,10 @@ object Form5_Splash: TForm5_Splash
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Form5_Splash'
-  ClientHeight = 4214
-  ClientWidth = 5939
-  Color = clBtnFace
+  ClientHeight = 856
+  ClientWidth = 1836
+  Color = clWindow
+  Ctl3D = False
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -22,9 +23,10 @@ object Form5_Splash: TForm5_Splash
   object Image1: TImage
     Left = 0
     Top = 0
-    Width = 5939
-    Height = 4214
-    Align = alClient
+    Width = 1836
+    Height = 856
+    AutoSize = True
+    Center = True
     Picture.Data = {
       0954506E67496D61676589504E470D0A1A0A0000000D494844520000072C0000
       0358080200000019868D9F0000557963614258000055796A756D620000001E6A
@@ -38756,14 +38758,13 @@ object Form5_Splash: TForm5_Splash
       5D2D7DFE990B178ECC963732A2FF2BA9CE20C413267FECF27AE9BCF1DCFF0926
       E6A547A78B1A84E560FC31A73DFA0365AA8864C3DF570676FDEFD7FA3F7A6360
       5E13B72A570000000049454E44AE426082}
+    Proportional = True
     Stretch = True
-    ExplicitWidth = 819
-    ExplicitHeight = 374
   end
   object Label1: TLabel
     Left = 118
     Top = 244
-    Width = 342
+    Width = 345
     Height = 14
     Caption = #169' 2026 JMBA Softwares. Todos os direitos reservados.'
     Font.Charset = ANSI_CHARSET
