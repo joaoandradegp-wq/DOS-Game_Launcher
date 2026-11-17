@@ -1,5 +1,7 @@
 program dos_games;
 
+{$R *.dres}
+
 uses
   Forms,
   Windows,

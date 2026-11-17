@@ -145,6 +145,10 @@
         <DCCReference Include="QUAKE_Bind.pas"/>
         <DCCReference Include="UIUtils.pas"/>
         <DCCReference Include="PastaMonitor.pas"/>
+        <RcItem Include="CONFIG\font\Retro Gaming.ttf">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>FONTE_MINHA</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -175,6 +179,12 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="5">
+                <DeployFile LocalName="CONFIG\font\Retro Gaming.ttf" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="CONFIG\png\art\icon_PNG.png" Configuration="Debug" Class="UWP_DelphiLogo44">
                     <Platform Name="Win32">
                         <RemoteDir>Assets\</RemoteDir>
