@@ -2,7 +2,7 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2026/11/02 21:59:00.000.962,=E:\GitHUB\DOS-Game_Launcher\Unit2.pas</Transaction>
-    <Transaction>2026/11/02 22:00:18.000.688,E:\GitHUB\DOS-Game_Launcher\Unit2.pas=E:\GitHUB\DOS-Game_Launcher\PastaMonitor.pas</Transaction>
+    <Transaction>2026/11/02 22:00:18.000.688,E:\GitHUB\DOS-Game_Launcher\PastaMonitor.pas=E:\GitHUB\DOS-Game_Launcher\Unit2.pas</Transaction>
     <Transaction>2026/11/16 21:52:14.000.999,=E:\GitHUB\DOS-Game_Launcher\CONFIG\font\Retro Gaming.ttf</Transaction>
   </Transactions>
 </BorlandProject>
