@@ -37,7 +37,7 @@ const
 }
 const
   Fundos_Pos: array[0..12] of TFundoPos = (
-    (Nome:'default'; L:360; T:252; W:282; H:282),
+    (Nome:'default'; L:400; T:280; W:256; H:256),
     (Nome:'01';      L:350; T:10;  W:420; H:420),
     (Nome:'02';      L:302; T:72;  W:617; H:352),
     (Nome:'03-04';   L:220; T:6;   W:813; H:372),

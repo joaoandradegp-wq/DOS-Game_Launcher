@@ -30,8 +30,8 @@ object Form1_DGL: TForm1_DGL
     1383)
   TextHeight = 37
   object img_fundo: TImage
-    Left = 1173
-    Top = 837
+    Left = 1188
+    Top = 786
     Width = 801
     Height = 801
     Margins.Left = 9
@@ -13536,7 +13536,7 @@ object Form1_DGL: TForm1_DGL
   end
   object linha02: TBevel
     Left = 0
-    Top = 840
+    Top = 792
     Width = 1899
     Height = 27
     Margins.Left = 9
@@ -13546,9 +13546,9 @@ object Form1_DGL: TForm1_DGL
     Shape = bsTopLine
   end
   object linha01: TBevel
-    Left = 3
+    Left = 0
     Top = 174
-    Width = 1896
+    Width = 1899
     Height = 27
     Margins.Left = 9
     Margins.Top = 9
@@ -13689,7 +13689,7 @@ object Form1_DGL: TForm1_DGL
   end
   object Panel_Status: TPanel
     Left = 3
-    Top = 1335
+    Top = 1333
     Width = 54
     Height = 51
     Margins.Left = 9
@@ -13718,7 +13718,7 @@ object Form1_DGL: TForm1_DGL
     Left = 1437
     Top = 198
     Width = 441
-    Height = 624
+    Height = 570
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -13735,7 +13735,7 @@ object Form1_DGL: TForm1_DGL
       Left = 46
       Top = 46
       Width = 360
-      Height = 543
+      Height = 489
       Margins.Left = 45
       Margins.Top = 45
       Margins.Right = 30
@@ -13770,8 +13770,8 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object GroupIP: TGroupBox
-    Left = 15
-    Top = 873
+    Left = 27
+    Top = 837
     Width = 570
     Height = 435
     Margins.Left = 9
@@ -13934,7 +13934,7 @@ object Form1_DGL: TForm1_DGL
   end
   object check_single: TRadioButton
     Left = 615
-    Top = 897
+    Top = 890
     Width = 339
     Height = 51
     Margins.Left = 9
@@ -13956,7 +13956,7 @@ object Form1_DGL: TForm1_DGL
   end
   object check_servidor: TRadioButton
     Left = 615
-    Top = 945
+    Top = 938
     Width = 339
     Height = 51
     Margins.Left = 9
@@ -13976,7 +13976,7 @@ object Form1_DGL: TForm1_DGL
   end
   object check_cliente: TRadioButton
     Left = 615
-    Top = 993
+    Top = 986
     Width = 531
     Height = 51
     Margins.Left = 9
@@ -14127,8 +14127,8 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object btn_start: TButton
-    Left = 603
-    Top = 1212
+    Left = 615
+    Top = 1177
     Width = 555
     Height = 96
     Margins.Left = 9
@@ -14150,7 +14150,7 @@ object Form1_DGL: TForm1_DGL
     Left = 30
     Top = 198
     Width = 1359
-    Height = 624
+    Height = 570
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -14171,7 +14171,7 @@ object Form1_DGL: TForm1_DGL
     Left = 30
     Top = 198
     Width = 1359
-    Height = 624
+    Height = 570
     Margins.Left = 9
     Margins.Top = 9
     Margins.Right = 9
@@ -14184,7 +14184,7 @@ object Form1_DGL: TForm1_DGL
       Left = 0
       Top = 0
       Width = 1359
-      Height = 624
+      Height = 570
       Margins.Left = 9
       Margins.Top = 9
       Margins.Right = 9
@@ -14328,7 +14328,7 @@ object Form1_DGL: TForm1_DGL
   object MainMenu1: TMainMenu
     Images = VirtualImageList3
     Left = 96
-    Top = 672
+    Top = 552
     object Menu_Arquivo: TMenuItem
       Caption = '&Arquivo'
       object Menu_Sair: TMenuItem
@@ -14488,12 +14488,12 @@ object Form1_DGL: TForm1_DGL
     Interval = 5000
     OnTimer = Timer_MonitoraAPPTimer
     Left = 664
-    Top = 672
+    Top = 552
   end
   object PopupMenu1: TPopupMenu
     MenuAnimation = [maLeftToRight]
     Left = 352
-    Top = 672
+    Top = 552
     object popup_pasta: TMenuItem
       Caption = '&Diret'#243'rio'
       OnClick = popup_pastaClick
@@ -14540,7 +14540,7 @@ object Form1_DGL: TForm1_DGL
     Filter = 'DooM Mods (*.wad)|*.wad|Brutal DooM Files (*.pk3)|*.pk3'
     OptionsEx = [ofExNoPlacesBar]
     Left = 968
-    Top = 672
+    Top = 552
   end
   object VirtualImageList1: TVirtualImageList
     Images = <
@@ -236207,7 +236207,7 @@ object Form1_DGL: TForm1_DGL
     Interval = 450
     OnTimer = Timer2Timer
     Left = 990
-    Top = 462
+    Top = 342
   end
   object ImageCollection3: TImageCollection
     Images = <
@@ -238286,7 +238286,7 @@ object Form1_DGL: TForm1_DGL
           end>
       end>
     Left = 1248
-    Top = 672
+    Top = 552
   end
   object VirtualImageList3: TVirtualImageList
     Images = <
@@ -238339,6 +238339,6 @@ object Form1_DGL: TForm1_DGL
     Width = 39
     Height = 39
     Left = 1254
-    Top = 510
+    Top = 390
   end
 end
