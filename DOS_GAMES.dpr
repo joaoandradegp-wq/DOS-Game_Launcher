@@ -6,7 +6,6 @@ uses
   Forms,
   Windows,
   SysUtils,
-  {FONTES - 01/03}
   Classes,
   Unit1 in 'Unit1.pas' {Form1_DGL},
   DLC in 'DLC.pas' {Form2_DLC},

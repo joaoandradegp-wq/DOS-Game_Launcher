@@ -146,7 +146,6 @@ type
     procedure Idioma_AutoClick(Sender: TObject);
     procedure Idioma_PorClick(Sender: TObject);
     procedure Idioma_EngClick(Sender: TObject);
-    procedure PNGButton1Click(Sender: TObject);
     procedure popup_pastaClick(Sender: TObject);
     procedure config_menuClick(Sender: TObject);
     procedure RxCheckListBox1Exit(Sender: TObject);
@@ -749,13 +748,6 @@ begin
 ShellExecute(Handle,'open','http://phobosfreeware.blogspot.com','','',1);
 end;
 
-procedure TForm1_DGL.PNGButton1Click(Sender: TObject);
-begin
-Application.CreateForm(TForm6_Mouse, Form6_Mouse);
-Form6_Mouse.ShowModal;
-Form6_Mouse.Free;
-end;
-
 procedure TForm1_DGL.popup_pastaClick(Sender: TObject);
 begin
 ShellExecute(Application.Handle,'open',pchar(Caminho_Global),nil,nil,SW_SHOWNORMAL);
@@ -965,7 +957,7 @@ begin
      combo_color.ItemIndex:=8;
      end;
   end;
-  
+
 RxCheckListBox1.SetFocus;
 end;
 
