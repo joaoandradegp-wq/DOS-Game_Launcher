@@ -24,7 +24,8 @@ uses
   UIUtils in 'UIUtils.pas',
   PastaMonitor in 'PastaMonitor.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  BotaoSteam in 'BotaoSteam.pas';
 
 {$R *.res}
 

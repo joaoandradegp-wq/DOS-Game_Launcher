@@ -90,7 +90,7 @@ begin
      Form1_DGL.check_servidor.Caption:='CRIAR SERVIDOR';
      Form1_DGL.check_cliente.Caption:='CONECTAR EM UMA PARTIDA';
      //-----------------------------------------------------
-     Form1_DGL.btn_start.Caption:='INICIAR';
+     Form1_DGL.btn_start.Caption:='JOGAR';
      //-----------------------------------------------------
      end;
   1: Result:='Defina seu nome antes de iniciar!';
@@ -185,7 +185,7 @@ begin
      Form1_DGL.check_servidor.Caption:='CREATE A SERVER';
      Form1_DGL.check_cliente.Caption:='CONNECT TO A GAME SERVER';
      //-----------------------------------------------------
-     Form1_DGL.btn_start.Caption:='START';
+     Form1_DGL.btn_start.Caption:='PLAY';
      //-----------------------------------------------------
      end;
   1: Result:='Define your player name before you start!';

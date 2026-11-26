@@ -145,6 +145,7 @@
         <DCCReference Include="QUAKE_Bind.pas"/>
         <DCCReference Include="UIUtils.pas"/>
         <DCCReference Include="PastaMonitor.pas"/>
+        <DCCReference Include="BotaoSteam.pas"/>
         <RcItem Include="CONFIG\font\Retro Gaming.ttf">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>RETRO_FONT</ResourceId>

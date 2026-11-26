@@ -13888,7 +13888,7 @@ object Form1_DGL: TForm1_DGL
     Font.Name = 'Segoe UI Semibold'
     Font.Style = [fsBold]
     ParentFont = False
-    TabOrder = 9
+    TabOrder = 8
     OnClick = RadioButton3Click
   end
   object Panel1: TPanel
@@ -13996,22 +13996,6 @@ object Form1_DGL: TForm1_DGL
         'PHOBOS')
     end
   end
-  object btn_start: TButton
-    Left = 205
-    Top = 392
-    Width = 185
-    Height = 32
-    Caption = 'INICIAR'
-    Enabled = False
-    Font.Charset = ANSI_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Segoe UI'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 8
-    OnClick = btn_startClick
-  end
   object RxCheckListBox1: TCheckListBox
     Left = 10
     Top = 66
@@ -14024,7 +14008,7 @@ object Form1_DGL: TForm1_DGL
     Font.Style = []
     ItemHeight = 13
     ParentFont = False
-    TabOrder = 10
+    TabOrder = 9
     OnClick = RxCheckListBox1Click
     OnDblClick = RxCheckListBox1DblClick
     OnExit = RxCheckListBox1Exit
@@ -14069,7 +14053,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 11
+    TabOrder = 10
     Visible = False
     OnClick = RxControleClick
   end
@@ -14082,7 +14066,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 12
+    TabOrder = 11
     Visible = False
     OnClick = RxSenseClick
   end
@@ -14095,7 +14079,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 13
+    TabOrder = 12
     Visible = False
     OnClick = RxBrutalClick
   end
@@ -14108,7 +14092,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 14
+    TabOrder = 13
     Visible = False
     OnClick = RxOpcoesClick
   end
@@ -14121,7 +14105,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 15
+    TabOrder = 14
     Visible = False
     OnClick = RxDMClick
   end
@@ -14134,7 +14118,7 @@ object Form1_DGL: TForm1_DGL
     ParentColor = True
     ParentCtl3D = False
     ShowStateCaption = False
-    TabOrder = 16
+    TabOrder = 15
     Visible = False
     OnClick = RxQuakeServerClick
   end

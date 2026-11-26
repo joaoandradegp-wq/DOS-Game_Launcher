@@ -6,7 +6,9 @@ uses
   Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, Menus,
   StdCtrls, ComCtrls, ExtCtrls, ImgList, ShellAPI,
   Buttons, StrUtils, Vcl.CheckLst, Vcl.VirtualImageList, Vcl.ImageCollection,
-  Vcl.BaseImageCollection, System.ImageList, Vcl.Imaging.pngimage, Vcl.WinXCtrls;
+  Vcl.BaseImageCollection, System.ImageList, Vcl.Imaging.pngimage, Vcl.WinXCtrls,
+  {BOTÃO STEAM - 01/03}
+  BotaoSteam;
 
 type
 //-----------------------------------
@@ -97,7 +99,6 @@ type
     player_name: TEdit;
     cont_seta: TUpDown;
     Label_Name: TLabel;
-    btn_start: TButton;
     popup_qsp: TMenuItem;
     menu_linha2: TMenuItem;
     Menu_Linha_Idioma: TMenuItem;
@@ -191,6 +192,8 @@ type
   public
     { Public declarations }
   Arquivo_DOSBOX_Fisico:TStringList;
+  {BOTÃO STEAM - 02/03}
+  btn_start: TBotaoSteam;
   end;
 
 var
@@ -773,6 +776,14 @@ end;
 
 procedure TForm1_DGL.FormCreate(Sender: TObject);
 begin
+{BOTÃO STEAM - 03/03}
+btn_start := TBotaoSteam.Create(Self);
+btn_start.Parent := Self;
+btn_start.SetBounds(MulDiv(205, CurrentPPI, 96), MulDiv(392, CurrentPPI, 96),
+                    MulDiv(185, CurrentPPI, 96), MulDiv(32, CurrentPPI, 96));
+btn_start.Enabled := False;
+btn_start.OnClick := btn_startClick;
+
 Lang_DGL(0);
 DoubleBuffered := True;
 SetDoubleBufferedRecursive(Self);
