@@ -2,19 +2,19 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2026/11/02 21:59:00.000.962,=E:\GitHUB\DOS-Game_Launcher\Unit2.pas</Transaction>
-    <Transaction>2026/11/02 22:00:18.000.688,E:\GitHUB\DOS-Game_Launcher\PastaMonitor.pas=E:\GitHUB\DOS-Game_Launcher\Unit2.pas</Transaction>
+    <Transaction>2026/11/02 22:00:18.000.688,E:\GitHUB\DOS-Game_Launcher\Unit2.pas=E:\GitHUB\DOS-Game_Launcher\PastaMonitor.pas</Transaction>
     <Transaction>2026/11/16 21:52:14.000.999,=E:\GitHUB\DOS-Game_Launcher\CONFIG\font\Retro Gaming.ttf</Transaction>
-    <Transaction>2026/11/17 19:46:35.000.394,=D:\seguibl.ttf</Transaction>
-    <Transaction>2026/11/17 19:46:35.000.245,=D:\segoeuil.ttf</Transaction>
-    <Transaction>2026/11/17 19:46:35.000.182,=D:\segoeuib.ttf</Transaction>
-    <Transaction>2026/11/17 19:46:35.000.315,=D:\segoeuisl.ttf</Transaction>
     <Transaction>2026/11/17 19:46:35.000.463,=D:\seguisb.ttf</Transaction>
+    <Transaction>2026/11/17 19:46:35.000.182,=D:\segoeuib.ttf</Transaction>
+    <Transaction>2026/11/17 19:46:35.000.245,=D:\segoeuil.ttf</Transaction>
+    <Transaction>2026/11/17 19:46:35.000.315,=D:\segoeuisl.ttf</Transaction>
     <Transaction>2026/11/17 19:46:35.000.115,=D:\segoeui.ttf</Transaction>
+    <Transaction>2026/11/17 19:46:35.000.394,=D:\seguibl.ttf</Transaction>
     <Transaction>2026/11/25 14:51:17.000.743,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\segoeuisl.ttf</Transaction>
     <Transaction>2026/11/25 14:51:17.000.653,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\segoeuil.ttf</Transaction>
     <Transaction>2026/11/25 14:51:17.000.924,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\seguisb.ttf</Transaction>
-    <Transaction>2026/11/25 14:51:17.000.824,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\seguibl.ttf</Transaction>
     <Transaction>2026/11/25 14:51:17.000.572,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\segoeuib.ttf</Transaction>
+    <Transaction>2026/11/25 14:51:17.000.824,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\seguibl.ttf</Transaction>
     <Transaction>2026/11/25 14:51:17.000.479,=D:\GitHUB\DOS-Game_Launcher\CONFIG\font\segoeui.ttf</Transaction>
     <Transaction>2026/11/25 22:56:16.000.584,=E:\GitHUB\DOS-Game_Launcher\BotaoSteam.pas</Transaction>
   </Transactions>
