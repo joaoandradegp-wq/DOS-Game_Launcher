@@ -779,7 +779,7 @@ begin
 {BOTÃO STEAM - 03/03}
 btn_start := TBotaoSteam.Create(Self);
 btn_start.Parent := Self;
-btn_start.SetBounds(MulDiv(205, CurrentPPI, 96), MulDiv(392, CurrentPPI, 96),
+btn_start.SetBounds(MulDiv(215, CurrentPPI, 96), MulDiv(390, CurrentPPI, 96),
                     MulDiv(185, CurrentPPI, 96), MulDiv(32, CurrentPPI, 96));
 btn_start.Enabled := False;
 btn_start.OnClick := btn_startClick;

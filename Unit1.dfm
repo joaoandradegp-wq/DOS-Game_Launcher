@@ -13540,8 +13540,8 @@ object Form1_DGL: TForm1_DGL
     Shape = bsTopLine
   end
   object Label_Controle: TLabel
-    Left = 531
-    Top = 296
+    Left = 517
+    Top = 274
     Width = 39
     Height = 12
     Caption = 'TECLADO'
@@ -13555,8 +13555,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Sense: TLabel
-    Left = 531
-    Top = 317
+    Left = 517
+    Top = 295
     Width = 85
     Height = 12
     Caption = 'MOUSE SENSITIVITY'
@@ -13570,8 +13570,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Brutal: TLabel
-    Left = 531
-    Top = 338
+    Left = 517
+    Top = 316
     Width = 26
     Height = 12
     Caption = 'MODS'
@@ -13585,8 +13585,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_Opcoes: TLabel
-    Left = 531
-    Top = 359
+    Left = 517
+    Top = 337
     Width = 35
     Height = 12
     Caption = 'OP'#199#213'ES'
@@ -13600,8 +13600,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_DM: TLabel
-    Left = 531
-    Top = 380
+    Left = 517
+    Top = 358
     Width = 59
     Height = 12
     Caption = 'DEATHMATCH'
@@ -13615,8 +13615,8 @@ object Form1_DGL: TForm1_DGL
     Visible = False
   end
   object Label_QuakeServer: TLabel
-    Left = 531
-    Top = 402
+    Left = 517
+    Top = 380
     Width = 82
     Height = 12
     Caption = 'DEDICATED SERVER'
@@ -13842,8 +13842,8 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object check_single: TRadioButton
-    Left = 205
-    Top = 297
+    Left = 220
+    Top = 293
     Width = 113
     Height = 17
     Caption = 'JOGAR'
@@ -13860,8 +13860,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_singleClick
   end
   object check_servidor: TRadioButton
-    Left = 205
-    Top = 313
+    Left = 220
+    Top = 309
     Width = 113
     Height = 17
     Caption = 'CRIAR SERVIDOR'
@@ -13876,8 +13876,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = check_servidorClick
   end
   object check_cliente: TRadioButton
-    Left = 205
-    Top = 329
+    Left = 220
+    Top = 325
     Width = 177
     Height = 17
     Caption = 'CONECTAR EM UMA PARTIDA'
@@ -14045,8 +14045,8 @@ object Form1_DGL: TForm1_DGL
     end
   end
   object RxControle: TToggleSwitch
-    Left = 493
-    Top = 295
+    Left = 479
+    Top = 273
     Width = 35
     Height = 15
     AutoSize = False
@@ -14058,8 +14058,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = RxControleClick
   end
   object RxSense: TToggleSwitch
-    Left = 493
-    Top = 316
+    Left = 479
+    Top = 294
     Width = 35
     Height = 15
     AutoSize = False
@@ -14071,8 +14071,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = RxSenseClick
   end
   object RxBrutal: TToggleSwitch
-    Left = 493
-    Top = 337
+    Left = 479
+    Top = 315
     Width = 35
     Height = 15
     AutoSize = False
@@ -14084,8 +14084,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = RxBrutalClick
   end
   object RxOpcoes: TToggleSwitch
-    Left = 493
-    Top = 358
+    Left = 479
+    Top = 336
     Width = 35
     Height = 15
     AutoSize = False
@@ -14097,8 +14097,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = RxOpcoesClick
   end
   object RxDM: TToggleSwitch
-    Left = 493
-    Top = 379
+    Left = 479
+    Top = 357
     Width = 35
     Height = 15
     AutoSize = False
@@ -14110,8 +14110,8 @@ object Form1_DGL: TForm1_DGL
     OnClick = RxDMClick
   end
   object RxQuakeServer: TToggleSwitch
-    Left = 493
-    Top = 400
+    Left = 479
+    Top = 378
     Width = 35
     Height = 15
     AutoSize = False
